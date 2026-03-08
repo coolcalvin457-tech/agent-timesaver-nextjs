@@ -36,9 +36,9 @@ export default function Home() {
               No more agonizing over emails, reports, meeting preps, follow-ups,
               or to-do lists. You don&apos;t have to be technical to get there.
               Just think about what you&apos;d do with all that extra time.{" "}
-              <strong>
-                Now you know what&apos;s possible. Let me show you where to begin.
-              </strong>
+              <strong>Now you know what&apos;s possible.</strong>
+              <br />
+              <strong>Let me show you where to begin.</strong>
             </p>
           </div>
         </section>

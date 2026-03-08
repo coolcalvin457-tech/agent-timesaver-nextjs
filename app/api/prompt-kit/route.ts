@@ -14,10 +14,13 @@ export interface PromptCategory {
 
 export interface PromptKitResponse {
   categories: PromptCategory[];
+  aiProfile: string;
 }
 
 // ─── Mock fallback ─────────────────────────────────────────────────────────────
 const MOCK_KIT: PromptKitResponse = {
+  aiProfile:
+    "I'm a marketing professional who primarily handles writing and communication. I'm still getting started with AI tools and finding my footing. My biggest challenge is not knowing what to ask to get results that feel specific to my work. When helping me, please keep things practical and suggest what to say to get a great result — examples from marketing and communications work are especially helpful.",
   categories: [
     {
       name: "Writing & Communication",
@@ -140,6 +143,8 @@ For each prompt:
 - Write the actual ready-to-use prompt. Use [brackets] for things the user fills in. Write it in first-person as if the user is speaking to an AI. Make it specific enough to get a great result, not a generic template. 2-5 sentences.
 - Add a one-line "why it works" explanation that starts with "This works because..."
 
+Also write an AI Profile paragraph for this person. This is a 3-4 sentence paragraph they will paste into their AI tool's Custom Instructions so AI always knows who they are before they say a word. Write it in first person ("I am a..."). Include: their job title, what kind of work they do, their current AI experience level, and one specific instruction for how AI should help them based on their challenge. Make it feel personal and natural, not like a form was filled out. No em dashes.
+
 Rules:
 - Make prompts specific to their job title — not generic advice
 - No em dashes anywhere
@@ -150,6 +155,7 @@ Rules:
 
 Return ONLY valid JSON in this exact format:
 {
+  "aiProfile": "3-4 sentence AI profile paragraph here.",
   "categories": [
     {
       "name": "Category Name",
@@ -165,7 +171,7 @@ Return ONLY valid JSON in this exact format:
 }`;
 
   const message = await client.messages.create({
-    model: "claude-sonnet-4-6",
+    model: process.env.CLAUDE_MODEL ?? "claude-sonnet-4-6",
     max_tokens: 4096,
     messages: [{ role: "user", content: userPrompt }],
     system: systemPrompt,

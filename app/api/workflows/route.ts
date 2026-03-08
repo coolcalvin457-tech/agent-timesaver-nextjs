@@ -238,7 +238,7 @@ Return ONLY valid JSON in this exact format:
 }`;
 
   const message = await client.messages.create({
-    model: "claude-sonnet-4-6",
+    model: process.env.CLAUDE_MODEL ?? "claude-sonnet-4-6",
     max_tokens: 2048,
     messages: [{ role: "user", content: prompt }],
   });

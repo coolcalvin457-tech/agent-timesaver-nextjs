@@ -1623,6 +1623,169 @@ input, textarea {
   line-height: 1.5;
 }
 
+/* ── Prompt Builder — AI System Section ──────────────────── */
+.pb-system-section {
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 2px solid var(--border);
+}
+
+.pb-system-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cta);
+  margin-bottom: 6px;
+}
+
+.pb-system-headline {
+  font-size: 1.375rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.025em;
+  margin-bottom: 8px;
+}
+
+.pb-system-subline {
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+.pb-system-step {
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 24px;
+  margin-bottom: 12px;
+}
+
+.pb-system-step-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brand);
+  margin-bottom: 10px;
+}
+
+.pb-system-step-body {
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.pb-system-step-body strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Folder tree */
+.pb-folder-tree {
+  background: var(--dark);
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-bottom: 14px;
+}
+
+.pb-folder-tree-item {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.8;
+}
+
+.pb-folder-root {
+  color: #fff;
+  font-weight: 600;
+}
+
+.pb-folder-indent {
+  padding-left: 20px;
+}
+
+.pb-system-tip {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+  padding: 10px 14px;
+  background: rgba(30,122,184,0.05);
+  border: 1px solid rgba(30,122,184,0.12);
+  border-radius: 8px;
+}
+
+.pb-system-tip strong {
+  color: var(--cta);
+}
+
+/* Tool list */
+.pb-tool-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 0;
+}
+
+.pb-tool-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9375rem;
+  color: var(--text-primary);
+}
+
+.pb-tool-item::before {
+  content: '·';
+  color: var(--text-muted);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.pb-tool-name {
+  font-weight: 600;
+}
+
+.pb-tool-cost {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+/* Where to add it list */
+.pb-where-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 0;
+}
+
+.pb-where-list li {
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  padding-left: 14px;
+  position: relative;
+}
+
+.pb-where-list li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
+.pb-where-list li strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
 /* ── Responsive ───────────────────────────────────────────── */
 @media (max-width: 768px) {
   .screen {

@@ -22,7 +22,7 @@ const posts = [
     category: "Non-Technical AI Skills",
     date: "March 8, 2026",
     excerpt:
-      "It's Monday morning. You open your inbox and there it is, REMINDER: Annual Reports Due Friday.",
+      "Here's a secret: those prompts were designed to stop the scroll, not actually help you out.",
   },
 ];
 

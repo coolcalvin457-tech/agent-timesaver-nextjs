@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
+// Force dynamic rendering — this route reads request headers at runtime
+export const dynamic = "force-dynamic";
+
 // ─── Stripe Checkout — creates a hosted payment session ───────────────────────
 // Uses Stripe REST API directly (no npm package needed).
 // On success, Stripe redirects to /prompt-builder?payment=success&session_id=xxx

@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
+// Force dynamic rendering — this route reads request.url at runtime
+export const dynamic = "force-dynamic";
+
 // ─── Verify Payment — confirms a Stripe Checkout session was paid ─────────────
 // Called client-side after Stripe redirects back with ?session_id=xxx
 // Returns { verified: true } only if payment_status === "paid"

@@ -56,7 +56,7 @@ export default function BlogPage() {
               }}
             >
               Practical AI skills for non-technical people.<br />
-              Real workflows, no hype.
+              Real workflows you can try now.
             </p>
           </div>
 

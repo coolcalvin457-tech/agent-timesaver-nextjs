@@ -58,6 +58,10 @@
   padding: 0;
 }
 
+ul, ol {
+  list-style: none;
+}
+
 html {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
@@ -1788,65 +1792,105 @@ input, textarea {
 
 /* ── Paywall Screen ───────────────────────────────────────── */
 
-/* Wrapper — positions blur layer and overlay together */
-.pb-paywall-preview {
-  position: relative;
+/* Dark CTA box — fully visible above the fold */
+.pb-paywall-box {
+  background: linear-gradient(180deg, #1A1B22 0%, #0E0E10 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-card);
-  overflow: hidden;
-  margin: 24px 0 0;
-  /* Min height so overlay has room even if preview content is short */
-  min-height: 420px;
+  padding: 24px 24px 20px;
+  margin: 20px 0 28px;
 }
 
-/* The actual prompt cards — blurred and non-interactive */
-.pb-paywall-blur {
-  filter: blur(5px);
-  user-select: none;
-  pointer-events: none;
-  padding: 4px 0;
-}
-
-/* Gradient overlay — fades from transparent at top to near-opaque at bottom */
-.pb-paywall-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(14, 14, 16, 0.05) 0%,
-    rgba(14, 14, 16, 0.55) 30%,
-    rgba(14, 14, 16, 0.97) 55%,
-    rgba(14, 14, 16, 1) 100%
-  );
+.pb-paywall-box-header {
   display: flex;
-  align-items: flex-end;
-  padding: 28px 24px 32px;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
 }
 
-/* CTA box sitting on top of the overlay */
-.pb-paywall-cta {
-  width: 100%;
-  text-align: center;
-}
-
-.pb-lock-icon {
-  font-size: 1.75rem;
-  display: block;
-  margin-bottom: 10px;
+.pb-lock-icon-sm {
+  font-size: 1.125rem;
+  flex-shrink: 0;
 }
 
 .pb-paywall-headline {
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  letter-spacing: -0.02em;
-  margin-bottom: 6px;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.01em;
 }
 
-.pb-paywall-subline {
-  font-size: 0.9375rem;
-  color: var(--text-secondary);
+/* Perks list inside dark box */
+.pb-paywall-perks {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   margin-bottom: 20px;
-  line-height: 1.5;
+}
+
+.pb-paywall-perk {
+  color: rgba(255, 255, 255, 0.82) !important;
+  font-size: 0.9rem !important;
+}
+
+.perk-check-dark {
+  background: rgba(26, 122, 74, 0.22) !important;
+  color: #6ee49a !important;
+  font-size: 0.65rem;
+}
+
+/* Price row inside dark box */
+.pb-paywall-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.pb-paywall-price {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.04em;
+}
+
+.pb-paywall-price-note {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.45);
+  font-weight: 500;
+}
+
+.pb-paywall-trust {
+  text-align: center;
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.35);
+  margin-top: 10px;
+}
+
+.pb-paywall-error {
+  color: #e05c5c;
+  font-size: 0.875rem;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* "Here's a peek at what's inside:" divider label */
+.pb-paywall-peek-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
+}
+
+/* Blurred prompt preview — teaser only, not interactive */
+.pb-paywall-blur-wrap {
+  filter: blur(4px);
+  user-select: none;
+  pointer-events: none;
+  opacity: 0.6;
 }
 
 /* ── Responsive ───────────────────────────────────────────── */

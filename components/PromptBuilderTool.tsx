@@ -557,90 +557,75 @@ export default function PromptBuilderTool({ paymentStatus, sessionId }: Props) {
 
   // ── Screen: Paywall ────────────────────────────────────────────
   if (screen === "paywall" && promptKit) {
-    // Show a blurred preview of the first 2 prompt cards as a teaser
-    const previewPrompts = promptKit.categories[0]?.prompts.slice(0, 2) ?? [];
+    // Pull 3 prompts across 2 categories for the blurred teaser
+    const previewPrompts = [
+      promptKit.categories[0]?.prompts[0],
+      promptKit.categories[0]?.prompts[1],
+      promptKit.categories[1]?.prompts[0],
+    ].filter(Boolean);
 
     return (
       <div className="tool-container">
         <div className="screen">
+          <p className="tool-tag">AGENT: Prompt Builder</p>
           <p className="results-tag">Your Prompt Kit is ready.</p>
           <h2 className="results-headline">
-            12 AI prompts built for {jobTitle}.
+            12 prompts built for {jobTitle}.
           </h2>
 
-          {/* Blurred preview with overlay */}
-          <div className="pb-paywall-preview">
-            <div className="pb-paywall-blur" aria-hidden="true">
-              {previewPrompts.map((prompt, i) => (
-                <div key={i} className="pb-prompt-card">
-                  <p className="pb-prompt-title">{prompt.title}</p>
-                  <div className="pb-prompt-text-wrapper">
-                    <p className="pb-prompt-text">{prompt.prompt}</p>
-                  </div>
-                  <p className="pb-prompt-why">{prompt.why}</p>
+          {/* ── CTA box — fully visible above the fold ── */}
+          <div className="pb-paywall-box">
+            <div className="pb-paywall-box-header">
+              <span className="pb-lock-icon-sm">🔒</span>
+              <p className="pb-paywall-headline">Unlock your full Prompt Kit</p>
+            </div>
+
+            <div className="pb-paywall-perks">
+              {[
+                `12 prompts personalized to ${jobTitle}`,
+                "AI Profile paragraph — paste once, every chat gets better",
+                "Build Your AI System guide",
+                "Emailed to you so you keep it forever",
+              ].map((perk) => (
+                <div key={perk} className="pb-perk pb-paywall-perk">
+                  <span className="perk-check perk-check-dark">✓</span>
+                  <span>{perk}</span>
                 </div>
               ))}
-              {/* Extra filler card so blur looks full */}
-              <div className="pb-prompt-card" style={{ opacity: 0.5 }}>
-                <p className="pb-prompt-title">
-                  {promptKit.categories[1]?.prompts[0]?.title ?? "More prompts below..."}
-                </p>
+            </div>
+
+            <div className="pb-paywall-price-row">
+              <span className="pb-paywall-price">$4.99</span>
+              <span className="pb-paywall-price-note">One time · No subscription</span>
+            </div>
+
+            <button
+              className="btn btn-primary btn-full btn-lg"
+              onClick={handleCheckout}
+              disabled={checkoutLoading}
+            >
+              {checkoutLoading ? "Redirecting to checkout..." : "Unlock My Prompt Kit →"}
+            </button>
+
+            {paymentError && (
+              <p className="pb-paywall-error">{paymentError}</p>
+            )}
+
+            <p className="pb-paywall-trust">Secure checkout via Stripe</p>
+          </div>
+
+          {/* ── Blurred preview — teaser below CTA ── */}
+          <p className="pb-paywall-peek-label">Here&apos;s a peek at what&apos;s inside:</p>
+          <div className="pb-paywall-blur-wrap" aria-hidden="true">
+            {previewPrompts.map((prompt, i) => prompt && (
+              <div key={i} className="pb-prompt-card">
+                <p className="pb-prompt-title">{prompt.title}</p>
                 <div className="pb-prompt-text-wrapper">
-                  <p className="pb-prompt-text">
-                    {promptKit.categories[1]?.prompts[0]?.prompt ?? ""}
-                  </p>
+                  <p className="pb-prompt-text">{prompt.prompt}</p>
                 </div>
+                <p className="pb-prompt-why">{prompt.why}</p>
               </div>
-            </div>
-
-            {/* Gradient overlay + CTA */}
-            <div className="pb-paywall-overlay">
-              <div className="pb-paywall-cta">
-                <p className="pb-lock-icon">🔒</p>
-                <p className="pb-paywall-headline">Unlock your full Prompt Kit</p>
-                <p className="pb-paywall-subline">
-                  Your 12 personalized prompts are ready — one payment and
-                  they&apos;re yours forever.
-                </p>
-
-                <div className="pb-perks" style={{ marginBottom: "20px" }}>
-                  {[
-                    `12 prompts built for ${jobTitle}`,
-                    "AI Profile paragraph — paste once, every chat gets better",
-                    "Build Your AI System guide",
-                    "Emailed to you so you always have it",
-                  ].map((perk) => (
-                    <div key={perk} className="pb-perk">
-                      <span className="perk-check">✓</span>
-                      <span>{perk}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="pb-price-row" style={{ justifyContent: "center", marginBottom: "16px" }}>
-                  <span className="pb-price">$4.99</span>
-                  <span className="pb-price-note">One time · No subscription</span>
-                </div>
-
-                <button
-                  className="btn btn-primary btn-full btn-lg"
-                  onClick={handleCheckout}
-                  disabled={checkoutLoading}
-                >
-                  {checkoutLoading ? "Redirecting to checkout..." : "Unlock My Prompt Kit →"}
-                </button>
-
-                {paymentError && (
-                  <p style={{ color: "#e05c5c", marginTop: "12px", fontSize: "0.875rem", textAlign: "center" }}>
-                    {paymentError}
-                  </p>
-                )}
-
-                <p style={{ marginTop: "12px", fontSize: "0.8125rem", color: "var(--text-muted)", textAlign: "center" }}>
-                  Secure checkout via Stripe
-                </p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>

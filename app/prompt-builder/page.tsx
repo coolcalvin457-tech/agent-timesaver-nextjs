@@ -22,7 +22,7 @@ export default function PromptBuilderPage({
           style={{ paddingTop: "120px", minHeight: "100vh" }}
         >
           <div className="container">
-            <div className="section-label">AGENT: Prompt Builder</div>
+            <div className="section-label" style={{ textTransform: "none" }}>AGENT: Prompt Builder</div>
             <div style={{ maxWidth: "600px", margin: "0 auto" }}>
               <PromptBuilderTool
                 paymentStatus={searchParams.payment}

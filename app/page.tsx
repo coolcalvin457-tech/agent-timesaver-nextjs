@@ -363,32 +363,36 @@ export default function Home() {
       <footer className="footer">
         <div className="container">
           <div className="footer-inner">
+
+            {/* Brand */}
             <div>
-              <div
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "0.875rem",
-                  fontWeight: 600,
-                  color: "rgba(255,255,255,0.7)",
-                  marginBottom: "4px",
-                }}
-              >
-                promptaiagents.com
-              </div>
+              <div className="footer-brand-name">promptaiagents.com</div>
               <div className="footer-tagline">Built for real jobs. Not demos.</div>
             </div>
 
-            <nav>
-              <ul className="footer-nav">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#timesaver">AGENT: Timesaver</a></li>
-                <li><a href="#prompt-builder">AGENT: Prompt Builder</a></li>
+            {/* Tools */}
+            <div>
+              <div className="footer-col-label">Tools</div>
+              <ul className="footer-col-links">
+                <li><a href="/#timesaver">AGENT: Timesaver</a></li>
+                <li><a href="/#prompt-builder">AGENT: Prompt Builder</a></li>
+              </ul>
+            </div>
+
+            {/* Content */}
+            <div>
+              <div className="footer-col-label">Content</div>
+              <ul className="footer-col-links">
                 <li><a href="/blog">Blogs</a></li>
                 <li><a href="/guides">Guides</a></li>
                 <li><a href="/community">Community</a></li>
               </ul>
-            </nav>
+            </div>
 
+          </div>
+
+          {/* Bottom bar */}
+          <div className="footer-bottom">
             <div className="footer-legal">
               © 2026 promptaiagents.com. All rights reserved.
             </div>

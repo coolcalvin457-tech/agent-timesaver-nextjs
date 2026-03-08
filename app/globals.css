@@ -1459,41 +1459,67 @@ input, textarea {
 /* ── Footer ───────────────────────────────────────────────── */
 .footer {
   background: var(--dark);
-  padding: 48px 0;
+  padding: 64px 0 0;
   border-top: 1px solid var(--dark-border);
 }
 
 .footer-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 32px;
+  display: grid;
+  grid-template-columns: 1.75fr 1fr 1fr;
+  gap: 48px;
+  padding-bottom: 48px;
+  align-items: start;
+}
+
+.footer-brand-name {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 8px;
 }
 
 .footer-tagline {
   font-size: 0.875rem;
   color: var(--dark-muted);
+  line-height: 1.6;
+  max-width: 220px;
 }
 
-.footer-nav {
-  display: flex;
-  gap: 24px;
+.footer-col-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.28);
+  margin-bottom: 16px;
+}
+
+.footer-col-links {
   list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.footer-nav a {
+.footer-col-links a {
   font-size: 0.875rem;
   color: rgba(255,255,255,0.45);
-  transition: color 0.15s;
+  transition: color 0.15s ease;
 }
 
-.footer-nav a:hover {
-  color: rgba(255,255,255,0.8);
+.footer-col-links a:hover {
+  color: rgba(255,255,255,0.85);
+}
+
+.footer-bottom {
+  border-top: 1px solid var(--dark-border);
+  padding: 20px 0;
 }
 
 .footer-legal {
   font-size: 0.8125rem;
-  color: rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.25);
 }
 
 /* ── Prompt Builder — Intro Screen ───────────────────────── */
@@ -1925,14 +1951,8 @@ input, textarea {
   }
 
   .footer-inner {
-    flex-direction: column;
-    text-align: center;
-    gap: 20px;
-  }
-
-  .footer-nav {
-    flex-wrap: wrap;
-    justify-content: center;
+    grid-template-columns: 1fr 1fr;
+    gap: 36px;
   }
 
   .email-row {

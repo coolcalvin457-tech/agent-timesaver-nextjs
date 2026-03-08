@@ -20,7 +20,7 @@ export default function NavClient() {
           </a>
           <ul className="nav-links">
             <li><a href="/#timesaver">AGENT: Timesaver</a></li>
-            <li><a href="/blog">Blog</a></li>
+            <li><a href="/blog">Blogs</a></li>
             <li><a href="/guides">Guides</a></li>
             <li><a href="/community">Community</a></li>
             <li>

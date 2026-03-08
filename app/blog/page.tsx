@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import NavClient from "@/components/NavClient";
 
 export const metadata: Metadata = {
-  title: "Blog | promptaiagents.com",
+  title: "Blogs | promptaiagents.com",
   description:
-    "Practical AI skills for non-technical professionals. Real workflows, honest takes, and a clear path forward.",
+    "Practical AI skills for non-technical people. Real workflows, honest takes, and a clear path forward.",
   openGraph: {
-    title: "Blog — promptaiagents.com",
+    title: "Blogs | promptaiagents.com",
     description:
-      "Practical AI skills for non-technical professionals. Real workflows, honest takes, and a clear path forward.",
+      "Practical AI skills for non-technical people. Real workflows, honest takes, and a clear path forward.",
     url: "https://promptaiagents.com/blog",
     siteName: "promptaiagents.com",
     type: "website",
@@ -22,7 +22,7 @@ const posts = [
     category: "Non-Technical AI Skills",
     date: "March 8, 2026",
     excerpt:
-      "Most people open AI and type something vague. They get a generic result, close the tab, and wonder what all the fuss is about. Here's what actually works — and where it leads.",
+      "It's Monday morning. You open your inbox and there it is, REMINDER: Annual Reports Due Friday.",
   },
 ];
 
@@ -40,14 +40,8 @@ export default function BlogPage() {
         <div className="container-narrow">
           {/* Header */}
           <div style={{ paddingTop: "40px", marginBottom: "56px" }}>
-            <div
-              className="tool-tag"
-              style={{ marginBottom: "20px" }}
-            >
-              promptaiagents.com
-            </div>
             <h1 className="heading-1" style={{ marginBottom: "14px" }}>
-              Blog
+              Blogs
             </h1>
             <p
               className="body-lg"
@@ -56,7 +50,7 @@ export default function BlogPage() {
                 maxWidth: "480px",
               }}
             >
-              Practical AI skills for non-technical professionals. Real
+              Practical AI skills for non-technical people. Real
               workflows, no hype.
             </p>
           </div>

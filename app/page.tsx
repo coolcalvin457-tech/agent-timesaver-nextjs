@@ -28,18 +28,17 @@ export default function Home() {
         {/* ── Section 2: Dream / Aspiration ───────────────────────────── */}
         <section className="section section-dark" id="dream">
           <div className="container-narrow">
-            <div className="section-label section-label-light">What&apos;s possible</div>
+            <div className="section-label section-label-light">Take back your time.</div>
             <h2 className="heading-1" style={{ color: "#fff", marginBottom: "24px" }}>
-              Imagine getting back 10 hours a week. What would you do with them?
+              Imagine getting 5 to 10 hours back every week.
             </h2>
             <p className="dream-body">
-              Not because you worked harder. Because you stopped doing things AI
-              can do for you.{" "}
+              No more agonizing over emails, reports, meeting preps, follow-ups,
+              or to-do lists. You don&apos;t have to be technical to get there.
+              Just think about what you&apos;d do with all that extra time.{" "}
               <strong>
-                The drafts, the reports, the prep work, the summaries. All of it.
-              </strong>{" "}
-              The people who figure this out first don&apos;t become tech people.
-              They become the most capable version of what they already are.
+                Now you know what&apos;s possible. Let me show you where to begin.
+              </strong>
             </p>
           </div>
         </section>

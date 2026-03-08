@@ -15,16 +15,16 @@ export default function NavClient() {
     <nav className={`nav ${scrolled ? "scrolled" : ""}`}>
       <div className="container">
         <div className="nav-inner">
-          <a href="#home" className="nav-logo">
+          <a href="/" className="nav-logo">
             promptaiagents.com
           </a>
           <ul className="nav-links">
-            <li><a href="#timesaver">AGENT: Timesaver</a></li>
-            <li><a href="#content">Guides</a></li>
-            <li><a href="#content">Courses</a></li>
-            <li><a href="#content">Community</a></li>
+            <li><a href="/#timesaver">AGENT: Timesaver</a></li>
+            <li><a href="/blog">Blog</a></li>
+            <li><a href="/guides">Guides</a></li>
+            <li><a href="/#content">Community</a></li>
             <li>
-              <a href="#timesaver" className="nav-cta">
+              <a href="/#timesaver" className="nav-cta">
                 Get Free Workflows
               </a>
             </li>

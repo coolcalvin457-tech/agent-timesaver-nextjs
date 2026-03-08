@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { PromptKitResponse } from "@/app/api/prompt-kit/route";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -26,12 +26,24 @@ const CHALLENGES = [
   "I'm not sure which AI tool to use for what",
 ];
 
-type Screen = "intro" | "q1" | "q2" | "q3" | "q4" | "loading" | "results";
+const SESSION_KEY = "promptKit";
+
+type Screen = "intro" | "q1" | "q2" | "q3" | "q4" | "loading" | "paywall" | "results";
 const QUESTION_SCREENS: Screen[] = ["q1", "q2", "q3", "q4"];
 
+// ─── Props ─────────────────────────────────────────────────────────────────────
+interface Props {
+  paymentStatus?: string; // "success" | "cancelled" | undefined
+  sessionId?: string;
+}
+
 // ─── Component ────────────────────────────────────────────────────────────────
-export default function PromptBuilderTool() {
-  const [screen, setScreen] = useState<Screen>("intro");
+export default function PromptBuilderTool({ paymentStatus, sessionId }: Props) {
+  // If returning from Stripe, start on loading while we verify
+  const initialScreen: Screen =
+    paymentStatus === "success" && sessionId ? "loading" : "intro";
+
+  const [screen, setScreen] = useState<Screen>(initialScreen);
   const [jobTitle, setJobTitle] = useState("");
   const [workType, setWorkType] = useState("");
   const [aiUsage, setAiUsage] = useState("");
@@ -44,6 +56,77 @@ export default function PromptBuilderTool() {
   const [error, setError] = useState("");
   const [showWriteIn, setShowWriteIn] = useState(false);
   const [writeInValue, setWriteInValue] = useState("");
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [paymentError, setPaymentError] = useState("");
+
+  // ── Handle return from Stripe ───────────────────────────────────
+  useEffect(() => {
+    if (paymentStatus === "success" && sessionId) {
+      // Load the saved kit from sessionStorage
+      const stored =
+        typeof window !== "undefined"
+          ? sessionStorage.getItem(SESSION_KEY)
+          : null;
+
+      if (!stored) {
+        // Edge case: sessionStorage was cleared (e.g. different browser).
+        // Can't show results without the data — send back to start.
+        setScreen("intro");
+        return;
+      }
+
+      const savedKit = JSON.parse(stored) as {
+        kit: PromptKitResponse;
+        jobTitle: string;
+      };
+
+      // Verify payment server-side before showing results
+      fetch(`/api/verify-payment?session_id=${sessionId}`)
+        .then((r) => r.json())
+        .then((data) => {
+          if (data.verified) {
+            setPromptKit(savedKit.kit);
+            setJobTitle(savedKit.jobTitle);
+            // Clear stored kit now that we've consumed it
+            sessionStorage.removeItem(SESSION_KEY);
+            setScreen("results");
+          } else {
+            // Payment not confirmed — show paywall again
+            setPromptKit(savedKit.kit);
+            setJobTitle(savedKit.jobTitle);
+            setPaymentError("Payment could not be verified. Please try again.");
+            setScreen("paywall");
+          }
+        })
+        .catch(() => {
+          setPromptKit(savedKit.kit);
+          setJobTitle(savedKit.jobTitle);
+          setPaymentError("Something went wrong verifying your payment. Please try again.");
+          setScreen("paywall");
+        });
+
+      return;
+    }
+
+    if (paymentStatus === "cancelled") {
+      // User cancelled at Stripe — reload their kit and show paywall again
+      const stored =
+        typeof window !== "undefined"
+          ? sessionStorage.getItem(SESSION_KEY)
+          : null;
+      if (stored) {
+        const savedKit = JSON.parse(stored) as {
+          kit: PromptKitResponse;
+          jobTitle: string;
+        };
+        setPromptKit(savedKit.kit);
+        setJobTitle(savedKit.jobTitle);
+        setScreen("paywall");
+      } else {
+        setScreen("intro");
+      }
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Helpers ────────────────────────────────────────────────────
   const progressIndex = QUESTION_SCREENS.indexOf(screen);
@@ -73,18 +156,44 @@ export default function PromptBuilderTool() {
         }),
       });
       if (!res.ok) throw new Error("API error");
-      const data = await res.json();
+      const data: PromptKitResponse = await res.json();
       setPromptKit(data);
 
-      // TODO: Insert Stripe paywall here between loading and results.
-      // When Stripe is ready:
-      //   1. Set screen to "paywall" (show blurred preview + $4.99 CTA)
-      //   2. On successful payment, verify webhook and set screen to "results"
-      // For now, skip directly to results.
-      setScreen("results");
+      // Save kit to sessionStorage so it survives the Stripe redirect
+      if (typeof window !== "undefined") {
+        sessionStorage.setItem(
+          SESSION_KEY,
+          JSON.stringify({ kit: data, jobTitle })
+        );
+      }
+
+      // Show paywall before revealing results
+      setScreen("paywall");
     } catch {
       setError("Something went wrong. Please try again.");
       setScreen("q4");
+    }
+  };
+
+  const handleCheckout = async () => {
+    setCheckoutLoading(true);
+    setPaymentError("");
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jobTitle }),
+      });
+      if (!res.ok) throw new Error("Checkout API error");
+      const { url } = await res.json();
+      if (url) {
+        window.location.href = url;
+      } else {
+        throw new Error("No checkout URL returned");
+      }
+    } catch {
+      setPaymentError("Something went wrong. Please try again.");
+      setCheckoutLoading(false);
     }
   };
 
@@ -441,6 +550,98 @@ export default function PromptBuilderTool() {
           <p className="loading-subline">
             Personalizing 12 prompts for {jobTitle || "your role"}
           </p>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Screen: Paywall ────────────────────────────────────────────
+  if (screen === "paywall" && promptKit) {
+    // Show a blurred preview of the first 2 prompt cards as a teaser
+    const previewPrompts = promptKit.categories[0]?.prompts.slice(0, 2) ?? [];
+
+    return (
+      <div className="tool-container">
+        <div className="screen">
+          <p className="results-tag">Your Prompt Kit is ready.</p>
+          <h2 className="results-headline">
+            12 AI prompts built for {jobTitle}.
+          </h2>
+
+          {/* Blurred preview with overlay */}
+          <div className="pb-paywall-preview">
+            <div className="pb-paywall-blur" aria-hidden="true">
+              {previewPrompts.map((prompt, i) => (
+                <div key={i} className="pb-prompt-card">
+                  <p className="pb-prompt-title">{prompt.title}</p>
+                  <div className="pb-prompt-text-wrapper">
+                    <p className="pb-prompt-text">{prompt.prompt}</p>
+                  </div>
+                  <p className="pb-prompt-why">{prompt.why}</p>
+                </div>
+              ))}
+              {/* Extra filler card so blur looks full */}
+              <div className="pb-prompt-card" style={{ opacity: 0.5 }}>
+                <p className="pb-prompt-title">
+                  {promptKit.categories[1]?.prompts[0]?.title ?? "More prompts below..."}
+                </p>
+                <div className="pb-prompt-text-wrapper">
+                  <p className="pb-prompt-text">
+                    {promptKit.categories[1]?.prompts[0]?.prompt ?? ""}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Gradient overlay + CTA */}
+            <div className="pb-paywall-overlay">
+              <div className="pb-paywall-cta">
+                <p className="pb-lock-icon">🔒</p>
+                <p className="pb-paywall-headline">Unlock your full Prompt Kit</p>
+                <p className="pb-paywall-subline">
+                  Your 12 personalized prompts are ready — one payment and
+                  they&apos;re yours forever.
+                </p>
+
+                <div className="pb-perks" style={{ marginBottom: "20px" }}>
+                  {[
+                    `12 prompts built for ${jobTitle}`,
+                    "AI Profile paragraph — paste once, every chat gets better",
+                    "Build Your AI System guide",
+                    "Emailed to you so you always have it",
+                  ].map((perk) => (
+                    <div key={perk} className="pb-perk">
+                      <span className="perk-check">✓</span>
+                      <span>{perk}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="pb-price-row" style={{ justifyContent: "center", marginBottom: "16px" }}>
+                  <span className="pb-price">$4.99</span>
+                  <span className="pb-price-note">One time · No subscription</span>
+                </div>
+
+                <button
+                  className="btn btn-primary btn-full btn-lg"
+                  onClick={handleCheckout}
+                  disabled={checkoutLoading}
+                >
+                  {checkoutLoading ? "Redirecting to checkout..." : "Unlock My Prompt Kit →"}
+                </button>
+
+                {paymentError && (
+                  <p style={{ color: "#e05c5c", marginTop: "12px", fontSize: "0.875rem", textAlign: "center" }}>
+                    {paymentError}
+                  </p>
+                )}
+
+                <p style={{ marginTop: "12px", fontSize: "0.8125rem", color: "var(--text-muted)", textAlign: "center" }}>
+                  Secure checkout via Stripe
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );

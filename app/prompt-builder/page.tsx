@@ -7,7 +7,12 @@ export const metadata = {
     "Get 12 ready-to-copy AI prompts personalized to your exact job. Built for non-technical professionals who want real results from AI.",
 };
 
-export default function PromptBuilderPage() {
+// searchParams carries ?payment=success&session_id=xxx after Stripe redirect
+export default function PromptBuilderPage({
+  searchParams,
+}: {
+  searchParams: { payment?: string; session_id?: string };
+}) {
   return (
     <>
       <NavClient />
@@ -19,7 +24,10 @@ export default function PromptBuilderPage() {
           <div className="container">
             <div className="section-label">AGENT: Prompt Builder</div>
             <div style={{ maxWidth: "600px", margin: "0 auto" }}>
-              <PromptBuilderTool />
+              <PromptBuilderTool
+                paymentStatus={searchParams.payment}
+                sessionId={searchParams.session_id}
+              />
             </div>
           </div>
         </section>

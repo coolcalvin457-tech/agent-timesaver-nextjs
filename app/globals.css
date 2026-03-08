@@ -1786,6 +1786,69 @@ input, textarea {
   font-weight: 600;
 }
 
+/* ── Paywall Screen ───────────────────────────────────────── */
+
+/* Wrapper — positions blur layer and overlay together */
+.pb-paywall-preview {
+  position: relative;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  margin: 24px 0 0;
+  /* Min height so overlay has room even if preview content is short */
+  min-height: 420px;
+}
+
+/* The actual prompt cards — blurred and non-interactive */
+.pb-paywall-blur {
+  filter: blur(5px);
+  user-select: none;
+  pointer-events: none;
+  padding: 4px 0;
+}
+
+/* Gradient overlay — fades from transparent at top to near-opaque at bottom */
+.pb-paywall-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(14, 14, 16, 0.05) 0%,
+    rgba(14, 14, 16, 0.55) 30%,
+    rgba(14, 14, 16, 0.97) 55%,
+    rgba(14, 14, 16, 1) 100%
+  );
+  display: flex;
+  align-items: flex-end;
+  padding: 28px 24px 32px;
+}
+
+/* CTA box sitting on top of the overlay */
+.pb-paywall-cta {
+  width: 100%;
+  text-align: center;
+}
+
+.pb-lock-icon {
+  font-size: 1.75rem;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.pb-paywall-headline {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+
+.pb-paywall-subline {
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
 /* ── Responsive ───────────────────────────────────────────── */
 @media (max-width: 768px) {
   .screen {

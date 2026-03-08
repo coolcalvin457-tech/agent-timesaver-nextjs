@@ -280,46 +280,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── Section 7: Lead Magnet CTA ───────────────────────────────── */}
-        <section className="section section-brand" id="get-started">
-          <div className="container">
-            <div className="cta-section-inner">
-              <div className="section-label section-label-brand">Start here</div>
-              <h2
-                className="heading-1"
-                style={{ color: "#fff", marginBottom: "16px" }}
-              >
-                It&apos;s free. It&apos;s fast. It&apos;s built for your exact
-                job.
-              </h2>
-              <p
-                className="body-lg"
-                style={{
-                  color: "rgba(255,255,255,0.7)",
-                  marginBottom: "32px",
-                  maxWidth: "480px",
-                }}
-              >
-                AGENT: Timesaver takes under 5 minutes. You&apos;ll walk away
-                with 5 AI workflows personalized to your role and a clear
-                picture of the time you could reclaim every week.
-              </p>
-              <a href="#timesaver" className="btn btn-dark btn-lg">
-                Get My Free Workflows →
-              </a>
-              <p
-                style={{
-                  marginTop: "16px",
-                  fontSize: "0.875rem",
-                  color: "rgba(255,255,255,0.5)",
-                }}
-              >
-                No account required. No credit card. Just useful.
-              </p>
-            </div>
-          </div>
-        </section>
-
         {/* ── Section 8: Content Preview ───────────────────────────────── */}
         <section className="section section-dark" id="content">
           <div className="container">

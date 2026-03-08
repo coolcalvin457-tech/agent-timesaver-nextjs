@@ -46,12 +46,12 @@ export default function Home() {
         {/* ── Section 3: AGENT: Timesaver ─────────────────────────────── */}
         <section className="section section-alt" id="timesaver">
           <div className="container">
-            <div className="section-label">AGENT: Timesaver</div>
+            <div className="section-label">Free tool</div>
             <h2
               className="heading-1"
               style={{ marginBottom: "12px", maxWidth: "520px" }}
             >
-              See exactly how AI fits into your job.
+              See exactly how AI fits in your job.
             </h2>
             <p
               className="body-lg"
@@ -62,8 +62,8 @@ export default function Home() {
               }}
             >
               Enter your job title. Answer a few questions. Walk away with 5
-              workflows built for your specific role and a real estimate of the
-              time you could get back.
+              workflows built for your specific role and a real estimate of how
+              much time you could save.
             </p>
 
             {/* Browser chrome wrapper */}

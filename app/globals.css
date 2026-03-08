@@ -2082,3 +2082,88 @@ input, textarea {
     padding: 36px 24px;
   }
 }
+
+
+/* ── AGENT: Prompt Builder Section ───────────────────────── */
+
+.prompt-builder-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+
+.price-badge {
+  display: inline-block;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--cta);
+  background: rgba(30, 122, 184, 0.1);
+  border: 1px solid rgba(30, 122, 184, 0.2);
+  padding: 5px 12px;
+  border-radius: 100px;
+}
+
+.kit-preview-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 36px;
+  box-shadow: var(--shadow-card);
+}
+
+.kit-preview-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.kit-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.kit-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.kit-item-check {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(30, 122, 184, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+  font-size: 0.625rem;
+  color: var(--cta);
+  font-weight: 800;
+}
+
+.kit-item-text {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.kit-item-text strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .prompt-builder-layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}

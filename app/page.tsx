@@ -80,7 +80,94 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── Section 4: The Guide ─────────────────────────────────────── */}
+        {/* ── Section 4: AGENT: Prompt Builder ────────────────────────── */}
+        <section className="section" id="prompt-builder">
+          <div className="container">
+            <div className="section-label">AGENT: Prompt Builder</div>
+            <div className="prompt-builder-layout">
+
+              {/* Left: copy */}
+              <div>
+                <div style={{ marginBottom: "20px" }}>
+                  <span className="price-badge">$4.99 · one-time</span>
+                </div>
+                <h2
+                  className="heading-1"
+                  style={{ marginBottom: "16px", maxWidth: "440px" }}
+                >
+                  12 prompts built for your exact job. Ready to copy.
+                </h2>
+                <p
+                  className="body-lg"
+                  style={{
+                    color: "var(--text-secondary)",
+                    maxWidth: "420px",
+                    marginBottom: "32px",
+                  }}
+                >
+                  Answer 4 questions about how you work. Walk away with a
+                  complete AI Prompt Kit — 12 ready-to-use prompts, a
+                  personal AI Profile, and a step-by-step guide to building
+                  your AI system.
+                </p>
+                <a href="/prompt-builder" className="btn btn-primary btn-lg">
+                  Build My Prompt Kit →
+                </a>
+                <p
+                  style={{
+                    marginTop: "14px",
+                    fontSize: "0.875rem",
+                    color: "var(--text-muted)",
+                  }}
+                >
+                  One-time payment. No subscription. Yours to keep.
+                </p>
+              </div>
+
+              {/* Right: kit preview card */}
+              <div className="kit-preview-card">
+                <div className="kit-preview-label">What&apos;s in your kit</div>
+
+                <div className="kit-item">
+                  <div className="kit-item-check">✓</div>
+                  <div className="kit-item-text">
+                    <strong>12 personalized prompts</strong> across 4 work
+                    categories — built around your role, not a generic template
+                  </div>
+                </div>
+
+                <div className="kit-item">
+                  <div className="kit-item-check">✓</div>
+                  <div className="kit-item-text">
+                    <strong>Your AI Profile paragraph</strong> — drop it into
+                    ChatGPT, Claude, or Gemini so every conversation starts
+                    with context
+                  </div>
+                </div>
+
+                <div className="kit-item">
+                  <div className="kit-item-check">✓</div>
+                  <div className="kit-item-text">
+                    <strong>Build Your AI System guide</strong> — folder
+                    structure, tool recommendations, and exactly where to
+                    put everything
+                  </div>
+                </div>
+
+                <div className="kit-item">
+                  <div className="kit-item-check">✓</div>
+                  <div className="kit-item-text">
+                    <strong>One-click copy buttons</strong> on every prompt —
+                    paste directly into any AI tool, no reformatting needed
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        {/* ── Section 5: The Guide ─────────────────────────────────────── */}
         <section className="section" id="about">
           <div className="container">
             <div className="section-label">Your guide</div>
@@ -336,9 +423,10 @@ export default function Home() {
               <ul className="footer-nav">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#timesaver">AGENT: Timesaver</a></li>
-                <li><a href="#content">Guides</a></li>
-                <li><a href="#content">Courses</a></li>
-                <li><a href="#content">Community</a></li>
+                <li><a href="#prompt-builder">AGENT: Prompt Builder</a></li>
+                <li><a href="/blog">Blogs</a></li>
+                <li><a href="/guides">Guides</a></li>
+                <li><a href="/community">Community</a></li>
               </ul>
             </nav>
 

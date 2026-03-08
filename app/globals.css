@@ -1492,6 +1492,137 @@ input, textarea {
   color: rgba(255,255,255,0.3);
 }
 
+/* ── Prompt Builder — Intro Screen ───────────────────────── */
+.pb-perks {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.pb-perk {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.9375rem;
+  color: var(--text-primary);
+  line-height: 1.45;
+}
+
+.pb-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.pb-price {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+}
+
+.pb-price-note {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* ── Prompt Builder — Results Screen ─────────────────────── */
+.pb-category {
+  margin-bottom: 32px;
+}
+
+.pb-category-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brand);
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.pb-category-num {
+  color: var(--text-muted);
+  margin-right: 2px;
+}
+
+.pb-prompt-card {
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 20px 24px;
+  margin-bottom: 10px;
+  transition: border-color 0.15s;
+}
+
+.pb-prompt-card:hover {
+  border-color: rgba(30, 122, 184, 0.25);
+}
+
+.pb-prompt-title {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+
+.pb-prompt-text-wrapper {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-input);
+  padding: 14px 16px;
+  margin-bottom: 10px;
+}
+
+.pb-prompt-text {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  padding-right: 64px;
+}
+
+.pb-copy-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 5px 12px;
+  background: var(--dark);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  font-family: var(--font-sans);
+  white-space: nowrap;
+}
+
+.pb-copy-btn:hover {
+  background: #2A2A2C;
+}
+
+.pb-copy-btn.copied {
+  background: var(--success);
+}
+
+.pb-prompt-why {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  font-style: italic;
+  line-height: 1.5;
+}
+
 /* ── Responsive ───────────────────────────────────────────── */
 @media (max-width: 768px) {
   .screen {

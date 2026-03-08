@@ -42,9 +42,21 @@ export default function PromptBuilderTool() {
   const [emailLoading, setEmailLoading] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [error, setError] = useState("");
+  const [showWriteIn, setShowWriteIn] = useState(false);
+  const [writeInValue, setWriteInValue] = useState("");
 
   // ── Helpers ────────────────────────────────────────────────────
   const progressIndex = QUESTION_SCREENS.indexOf(screen);
+
+  const resetWriteIn = () => {
+    setShowWriteIn(false);
+    setWriteInValue("");
+  };
+
+  const toggleWriteIn = () => {
+    setShowWriteIn((prev) => !prev);
+    setWriteInValue("");
+  };
 
   const handleGenerate = async (finalChallenge: string) => {
     setScreen("loading");
@@ -205,6 +217,13 @@ export default function PromptBuilderTool() {
 
   // ── Screen: Q2 — Work Type ─────────────────────────────────────
   if (screen === "q2") {
+    const canAdvanceQ2 = showWriteIn ? writeInValue.trim().length > 0 : workType !== "";
+    const advanceQ2 = (value: string) => {
+      setWorkType(value);
+      resetWriteIn();
+      setScreen("q3");
+    };
+
     return (
       <div className="tool-container">
         <div className="screen">
@@ -219,10 +238,11 @@ export default function PromptBuilderTool() {
             {WORK_TYPES.map((option) => (
               <button
                 key={option}
-                className={`choice ${workType === option ? "selected" : ""}`}
+                className={`choice ${workType === option && !showWriteIn ? "selected" : ""}`}
                 onClick={() => {
+                  resetWriteIn();
                   setWorkType(option);
-                  setTimeout(() => setScreen("q3"), 180);
+                  setTimeout(() => advanceQ2(option), 180);
                 }}
               >
                 <span className="choice-dot" />
@@ -230,6 +250,33 @@ export default function PromptBuilderTool() {
               </button>
             ))}
           </div>
+          {showWriteIn ? (
+            <>
+              <input
+                type="text"
+                className="input"
+                style={{ marginBottom: "12px" }}
+                placeholder="Describe your work in a few words..."
+                value={writeInValue}
+                onChange={(e) => setWriteInValue(e.target.value)}
+                onKeyDown={(e) =>
+                  e.key === "Enter" && writeInValue.trim() && advanceQ2(writeInValue.trim())
+                }
+                autoFocus
+              />
+              <button
+                className="btn btn-primary btn-full"
+                onClick={() => advanceQ2(writeInValue.trim())}
+                disabled={!canAdvanceQ2}
+              >
+                Next →
+              </button>
+            </>
+          ) : (
+            <button className="write-in-toggle" onClick={toggleWriteIn} type="button">
+              <span>+</span> Something else? Write it in.
+            </button>
+          )}
         </div>
       </div>
     );
@@ -237,6 +284,13 @@ export default function PromptBuilderTool() {
 
   // ── Screen: Q3 — AI Usage ──────────────────────────────────────
   if (screen === "q3") {
+    const canAdvanceQ3 = showWriteIn ? writeInValue.trim().length > 0 : aiUsage !== "";
+    const advanceQ3 = (value: string) => {
+      setAiUsage(value);
+      resetWriteIn();
+      setScreen("q4");
+    };
+
     return (
       <div className="tool-container">
         <div className="screen">
@@ -253,10 +307,11 @@ export default function PromptBuilderTool() {
             {AI_USAGE_OPTIONS.map((option) => (
               <button
                 key={option}
-                className={`choice ${aiUsage === option ? "selected" : ""}`}
+                className={`choice ${aiUsage === option && !showWriteIn ? "selected" : ""}`}
                 onClick={() => {
+                  resetWriteIn();
                   setAiUsage(option);
-                  setTimeout(() => setScreen("q4"), 180);
+                  setTimeout(() => advanceQ3(option), 180);
                 }}
               >
                 <span className="choice-dot" />
@@ -264,6 +319,33 @@ export default function PromptBuilderTool() {
               </button>
             ))}
           </div>
+          {showWriteIn ? (
+            <>
+              <input
+                type="text"
+                className="input"
+                style={{ marginBottom: "12px" }}
+                placeholder="Describe your current AI usage..."
+                value={writeInValue}
+                onChange={(e) => setWriteInValue(e.target.value)}
+                onKeyDown={(e) =>
+                  e.key === "Enter" && writeInValue.trim() && advanceQ3(writeInValue.trim())
+                }
+                autoFocus
+              />
+              <button
+                className="btn btn-primary btn-full"
+                onClick={() => advanceQ3(writeInValue.trim())}
+                disabled={!canAdvanceQ3}
+              >
+                Next →
+              </button>
+            </>
+          ) : (
+            <button className="write-in-toggle" onClick={toggleWriteIn} type="button">
+              <span>+</span> Something else? Write it in.
+            </button>
+          )}
         </div>
       </div>
     );
@@ -271,6 +353,13 @@ export default function PromptBuilderTool() {
 
   // ── Screen: Q4 — Biggest Challenge ────────────────────────────
   if (screen === "q4") {
+    const canAdvanceQ4 = showWriteIn ? writeInValue.trim().length > 0 : challenge !== "";
+    const advanceQ4 = (value: string) => {
+      setChallenge(value);
+      resetWriteIn();
+      handleGenerate(value);
+    };
+
     return (
       <div className="tool-container">
         <div className="screen">
@@ -298,10 +387,11 @@ export default function PromptBuilderTool() {
             {CHALLENGES.map((option) => (
               <button
                 key={option}
-                className={`choice ${challenge === option ? "selected" : ""}`}
+                className={`choice ${challenge === option && !showWriteIn ? "selected" : ""}`}
                 onClick={() => {
+                  resetWriteIn();
                   setChallenge(option);
-                  setTimeout(() => handleGenerate(option), 180);
+                  setTimeout(() => advanceQ4(option), 180);
                 }}
               >
                 <span className="choice-dot" />
@@ -309,6 +399,33 @@ export default function PromptBuilderTool() {
               </button>
             ))}
           </div>
+          {showWriteIn ? (
+            <>
+              <input
+                type="text"
+                className="input"
+                style={{ marginBottom: "12px" }}
+                placeholder="Describe your biggest challenge with AI..."
+                value={writeInValue}
+                onChange={(e) => setWriteInValue(e.target.value)}
+                onKeyDown={(e) =>
+                  e.key === "Enter" && writeInValue.trim() && advanceQ4(writeInValue.trim())
+                }
+                autoFocus
+              />
+              <button
+                className="btn btn-primary btn-full"
+                onClick={() => advanceQ4(writeInValue.trim())}
+                disabled={!canAdvanceQ4}
+              >
+                Build My Prompt Kit →
+              </button>
+            </>
+          ) : (
+            <button className="write-in-toggle" onClick={toggleWriteIn} type="button">
+              <span>+</span> Something else? Write it in.
+            </button>
+          )}
         </div>
       </div>
     );

@@ -220,7 +220,7 @@ input, textarea {
 }
 
 .nav-cta {
-  background: var(--cta);
+  background: linear-gradient(180deg, #2C97DD 0%, #1562A0 100%);
   color: #fff !important;
   padding: 9px 20px;
   border-radius: var(--radius-btn);
@@ -230,7 +230,7 @@ input, textarea {
 }
 
 .nav-cta:hover {
-  background: var(--cta-hover) !important;
+  background: linear-gradient(180deg, #258ACC 0%, #104E8A 100%) !important;
   transform: translateY(-1px);
 }
 
@@ -260,13 +260,13 @@ input, textarea {
 }
 
 .btn-primary {
-  background: var(--cta);
+  background: linear-gradient(180deg, #2C97DD 0%, #1562A0 100%);
   color: #fff;
 }
 
 .btn-primary:hover {
-  background: var(--cta-hover);
-  box-shadow: 0 4px 16px rgba(30,122,184,0.3);
+  background: linear-gradient(180deg, #258ACC 0%, #104E8A 100%);
+  box-shadow: 0 4px 16px rgba(30,122,184,0.35);
 }
 
 .btn-dark {
@@ -434,7 +434,6 @@ input, textarea {
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.08em;
-  text-transform: uppercase;
   color: var(--brand);
   margin-bottom: 24px;
 }
@@ -1105,7 +1104,7 @@ input, textarea {
 }
 
 .section-dark {
-  background: var(--dark);
+  background: linear-gradient(180deg, #1A1B22 0%, #0E0E10 100%);
   color: #fff;
 }
 

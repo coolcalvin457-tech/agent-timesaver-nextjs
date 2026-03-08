@@ -58,6 +58,8 @@ export default function TimesaverTool() {
   const [isDragOver, setIsDragOver] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [emailSending, setEmailSending] = useState(false);
+  const [emailError, setEmailError] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -231,18 +233,56 @@ export default function TimesaverTool() {
     }
   };
 
-  const handleEmailSave = (e: React.FormEvent) => {
+  const handleEmailSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!emailInput.trim()) return;
-    // In production, this would call your email service
-    // For now, mark as saved and skip to confirm
-    setState((s) => ({ ...s, emailSaved: true }));
-    go("confirm");
+
+    setEmailSending(true);
+    setEmailError(null);
+
+    try {
+      const res = await fetch("/api/email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: emailInput.trim(),
+          jobTitle: state.jobTitle,
+          workflows: state.workflows,
+          roi: state.roi,
+        }),
+      });
+
+      if (!res.ok) throw new Error("Failed to send email");
+
+      setState((s) => ({ ...s, emailSaved: true }));
+      go("confirm");
+    } catch {
+      setEmailError("Something went wrong. Please try again.");
+    } finally {
+      setEmailSending(false);
+    }
   };
 
-  const handleGateEmail = (e: React.FormEvent) => {
+  const handleGateEmail = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!emailGateInput.trim()) return;
+
+    // Best-effort: add to list, don't block on failure
+    try {
+      await fetch("/api/email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: emailGateInput.trim(),
+          jobTitle: state.jobTitle,
+          workflows: state.workflows,
+          roi: state.roi,
+        }),
+      });
+    } catch {
+      // Silently continue — gate submission shouldn't block the user
+    }
+
     go("confirm");
   };
 
@@ -289,7 +329,7 @@ export default function TimesaverTool() {
             className="btn btn-primary btn-full"
             onClick={() => go("jobTitle")}
           >
-            View Results →
+            Get Started →
           </button>
         </div>
       )}
@@ -620,11 +660,25 @@ export default function TimesaverTool() {
                     value={emailInput}
                     onChange={(e) => setEmailInput(e.target.value)}
                     required
+                    disabled={emailSending}
                   />
-                  <button className="btn btn-primary" type="submit">
-                    Email Me My Results →
+                  <button
+                    className="btn btn-primary"
+                    type="submit"
+                    disabled={emailSending}
+                  >
+                    {emailSending ? "Sending..." : "Email Me My Results →"}
                   </button>
                 </div>
+                {emailError && (
+                  <div style={{
+                    marginTop: "8px",
+                    fontSize: "0.875rem",
+                    color: "#c0392b",
+                  }}>
+                    {emailError}
+                  </div>
+                )}
                 <div className="trust-line">No spam. Just your results.</div>
               </form>
             </div>

@@ -18,7 +18,10 @@ export const metadata: Metadata = {
 const posts = [
   {
     slug: "how-to-start-using-ai-at-work",
-    title: "How to Actually Start Using AI at Work (And Build Your Own Agent)",
+    titleLines: [
+      "How to Actually Start Using AI at Work and",
+      "Build Your Own Agent",
+    ],
     category: "Non-Technical AI Skills",
     date: "March 8, 2026",
     excerptLines: [
@@ -86,7 +89,7 @@ export default function BlogPage() {
                   className="heading-2"
                   style={{ marginBottom: "12px", color: "var(--text-primary)" }}
                 >
-                  {post.title}
+                  {post.titleLines[0]}<br />{post.titleLines[1]}
                 </h2>
                 <p
                   className="body"

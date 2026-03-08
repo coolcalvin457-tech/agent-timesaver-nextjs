@@ -3,12 +3,12 @@ import NavClient from "@/components/NavClient";
 
 export const metadata: Metadata = {
   title:
-    "How to Actually Start Using AI at Work (And Build Your Own Agent) | promptaiagents.com",
+    "How to Actually Start Using AI at Work and Build Your Own Agent | promptaiagents.com",
   description:
     "Most people use AI wrong — and they know it. Here's the shift that changes everything: build prompts from your actual work, not someone else's template.",
   openGraph: {
     title:
-      "How to Actually Start Using AI at Work (And Build Your Own Agent)",
+      "How to Actually Start Using AI at Work and Build Your Own Agent",
     description:
       "Most people use AI wrong — and they know it. Here's the shift that changes everything.",
     url: "https://promptaiagents.com/blog/how-to-start-using-ai-at-work",
@@ -73,7 +73,7 @@ export default function PostPage() {
                 lineHeight: 1.1,
               }}
             >
-              How to Actually Start Using AI at Work (And Build Your Own Agent)
+              How to Actually Start Using AI at Work and<br />Build Your Own Agent
             </h1>
           </div>
 

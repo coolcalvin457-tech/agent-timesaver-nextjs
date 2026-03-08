@@ -2,6 +2,11 @@
 
 import { useState, useRef, useCallback } from "react";
 import { track } from "@vercel/analytics";
+
+// ── Update these URLs when your community and guides are live ──────────────
+const COMMUNITY_URL = "https://www.skool.com"; // TODO: replace with your Skool community link
+const GUIDES_URL = "/guides";
+// ──────────────────────────────────────────────────────────────────────────
 import type { Question } from "@/app/api/questions/route";
 import type { Workflow, ROI } from "@/app/api/workflows/route";
 
@@ -799,11 +804,11 @@ export default function TimesaverTool() {
           </p>
 
           <div className="next-steps">
-            <a href="#community" className="next-step">
+            <div className="next-step next-step-disabled">
               <span className="step-num">1</span>
-              Join the community and share your results
-            </a>
-            <a href="#guides" className="next-step">
+              Community — coming soon
+            </div>
+            <a href={GUIDES_URL} className="next-step">
               <span className="step-num">2</span>
               Browse the hub and start with our beginner AI guide
             </a>
@@ -834,10 +839,7 @@ export default function TimesaverTool() {
           </div>
 
           <div className="confirm-cta-group">
-            <a href="#community" className="btn btn-primary btn-full">
-              Join the Community →
-            </a>
-            <a href="#guides" className="btn btn-outline btn-full">
+            <a href={GUIDES_URL} className="btn btn-primary btn-full">
               Browse the Hub →
             </a>
           </div>

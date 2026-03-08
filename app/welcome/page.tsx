@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
 
+// ── Update these URLs when your community and guides are live ──────────────
+const COMMUNITY_URL = "https://www.skool.com"; // TODO: replace with your Skool community link
+const GUIDES_URL = "/guides";
+// ──────────────────────────────────────────────────────────────────────────
+
 export const metadata: Metadata = {
   title: "You're in — AGENT: Timesaver | promptaiagents.com",
   description:
@@ -55,28 +60,32 @@ export default function WelcomePage() {
           }}
         >
           {[
-            { num: 1, label: "Join the community and share your results", href: "#community" },
-            { num: 2, label: "Browse the hub and start with our beginner AI guide", href: "/" },
+            { num: 1, label: "Community — coming soon", href: null },
+            { num: 2, label: "Browse the hub and start with our beginner AI guide", href: GUIDES_URL },
             { num: 3, label: "Try another AGENT tool when you're ready", href: "/" },
-          ].map((step) => (
-            <a
-              key={step.num}
-              href={step.href}
-              className="next-step"
-              style={{ textDecoration: "none" }}
-            >
-              <span className="step-num">{step.num}</span>
-              {step.label}
-            </a>
-          ))}
+          ].map((step) =>
+            step.href ? (
+              <a
+                key={step.num}
+                href={step.href}
+                className="next-step"
+                style={{ textDecoration: "none" }}
+              >
+                <span className="step-num">{step.num}</span>
+                {step.label}
+              </a>
+            ) : (
+              <div key={step.num} className="next-step next-step-disabled">
+                <span className="step-num">{step.num}</span>
+                {step.label}
+              </div>
+            )
+          )}
         </div>
 
         {/* CTAs */}
         <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-          <a href="#community" className="btn btn-primary btn-full">
-            Join the Community →
-          </a>
-          <a href="/" className="btn btn-outline btn-full">
+          <a href={GUIDES_URL} className="btn btn-primary btn-full">
             Browse the Hub →
           </a>
         </div>

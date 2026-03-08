@@ -1133,6 +1133,12 @@ input, textarea {
   box-shadow: var(--shadow-focus);
 }
 
+.next-step-disabled {
+  opacity: 0.45;
+  cursor: default;
+  pointer-events: none;
+}
+
 .step-num {
   width: 24px;
   height: 24px;

@@ -205,32 +205,32 @@ export default function Home() {
               className="heading-1"
               style={{ marginBottom: "48px", maxWidth: "480px" }}
             >
-              Three things change when you learn this.
+              3 things change when you start.
             </h2>
 
             <div className="outcomes-grid">
               <div className="outcome-card">
                 <div className="outcome-label">Clarity</div>
-                <div className="outcome-headline">You know exactly which tools are worth your time.</div>
+                <div className="outcome-headline">Choose the right tools.</div>
                 <p className="outcome-body">
-                  You know exactly which AI tools are worth your time and which
-                  ones aren&apos;t. No more experimenting in the dark.
+                  You&apos;ll know exactly which AI tools are worth your time
+                  and which ones aren&apos;t. No more experimenting in the dark.
                 </p>
               </div>
               <div className="outcome-card">
                 <div className="outcome-label">Capability</div>
                 <div className="outcome-headline">Workflows built for your actual job.</div>
                 <p className="outcome-body">
-                  You have workflows that fit your actual job. Not generic tips
-                  from a blog post. Real processes you can use tomorrow.
+                  You&apos;ll gain real processes that you can try today. No
+                  more generic advice that still keeps you guessing.
                 </p>
               </div>
               <div className="outcome-card">
                 <div className="outcome-label">Confidence</div>
-                <div className="outcome-headline">You stop feeling behind.</div>
+                <div className="outcome-headline">Stop feeling behind.</div>
                 <p className="outcome-body">
-                  You stop feeling behind. You start feeling like the most
-                  capable person in the room.
+                  You&apos;ll start feeling and acting like the most capable
+                  person in the room.
                 </p>
               </div>
             </div>

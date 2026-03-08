@@ -88,7 +88,7 @@ export default function Home() {
               {/* Left: copy */}
               <div>
                 <div style={{ marginBottom: "20px" }}>
-                  <span className="price-badge">$4.99 · one-time</span>
+                  <span className="price-badge">$4.99 · one-time purchase</span>
                 </div>
                 <h2
                   className="heading-1"
@@ -105,12 +105,12 @@ export default function Home() {
                   }}
                 >
                   Answer 4 questions about how you work. Walk away with a
-                  complete AI Prompt Kit — 12 ready-to-use prompts, a
-                  personal AI Profile, and a step-by-step guide to building
-                  your AI system.
+                  complete AI Prompt Kit: 12 ready-to-use prompts, a personal
+                  AI Profile, and a step-by-step guide to building your AI
+                  system.
                 </p>
                 <a href="/prompt-builder" className="btn btn-primary btn-lg">
-                  Build My Prompt Kit →
+                  Get Started →
                 </a>
                 <p
                   style={{
@@ -131,33 +131,33 @@ export default function Home() {
                   <div className="kit-item-check">✓</div>
                   <div className="kit-item-text">
                     <strong>12 personalized prompts</strong> across 4 work
-                    categories — built around your role, not a generic template
+                    categories. Built around your role, not a generic template.
                   </div>
                 </div>
 
                 <div className="kit-item">
                   <div className="kit-item-check">✓</div>
                   <div className="kit-item-text">
-                    <strong>Your AI Profile paragraph</strong> — drop it into
-                    ChatGPT, Claude, or Gemini so every conversation starts
-                    with context
+                    <strong>Your AI Profile paragraph.</strong> Paste it into
+                    ChatGPT, Claude, or Gemini and every conversation starts
+                    with your full context.
                   </div>
                 </div>
 
                 <div className="kit-item">
                   <div className="kit-item-check">✓</div>
                   <div className="kit-item-text">
-                    <strong>Build Your AI System guide</strong> — folder
+                    <strong>Build Your AI System guide.</strong> Folder
                     structure, tool recommendations, and exactly where to
-                    put everything
+                    put everything.
                   </div>
                 </div>
 
                 <div className="kit-item">
                   <div className="kit-item-check">✓</div>
                   <div className="kit-item-text">
-                    <strong>One-click copy buttons</strong> on every prompt —
-                    paste directly into any AI tool, no reformatting needed
+                    <strong>One-click copy buttons</strong> on every prompt.
+                    Paste directly into any AI tool, no reformatting needed.
                   </div>
                 </div>
               </div>

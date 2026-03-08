@@ -21,8 +21,10 @@ const posts = [
     title: "How to Actually Start Using AI at Work (And Build Your Own Agent)",
     category: "Non-Technical AI Skills",
     date: "March 8, 2026",
-    excerpt:
-      "Here's a secret: those prompts were designed to stop the scroll, not actually help you out.",
+    excerptLines: [
+      "Here's a secret: those prompts were designed to stop the scroll,",
+      "not actually help you out.",
+    ],
   },
 ];
 
@@ -50,8 +52,8 @@ export default function BlogPage() {
                 maxWidth: "480px",
               }}
             >
-              Practical AI skills for non-technical people. Real
-              workflows, no hype.
+              Practical AI skills for non-technical people.<br />
+              Real workflows, no hype.
             </p>
           </div>
 
@@ -94,7 +96,7 @@ export default function BlogPage() {
                     lineHeight: 1.7,
                   }}
                 >
-                  {post.excerpt}
+                  {post.excerptLines[0]}<br />{post.excerptLines[1]}
                 </p>
                 <span
                   style={{

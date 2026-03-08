@@ -94,7 +94,7 @@ export default function Home() {
                   className="heading-1"
                   style={{ marginBottom: "16px", maxWidth: "440px" }}
                 >
-                  12 prompts built for your exact job. Ready to copy.
+                  12 prompts tailored for your exact job.
                 </h2>
                 <p
                   className="body-lg"
@@ -104,9 +104,9 @@ export default function Home() {
                     marginBottom: "32px",
                   }}
                 >
-                  Answer 4 questions about how you work. Walk away with a
-                  complete AI Prompt Kit: 12 ready-to-use prompts, a personal
-                  AI Profile, and a step-by-step guide to building your AI
+                  Answer a few questions about your job and daily workflow.
+                  Walk away with 12 ready-to-use prompts, a personal AI
+                  Profile, and a step-by-step guide to building your own AI
                   system.
                 </p>
                 <a href="/prompt-builder" className="btn btn-primary btn-lg">

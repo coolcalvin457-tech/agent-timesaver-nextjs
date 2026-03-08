@@ -22,7 +22,7 @@ export default function NavClient() {
             <li><a href="/#timesaver">AGENT: Timesaver</a></li>
             <li><a href="/blog">Blog</a></li>
             <li><a href="/guides">Guides</a></li>
-            <li><a href="/#content">Community</a></li>
+            <li><a href="/community">Community</a></li>
             <li>
               <a href="/#timesaver" className="nav-cta">
                 Get Free Workflows

@@ -24,7 +24,7 @@ export default function NavClient() {
             <li><a href="/guides">Resources</a></li>
             <li><a href="/community">Community</a></li>
             <li>
-              <a href="/#timesaver" className="nav-cta">
+              <a href="/" className="nav-cta">
                 Get Free Workflows
               </a>
             </li>

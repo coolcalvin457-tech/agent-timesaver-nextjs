@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 const tools = [
   {
     slug: "timesaver",
-    href: "/#timesaver",
+    href: "/",
     badgeClass: "tool-badge-free",
     label: "Free",
     name: "AGENT: Timesaver",

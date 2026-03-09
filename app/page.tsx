@@ -65,9 +65,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── Section 3: anchor for nav link ──────────────────────────── */}
-        <div id="timesaver" />
-
         {/* ── Section 4: AGENT: Prompt Builder ────────────────────────── */}
         <section className="section" id="prompt-builder">
           <div className="container">

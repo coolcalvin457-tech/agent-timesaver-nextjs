@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import NavClient from "@/components/NavClient";
+import BlogList from "@/components/BlogList";
 
 export const metadata: Metadata = {
   title: "Blogs | promptaiagents.com",
@@ -86,59 +87,8 @@ export default function BlogPage() {
             </p>
           </div>
 
-          {/* Post list */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            {posts.map((post) => (
-              <a
-                key={post.slug}
-                href={`/blog/${post.slug}`}
-                className="blog-card"
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "12px",
-                    marginBottom: "16px",
-                    flexWrap: "wrap",
-                  }}
-                >
-                  <span className="blog-tag">{post.category}</span>
-                  <span
-                    className="caption"
-                    style={{ color: "var(--text-muted)" }}
-                  >
-                    {post.date}
-                  </span>
-                </div>
-                <h2
-                  className="heading-2"
-                  style={{ marginBottom: "12px", color: "var(--text-primary)" }}
-                >
-                  {post.titleLines[0]}<br />{post.titleLines[1]}
-                </h2>
-                <p
-                  className="body"
-                  style={{
-                    color: "var(--text-secondary)",
-                    marginBottom: "20px",
-                    lineHeight: 1.7,
-                  }}
-                >
-                  {post.excerptLines[0]}<br />{post.excerptLines[1]}
-                </p>
-                <span
-                  style={{
-                    fontSize: "0.9375rem",
-                    fontWeight: 600,
-                    color: "var(--cta)",
-                  }}
-                >
-                  Read the post →
-                </span>
-              </a>
-            ))}
-          </div>
+          {/* Blog list with category filter */}
+          <BlogList posts={posts} />
         </div>
       </main>
     </>

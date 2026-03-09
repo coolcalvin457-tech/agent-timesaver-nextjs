@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import NavClient from "@/components/NavClient";
 
 export const metadata: Metadata = {
   title: "Community | promptaiagents.com",
@@ -8,7 +9,9 @@ export const metadata: Metadata = {
 
 export default function CommunityPage() {
   return (
-    <main
+    <>
+      <NavClient />
+      <main
       style={{
         minHeight: "100vh",
         display: "flex",
@@ -90,5 +93,6 @@ export default function CommunityPage() {
         </div>
       </div>
     </main>
+    </>
   );
 }

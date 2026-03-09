@@ -334,12 +334,10 @@ export default function Home() {
                 margin: "0 auto 36px",
               }}
             >
-              Start with AGENT: Timesaver. Five minutes. Five workflows.
-              Completely free.
+              Start with AGENT: Timesaver.<br />
+              5 minutes. 5 workflows.
             </p>
-            <a href="#timesaver" className="btn btn-primary btn-lg">
-              Get My Free Workflows →
-            </a>
+            <HeroButton />
           </div>
         </section>
       </main>

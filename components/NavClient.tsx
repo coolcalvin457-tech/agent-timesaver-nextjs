@@ -19,17 +19,16 @@ export default function NavClient() {
             promptaiagents.com
           </a>
           <ul className="nav-links">
-            <li><a href="/">Home</a></li>
             <li><a href="/tools">Tools</a></li>
             <li><a href="/blog">Blog</a></li>
             <li><a href="/guides">Resources</a></li>
             <li><a href="/community">Community</a></li>
-            <li>
-              <a href="/" className="nav-cta">
-                Get Free Workflows
-              </a>
-            </li>
           </ul>
+          <div className="nav-actions">
+            <a href="/" className="nav-cta">
+              Get Free Workflows
+            </a>
+          </div>
         </div>
       </div>
     </nav>

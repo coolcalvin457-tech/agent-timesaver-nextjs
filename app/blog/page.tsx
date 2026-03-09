@@ -17,6 +17,19 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: "build-once-never-re-explain-ai",
+    titleLines: [
+      "Build Once and You'll Never Have to",
+      "Re-Explain to AI Again",
+    ],
+    category: "Non-Technical AI Skills",
+    date: "March 9, 2026",
+    excerptLines: [
+      "Getting valuable output requires valuable input.",
+      "That input has a name: context.",
+    ],
+  },
+  {
     slug: "how-to-start-using-ai-at-work",
     titleLines: [
       "How to Actually Start Using AI at Work and",

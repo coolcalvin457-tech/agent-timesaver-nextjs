@@ -23,7 +23,7 @@ export default function Footer() {
           <div>
             <div className="footer-col-label">Content</div>
             <ul className="footer-col-links">
-              <li><a href="/blog">Learn</a></li>
+              <li><a href="/blog">Blog</a></li>
               <li><a href="/guides">Resources</a></li>
               <li><a href="/community">Community</a></li>
             </ul>

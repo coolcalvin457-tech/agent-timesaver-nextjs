@@ -43,7 +43,7 @@ export default function PostPage() {
                 transition: "color 0.15s ease",
               }}
             >
-              ← Back to Learn
+              ← Back to Blog
             </a>
           </div>
         </div>

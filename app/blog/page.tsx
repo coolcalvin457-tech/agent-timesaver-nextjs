@@ -3,11 +3,11 @@ import NavClient from "@/components/NavClient";
 import BlogList from "@/components/BlogList";
 
 export const metadata: Metadata = {
-  title: "Learn | promptaiagents.com",
+  title: "Blog | promptaiagents.com",
   description:
     "Practical AI skills for non-technical people. Real workflows, honest takes, and a clear path forward.",
   openGraph: {
-    title: "Learn | promptaiagents.com",
+    title: "Blog | promptaiagents.com",
     description:
       "Practical AI skills for non-technical people. Real workflows, honest takes, and a clear path forward.",
     url: "https://promptaiagents.com/blog",
@@ -76,7 +76,7 @@ export default function BlogPage() {
           {/* Header */}
           <div style={{ paddingTop: "40px", marginBottom: "56px" }}>
             <h1 className="heading-1" style={{ marginBottom: "14px" }}>
-              Learn
+              Blog
             </h1>
             <p
               className="body-lg"

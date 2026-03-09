@@ -22,7 +22,8 @@ export default function Home() {
                   Everyone&apos;s talking about AI agents.
                 </h1>
                 <p className="hero-subheadline">
-                  Here&apos;s how to actually prompt and set them up.
+                  Start with AGENT: Timesaver.<br />
+                  5 minutes. 5 workflows.
                 </p>
                 <HeroButton />
               </div>

@@ -22,11 +22,6 @@ export default function GuidesPage() {
       }}
     >
       <div style={{ maxWidth: "560px", width: "100%", textAlign: "center" }}>
-        {/* Eyebrow */}
-        <div className="eyebrow" style={{ textAlign: "center", marginBottom: "12px" }}>
-          Guides &amp; resources
-        </div>
-
         {/* Icon */}
         <div style={{ fontSize: "3rem", marginBottom: "20px" }}>📚</div>
 

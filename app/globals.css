@@ -183,13 +183,16 @@ input, textarea {
   right: 0;
   z-index: 100;
   padding: 20px 0;
-  transition: background 0.25s ease, padding 0.25s ease, border-bottom 0.25s ease;
+  background: rgba(248,248,246,0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: background 0.25s ease, padding 0.25s ease, border-bottom 0.25s ease, backdrop-filter 0.25s ease;
 }
 
 .nav.scrolled {
   background: rgba(248,248,246,0.88);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   padding: 14px 0;
   border-bottom: 1px solid var(--border);
 }
@@ -211,7 +214,7 @@ input, textarea {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 24px;
   list-style: none;
 }
 

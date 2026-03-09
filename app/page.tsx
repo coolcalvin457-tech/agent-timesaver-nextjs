@@ -12,24 +12,45 @@ export default function Home() {
         {/* ── Section 1: Hero ─────────────────────────────────────────── */}
         <section className="hero" id="home">
           <div className="container">
-            <h1 className="hero-headline">
-              Everyone&apos;s talking about AI agents.
-              Here&apos;s how to actually use them.
-            </h1>
-            <p className="hero-subheadline">
-              Start with your job title. Get 5 AI workflows built for your exact
-              role. See how many hours you could save every week. Free.
-            </p>
-            <a href="#timesaver" className="btn btn-primary btn-lg">
-              Find My AI Workflows →
-            </a>
+            <div className="hero-inner">
+
+              {/* Left: copy */}
+              <div className="hero-copy">
+                <div className="eyebrow">AI tools for real work</div>
+                <h1 className="hero-headline">
+                  Everyone&apos;s talking about AI agents.
+                  Here&apos;s how to actually use them.
+                </h1>
+                <p className="hero-subheadline">
+                  Start with your job title. Get 5 AI workflows built for your exact
+                  role. See how many hours you could save every week. Free.
+                </p>
+                <a href="#timesaver" className="btn btn-primary btn-lg">
+                  Find My AI Workflows →
+                </a>
+              </div>
+
+              {/* Right: visual slot — tool embed */}
+              <div className="hero-visual">
+                <div className="browser-chrome">
+                  <div className="browser-bar">
+                    <div className="browser-dot browser-dot-red" />
+                    <div className="browser-dot browser-dot-yellow" />
+                    <div className="browser-dot browser-dot-green" />
+                    <div className="browser-url">promptaiagents.com/timesaver</div>
+                  </div>
+                  <TimesaverTool />
+                </div>
+              </div>
+
+            </div>
           </div>
         </section>
 
         {/* ── Section 2: Dream / Aspiration ───────────────────────────── */}
         <section className="section section-dark" id="dream">
           <div className="container-narrow">
-            <div className="section-label section-label-light">Take back your time.</div>
+            <div className="eyebrow eyebrow-light">Take back your time.</div>
             <h2 className="heading-1" style={{ color: "#fff", marginBottom: "24px" }}>
               Imagine getting 5 to 10 hours back every week.
             </h2>
@@ -44,46 +65,13 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── Section 3: AGENT: Timesaver ─────────────────────────────── */}
-        <section className="section section-alt" id="timesaver">
-          <div className="container">
-            <div className="section-label">Free tool</div>
-            <h2
-              className="heading-1"
-              style={{ marginBottom: "12px", maxWidth: "520px" }}
-            >
-              See exactly how AI fits in your job.
-            </h2>
-            <p
-              className="body-lg"
-              style={{
-                color: "var(--text-secondary)",
-                maxWidth: "540px",
-                marginBottom: "48px",
-              }}
-            >
-              Enter your job title. Answer a few questions. Walk away with 5
-              workflows built for your specific role and a real estimate of how
-              much time you could save.
-            </p>
-
-            {/* Browser chrome wrapper */}
-            <div className="browser-chrome">
-              <div className="browser-bar">
-                <div className="browser-dot browser-dot-red" />
-                <div className="browser-dot browser-dot-yellow" />
-                <div className="browser-dot browser-dot-green" />
-                <div className="browser-url">promptaiagents.com/timesaver</div>
-              </div>
-              <TimesaverTool />
-            </div>
-          </div>
-        </section>
+        {/* ── Section 3: anchor for nav link ──────────────────────────── */}
+        <div id="timesaver" />
 
         {/* ── Section 4: AGENT: Prompt Builder ────────────────────────── */}
         <section className="section" id="prompt-builder">
           <div className="container">
-            <div className="section-label">AGENT: Prompt Builder</div>
+            <div className="eyebrow">AGENT: Prompt Builder</div>
             <div className="prompt-builder-layout">
 
               {/* Left: copy */}
@@ -170,7 +158,7 @@ export default function Home() {
         {/* ── Section 5: The Guide ─────────────────────────────────────── */}
         <section className="section" id="about">
           <div className="container">
-            <div className="section-label">Your guide</div>
+            <div className="eyebrow">Your guide</div>
             <div className="guide-layout">
               <div className="guide-avatar" aria-hidden="true">
                 🏀
@@ -201,7 +189,7 @@ export default function Home() {
         {/* ── Section 5: The Transformation ───────────────────────────── */}
         <section className="section section-alt" id="transformation">
           <div className="container">
-            <div className="section-label">What you walk away with</div>
+            <div className="eyebrow">What you walk away with</div>
             <h2
               className="heading-1"
               style={{ marginBottom: "48px", maxWidth: "480px" }}
@@ -241,7 +229,7 @@ export default function Home() {
         {/* ── Section 6: How It Works ──────────────────────────────────── */}
         <section className="section" id="how-it-works">
           <div className="container">
-            <div className="section-label">How it works</div>
+            <div className="eyebrow">How it works</div>
             <h2
               className="heading-1"
               style={{ marginBottom: "48px" }}
@@ -284,7 +272,7 @@ export default function Home() {
         {/* ── Section 8: Content Preview ───────────────────────────────── */}
         <section className="section section-dark" id="content">
           <div className="container">
-            <div className="section-label section-label-light">What&apos;s inside</div>
+            <div className="eyebrow eyebrow-light">What&apos;s inside</div>
             <h2
               className="heading-1"
               style={{ color: "#fff", marginBottom: "12px" }}

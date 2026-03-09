@@ -190,9 +190,9 @@ input, textarea {
 }
 
 .nav.scrolled {
-  background: rgba(248,248,246,0.88);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: rgba(248,248,246,0.65);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   padding: 14px 0;
   border-bottom: 1px solid var(--border);
 }

@@ -19,6 +19,7 @@ export default function NavClient() {
             promptaiagents.com
           </a>
           <ul className="nav-links">
+            <li><a href="/">Home</a></li>
             <li><a href="/tools">Tools</a></li>
             <li><a href="/blog">Blog</a></li>
             <li><a href="/guides">Resources</a></li>

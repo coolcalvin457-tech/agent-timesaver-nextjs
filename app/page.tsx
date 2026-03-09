@@ -1,4 +1,5 @@
 import TimesaverTool from "@/components/TimesaverTool";
+import HeroButton from "@/components/HeroButton";
 import NavClient from "@/components/NavClient";
 import Footer from "@/components/Footer";
 
@@ -19,15 +20,11 @@ export default function Home() {
                 <div className="eyebrow">AI tools for real work</div>
                 <h1 className="hero-headline">
                   Everyone&apos;s talking about AI agents.
-                  Here&apos;s how to actually use them.
                 </h1>
                 <p className="hero-subheadline">
-                  Start with your job title. Get 5 AI workflows built for your exact
-                  role. See how many hours you could save every week. Free.
+                  Here&apos;s how to actually prompt and set them up.
                 </p>
-                <a href="#timesaver" className="btn btn-primary btn-lg">
-                  Find My AI Workflows →
-                </a>
+                <HeroButton />
               </div>
 
               {/* Right: visual slot — tool embed */}

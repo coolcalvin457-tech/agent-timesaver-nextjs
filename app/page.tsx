@@ -32,7 +32,7 @@ export default function Home() {
 
               {/* Right: visual slot — tool embed */}
               <div className="hero-visual">
-                <div className="browser-chrome">
+                <div className="browser-chrome hero-tool-dark">
                   <div className="browser-bar">
                     <div className="browser-dot browser-dot-red" />
                     <div className="browser-dot browser-dot-yellow" />

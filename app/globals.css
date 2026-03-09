@@ -1506,6 +1506,214 @@ input, textarea {
   font-family: var(--font-mono);
 }
 
+/* ── Hero Tool Dark Mode ──────────────────────────────────── */
+/* Applied as .hero-tool-dark on the .browser-chrome wrapper   */
+/* Creates a dark shell to mirror the light-left/dark-right    */
+/* contrast split (à la UPL's hero image treatment)            */
+
+.hero-tool-dark {
+  background: var(--dark);
+  border-color: var(--dark-border);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.32), 0 4px 12px rgba(0,0,0,0.20);
+}
+
+/* Browser chrome bar */
+.hero-tool-dark .browser-bar {
+  background: var(--dark-surface);
+  border-bottom-color: var(--dark-border);
+}
+
+.hero-tool-dark .browser-url {
+  background: var(--dark);
+  border-color: var(--dark-border);
+  color: rgba(255,255,255,0.35);
+}
+
+/* Screen / main content area */
+.hero-tool-dark .screen {
+  background: var(--dark);
+}
+
+/* Tool tag (mono label at top) */
+.hero-tool-dark .tool-tag {
+  color: rgba(255,255,255,0.45);
+}
+
+/* Headlines */
+.hero-tool-dark .screen-headline {
+  color: #FFFFFF;
+}
+
+.hero-tool-dark .screen-subheadline {
+  color: rgba(255,255,255,0.55);
+}
+
+/* Step / question text */
+.hero-tool-dark .step-label {
+  color: rgba(255,255,255,0.4);
+}
+
+.hero-tool-dark .question-stem {
+  color: #FFFFFF;
+}
+
+.hero-tool-dark .question-subheadline {
+  color: rgba(255,255,255,0.55);
+}
+
+/* Progress pips */
+.hero-tool-dark .progress-pip {
+  background: var(--dark-border);
+}
+
+.hero-tool-dark .progress-pip.active {
+  background: var(--cta);
+}
+
+.hero-tool-dark .progress-pip.done {
+  background: rgba(30,122,184,0.7);
+}
+
+/* Choices */
+.hero-tool-dark .choice {
+  background: var(--dark-surface);
+  border-color: var(--dark-border);
+  color: rgba(255,255,255,0.88);
+}
+
+.hero-tool-dark .choice:hover {
+  border-color: var(--cta);
+  background: rgba(30,122,184,0.12);
+}
+
+.hero-tool-dark .choice.selected {
+  border-color: var(--cta);
+  background: rgba(30,122,184,0.15);
+}
+
+.hero-tool-dark .choice-dot {
+  border-color: var(--dark-border);
+}
+
+.hero-tool-dark .choice.selected .choice-dot {
+  border-color: var(--cta);
+  background: var(--cta);
+}
+
+/* Text input */
+.hero-tool-dark .input {
+  background: var(--dark-surface);
+  border-color: var(--dark-border);
+  color: rgba(255,255,255,0.9);
+}
+
+.hero-tool-dark .input::placeholder {
+  color: rgba(255,255,255,0.3);
+}
+
+.hero-tool-dark .input:focus {
+  border-color: var(--cta);
+  background: rgba(30,122,184,0.08);
+}
+
+/* Branch cards */
+.hero-tool-dark .branch-card {
+  background: var(--dark-surface);
+  border-color: var(--dark-border);
+}
+
+.hero-tool-dark .branch-card:hover {
+  border-color: var(--cta);
+}
+
+.hero-tool-dark .branch-card.selected {
+  background: rgba(30,122,184,0.10);
+  border-color: var(--cta);
+}
+
+.hero-tool-dark .branch-card-title {
+  color: rgba(255,255,255,0.9);
+}
+
+.hero-tool-dark .branch-card-desc {
+  color: rgba(255,255,255,0.5);
+}
+
+.hero-tool-dark .branch-label {
+  color: rgba(255,255,255,0.5);
+}
+
+/* Primer box */
+.hero-tool-dark .primer-box {
+  background: var(--dark-surface);
+  border-color: var(--dark-border);
+}
+
+.hero-tool-dark .primer-label {
+  color: rgba(255,255,255,0.4);
+}
+
+.hero-tool-dark .primer-body {
+  color: rgba(255,255,255,0.75);
+}
+
+/* Workflow result cards */
+.hero-tool-dark .workflow-card {
+  background: var(--dark-surface);
+  border-color: var(--dark-border);
+}
+
+.hero-tool-dark .workflow-label {
+  color: rgba(255,255,255,0.35);
+}
+
+.hero-tool-dark .workflow-title {
+  color: rgba(255,255,255,0.9);
+}
+
+.hero-tool-dark .workflow-desc {
+  color: rgba(255,255,255,0.55);
+}
+
+/* ROI card already dark — just update its surface */
+.hero-tool-dark .roi-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--dark-border);
+}
+
+/* Save/email card */
+.hero-tool-dark .save-card {
+  background: var(--dark-surface);
+  border-color: var(--dark-border);
+}
+
+.hero-tool-dark .save-card-headline {
+  color: rgba(255,255,255,0.9);
+}
+
+.hero-tool-dark .save-card-subline {
+  color: rgba(255,255,255,0.5);
+}
+
+.hero-tool-dark .trust-line {
+  color: rgba(255,255,255,0.3);
+}
+
+/* Dynamic note */
+.hero-tool-dark .dynamic-note {
+  color: rgba(255,255,255,0.35);
+}
+
+/* Primary button inside the dark tool — light instead of dark */
+.hero-tool-dark .btn-primary {
+  background: #FFFFFF;
+  color: var(--dark);
+}
+
+.hero-tool-dark .btn-primary:hover {
+  background: rgba(255,255,255,0.9);
+}
+
 /* ── Lead Magnet CTA Section ──────────────────────────────── */
 .cta-section-inner {
   max-width: 560px;

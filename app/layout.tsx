@@ -3,7 +3,7 @@ import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "AGENT: Timesaver | promptaiagents.com",
+  title: "promptaiagents.com — AI Tools for Non-Technical Professionals",
   description:
     "Enter your job title. Answer a few questions. Walk away with 5 AI workflows built for your specific role and a real estimate of the time you could get back. Free.",
   openGraph: {

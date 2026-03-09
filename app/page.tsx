@@ -298,7 +298,7 @@ export default function Home() {
                 maxWidth: "540px",
               }}
             >
-              Free resources, video courses, and a community of people learning
+              Free resources, more tools on the way, and a community of people learning
               alongside you. Everything is built around one idea: real AI skills
               for real jobs.
             </p>
@@ -312,10 +312,11 @@ export default function Home() {
                 </p>
               </div>
               <div className="content-card">
-                <div className="content-label">Video Courses</div>
+                <div className="content-label">More AGENT Tools</div>
                 <p className="content-body">
-                  Go deeper on the skills that matter most. Learn at your pace,
-                  apply the same day.
+                  New tools built for specific workflows are in progress. Same
+                  approach: start with your job, get something you can actually
+                  use.
                 </p>
                 <span className="coming-soon">Coming soon</span>
               </div>
@@ -383,8 +384,8 @@ export default function Home() {
             <div>
               <div className="footer-col-label">Content</div>
               <ul className="footer-col-links">
-                <li><a href="/blog">Blogs</a></li>
-                <li><a href="/guides">Guides</a></li>
+                <li><a href="/blog">Learn</a></li>
+                <li><a href="/guides">Resources</a></li>
                 <li><a href="/community">Community</a></li>
               </ul>
             </div>

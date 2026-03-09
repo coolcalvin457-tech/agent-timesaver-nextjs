@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AI Guides & Resources | promptaiagents.com",
+  title: "Resources | promptaiagents.com",
   description:
     "Practical AI guides, tutorials, and workflows for people who want to work smarter — not just talk about it.",
 };
@@ -31,7 +31,7 @@ export default function GuidesPage() {
           className="heading-1"
           style={{ marginBottom: "16px" }}
         >
-          Guides &amp; Resources
+          Resources
         </h1>
 
         <p

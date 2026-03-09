@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import NavClient from "@/components/NavClient";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Tools | promptaiagents.com",
@@ -159,6 +160,7 @@ export default function ToolsPage() {
           </div>
         </div>
       </main>
+      <Footer />
     </>
   );
 }

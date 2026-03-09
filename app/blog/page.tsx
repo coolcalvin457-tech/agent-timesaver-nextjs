@@ -25,6 +25,7 @@ const posts = [
     ],
     category: "Non-Technical AI Skills",
     date: "March 9, 2026",
+    readingTime: "4 min read",
     excerptLines: [
       "Your coworkers will think you came from the future.",
       "You just learned one workflow.",
@@ -38,6 +39,7 @@ const posts = [
     ],
     category: "Non-Technical AI Skills",
     date: "March 9, 2026",
+    readingTime: "4 min read",
     excerptLines: [
       "Getting valuable output requires valuable input.",
       "That input has a name: context.",
@@ -51,6 +53,7 @@ const posts = [
     ],
     category: "Non-Technical AI Skills",
     date: "March 8, 2026",
+    readingTime: "5 min read",
     excerptLines: [
       "Here's a secret: those prompts were designed to stop the scroll,",
       "not actually help you out.",

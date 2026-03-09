@@ -7,6 +7,7 @@ type Post = {
   titleLines: string[];
   category: string;
   date: string;
+  readingTime?: string;
   excerptLines: string[];
 };
 
@@ -97,6 +98,14 @@ export default function BlogList({ posts }: { posts: Post[] }) {
               >
                 {post.date}
               </span>
+              {post.readingTime && (
+                <span
+                  className="caption"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  · {post.readingTime}
+                </span>
+              )}
             </div>
             <h2
               className="heading-2"

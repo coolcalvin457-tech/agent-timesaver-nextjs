@@ -2253,3 +2253,25 @@ input, textarea {
     grid-template-columns: 1fr;
   }
 }
+
+/* ── Blog: Keep Reading links ──────────────────────────────── */
+.blog-next-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 0;
+  border-top: 1px solid var(--border);
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.blog-next-link:hover {
+  color: var(--cta);
+}
+
+.blog-next-link:last-child {
+  border-bottom: 1px solid var(--border);
+}

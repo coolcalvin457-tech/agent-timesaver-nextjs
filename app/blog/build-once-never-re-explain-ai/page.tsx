@@ -64,6 +64,9 @@ export default function PostPage() {
               <span className="caption" style={{ color: "var(--text-muted)" }}>
                 March 9, 2026
               </span>
+              <span className="caption" style={{ color: "var(--text-muted)" }}>
+                · 4 min read
+              </span>
             </div>
             <h1
               className="display"
@@ -256,6 +259,39 @@ export default function PostPage() {
           </div>
 
         </div>
+
+        {/* Keep reading */}
+        <div className="container-narrow">
+          <div style={{ marginTop: "64px", paddingBottom: "24px" }}>
+            <div
+              style={{
+                fontSize: "0.75rem",
+                fontWeight: 700,
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                color: "var(--text-muted)",
+                marginBottom: "4px",
+              }}
+            >
+              Keep reading
+            </div>
+            <a
+              href="/blog/your-team-thinks-youre-a-tech-wizard"
+              className="blog-next-link"
+            >
+              <span>Your Team Thinks You&apos;re a Tech Wizard. All You Did Was Learn One Workflow.</span>
+              <span style={{ color: "var(--cta)", marginLeft: "16px", flexShrink: 0 }}>→</span>
+            </a>
+            <a
+              href="/blog/how-to-start-using-ai-at-work"
+              className="blog-next-link"
+            >
+              <span>How to Actually Start Using AI at Work and Build Your Own Agent</span>
+              <span style={{ color: "var(--cta)", marginLeft: "16px", flexShrink: 0 }}>→</span>
+            </a>
+          </div>
+        </div>
+
       </main>
     </>
   );

@@ -1242,7 +1242,7 @@ input, textarea {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 64px;
-  align-items: center;
+  align-items: start;
 }
 
 .hero-copy {
@@ -1253,6 +1253,7 @@ input, textarea {
 
 .hero-visual {
   position: relative;
+  padding-top: 48px;
 }
 
 .hero-headline {

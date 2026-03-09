@@ -17,6 +17,19 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: "your-team-thinks-youre-a-tech-wizard",
+    titleLines: [
+      "Your Team Thinks You're a Tech Wizard.",
+      "All You Did Was Learn One Workflow.",
+    ],
+    category: "Non-Technical AI Skills",
+    date: "March 9, 2026",
+    excerptLines: [
+      "Your coworkers will think you came from the future.",
+      "You just learned one workflow.",
+    ],
+  },
+  {
     slug: "build-once-never-re-explain-ai",
     titleLines: [
       "Build Once and You'll Never Have to",

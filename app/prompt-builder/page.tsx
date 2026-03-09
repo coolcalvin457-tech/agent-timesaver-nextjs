@@ -22,7 +22,15 @@ export default function PromptBuilderPage({
           style={{ paddingTop: "120px", minHeight: "100vh" }}
         >
           <div className="container">
-            <div className="section-label" style={{ textTransform: "none" }}>AGENT: Prompt Builder</div>
+            <div className="eyebrow" style={{ marginBottom: "12px", textAlign: "center" }}>
+              AGENT: Prompt Builder
+            </div>
+            <h1
+              className="heading-1"
+              style={{ marginBottom: "48px", textAlign: "center" }}
+            >
+              12 prompts built for your exact job.
+            </h1>
             <div style={{ maxWidth: "600px", margin: "0 auto" }}>
               <PromptBuilderTool
                 paymentStatus={searchParams.payment}

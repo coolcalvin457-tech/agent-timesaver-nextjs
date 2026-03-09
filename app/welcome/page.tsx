@@ -24,8 +24,8 @@ export default function WelcomePage() {
       }}
     >
       <div style={{ maxWidth: "520px", width: "100%", textAlign: "center" }}>
-        {/* Tool tag */}
-        <div className="tool-tag" style={{ textAlign: "center", marginBottom: "24px" }}>
+        {/* Eyebrow */}
+        <div className="eyebrow" style={{ textAlign: "center", marginBottom: "12px" }}>
           AGENT: Timesaver
         </div>
 

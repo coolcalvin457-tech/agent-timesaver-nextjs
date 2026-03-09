@@ -19,9 +19,9 @@ export default function CommunityPage() {
       }}
     >
       <div style={{ maxWidth: "560px", width: "100%", textAlign: "center" }}>
-        {/* Tool tag */}
-        <div className="tool-tag" style={{ textAlign: "center", marginBottom: "24px" }}>
-          promptaiagents.com
+        {/* Eyebrow */}
+        <div className="eyebrow" style={{ textAlign: "center", marginBottom: "12px" }}>
+          Community
         </div>
 
         {/* Icon */}

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import NavClient from "@/components/NavClient";
 import BlogList from "@/components/BlogList";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Blog | promptaiagents.com",
@@ -94,6 +95,7 @@ export default function BlogPage() {
           <BlogList posts={posts} />
         </div>
       </main>
+      <Footer />
     </>
   );
 }

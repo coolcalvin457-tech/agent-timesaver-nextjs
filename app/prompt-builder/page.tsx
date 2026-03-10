@@ -1,5 +1,6 @@
 import PromptBuilderTool from "@/components/PromptBuilderTool";
 import NavClient from "@/components/NavClient";
+import Footer from "@/components/Footer";
 
 export const metadata = {
   title: "AGENT: Prompt Builder — promptaiagents.com",
@@ -40,6 +41,7 @@ export default function PromptBuilderPage({
           </div>
         </section>
       </main>
+      <Footer />
     </>
   );
 }

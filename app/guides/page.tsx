@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import NavClient from "@/components/NavClient";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Resources | promptaiagents.com",
@@ -82,6 +83,7 @@ export default function GuidesPage() {
           </div>
         </div>
       </main>
+      <Footer />
     </>
   );
 }

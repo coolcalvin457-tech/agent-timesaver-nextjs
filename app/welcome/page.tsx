@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Footer from "@/components/Footer";
 
 // ── Update these URLs when your community and guides are live ──────────────
 const COMMUNITY_URL = "https://www.skool.com"; // TODO: replace with your Skool community link
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
 
 export default function WelcomePage() {
   return (
+    <>
     <main
       style={{
         minHeight: "100vh",
@@ -105,5 +107,7 @@ export default function WelcomePage() {
         </a>
       </div>
     </main>
+    <Footer />
+    </>
   );
 }

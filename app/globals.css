@@ -207,13 +207,14 @@ input, textarea {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  margin-right: -8px;
 }
 
 .nav-logo {
   font-family: var(--font-mono);
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--brand);
+  color: var(--cta);
   letter-spacing: 0.02em;
 }
 
@@ -238,9 +239,9 @@ input, textarea {
 .nav-cta {
   background: var(--dark);
   color: #fff !important;
-  padding: 6px 14px;
-  border-radius: var(--radius-btn);
-  font-size: 0.8125rem !important;
+  padding: 5px 12px;
+  border-radius: 5px;
+  font-size: 0.8rem !important;
   font-weight: 500 !important;
   letter-spacing: 0.01em;
   transition: background 0.15s, transform 0.15s !important;

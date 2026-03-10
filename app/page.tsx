@@ -21,14 +21,13 @@ export default function Home() {
                   Everyone&apos;s talking about AI agents.
                 </h1>
                 <p className="hero-subheadline">
-                  Start with AGENT: Timesaver.<br />
-                  5 minutes. 5 workflows.
+                  AI is changing every job. We show you exactly what that means for yours.
                 </p>
                 <HeroButton />
               </div>
 
               {/* Right: visual slot — tool embed */}
-              <div className="hero-visual">
+              <div className="hero-visual" style={{ paddingTop: "56px" }}>
                 <div className="browser-chrome hero-tool-dark">
                   <div className="browser-bar">
                     <div className="browser-dot browser-dot-red" />

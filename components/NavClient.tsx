@@ -37,7 +37,7 @@ export default function NavClient() {
                 }
               }}
             >
-              Get Free Workflows
+              AI Workflows
             </a>
           </div>
         </div>

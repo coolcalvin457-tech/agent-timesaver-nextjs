@@ -75,9 +75,6 @@ export default function BlogPage() {
         <div className="container-narrow">
           {/* Header */}
           <div style={{ paddingTop: "40px", marginBottom: "56px" }}>
-            <div className="eyebrow" style={{ marginBottom: "12px" }}>
-              The blog
-            </div>
             <h1 className="heading-1" style={{ marginBottom: "14px" }}>
               Blog
             </h1>

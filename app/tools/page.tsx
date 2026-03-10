@@ -55,9 +55,6 @@ export default function ToolsPage() {
         {/* Page header */}
         <div className="container-narrow">
           <div style={{ paddingTop: "40px", marginBottom: "64px" }}>
-            <div className="eyebrow" style={{ marginBottom: "12px" }}>
-              The AGENT lineup
-            </div>
             <h1 className="heading-1" style={{ marginBottom: "14px" }}>
               Tools
             </h1>

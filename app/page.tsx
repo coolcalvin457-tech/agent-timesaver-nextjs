@@ -17,7 +17,6 @@ export default function Home() {
 
               {/* Left: copy */}
               <div className="hero-copy">
-                <div className="eyebrow">AI tools for real work</div>
                 <h1 className="hero-headline">
                   Everyone&apos;s talking about AI agents.
                 </h1>

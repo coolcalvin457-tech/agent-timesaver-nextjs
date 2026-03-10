@@ -25,7 +25,18 @@ export default function NavClient() {
             <li><a href="/community">Community</a></li>
           </ul>
           <div className="nav-actions">
-            <a href="/" className="nav-cta">
+            <a
+              href="/"
+              className="nav-cta"
+              onClick={(e) => {
+                const btn = document.getElementById("timesaver-start-btn") as HTMLButtonElement | null;
+                if (btn) {
+                  e.preventDefault();
+                  btn.click();
+                  btn.scrollIntoView({ behavior: "smooth", block: "center" });
+                }
+              }}
+            >
               Get Free Workflows
             </a>
           </div>

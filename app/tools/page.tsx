@@ -39,6 +39,17 @@ const tools = [
       "Answer 4 questions about how you work. Get a personalized Prompt Kit: 12 ready-to-copy prompts organized by category, an AI Profile paragraph, and a Build Your AI System guide.",
     cta: "Build My Prompt Kit →",
   },
+  {
+    slug: "budget-spreadsheets",
+    href: "/budget-spreadsheets",
+    badgeClass: "tool-badge-free",
+    label: "Free",
+    name: "AGENT: Budget Spreadsheets",
+    tagline: "Describe your budget. Get a spreadsheet.",
+    description:
+      "Tell the AI what you need in plain language — project budget, department budget, event, personal finance. It builds a complete, formatted, formula-filled .xlsx file you can open in Excel or Google Sheets and use right away.",
+    cta: "Build My Spreadsheet →",
+  },
 ];
 
 export default function ToolsPage() {
@@ -135,7 +146,7 @@ export default function ToolsPage() {
             ))}
           </div>
 
-          {/* Coming soon placeholder — remove when tool #3 ships */}
+          {/* More tools placeholder */}
           <div className="tools-coming-soon">
             <p
               style={{
@@ -144,7 +155,7 @@ export default function ToolsPage() {
                 margin: 0,
               }}
             >
-              More tools coming soon. Building in public at{" "}
+              More tools in progress. Building in public at{" "}
               <a
                 href="/blog"
                 style={{

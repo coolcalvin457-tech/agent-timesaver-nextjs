@@ -2556,3 +2556,423 @@ input, textarea {
 .blog-next-link:last-child {
   border-bottom: 1px solid var(--border);
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   AGENT: Budget Spreadsheets Tool
+   ═══════════════════════════════════════════════════════════════ */
+
+.bs-tool {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 40px;
+}
+
+.bs-tool-header {
+  margin-bottom: 24px;
+}
+
+.bs-tool-intro {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ── Examples ───────────────────────────────────────────────── */
+.bs-examples {
+  margin-bottom: 24px;
+}
+
+.bs-examples-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 10px;
+}
+
+.bs-examples-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bs-example-chip {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+  line-height: 1.4;
+}
+
+.bs-example-chip:hover {
+  border-color: var(--cta);
+  color: var(--cta);
+  background: rgba(30, 122, 184, 0.04);
+}
+
+/* ── Textarea ───────────────────────────────────────────────── */
+.bs-textarea {
+  width: 100%;
+  resize: vertical;
+  min-height: 120px;
+}
+
+.bs-char-count {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  margin: 6px 0 0;
+  min-height: 18px;
+}
+
+/* ── Footnote ───────────────────────────────────────────────── */
+.bs-footnote {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  margin-top: 16px;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* ── Upload zones ───────────────────────────────────────────── */
+.bs-upload-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.bs-upload-zone {
+  border: 1.5px dashed var(--border);
+  border-radius: var(--radius-input);
+  transition: border-color 0.15s ease;
+  overflow: hidden;
+}
+
+.bs-upload-zone:has(.bs-upload-label:hover),
+.bs-upload-zone:focus-within {
+  border-color: var(--cta);
+}
+
+.bs-upload-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.bs-upload-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 16px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.bs-upload-icon {
+  color: var(--text-muted);
+  transition: color 0.15s ease;
+}
+
+.bs-upload-label:hover .bs-upload-icon {
+  color: var(--cta);
+}
+
+.bs-upload-label-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bs-upload-label-text strong {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.bs-upload-label-text span {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* Selected state */
+.bs-upload-selected {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 16px;
+}
+
+.bs-upload-icon-sm {
+  color: var(--cta);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.bs-upload-filename {
+  font-size: 0.8125rem;
+  color: var(--text-primary);
+  font-weight: 500;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bs-upload-remove {
+  background: none;
+  border: none;
+  padding: 2px 4px;
+  font-size: 1.125rem;
+  line-height: 1;
+  color: var(--text-muted);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color 0.15s ease;
+}
+
+.bs-upload-remove:hover {
+  color: #c0392b;
+}
+
+.bs-upload-error {
+  font-size: 0.8125rem;
+  color: #c0392b;
+  padding: 0 16px 12px;
+  margin: 0;
+}
+
+@media (max-width: 540px) {
+  .bs-upload-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Loading screen ─────────────────────────────────────────── */
+.bs-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 16px 0;
+}
+
+.bs-loading-icon {
+  margin-bottom: 24px;
+  animation: bs-pulse 2s ease-in-out infinite;
+}
+
+@keyframes bs-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.7; transform: scale(0.97); }
+}
+
+.bs-loading-title {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.bs-loading-sub {
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  max-width: 380px;
+  line-height: 1.65;
+  margin-bottom: 32px;
+}
+
+.bs-loading-bar {
+  width: 100%;
+  max-width: 320px;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.bs-loading-bar-fill {
+  height: 100%;
+  background: var(--cta);
+  border-radius: 2px;
+  animation: bs-bar 2.4s ease-in-out infinite;
+  transform-origin: left;
+}
+
+@keyframes bs-bar {
+  0%   { transform: translateX(-100%) scaleX(0.4); }
+  50%  { transform: translateX(60%) scaleX(0.6); }
+  100% { transform: translateX(200%) scaleX(0.4); }
+}
+
+/* ── Ready screen ───────────────────────────────────────────── */
+.bs-ready {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 8px 0;
+}
+
+.bs-ready-icon {
+  margin-bottom: 20px;
+}
+
+.bs-ready-title {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.625rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.bs-ready-name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--cta);
+  margin-bottom: 12px;
+}
+
+.bs-ready-sub {
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  max-width: 400px;
+  line-height: 1.65;
+  margin-bottom: 32px;
+}
+
+/* ── Section preview ────────────────────────────────────────── */
+.bs-sections-preview {
+  width: 100%;
+  max-width: 420px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+.bs-sections-label {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.bs-sections-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bs-sections-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+}
+
+.bs-sections-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cta);
+  flex-shrink: 0;
+}
+
+.bs-sections-count {
+  margin-left: auto;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+
+/* ── Email gate ─────────────────────────────────────────────── */
+.bs-email-form {
+  width: 100%;
+  max-width: 420px;
+  margin-bottom: 16px;
+}
+
+.bs-email-label {
+  display: block;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.bs-email-row {
+  display: flex;
+  gap: 10px;
+}
+
+.bs-email-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.bs-email-error {
+  font-size: 0.875rem;
+  color: #c0392b;
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+.bs-start-over {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.bs-start-over:hover {
+  color: var(--text-primary);
+}
+
+@media (max-width: 480px) {
+  .bs-email-row {
+    flex-direction: column;
+  }
+}
+
+/* ── Error screen ───────────────────────────────────────────── */
+.bs-error {
+  text-align: center;
+  padding: 8px 0;
+}
+
+.bs-error-msg {
+  font-size: 0.9375rem;
+  color: #c0392b;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+/* ── Mobile ─────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .bs-tool {
+    padding: 28px 20px;
+  }
+}

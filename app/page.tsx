@@ -21,7 +21,7 @@ export default function Home() {
                   Everyone&apos;s talking about AI agents.
                 </h1>
                 <p className="hero-subheadline">
-                  AI is changing every job. We show you exactly what that means for yours.
+                  Create your own workflow for your specific job.
                 </p>
                 <HeroButton />
               </div>

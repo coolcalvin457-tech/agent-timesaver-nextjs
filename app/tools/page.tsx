@@ -29,17 +29,6 @@ const tools = [
     cta: "Get Free Workflows →",
   },
   {
-    slug: "prompt-builder",
-    href: "/prompt-builder",
-    badgeClass: "tool-badge-paid",
-    label: "$4.99",
-    name: "AGENT: Prompt Builder",
-    tagline: "12 prompts built around your role. Ready to copy.",
-    description:
-      "Answer 4 questions about how you work. Get a personalized Prompt Kit: 12 ready-to-copy prompts organized by category, an AI Profile paragraph, and a Build Your AI System guide.",
-    cta: "Build My Prompt Kit →",
-  },
-  {
     slug: "budget-spreadsheets",
     href: "/budget-spreadsheets",
     badgeClass: "tool-badge-free",
@@ -49,6 +38,17 @@ const tools = [
     description:
       "Include categories, timeframes, and any numbers you have. Upload a previous example if available. The more detail, the better the results.",
     cta: "Build My Spreadsheet →",
+  },
+  {
+    slug: "prompt-builder",
+    href: "/prompt-builder",
+    badgeClass: "tool-badge-paid",
+    label: "$4.99",
+    name: "AGENT: Prompt Builder",
+    tagline: "12 prompts built around your role. Ready to copy.",
+    description:
+      "Answer 4 questions about how you work. Get a personalized Prompt Kit: 12 ready-to-copy prompts organized by category, an AI Profile paragraph, and a Build Your AI System guide.",
+    cta: "Build My Prompt Kit →",
   },
 ];
 

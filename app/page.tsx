@@ -54,7 +54,7 @@ export default function Home() {
               Imagine getting 5 to 10 hours back every week.
             </h2>
             <p className="dream-body">
-              No more agonizing over emails, meeting preps, follow-ups, or
+              No more agonizing over reports, meeting preps, follow-ups, or
               to-do lists. You&apos;ve heard about AI Agents.{" "}
               <strong>Here&apos;s how to begin with a few prompts.</strong>
             </p>

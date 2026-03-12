@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 export const metadata = {
   title: "AGENT: Budget Spreadsheets — promptaiagents.com",
   description:
-    "Downloads transfer to Google Sheets, Excel, and Numbers.",
+    "Describe your budget and get a formatted spreadsheet in seconds.",
 };
 
 export default function BudgetSpreadsheetsPage() {

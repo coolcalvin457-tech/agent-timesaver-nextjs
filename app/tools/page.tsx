@@ -47,7 +47,7 @@ const tools = [
     name: "AGENT: Budget Spreadsheets",
     tagline: "Describe your budget. Get a spreadsheet.",
     description:
-      "Tell the AI what you need in plain language — project budget, department budget, event, personal finance. It builds a complete, formatted, formula-filled .xlsx file you can open in Excel or Google Sheets and use right away.",
+      "Include categories, timeframes, and any numbers you have. Upload a previous example if available. The more detail, the better the results.",
     cta: "Build My Spreadsheet →",
   },
 ];

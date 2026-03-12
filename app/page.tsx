@@ -18,12 +18,14 @@ export default function Home() {
               {/* Left: copy */}
               <div className="hero-copy">
                 <h1 className="hero-headline">
-                  How to Actually Create Your Own AI Agent.
+                  How to Actually<br />
+                  Create Your<br />
+                  Own AI Agent.
                 </h1>
                 <p className="hero-subheadline">
-                  All the tools, prompts, and guides for non-technical
-                  professionals who want to implement AI into their
-                  specific workflows.
+                  All the tools, prompts, and guides non-technical
+                  professionals can use to automate their specific
+                  workflows.
                 </p>
                 <HeroButton />
               </div>

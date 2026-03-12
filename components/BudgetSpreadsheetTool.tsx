@@ -328,7 +328,7 @@ export default function BudgetSpreadsheetTool() {
           </div>
           <h2 className="bs-loading-title">Building your spreadsheet...</h2>
           <p className="bs-loading-sub">
-            Organizing line items, calculating formulas, and formatting your file.
+            Organizing line items, calculating formulas, formatting your file.
             This takes about 15 seconds.
           </p>
           <div className="bs-loading-bar">
@@ -426,10 +426,9 @@ export default function BudgetSpreadsheetTool() {
               <path d="M16 28l7 7L40 20" stroke="#1E7AB8" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
-          <h2 className="bs-ready-title">Check your inbox.</h2>
+          <h2 className="bs-ready-title">Your file was emailed and downloaded.</h2>
           <p className="bs-ready-sub">
-            We sent {budgetTitle} to {email}. It should arrive within a minute.
-            Your file also downloaded automatically — check your Downloads folder if you don&apos;t see it.
+            Check your downloads folder.
           </p>
           <button
             className="btn btn-primary btn-lg btn-full"

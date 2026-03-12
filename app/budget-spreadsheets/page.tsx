@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 export const metadata = {
   title: "AGENT: Budget Spreadsheets — promptaiagents.com",
   description:
-    "Describe your budget in plain language. Get a complete, formatted, formula-filled Excel spreadsheet ready to download in seconds.",
+    "Downloads transfer to Google Sheets, Excel, and Numbers.",
 };
 
 export default function BudgetSpreadsheetsPage() {
@@ -35,8 +35,7 @@ export default function BudgetSpreadsheetsPage() {
                 margin: "0 auto 48px",
               }}
             >
-              No templates. No manual setup. Tell the AI what you need and it builds
-              a complete, formatted .xlsx file you can open and use right away.
+              Describe what you need and get a formatted spreadsheet.
             </p>
             <div style={{ maxWidth: "640px", margin: "0 auto" }}>
               <BudgetSpreadsheetTool />

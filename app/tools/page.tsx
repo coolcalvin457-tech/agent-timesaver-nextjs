@@ -25,7 +25,7 @@ const tools = [
     name: "AGENT: Timesaver",
     tagline: "Find your 5 AI workflows in 5 minutes.",
     description:
-      "Start with your job title. Answer a few questions about how you work. Get 5 personalized AI workflows built for your exact role, plus an estimate of how many hours you could save each week.",
+      "Start with your job title. Answer a few questions. Get 5 personalized AI workflows built for your exact role, plus an estimate of how many hours you could save each week.",
     cta: "Get Free Workflows →",
   },
   {

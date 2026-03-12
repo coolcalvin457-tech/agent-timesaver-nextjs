@@ -324,7 +324,7 @@ export default function TimesaverTool() {
           </h1>
           <p className="screen-subheadline">
             Answer a few questions. Get 5 personalized AI workflows. See how
-            many hours you could save every week.
+            many hours you could save.
           </p>
 
           <div className="primer-box">

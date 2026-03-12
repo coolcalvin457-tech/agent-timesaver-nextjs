@@ -1251,7 +1251,7 @@ input, textarea {
 
 .hero-inner {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.2fr 1fr;
   gap: 64px;
   align-items: start;
 }
@@ -1268,7 +1268,7 @@ input, textarea {
 
 .hero-headline {
   font-family: var(--font-display);
-  font-size: clamp(3rem, 6vw, 5.5rem);
+  font-size: clamp(2.5rem, 5vw, 5rem);
   font-weight: 400;
   line-height: 1.05;
   letter-spacing: -0.01em;

@@ -320,18 +320,18 @@ export default function TimesaverTool() {
           <div className="tool-tag">AGENT: Timesaver</div>
 
           <h1 className="screen-headline">
-            Learn exactly how to leverage AI in your specific job.
+            See exactly where AI fits within your job.
           </h1>
           <p className="screen-subheadline">
-            Answer a few questions. Get 5 personalized AI workflows built for
-            your role. See how many hours you could save every week.
+            Answer a few questions. Get 5 personalized AI workflows. See how
+            many hours you could save every week.
           </p>
 
           <div className="primer-box">
             <div className="primer-label">⚡ AI Lesson #1</div>
             <p className="primer-body">
-              You get out what you put in. The more context you provide, the
-              more powerful it becomes. Answer honestly. Then watch what happens.
+              You get out what you put in. The more context you give, the more
+              specific your results.
             </p>
           </div>
 
@@ -353,8 +353,8 @@ export default function TimesaverTool() {
 
           <h1 className="screen-headline">What&apos;s your job title?</h1>
           <p className="screen-subheadline">
-            Be specific. &ldquo;Content Marketing Manager&rdquo; beats
-            &ldquo;Manager&rdquo; every time.
+            Be specific. &ldquo;Senior HR Business Partner&rdquo; beats
+            &ldquo;HR&rdquo; every time.
           </p>
 
           {error && (
@@ -432,12 +432,8 @@ export default function TimesaverTool() {
           </div>
 
           <p className="dynamic-note">
-            {state.path === "A"
-              ? "Path A: 2 follow-up questions."
-              : state.path === "B"
-              ? "Path B: 3 follow-up questions."
-              : "Path A: 2 follow-up questions. Path B: 3 follow-up questions."}{" "}
-            Same results screen either way.
+            Either path will lead to the same results. The only difference is a
+            couple follow-up questions.
           </p>
 
           <button
@@ -459,7 +455,7 @@ export default function TimesaverTool() {
 
           <h1 className="screen-headline">Upload or paste your job description.</h1>
           <p className="screen-subheadline">
-            Any format works. The more detail it has, the better your results.
+            The more detail, the better your results. Any format works.
           </p>
 
           {fileUploaded ? (
@@ -658,7 +654,7 @@ export default function TimesaverTool() {
           {/* Email Capture — primary */}
           {!state.emailSaved && (
             <div className="save-card">
-              <div className="save-card-headline">Want to save your results?</div>
+              <div className="save-card-headline">Save Results.</div>
               <div className="save-card-subline">
                 We&apos;ll send them straight to your inbox.
               </div>
@@ -690,7 +686,6 @@ export default function TimesaverTool() {
                     {emailError}
                   </div>
                 )}
-                <div className="trust-line">No spam. Just your results.</div>
               </form>
             </div>
           )}
@@ -732,7 +727,7 @@ export default function TimesaverTool() {
               onClick={() => go("gate")}
               type="button"
             >
-              Skip — show me what else I can unlock
+              No thanks, I&apos;ll keep exploring.
             </button>
           )}
         </div>
@@ -744,15 +739,15 @@ export default function TimesaverTool() {
           <div className="tool-tag">AGENT: Timesaver</div>
 
           <div className="gate-card">
-            <div className="gate-headline">Want to go further?</div>
-            <div className="gate-subline">Join free and get access to:</div>
+            <div className="gate-headline">Your AI Library is waiting.</div>
+            <div className="gate-subline">Free access to:</div>
 
             <ul className="gate-perks">
               {[
-                "Workflows for more AI tools including Notion AI, Gemini, and Perplexity",
+                "Workflows for specific AI tools",
                 "Results for any role or industry",
                 "Written guides and tutorials, updated weekly",
-                "The community — ask questions, share wins, stay sharp",
+                "A community of eager AI learners just like you",
               ].map((perk, i) => (
                 <li key={i} className="gate-perk">
                   <span className="perk-check">✓</span>
@@ -772,11 +767,8 @@ export default function TimesaverTool() {
                   required
                 />
                 <button className="btn btn-primary" type="submit">
-                  Get Free Access →
+                  Join Now →
                 </button>
-              </div>
-              <div className="trust-line">
-                No spam. Just useful AI content, delivered with purpose.
               </div>
             </form>
           </div>
@@ -800,18 +792,17 @@ export default function TimesaverTool() {
           <div className="confirm-icon">✅</div>
           <div className="confirm-headline">You&apos;re in.</div>
           <p className="confirm-subline">
-            Check your inbox — your results and full workflow breakdown are on
-            their way. Here&apos;s where to go next.
+            Check your inbox. Results are on the way.
           </p>
 
           <div className="next-steps">
             <div className="next-step next-step-disabled">
               <span className="step-num">1</span>
-              Community — coming soon
+              Community: coming soon
             </div>
             <a href={GUIDES_URL} className="next-step">
               <span className="step-num">2</span>
-              Browse the hub and start with our beginner AI guide
+              Browse the website and find other helpful resources
             </a>
             <a href="#tool" className="next-step" onClick={() => {
               setState((s) => ({
@@ -840,8 +831,8 @@ export default function TimesaverTool() {
           </div>
 
           <div className="confirm-cta-group">
-            <a href={GUIDES_URL} className="btn btn-primary btn-full">
-              Browse the Hub →
+            <a href="/" className="btn btn-primary btn-full">
+              Return to Homepage →
             </a>
           </div>
         </div>

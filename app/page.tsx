@@ -23,9 +23,7 @@ export default function Home() {
                   Own AI Agent.
                 </h1>
                 <p className="hero-subheadline">
-                  All the tools, prompts, and guides non-technical
-                  professionals can use to automate their specific
-                  workflows.
+                  Tools, prompts, and guides for people who want to be more efficient.
                 </p>
                 <HeroButton />
               </div>
@@ -54,9 +52,9 @@ export default function Home() {
               Imagine getting 5 to 10 hours back every week.
             </h2>
             <p className="dream-body">
-              No more agonizing over reports, meeting preps, follow-ups, or
-              to-do lists. You&apos;ve heard about AI Agents.{" "}
-              <strong>Here&apos;s how to begin with a few prompts.</strong>
+              Setting up personalized AI workflows is now within reach. Reports,
+              meeting preps, follow-ups, you name it. Here&apos;s how to begin
+              with a few simple prompts.
             </p>
           </div>
         </section>
@@ -86,10 +84,9 @@ export default function Home() {
                     marginBottom: "32px",
                   }}
                 >
-                  Answer a few questions about your job and daily workflow.
-                  Walk away with 12 ready-to-use prompts, a personal AI
-                  Profile, and a step-by-step guide to building your own AI
-                  system.
+                  Answer a few questions about your job. Walk away with 12
+                  ready-to-use prompts, a personal AI Profile, and a
+                  step-by-step guide for building your own AI system.
                 </p>
                 <a href="/prompt-builder" className="btn btn-primary btn-lg">
                   Get Started →
@@ -158,18 +155,17 @@ export default function Home() {
               </div>
               <div>
                 <h2 className="guide-headline">
-                  I&apos;m Calvin. I figured this out the hard way so you
+                  Hi, I&apos;m Calvin. I figured this out the hard way, so you
                   don&apos;t have to.
                 </h2>
                 <p className="guide-body">
-                  I came from basketball coaching, not software. No technical
-                  background. No shortcuts. I spent 6 months teaching myself how
-                  AI agents actually work and how to use them in real work, not
-                  just demos.
+                  I used to teach history and coach basketball. No technical
+                  background. Nothing to do with software. I spent 6 months
+                  learning how AI agents actually work.
                 </p>
                 <p className="guide-body">
-                  Now I translate everything I learned into plain language so you
-                  can skip the frustrating part and start saving real time.
+                  Now I&apos;m sharing what I know to help others apply AI to
+                  their specific jobs, without starting from scratch.
                 </p>
                 <p className="guide-kicker">
                   If a basketball coach can figure this out, so can you.
@@ -254,8 +250,7 @@ export default function Home() {
                 <div className="step-headline">Watch the hours add up.</div>
                 <p className="step-body">
                   Each workflow you adopt gives you back time you can reinvest.
-                  That&apos;s how busy people build leverage — one hour at a
-                  time.
+                  That&apos;s how busy people build leverage. One hour at a time.
                 </p>
               </div>
             </div>

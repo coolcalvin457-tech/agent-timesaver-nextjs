@@ -117,9 +117,9 @@ export default function Home() {
                 <div className="kit-item">
                   <div className="kit-item-check">✓</div>
                   <div className="kit-item-text">
-                    <strong>Your AI Profile.</strong> Add it to ChatGPT, Claude,
-                    or Gemini&apos;s memory so that every conversation begins
-                    with your full context.
+                    <strong>Your AI Profile.</strong> Add to ChatGPT, Claude, or
+                    Gemini&apos;s memory so every conversation begins with full
+                    context.
                   </div>
                 </div>
 

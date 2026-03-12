@@ -48,17 +48,13 @@ export default function Home() {
         {/* ── Section 2: Dream / Aspiration ───────────────────────────── */}
         <section className="section section-dark" id="dream">
           <div className="container-narrow">
-            <div className="eyebrow eyebrow-light">Take back your time.</div>
             <h2 className="heading-1" style={{ color: "#fff", marginBottom: "24px" }}>
               Imagine getting 5 to 10 hours back every week.
             </h2>
             <p className="dream-body">
-              No more agonizing over emails, reports, meeting preps, follow-ups,
-              or to-do lists. You don&apos;t have to be technical to get there.
-              Just think about what you&apos;d do with all that extra time.{" "}
-              <strong>Now you know what&apos;s possible.</strong>
-              <br />
-              <strong>Let me show you where to begin.</strong>
+              No more agonizing over emails, meeting preps, follow-ups, or
+              to-do lists. You&apos;ve heard about AI Agents.{" "}
+              <strong>Let me show you how to begin with a few prompts.</strong>
             </p>
           </div>
         </section>

@@ -86,7 +86,7 @@ export default function Home() {
                 >
                   Answer a few questions about your job. Walk away with 12
                   ready-to-use prompts, a personal AI Profile, and a
-                  step-by-step guide for building your own AI system.
+                  step-by-step guide for building an AI system.
                 </p>
                 <a href="/prompt-builder" className="btn btn-primary btn-lg">
                   Get Started →
@@ -117,8 +117,8 @@ export default function Home() {
                 <div className="kit-item">
                   <div className="kit-item-check">✓</div>
                   <div className="kit-item-text">
-                    <strong>Your AI Profile paragraph.</strong> Paste it into
-                    ChatGPT, Claude, or Gemini and every conversation starts
+                    <strong>Your AI Profile.</strong> Add it to ChatGPT, Claude,
+                    or Gemini&apos;s memory so that every conversation begins
                     with your full context.
                   </div>
                 </div>

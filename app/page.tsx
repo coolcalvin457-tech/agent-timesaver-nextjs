@@ -56,7 +56,7 @@ export default function Home() {
             <p className="dream-body">
               No more agonizing over emails, meeting preps, follow-ups, or
               to-do lists. You&apos;ve heard about AI Agents.{" "}
-              <strong>Let me show you how to begin with a few prompts.</strong>
+              <strong>Here&apos;s how to begin with a few prompts.</strong>
             </p>
           </div>
         </section>

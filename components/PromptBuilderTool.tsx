@@ -240,19 +240,18 @@ export default function PromptBuilderTool({ paymentStatus, sessionId }: Props) {
         <div className="screen">
           <p className="tool-tag">AGENT: Prompt Builder</p>
           <h1 className="screen-headline">
-            Build your personal AI&nbsp;Prompt Kit.
+            Build your own AI Prompt Kit.
           </h1>
           <p className="screen-subheadline">
-            Answer 4 quick questions. Get 12 ready-to-copy AI prompts built
-            around your exact job and how you actually work.
+            Answer 4 questions. Get 12 AI prompts built around your exact job.
           </p>
 
           <div className="pb-perks">
             {[
-              "12 prompts personalized to your job title",
-              "Organized by category — writing, analysis, planning and more",
-              "One-click copy. Paste into ChatGPT or Claude and go.",
-              "Emailed to you so you keep it forever",
+              "Personalized prompts.",
+              "Organized by category (writing, analysis, future planning, and more).",
+              "One-click copy. Paste into ChatGPT, Claude, or Gemini.",
+              "Sent to your inbox so you always have it.",
             ].map((perk) => (
               <div key={perk} className="pb-perk">
                 <span className="perk-check">✓</span>
@@ -263,7 +262,7 @@ export default function PromptBuilderTool({ paymentStatus, sessionId }: Props) {
 
           <div className="pb-price-row">
             <span className="pb-price">$4.99</span>
-            <span className="pb-price-note">One time · No subscription</span>
+            <span className="pb-price-note">One time purchase</span>
           </div>
 
           <button
@@ -272,16 +271,6 @@ export default function PromptBuilderTool({ paymentStatus, sessionId }: Props) {
           >
             Build My Prompt Kit →
           </button>
-          <p
-            style={{
-              marginTop: "12px",
-              fontSize: "0.8125rem",
-              color: "var(--text-muted)",
-              textAlign: "center",
-            }}
-          >
-            Takes about 2 minutes
-          </p>
         </div>
       </div>
     );
@@ -296,10 +285,6 @@ export default function PromptBuilderTool({ paymentStatus, sessionId }: Props) {
           <ProgressBar />
           <p className="step-label">Question 1 of 4</p>
           <p className="question-stem">What&apos;s your job title?</p>
-          <p className="question-subheadline">
-            Be specific. &ldquo;Senior HR Manager&rdquo; is better than
-            &ldquo;HR.&rdquo;
-          </p>
           <input
             type="text"
             className="input"
@@ -342,7 +327,6 @@ export default function PromptBuilderTool({ paymentStatus, sessionId }: Props) {
           <p className="question-stem">
             What best describes most of your work?
           </p>
-          <p className="question-subheadline">Pick the one that fits closest.</p>
           <div className="choices">
             {WORK_TYPES.map((option) => (
               <button
@@ -407,10 +391,7 @@ export default function PromptBuilderTool({ paymentStatus, sessionId }: Props) {
           <ProgressBar />
           <p className="step-label">Question 3 of 4</p>
           <p className="question-stem">
-            How do you currently use AI tools like ChatGPT or Claude?
-          </p>
-          <p className="question-subheadline">
-            Be honest — this helps us calibrate your prompts.
+            How do you currently use AI tools like ChatGPT, Claude, or Gemini?
           </p>
           <div className="choices">
             {AI_USAGE_OPTIONS.map((option) => (
@@ -476,10 +457,7 @@ export default function PromptBuilderTool({ paymentStatus, sessionId }: Props) {
           <ProgressBar />
           <p className="step-label">Question 4 of 4</p>
           <p className="question-stem">
-            What feels hardest about using AI right now?
-          </p>
-          <p className="question-subheadline">
-            This is how we make your prompts actually solve something.
+            Is there anything you&apos;ve found challenging about using AI?
           </p>
           {error && (
             <p

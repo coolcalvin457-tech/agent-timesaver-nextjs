@@ -31,9 +31,7 @@ export default function GuidesPage() {
                 maxWidth: "480px",
               }}
             >
-              Practical AI tutorials and workflow guides are on the way.
-              We&apos;re building them to be short, specific, and actually useful —
-              no fluff.
+              Practical AI guides built around real work situations. Built for real jobs. Not demos.
             </p>
           </div>
 
@@ -45,6 +43,7 @@ export default function GuidesPage() {
               borderRadius: "var(--radius-card)",
               padding: "32px",
               marginBottom: "32px",
+              textAlign: "center",
             }}
           >
             <div
@@ -54,21 +53,9 @@ export default function GuidesPage() {
                 letterSpacing: "0.08em",
                 textTransform: "uppercase",
                 color: "var(--brand)",
-                marginBottom: "12px",
               }}
             >
-              Coming soon
-            </div>
-            <div
-              style={{
-                fontSize: "1rem",
-                color: "var(--text-secondary)",
-                lineHeight: 1.7,
-              }}
-            >
-              In the meantime, the best way to stay in the loop is to get your
-              personalized AI workflows from the tool — then keep an eye on your
-              inbox for guides tailored to your role.
+              Coming Soon
             </div>
           </div>
 
@@ -78,7 +65,7 @@ export default function GuidesPage() {
               Try AGENT: Timesaver →
             </a>
             <a href="/" className="btn btn-outline btn-full">
-              ← Back to home
+              Back to homepage
             </a>
           </div>
         </div>

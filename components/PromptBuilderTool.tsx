@@ -513,6 +513,9 @@ export default function PromptBuilderTool() {
           <p className="loading-subline">
             Personalizing 12 prompts for {jobTitle || "your role"}
           </p>
+          <p className="loading-subline" style={{ marginTop: "8px" }}>
+            About 20 seconds.
+          </p>
         </div>
       </div>
     );
@@ -524,7 +527,7 @@ export default function PromptBuilderTool() {
       <div className="tool-container">
         <div className="screen">
           <p className="tool-tag">AGENT: Prompt Builder</p>
-          <p className="results-tag">Your Prompt Kit is ready.</p>
+          <p className="results-tag">Congrats! Your Prompt Kit is ready.</p>
           <h2 className="results-headline">
             12 prompts built for {jobTitle}.
           </h2>
@@ -553,7 +556,6 @@ export default function PromptBuilderTool() {
                 {emailLoading ? "Loading..." : "See My Results →"}
               </button>
             </div>
-            <p className="trust-line">Your results are ready. Just enter your email to access them.</p>
           </div>
         </div>
       </div>

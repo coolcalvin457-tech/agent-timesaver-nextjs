@@ -67,9 +67,6 @@ export default function Home() {
 
               {/* Left: copy */}
               <div>
-                <div style={{ marginBottom: "20px" }}>
-                  <span className="price-badge">$4.99 · one-time purchase</span>
-                </div>
                 <h2
                   className="heading-1"
                   style={{ marginBottom: "16px", maxWidth: "440px" }}
@@ -91,15 +88,6 @@ export default function Home() {
                 <a href="/prompt-builder" className="btn btn-primary btn-lg">
                   Get Started →
                 </a>
-                <p
-                  style={{
-                    marginTop: "14px",
-                    fontSize: "0.875rem",
-                    color: "var(--text-muted)",
-                  }}
-                >
-                  One-time payment. No subscription. Yours to keep.
-                </p>
               </div>
 
               {/* Right: kit preview card */}

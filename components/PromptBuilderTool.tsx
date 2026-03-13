@@ -221,6 +221,9 @@ export default function PromptBuilderTool() {
           <ProgressBar />
           <p className="step-label">Question 1 of 4</p>
           <p className="question-stem">What&apos;s your job title?</p>
+          <p className="question-subheadline">
+            Be specific. &ldquo;Senior HR Business Partner&rdquo; is better than &ldquo;HR.&rdquo;
+          </p>
           <input
             type="text"
             className="input"

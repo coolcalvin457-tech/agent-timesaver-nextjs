@@ -31,9 +31,8 @@ export default function CommunityPage() {
                 maxWidth: "480px",
               }}
             >
-              A place to ask questions, share wins, and learn alongside other
-              professionals figuring out AI at work. We&apos;re building it the
-              right way.
+              A place where professionals share what&apos;s working with AI.
+              Real-life, applicable examples.
             </p>
           </div>
 
@@ -45,6 +44,7 @@ export default function CommunityPage() {
               borderRadius: "var(--radius-card)",
               padding: "32px",
               marginBottom: "32px",
+              textAlign: "center",
             }}
           >
             <div
@@ -54,21 +54,9 @@ export default function CommunityPage() {
                 letterSpacing: "0.08em",
                 textTransform: "uppercase",
                 color: "var(--brand)",
-                marginBottom: "12px",
               }}
             >
-              Coming soon
-            </div>
-            <div
-              style={{
-                fontSize: "1rem",
-                color: "var(--text-secondary)",
-                lineHeight: 1.7,
-              }}
-            >
-              In the meantime, start with the free tools and get your first
-              AI workflows built. The community will be here when you&apos;re
-              ready to go deeper.
+              Coming Soon
             </div>
           </div>
 
@@ -78,7 +66,7 @@ export default function CommunityPage() {
               Try AGENT: Timesaver →
             </a>
             <a href="/" className="btn btn-outline btn-full">
-              ← Back to home
+              Back to homepage
             </a>
           </div>
         </div>

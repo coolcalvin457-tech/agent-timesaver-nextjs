@@ -54,7 +54,7 @@ export default function Home() {
             <p className="dream-body">
               Setting up personalized AI workflows is now within reach. Reports,
               meeting preps, follow-ups, you name it. Here&apos;s how to begin
-              with a few simple prompts.
+              with a few prompts.
             </p>
           </div>
         </section>

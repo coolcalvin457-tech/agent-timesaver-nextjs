@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import type { PromptKitResponse } from "@/app/api/prompt-kit/route";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -26,107 +26,59 @@ const CHALLENGES = [
   "I'm not sure which AI tool to use for what",
 ];
 
-const SESSION_KEY = "promptKit";
-
-type Screen = "intro" | "q1" | "q2" | "q3" | "q4" | "loading" | "paywall" | "results";
+type Screen = "intro" | "q1" | "q2" | "q3" | "q4" | "loading" | "email-gate" | "results";
 const QUESTION_SCREENS: Screen[] = ["q1", "q2", "q3", "q4"];
 
-// ─── Props ─────────────────────────────────────────────────────────────────────
-interface Props {
-  paymentStatus?: string; // "success" | "cancelled" | undefined
-  sessionId?: string;
+const PREV_SCREEN: Partial<Record<Screen, Screen>> = {
+  q1: "intro",
+  q2: "q1",
+  q3: "q2",
+  q4: "q3",
+};
+
+// ─── Back Button ───────────────────────────────────────────────────────────────
+function BackButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      style={{
+        background: "none",
+        border: "none",
+        color: "var(--text-muted, #888886)",
+        fontSize: "0.8125rem",
+        cursor: "pointer",
+        padding: "0",
+        marginBottom: "20px",
+        display: "flex",
+        alignItems: "center",
+        gap: "4px",
+        opacity: 0.7,
+      }}
+    >
+      ← Back
+    </button>
+  );
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
-export default function PromptBuilderTool({ paymentStatus, sessionId }: Props) {
-  // If returning from Stripe, start on loading while we verify
-  const initialScreen: Screen =
-    paymentStatus === "success" && sessionId ? "loading" : "intro";
-
-  const [screen, setScreen] = useState<Screen>(initialScreen);
+export default function PromptBuilderTool() {
+  const [screen, setScreen] = useState<Screen>("intro");
   const [jobTitle, setJobTitle] = useState("");
   const [workType, setWorkType] = useState("");
   const [aiUsage, setAiUsage] = useState("");
   const [challenge, setChallenge] = useState("");
   const [promptKit, setPromptKit] = useState<PromptKitResponse | null>(null);
   const [email, setEmail] = useState("");
-  const [emailSubmitted, setEmailSubmitted] = useState(false);
   const [emailLoading, setEmailLoading] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [showWriteIn, setShowWriteIn] = useState(false);
   const [writeInValue, setWriteInValue] = useState("");
-  const [checkoutLoading, setCheckoutLoading] = useState(false);
-  const [paymentError, setPaymentError] = useState("");
 
-  // ── Handle return from Stripe ───────────────────────────────────
-  useEffect(() => {
-    if (paymentStatus === "success" && sessionId) {
-      // Load the saved kit from sessionStorage
-      const stored =
-        typeof window !== "undefined"
-          ? sessionStorage.getItem(SESSION_KEY)
-          : null;
-
-      if (!stored) {
-        // Edge case: sessionStorage was cleared (e.g. different browser).
-        // Can't show results without the data — send back to start.
-        setScreen("intro");
-        return;
-      }
-
-      const savedKit = JSON.parse(stored) as {
-        kit: PromptKitResponse;
-        jobTitle: string;
-      };
-
-      // Verify payment server-side before showing results
-      fetch(`/api/verify-payment?session_id=${sessionId}`)
-        .then((r) => r.json())
-        .then((data) => {
-          if (data.verified) {
-            setPromptKit(savedKit.kit);
-            setJobTitle(savedKit.jobTitle);
-            // Clear stored kit now that we've consumed it
-            sessionStorage.removeItem(SESSION_KEY);
-            setScreen("results");
-          } else {
-            // Payment not confirmed — show paywall again
-            setPromptKit(savedKit.kit);
-            setJobTitle(savedKit.jobTitle);
-            setPaymentError("Payment could not be verified. Please try again.");
-            setScreen("paywall");
-          }
-        })
-        .catch(() => {
-          setPromptKit(savedKit.kit);
-          setJobTitle(savedKit.jobTitle);
-          setPaymentError("Something went wrong verifying your payment. Please try again.");
-          setScreen("paywall");
-        });
-
-      return;
-    }
-
-    if (paymentStatus === "cancelled") {
-      // User cancelled at Stripe — reload their kit and show paywall again
-      const stored =
-        typeof window !== "undefined"
-          ? sessionStorage.getItem(SESSION_KEY)
-          : null;
-      if (stored) {
-        const savedKit = JSON.parse(stored) as {
-          kit: PromptKitResponse;
-          jobTitle: string;
-        };
-        setPromptKit(savedKit.kit);
-        setJobTitle(savedKit.jobTitle);
-        setScreen("paywall");
-      } else {
-        setScreen("intro");
-      }
-    }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  // File upload state
+  const [jobDescFile, setJobDescFile] = useState<File | null>(null);
+  const [jobDescText, setJobDescText] = useState("");
 
   // ── Helpers ────────────────────────────────────────────────────
   const progressIndex = QUESTION_SCREENS.indexOf(screen);
@@ -141,6 +93,25 @@ export default function PromptBuilderTool({ paymentStatus, sessionId }: Props) {
     setWriteInValue("");
   };
 
+  const goBack = (from: Screen) => {
+    const prev = PREV_SCREEN[from];
+    if (prev) {
+      resetWriteIn();
+      setScreen(prev);
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setJobDescFile(file);
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      setJobDescText((ev.target?.result as string) || "");
+    };
+    reader.readAsText(file);
+  };
+
   const handleGenerate = async (finalChallenge: string) => {
     setScreen("loading");
     setError("");
@@ -153,47 +124,16 @@ export default function PromptBuilderTool({ paymentStatus, sessionId }: Props) {
           workType,
           aiUsage,
           challenge: finalChallenge,
+          jobDescription: jobDescText || undefined,
         }),
       });
       if (!res.ok) throw new Error("API error");
       const data: PromptKitResponse = await res.json();
       setPromptKit(data);
-
-      // Save kit to sessionStorage so it survives the Stripe redirect
-      if (typeof window !== "undefined") {
-        sessionStorage.setItem(
-          SESSION_KEY,
-          JSON.stringify({ kit: data, jobTitle })
-        );
-      }
-
-      // Show paywall before revealing results
-      setScreen("paywall");
+      setScreen("email-gate");
     } catch {
       setError("Something went wrong. Please try again.");
       setScreen("q4");
-    }
-  };
-
-  const handleCheckout = async () => {
-    setCheckoutLoading(true);
-    setPaymentError("");
-    try {
-      const res = await fetch("/api/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ jobTitle }),
-      });
-      if (!res.ok) throw new Error("Checkout API error");
-      const { url } = await res.json();
-      if (url) {
-        window.location.href = url;
-      } else {
-        throw new Error("No checkout URL returned");
-      }
-    } catch {
-      setPaymentError("Something went wrong. Please try again.");
-      setCheckoutLoading(false);
     }
   };
 
@@ -204,18 +144,18 @@ export default function PromptBuilderTool({ paymentStatus, sessionId }: Props) {
   };
 
   const handleEmailSubmit = async () => {
-    if (!email || !promptKit) return;
+    if (!email.trim() || !promptKit) return;
     setEmailLoading(true);
-    try {
-      await fetch("/api/prompt-kit-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, jobTitle, promptKit }),
-      });
-    } catch {
-      // Fail silently — email is a nice-to-have, not a blocker
-    }
-    setEmailSubmitted(true);
+
+    // Fire email in background — don't block showing results
+    fetch("/api/prompt-kit-email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, jobTitle, promptKit }),
+    }).catch(() => {}); // Fail silently
+
+    // Show results immediately
+    setScreen("results");
     setEmailLoading(false);
   };
 
@@ -260,11 +200,6 @@ export default function PromptBuilderTool({ paymentStatus, sessionId }: Props) {
             ))}
           </div>
 
-          <div className="pb-price-row">
-            <span className="pb-price">$4.99</span>
-            <span className="pb-price-note">One time purchase</span>
-          </div>
-
           <button
             className="btn btn-primary btn-full btn-lg"
             onClick={() => setScreen("q1")}
@@ -282,6 +217,7 @@ export default function PromptBuilderTool({ paymentStatus, sessionId }: Props) {
       <div className="tool-container">
         <div className="screen">
           <p className="tool-tag">AGENT: Prompt Builder</p>
+          <BackButton onClick={() => goBack("q1")} />
           <ProgressBar />
           <p className="step-label">Question 1 of 4</p>
           <p className="question-stem">What&apos;s your job title?</p>
@@ -296,9 +232,61 @@ export default function PromptBuilderTool({ paymentStatus, sessionId }: Props) {
             }
             autoFocus
           />
+
+          {/* Optional file upload */}
+          <div style={{ marginTop: "20px" }}>
+            <p
+              style={{
+                fontSize: "0.8125rem",
+                color: "var(--text-muted, #888886)",
+                marginBottom: "8px",
+              }}
+            >
+              Optional: upload a job description for more specific prompts
+            </p>
+            <label
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                cursor: "pointer",
+                fontSize: "0.875rem",
+                color: jobDescFile ? "var(--cta, #1E7AB8)" : "var(--text-secondary, #555553)",
+                background: "var(--surface-alt, #f0f0ee)",
+                border: "1px solid var(--border, #e4e4e2)",
+                borderRadius: "8px",
+                padding: "8px 14px",
+              }}
+            >
+              <input
+                type="file"
+                accept=".txt,.md"
+                style={{ display: "none" }}
+                onChange={handleFileChange}
+              />
+              {jobDescFile ? `✓ ${jobDescFile.name}` : "Choose file (.txt)"}
+            </label>
+            {jobDescFile && (
+              <button
+                type="button"
+                onClick={() => { setJobDescFile(null); setJobDescText(""); }}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "var(--text-muted, #888886)",
+                  fontSize: "0.8125rem",
+                  cursor: "pointer",
+                  marginLeft: "10px",
+                }}
+              >
+                Remove
+              </button>
+            )}
+          </div>
+
           <button
             className="btn btn-primary btn-full"
-            style={{ marginTop: "16px" }}
+            style={{ marginTop: "20px" }}
             onClick={() => setScreen("q2")}
             disabled={!jobTitle.trim()}
           >
@@ -322,6 +310,7 @@ export default function PromptBuilderTool({ paymentStatus, sessionId }: Props) {
       <div className="tool-container">
         <div className="screen">
           <p className="tool-tag">AGENT: Prompt Builder</p>
+          <BackButton onClick={() => goBack("q2")} />
           <ProgressBar />
           <p className="step-label">Question 2 of 4</p>
           <p className="question-stem">
@@ -345,16 +334,13 @@ export default function PromptBuilderTool({ paymentStatus, sessionId }: Props) {
           </div>
           {showWriteIn ? (
             <>
-              <input
-                type="text"
+              <textarea
                 className="input"
-                style={{ marginBottom: "12px" }}
+                rows={4}
+                style={{ marginBottom: "12px", resize: "vertical" }}
                 placeholder="Describe your work in a few words..."
                 value={writeInValue}
                 onChange={(e) => setWriteInValue(e.target.value)}
-                onKeyDown={(e) =>
-                  e.key === "Enter" && writeInValue.trim() && advanceQ2(writeInValue.trim())
-                }
                 autoFocus
               />
               <button
@@ -388,6 +374,7 @@ export default function PromptBuilderTool({ paymentStatus, sessionId }: Props) {
       <div className="tool-container">
         <div className="screen">
           <p className="tool-tag">AGENT: Prompt Builder</p>
+          <BackButton onClick={() => goBack("q3")} />
           <ProgressBar />
           <p className="step-label">Question 3 of 4</p>
           <p className="question-stem">
@@ -411,16 +398,13 @@ export default function PromptBuilderTool({ paymentStatus, sessionId }: Props) {
           </div>
           {showWriteIn ? (
             <>
-              <input
-                type="text"
+              <textarea
                 className="input"
-                style={{ marginBottom: "12px" }}
+                rows={4}
+                style={{ marginBottom: "12px", resize: "vertical" }}
                 placeholder="Describe your current AI usage..."
                 value={writeInValue}
                 onChange={(e) => setWriteInValue(e.target.value)}
-                onKeyDown={(e) =>
-                  e.key === "Enter" && writeInValue.trim() && advanceQ3(writeInValue.trim())
-                }
                 autoFocus
               />
               <button
@@ -454,6 +438,7 @@ export default function PromptBuilderTool({ paymentStatus, sessionId }: Props) {
       <div className="tool-container">
         <div className="screen">
           <p className="tool-tag">AGENT: Prompt Builder</p>
+          <BackButton onClick={() => goBack("q4")} />
           <ProgressBar />
           <p className="step-label">Question 4 of 4</p>
           <p className="question-stem">
@@ -488,16 +473,13 @@ export default function PromptBuilderTool({ paymentStatus, sessionId }: Props) {
           </div>
           {showWriteIn ? (
             <>
-              <input
-                type="text"
+              <textarea
                 className="input"
-                style={{ marginBottom: "12px" }}
+                rows={4}
+                style={{ marginBottom: "12px", resize: "vertical" }}
                 placeholder="Describe your biggest challenge with AI..."
                 value={writeInValue}
                 onChange={(e) => setWriteInValue(e.target.value)}
-                onKeyDown={(e) =>
-                  e.key === "Enter" && writeInValue.trim() && advanceQ4(writeInValue.trim())
-                }
                 autoFocus
               />
               <button
@@ -533,15 +515,8 @@ export default function PromptBuilderTool({ paymentStatus, sessionId }: Props) {
     );
   }
 
-  // ── Screen: Paywall ────────────────────────────────────────────
-  if (screen === "paywall" && promptKit) {
-    // Pull 3 prompts across 2 categories for the blurred teaser
-    const previewPrompts = [
-      promptKit.categories[0]?.prompts[0],
-      promptKit.categories[0]?.prompts[1],
-      promptKit.categories[1]?.prompts[0],
-    ].filter(Boolean);
-
+  // ── Screen: Email Gate ─────────────────────────────────────────
+  if (screen === "email-gate" && promptKit) {
     return (
       <div className="tool-container">
         <div className="screen">
@@ -550,60 +525,32 @@ export default function PromptBuilderTool({ paymentStatus, sessionId }: Props) {
           <h2 className="results-headline">
             12 prompts built for {jobTitle}.
           </h2>
+          <p className="screen-subheadline" style={{ marginBottom: "28px" }}>
+            Enter your email to access your results. We&apos;ll send a copy to your inbox so you always have it.
+          </p>
 
-          {/* ── CTA box — fully visible above the fold ── */}
-          <div className="pb-paywall-box">
-            <div className="pb-paywall-box-header">
-              <span className="pb-lock-icon-sm">🔒</span>
-              <p className="pb-paywall-headline">Unlock your full Prompt Kit</p>
+          <div className="save-card">
+            <div className="email-row">
+              <input
+                type="email"
+                className="input"
+                placeholder="your@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                onKeyDown={(e) =>
+                  e.key === "Enter" && !emailLoading && email.trim() && handleEmailSubmit()
+                }
+                autoFocus
+              />
+              <button
+                className="btn btn-primary"
+                onClick={handleEmailSubmit}
+                disabled={emailLoading || !email.trim()}
+              >
+                {emailLoading ? "Loading..." : "See My Results →"}
+              </button>
             </div>
-
-            <div className="pb-paywall-perks">
-              {[
-                `12 prompts personalized to ${jobTitle}`,
-                "AI Profile paragraph — paste once, every chat gets better",
-                "Build Your AI System guide",
-                "Emailed to you so you keep it forever",
-              ].map((perk) => (
-                <div key={perk} className="pb-perk pb-paywall-perk">
-                  <span className="perk-check perk-check-dark">✓</span>
-                  <span>{perk}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="pb-paywall-price-row">
-              <span className="pb-paywall-price">$4.99</span>
-              <span className="pb-paywall-price-note">One time · No subscription</span>
-            </div>
-
-            <button
-              className="btn btn-primary btn-full btn-lg"
-              onClick={handleCheckout}
-              disabled={checkoutLoading}
-            >
-              {checkoutLoading ? "Redirecting to checkout..." : "Unlock My Prompt Kit →"}
-            </button>
-
-            {paymentError && (
-              <p className="pb-paywall-error">{paymentError}</p>
-            )}
-
-            <p className="pb-paywall-trust">Secure checkout via Stripe</p>
-          </div>
-
-          {/* ── Blurred preview — teaser below CTA ── */}
-          <p className="pb-paywall-peek-label">Here&apos;s a peek at what&apos;s inside:</p>
-          <div className="pb-paywall-blur-wrap" aria-hidden="true">
-            {previewPrompts.map((prompt, i) => prompt && (
-              <div key={i} className="pb-prompt-card">
-                <p className="pb-prompt-title">{prompt.title}</p>
-                <div className="pb-prompt-text-wrapper">
-                  <p className="pb-prompt-text">{prompt.prompt}</p>
-                </div>
-                <p className="pb-prompt-why">{prompt.why}</p>
-              </div>
-            ))}
+            <p className="trust-line">Your results are ready. Just enter your email to access them.</p>
           </div>
         </div>
       </div>
@@ -745,43 +692,6 @@ export default function PromptBuilderTool({ paymentStatus, sessionId }: Props) {
                 <li><strong>Any tool:</strong> Paste at the top of your first message in any new chat</li>
               </ul>
             </div>
-          </div>
-
-          {/* Email capture */}
-          <div className="save-card" style={{ marginTop: "32px" }}>
-            {!emailSubmitted ? (
-              <>
-                <p className="save-card-headline">Email me my Prompt Kit</p>
-                <p className="save-card-subline">
-                  Get a clean copy in your inbox so you always have it.
-                </p>
-                <div className="email-row">
-                  <input
-                    type="email"
-                    className="input"
-                    placeholder="your@email.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    onKeyDown={(e) =>
-                      e.key === "Enter" && !emailLoading && handleEmailSubmit()
-                    }
-                  />
-                  <button
-                    className="btn btn-primary"
-                    onClick={handleEmailSubmit}
-                    disabled={emailLoading || !email}
-                  >
-                    {emailLoading ? "Sending..." : "Send"}
-                  </button>
-                </div>
-                <p className="trust-line">No spam. Just your results.</p>
-              </>
-            ) : (
-              <div className="upload-success">
-                <span>✓</span>
-                Sent! Check your inbox for your Prompt Kit.
-              </div>
-            )}
           </div>
         </div>
       </div>

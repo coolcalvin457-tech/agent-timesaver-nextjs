@@ -42,8 +42,8 @@ const tools = [
   {
     slug: "prompt-builder",
     href: "/prompt-builder",
-    badgeClass: "tool-badge-paid",
-    label: "$4.99",
+    badgeClass: "tool-badge-free",
+    label: "Free",
     name: "AGENT: Prompt Builder",
     tagline: "12 prompts built around your role. Ready to copy.",
     description:

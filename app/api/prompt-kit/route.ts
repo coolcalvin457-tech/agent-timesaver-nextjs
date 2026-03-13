@@ -122,7 +122,8 @@ async function generatePromptKit(
   jobTitle: string,
   workType: string,
   aiUsage: string,
-  challenge: string
+  challenge: string,
+  jobDescription?: string
 ): Promise<PromptKitResponse> {
   const Anthropic = (await import("@anthropic-ai/sdk")).default;
   const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
@@ -134,7 +135,7 @@ async function generatePromptKit(
 Job Title: "${jobTitle}"
 Main work type: "${workType}"
 Current AI usage: "${aiUsage}"
-Biggest challenge with AI: "${challenge}"
+Biggest challenge with AI: "${challenge}"${jobDescription ? `\n\nJob description (use this for additional context about their actual responsibilities):\n${jobDescription.substring(0, 2000)}` : ""}
 
 Generate exactly 4 prompt categories with 3 prompts each (12 total). Choose categories that are most relevant to their work type and job title. Each prompt should directly address their stated challenge.
 
@@ -190,11 +191,12 @@ Return ONLY valid JSON in this exact format:
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { jobTitle, workType, aiUsage, challenge } = body as {
+    const { jobTitle, workType, aiUsage, challenge, jobDescription } = body as {
       jobTitle: string;
       workType: string;
       aiUsage: string;
       challenge: string;
+      jobDescription?: string;
     };
 
     if (!jobTitle || !workType || !aiUsage || !challenge) {
@@ -209,7 +211,7 @@ export async function POST(req: NextRequest) {
     if (!process.env.ANTHROPIC_API_KEY) {
       result = MOCK_KIT;
     } else {
-      result = await generatePromptKit(jobTitle, workType, aiUsage, challenge);
+      result = await generatePromptKit(jobTitle, workType, aiUsage, challenge, jobDescription);
     }
 
     return NextResponse.json(result);

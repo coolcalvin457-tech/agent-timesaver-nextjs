@@ -521,6 +521,7 @@ export default function TimesaverTool() {
           <div className="spinner" />
           <div className="loading-headline">Building personalized workflows...</div>
           <div className="loading-subline">Calculating hours saved...</div>
+          <div className="loading-subline" style={{ marginTop: "8px" }}>About 15 seconds.</div>
         </div>
       )}
 

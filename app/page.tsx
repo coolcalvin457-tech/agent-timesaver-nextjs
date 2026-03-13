@@ -216,7 +216,7 @@ export default function Home() {
 
             <div className="steps-grid">
               <div className="step-card">
-                <div className="step-number">01 — Learn</div>
+                <div className="step-number">01 · Learn</div>
                 <div className="step-headline">Start with the fundamentals.</div>
                 <p className="step-body">
                   Clear guides and short videos that make AI make sense for your
@@ -225,7 +225,7 @@ export default function Home() {
                 </p>
               </div>
               <div className="step-card">
-                <div className="step-number">02 — Apply</div>
+                <div className="step-number">02 · Apply</div>
                 <div className="step-headline">Use the tools.</div>
                 <p className="step-body">
                   AGENT: Timesaver shows you exactly what AI workflows fit your
@@ -234,11 +234,11 @@ export default function Home() {
                 </p>
               </div>
               <div className="step-card">
-                <div className="step-number">03 — Transform</div>
+                <div className="step-number">03 · Transform</div>
                 <div className="step-headline">Watch the hours add up.</div>
                 <p className="step-body">
                   Each workflow you adopt gives you back time you can reinvest.
-                  That&apos;s how busy people build leverage. One hour at a time.
+                  That&apos;s how busy people build momentum. One hour at a time.
                 </p>
               </div>
             </div>

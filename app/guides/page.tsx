@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 export const metadata: Metadata = {
   title: "Resources | promptaiagents.com",
   description:
-    "Practical AI guides, tutorials, and workflows for people who want to work smarter — not just talk about it.",
+    "Practical AI guides, tutorials, and workflows for people who want to work smarter. Built for real jobs. Not demos.",
 };
 
 export default function GuidesPage() {

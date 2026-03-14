@@ -2976,3 +2976,26 @@ input, textarea {
     padding: 28px 20px;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   AGENT: Onboarding Kit Builder
+   ═══════════════════════════════════════════════════════════════════ */
+
+.okb-tool {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 40px;
+}
+
+@media (max-width: 640px) {
+  .okb-tool {
+    padding: 28px 20px;
+  }
+
+  /* Stack 2-col grids on mobile */
+  .okb-tool [style*="gridTemplateColumns: \"1fr 1fr\""],
+  .okb-tool [style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+}

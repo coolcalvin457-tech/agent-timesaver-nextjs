@@ -50,6 +50,17 @@ const tools = [
       "Include categories, timeframes, and any numbers you have. Upload a previous example if available. The more detail, the better the results.",
     cta: "Build My Spreadsheet →",
   },
+  {
+    slug: "onboarding-kit-builder",
+    href: "/onboarding-kit-builder",
+    badgeClass: "tool-badge-paid",
+    label: "HR Tools",
+    name: "AGENT: Onboarding Kit Builder",
+    tagline: "Built for the role, not just the company.",
+    description:
+      "Answer a few questions about your new hire and get a complete, personalized onboarding kit — welcome letter, first-week schedule, key contacts, 30/60/90 plan, and new hire checklist — as a ready-to-use .docx file.",
+    cta: "Build My Kit →",
+  },
 ];
 
 export default function ToolsPage() {

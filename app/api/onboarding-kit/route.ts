@@ -50,21 +50,21 @@ interface OnboardingKitData {
 const MOCK_KIT: OnboardingKitData = {
   welcomeLetter: {
     subject: "Welcome to the team, Jordan.",
-    body: "We've been building toward this hire for a while, and we're glad you're finally here. You were brought on to build something that didn't exist before — the top-of-funnel function for our outbound motion. That's a real mandate, and we're giving you the space and the support to do it right.\n\nYour first week is intentionally lighter. You'll meet the team, get access to everything you need, and start understanding how we operate. There's no expectation to produce anything in week one. The expectation is to listen, ask questions, and build relationships.\n\nAt 30 days, we'll want to see your first prospecting list. At 60, your first outbound sequence live. At 90, pipeline contribution visible in HubSpot. These are milestones, not ceilings. We're excited to see where you take it.\n\nWelcome. Ask anything. We're glad you're here.\n\nSarah Chen",
+    body: "We've been building toward this hire for a while, and we're glad you're finally here. You were brought on to build something that didn't exist before: the top-of-funnel function for our outbound motion. That's a real mandate, and we're giving you the space and the support to do it right.\n\nYour first week is intentionally lighter. You'll meet the team, get access to everything you need, and start understanding how we operate. There's no expectation to produce anything in week one. The expectation is to listen, ask questions, and build relationships.\n\nAt 30 days, we'll want to see your first prospecting list. At 60, your first outbound sequence live. At 90, pipeline contribution visible in HubSpot. These are milestones, not ceilings. We're excited to see where you take it.\n\nWelcome. Ask anything. We're glad you're here.\n\nSarah Chen",
   },
   firstWeekSchedule: [
     {
-      day: "Day 1 — Monday, April 7",
+      day: "Day 1: Monday, April 7",
       items: [
         "9:00 AM: Office orientation and badge access with HR",
         "10:00 AM: Welcome meeting with your manager, Sarah Chen",
         "12:00 PM: Welcome lunch with the marketing team",
-        "2:00 PM: System access setup — HubSpot, Slack, Google Drive, Zoom",
+        "2:00 PM: System access setup. HubSpot, Slack, Google Drive, Zoom",
         "4:00 PM: Review first-week priorities with Sarah",
       ],
     },
     {
-      day: "Day 2 — Tuesday, April 8",
+      day: "Day 2: Tuesday, April 8",
       items: [
         "9:00 AM: 1:1 with Sarah to align on 30-day expectations",
         "11:00 AM: Introduction to the sales team",
@@ -73,25 +73,25 @@ const MOCK_KIT: OnboardingKitData = {
       ],
     },
     {
-      day: "Day 3 — Wednesday, April 9",
+      day: "Day 3: Wednesday, April 9",
       items: [
         "9:30 AM: Shadow two customer discovery calls",
-        "1:00 PM: Independent review time — accounts, pipeline, team notes",
+        "1:00 PM: Independent review time. Accounts, pipeline, team notes",
         "3:00 PM: Debrief with Sarah on discovery call observations",
         "4:30 PM: Begin building first prospecting list outline",
       ],
     },
     {
-      day: "Day 4 — Thursday, April 10",
+      day: "Day 4: Thursday, April 10",
       items: [
         "10:00 AM: Meet with key cross-functional contacts",
         "1:00 PM: Continue prospecting list research",
         "3:00 PM: Weekly team standup",
-        "4:30 PM: Async reading time — product docs, ICP profiles, competitor notes",
+        "4:30 PM: Async reading time. Product docs, ICP profiles, competitor notes",
       ],
     },
     {
-      day: "Day 5 — Friday, April 11",
+      day: "Day 5: Friday, April 11",
       items: [
         "10:00 AM: End-of-week check-in with Sarah",
         "11:00 AM: Share first-week observations and questions",
@@ -119,7 +119,7 @@ const MOCK_KIT: OnboardingKitData = {
   ],
   roleExpectations: {
     overview:
-      "The first 90 days are about building context and making your first visible contribution. The goal is not to prove you belong — it's to understand how things work and then start shaping them.",
+      "The first 90 days are about building context and making your first visible contribution. The goal is not to prove you belong. It's to understand how things work and then start shaping them.",
     day30: [
       "Complete full orientation: tools, team, and key accounts",
       "Understand how deals currently move through the pipeline",
@@ -242,7 +242,7 @@ async function generateOnboardingKit(
   const isManager = roleType === "manager";
 
   const fileSection = fileContext.trim()
-    ? `\n\nThe HR professional uploaded an additional reference document (job description or existing onboarding material). Use this as supplementary context — prioritize it where it adds specificity:\n\n${fileContext.trim()}`
+    ? `\n\nThe HR professional uploaded an additional reference document (job description or existing onboarding material). Use this as supplementary context. Prioritize it where it adds specificity:\n\n${fileContext.trim()}`
     : "";
 
   let contactsSection = "";
@@ -260,16 +260,20 @@ async function generateOnboardingKit(
     contactsSection += `\n\nAdditional team context: ${teamNotes.trim()}`;
   }
 
-  const systemPrompt = `You are a senior HR professional who has built hundreds of onboarding kits for high-performing companies. Your job is to create a complete, personalized onboarding kit that looks like it was written by someone who knows this new hire, this role, and this team — not by a tool.
+  const systemPrompt = `You are a senior HR professional who has built hundreds of onboarding kits for high-performing companies. Your job is to create a complete, personalized onboarding kit that looks like it was written by someone who knows this new hire, this role, and this team. Not by a tool.
 
 The kit is a context-building document, not a logistics checklist. The new hire should finish reading it knowing: why they were hired, what success looks like, how the team actually works, and exactly where to go when they're stuck.
 
 Tone rules:
 - The welcome letter must sound human and specific. Never use corporate phrases like "we are pleased to have you" or "we look forward to your contributions."
 - Every milestone in the 30/60/90 must be role-specific. Never use generic placeholders like "get up to speed with company processes."
-- The first-week schedule must feel achievable. Day 1 and Day 2 should be orientation, introductions, and relationship-building — not a sprint to productivity.
+- The first-week schedule must feel achievable. Day 1 and Day 2 should be orientation, introductions, and relationship-building. Not a sprint to productivity.
 - The checklist must ladder toward the 30-day milestone from the 30/60/90. They should feel like the same document.
-- Key contacts should explain WHY the person matters to the new hire — practical, not organizational.
+- Key contacts should explain WHY the person matters to the new hire. Practical, not organizational.
+
+Punctuation rules:
+- Never use em dashes (the — character). Use a period or a colon instead.
+- Never use the word "leverage", "unlock", "supercharge", or "automate".
 
 Return ONLY valid JSON. No explanation text. No markdown. Just the raw JSON object.`;
 
@@ -311,16 +315,16 @@ Return this exact JSON structure:
   },
   "firstWeekSchedule": [
     {
-      "day": "Day 1 — ${isManager ? "Monday" : "Monday"}, ${startDate}",
+      "day": "Day 1: Monday, ${startDate}",
       "items": ["time: activity", "time: activity", "time: activity", "time: activity", "time: activity"]
     },
-    { "day": "Day 2 — [next weekday], [date]", "items": ["...", "...", "...", "..."] },
-    { "day": "Day 3 — [next weekday], [date]", "items": ["...", "...", "...", "..."] },
-    { "day": "Day 4 — [next weekday], [date]", "items": ["...", "...", "...", "..."] },
-    { "day": "Day 5 — [next weekday], [date]", "items": ["...", "...", "...", "..."] }
+    { "day": "Day 2: [next weekday], [date]", "items": ["...", "...", "...", "..."] },
+    { "day": "Day 3: [next weekday], [date]", "items": ["...", "...", "...", "..."] },
+    { "day": "Day 4: [next weekday], [date]", "items": ["...", "...", "...", "..."] },
+    { "day": "Day 5: [next weekday], [date]", "items": ["...", "...", "...", "..."] }
   ],
   "keyContacts": [
-    { "name": "contact name", "title": "job title", "why": "one sentence, practical, from the new hire's perspective — not 'X is our VP of Y' but 'X owns Y and will be your main connection for Z'" }
+    { "name": "contact name", "title": "job title", "why": "one sentence, practical, from the new hire's perspective. Not 'X is our VP of Y' but 'X owns Y and will be your main connection for Z'" }
   ],
   "roleExpectations": {
     "overview": "1-2 sentences framing the first 90 days as context-building and first visible contribution. Not as a test.",
@@ -347,7 +351,11 @@ Return this exact JSON structure:
   const jsonMatch = text.match(/\{[\s\S]*\}/);
   if (!jsonMatch) throw new Error("No JSON found in Claude response");
 
-  return JSON.parse(jsonMatch[0]) as OnboardingKitData;
+  // Strip any em dashes that slipped through despite the prompt instruction
+  // Replace — with a colon (matches the design system rule: use periods or colons, never em dashes)
+  const sanitized = jsonMatch[0].replace(/\u2014/g, ":");
+
+  return JSON.parse(sanitized) as OnboardingKitData;
 }
 
 // ─── Document Builder ─────────────────────────────────────────────────────────
@@ -606,7 +614,7 @@ async function buildDocxFile(
 
   // ── Section 2: First-Week Schedule ──────────────────────────
   children.push(sectionLabel("First-Week Schedule"));
-  children.push(h1(`${hireName}'s First Week`));
+  children.push(h1(`${hireName}'s First Week (Tentative)`));
   children.push(divider());
 
   kit.firstWeekSchedule.forEach((day) => {
@@ -657,7 +665,7 @@ async function buildDocxFile(
   children.push(divider());
   children.push(
     body(
-      `A pre-start through Month 1 checklist. Items are ordered by when they need to happen — not by importance. Everything here matters.`,
+      `A pre-start through Month 1 checklist. Items are ordered by when they need to happen, not by importance. Everything here matters.`,
       { color: "555555" }
     )
   );
@@ -690,7 +698,7 @@ async function buildDocxFile(
 
   const doc = new Document({
     creator: "promptaiagents.com",
-    title: `Onboarding Kit — ${hireName}`,
+    title: `Onboarding Kit: ${hireName}`,
     description: `Complete onboarding kit for ${hireName}, ${hireTitle}`,
     styles: {
       default: {

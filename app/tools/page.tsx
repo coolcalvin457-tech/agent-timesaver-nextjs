@@ -59,6 +59,8 @@ const tools = [
     tagline: "Built for the role, not just the company.",
     description:
       "Answer a few questions about your new hire and get a complete, personalized onboarding kit — welcome letter, first-week schedule, key contacts, 30/60/90 plan, and new hire checklist — as a ready-to-use .docx file.",
+    price: "$49",
+    priceNote: "Founding rate · $97 at full launch · One-time",
     cta: "Build My Kit →",
   },
 ];
@@ -142,6 +144,40 @@ export default function ToolsPage() {
                 >
                   {tool.description}
                 </p>
+
+                {/* Pricing (paid tools only) */}
+                {"price" in tool && tool.price && (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "baseline",
+                      gap: "8px",
+                      marginBottom: "20px",
+                      paddingTop: "4px",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontSize: "1.25rem",
+                        fontWeight: 800,
+                        color: "var(--text-primary)",
+                        lineHeight: 1,
+                      }}
+                    >
+                      {tool.price}
+                    </span>
+                    {"priceNote" in tool && tool.priceNote && (
+                      <span
+                        style={{
+                          fontSize: "0.8125rem",
+                          color: "var(--text-muted)",
+                        }}
+                      >
+                        {tool.priceNote}
+                      </span>
+                    )}
+                  </div>
+                )}
 
                 {/* CTA */}
                 <span

@@ -63,12 +63,52 @@ export default function OnboardingKitBuilderPage({
               style={{
                 color: "var(--text-secondary)",
                 maxWidth: "520px",
-                marginBottom: "48px",
+                marginBottom: "20px",
                 lineHeight: 1.7,
               }}
             >
               Includes warm welcome letter, first-week schedule, key contacts, 30/60/90 plan, and priority checklist.
             </p>
+
+            {/* Pricing callout */}
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "12px",
+                padding: "10px 16px",
+                background: "rgba(30,122,184,0.06)",
+                border: "1px solid rgba(30,122,184,0.15)",
+                borderRadius: "8px",
+                marginBottom: "48px",
+              }}
+            >
+              <span
+                style={{
+                  fontSize: "1.25rem",
+                  fontWeight: 800,
+                  color: "var(--text-primary)",
+                  lineHeight: 1,
+                }}
+              >
+                $49
+              </span>
+              <span
+                style={{
+                  width: "1px",
+                  height: "16px",
+                  background: "var(--border, #E4E4E2)",
+                  display: "inline-block",
+                  flexShrink: 0,
+                }}
+              />
+              <span style={{ fontSize: "0.875rem", color: "var(--text-secondary)", lineHeight: 1.4 }}>
+                <strong style={{ fontWeight: 600 }}>Founding rate.</strong>{" "}
+                <span style={{ color: "var(--text-muted)" }}>
+                  $97 at full launch · One-time payment.
+                </span>
+              </span>
+            </div>
           </div>
         </section>
 

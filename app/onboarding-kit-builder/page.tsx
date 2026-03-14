@@ -6,11 +6,11 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "AGENT: Onboarding Kit Builder — promptaiagents.com",
   description:
-    "Answer a few questions about your new hire and get a complete, personalized onboarding kit — welcome letter, first-week schedule, key contacts, 30/60/90 plan, and new hire checklist — as a ready-to-use .docx file.",
+    "Build a complete onboarding kit for your new hire. Welcome letter, first-week schedule, key contacts, 30/60/90 plan, and priority checklist — as a ready-to-use .docx file.",
   openGraph: {
     title: "AGENT: Onboarding Kit Builder — promptaiagents.com",
     description:
-      "Answer a few questions about your new hire and get a complete, personalized onboarding kit as a ready-to-use .docx file.",
+      "Build a complete onboarding kit for your new hire. Delivered as a ready-to-use .docx file.",
     url: "https://promptaiagents.com/onboarding-kit-builder",
     siteName: "promptaiagents.com",
     type: "website",
@@ -59,21 +59,11 @@ export default function OnboardingKitBuilderPage() {
               style={{
                 color: "var(--text-secondary)",
                 maxWidth: "520px",
-                marginBottom: "12px",
+                marginBottom: "48px",
                 lineHeight: 1.7,
               }}
             >
-              Answer a few questions about the role and the team. Get a personalized kit — welcome letter, first-week schedule, key contacts, 30/60/90 plan, and checklist — as a .docx file you can open and send.
-            </p>
-
-            <p
-              style={{
-                fontSize: "0.875rem",
-                color: "var(--text-muted)",
-                marginBottom: "48px",
-              }}
-            >
-              Built for the role, not just the company. 30/60/90 included.
+              Includes warm welcome letter, first-week schedule, key contacts, 30/60/90 plan, and priority checklist.
             </p>
           </div>
         </section>

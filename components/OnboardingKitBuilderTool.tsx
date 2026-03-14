@@ -527,12 +527,9 @@ export default function OnboardingKitBuilderTool() {
     return (
       <div className="okb-tool">
         <div style={{ marginBottom: "28px" }}>
-          <h2 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--text-primary)", margin: "0 0 6px" }}>
+          <h2 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--text-primary)", margin: 0 }}>
             Tell us about your new hire.
           </h2>
-          <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", margin: 0, lineHeight: 1.6 }}>
-            We'll build a complete onboarding kit personalized to them: welcome letter, first-week schedule, key contacts, role expectations, and a 30/60/90.
-          </p>
         </div>
 
         {/* Name + Title row */}
@@ -597,7 +594,7 @@ export default function OnboardingKitBuilderTool() {
 
         {/* Role type toggle */}
         <div style={fieldWrapStyle}>
-          <label style={labelStyle}>Role type</label>
+          <label style={labelStyle}>Role type <span style={{ fontWeight: 400, color: "var(--text-muted, #999)" }}>(Required)</span></label>
           <div style={{ display: "flex", gap: "10px" }}>
             {(
               [
@@ -625,7 +622,6 @@ export default function OnboardingKitBuilderTool() {
               </button>
             ))}
           </div>
-          <p style={helperStyle}>Manager-track 30/60/90 plans look different. This helps us write the right one.</p>
         </div>
 
         {s1Error && <p style={{ ...errorStyle, marginBottom: "12px" }}>{s1Error}</p>}

@@ -17,7 +17,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function OnboardingKitBuilderPage() {
+export default function OnboardingKitBuilderPage({
+  searchParams,
+}: {
+  searchParams: { payment?: string; session_id?: string };
+}) {
   return (
     <>
       <NavClient />
@@ -72,7 +76,10 @@ export default function OnboardingKitBuilderPage() {
         <section className="section" style={{ paddingTop: "40px" }}>
           <div className="container">
             <div style={{ maxWidth: "640px", margin: "0 auto" }}>
-              <OnboardingKitBuilderTool />
+              <OnboardingKitBuilderTool
+                initialPaymentStatus={searchParams.payment}
+                initialSessionId={searchParams.session_id}
+              />
             </div>
           </div>
         </section>

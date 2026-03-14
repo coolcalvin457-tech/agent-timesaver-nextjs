@@ -4,7 +4,17 @@ import { useState, useEffect, useRef } from "react";
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
-type Screen = "s1" | "s2" | "s3" | "loading" | "email-gate" | "sent" | "error";
+type Screen =
+  | "s1"
+  | "s2"
+  | "s3"
+  | "paywall"
+  | "verifying"
+  | "loading"
+  | "email-gate"
+  | "sent"
+  | "error";
+
 type RoleType = "individual_contributor" | "manager";
 
 interface Contact {
@@ -12,10 +22,28 @@ interface Contact {
   title: string;
 }
 
+interface SavedFormData {
+  hireName: string;
+  hireTitle: string;
+  department: string;
+  startDate: string;
+  managerName: string;
+  roleType: RoleType;
+  whyHired: string;
+  weekOnePriorities: string;
+  keyTools: string;
+  howTeamWorks: string;
+  thirtyToNinety: string;
+  contacts: Contact[];
+  teamNotes: string;
+  feedbackCadence: string;
+}
+
 // ─── Constants ─────────────────────────────────────────────────────────────────
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 const ACCEPTED_EXTS = [".txt", ".pdf", ".docx", ".md"];
+const OKB_STORAGE_KEY = "okb_form_data";
 const LOADING_STEPS = [
   "Welcome letter",
   "First-week schedule",
@@ -23,6 +51,36 @@ const LOADING_STEPS = [
   "Role expectations (30/60/90)",
   "New hire checklist",
 ];
+
+// ─── Storage helpers ────────────────────────────────────────────────────────────
+
+function saveToStorage(data: SavedFormData): void {
+  try {
+    sessionStorage.setItem(OKB_STORAGE_KEY, JSON.stringify(data));
+  } catch {
+    // sessionStorage unavailable (private browsing, etc.) — continue without saving
+  }
+}
+
+function loadFromStorage(): SavedFormData | null {
+  try {
+    const raw = sessionStorage.getItem(OKB_STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as SavedFormData;
+    if (!parsed || typeof parsed !== "object") return null;
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
+function clearStorage(): void {
+  try {
+    sessionStorage.removeItem(OKB_STORAGE_KEY);
+  } catch {
+    // ignore
+  }
+}
 
 // ─── Helpers ────────────────────────────────────────────────────────────────────
 
@@ -228,7 +286,13 @@ function ContextFileUpload({
 
 // ─── Main Component ─────────────────────────────────────────────────────────────
 
-export default function OnboardingKitBuilderTool() {
+export default function OnboardingKitBuilderTool({
+  initialPaymentStatus,
+  initialSessionId,
+}: {
+  initialPaymentStatus?: string;
+  initialSessionId?: string;
+}) {
   // ── Screen ──────────────────────────────────────────────────
   const [screen, setScreen] = useState<Screen>("s1");
 
@@ -268,11 +332,38 @@ export default function OnboardingKitBuilderTool() {
   const [emailSubmitting, setEmailSubmitting] = useState(false);
   const [emailError, setEmailError] = useState("");
 
-  // ── Error state ───────────────────────────────────────────
+  // ── Paywall / checkout state ──────────────────────────────
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [checkoutError, setCheckoutError] = useState("");
+  const [paymentCancelled, setPaymentCancelled] = useState(false);
+
+  // ── Error / validation state ──────────────────────────────
   const [errorMsg, setErrorMsg] = useState("");
   const [s1Error, setS1Error] = useState("");
   const [s2Error, setS2Error] = useState("");
   const [s3Error, setS3Error] = useState("");
+
+  // ── Restore state from saved form data ────────────────────
+  function restoreFromSaved(saved: SavedFormData) {
+    setHireName(saved.hireName ?? "");
+    setHireTitle(saved.hireTitle ?? "");
+    setDepartment(saved.department ?? "");
+    setStartDate(saved.startDate ?? "");
+    setManagerName(saved.managerName ?? "");
+    setRoleType(saved.roleType ?? "individual_contributor");
+    setWhyHired(saved.whyHired ?? "");
+    setWeekOnePriorities(saved.weekOnePriorities ?? "");
+    setKeyTools(saved.keyTools ?? "");
+    setHowTeamWorks(saved.howTeamWorks ?? "");
+    setThirtyToNinety(saved.thirtyToNinety ?? "");
+    setContacts(
+      saved.contacts?.length
+        ? saved.contacts
+        : [{ name: "", title: "" }, { name: "", title: "" }, { name: "", title: "" }]
+    );
+    setTeamNotes(saved.teamNotes ?? "");
+    setFeedbackCadence(saved.feedbackCadence ?? "");
+  }
 
   // ── Loading animation ─────────────────────────────────────
   useEffect(() => {
@@ -283,6 +374,61 @@ export default function OnboardingKitBuilderTool() {
     );
     return () => timers.forEach(clearTimeout);
   }, [screen]);
+
+  // ── Payment detection on mount ────────────────────────────
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (!initialPaymentStatus) return;
+
+    const saved = loadFromStorage();
+
+    // User cancelled at Stripe — restore inputs and show paywall
+    if (initialPaymentStatus === "cancelled") {
+      if (saved) restoreFromSaved(saved);
+      clearStorage();
+      setPaymentCancelled(true);
+      setScreen("paywall");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    // Payment succeeded — verify and build
+    if (initialPaymentStatus === "success" && initialSessionId) {
+      if (!saved) {
+        // Edge case: sessionStorage was cleared (e.g. different browser/tab)
+        setErrorMsg(
+          "Your payment was successful, but we couldn't recover your form data. Please contact us at results@promptaiagents.com and we'll sort it out."
+        );
+        setScreen("error");
+        return;
+      }
+
+      restoreFromSaved(saved);
+      setScreen("verifying");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      // Verify with Stripe, then build
+      fetch(`/api/verify-payment?session_id=${initialSessionId}`)
+        .then((r) => r.json())
+        .then(({ verified }: { verified: boolean }) => {
+          if (verified) {
+            clearStorage();
+            buildFromData(saved);
+          } else {
+            setCheckoutError(
+              "Payment could not be verified. Please try again or contact results@promptaiagents.com."
+            );
+            setScreen("paywall");
+          }
+        })
+        .catch(() => {
+          setCheckoutError(
+            "Something went wrong verifying your payment. Please contact results@promptaiagents.com."
+          );
+          setScreen("paywall");
+        });
+    }
+  }, []); // intentionally run once on mount only
 
   // ── Validation ────────────────────────────────────────────
 
@@ -343,37 +489,45 @@ export default function OnboardingKitBuilderTool() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
+  function goToPaywall() {
+    if (!validateS3()) return;
+    setPaymentCancelled(false);
+    setCheckoutError("");
+    setScreen("paywall");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   // ── Update a contact row ──────────────────────────────────
 
   function updateContact(index: number, field: "name" | "title", value: string) {
     setContacts((prev) => prev.map((c, i) => (i === index ? { ...c, [field]: value } : c)));
   }
 
-  // ── Generate kit ──────────────────────────────────────────
+  // ── Core build logic (takes explicit data, not state) ─────
 
-  async function handleBuild() {
-    if (!validateS3()) return;
-
+  async function buildFromData(data: SavedFormData, file?: File | null) {
     setScreen("loading");
     setErrorMsg("");
+    // Ensure loading screen shows correct name
+    setHireName(data.hireName);
 
     try {
       const form = new FormData();
-      form.append("hireName",          hireName.trim());
-      form.append("hireTitle",         hireTitle.trim());
-      form.append("department",        department.trim());
-      form.append("startDate",         startDate.trim());
-      form.append("managerName",       managerName.trim());
-      form.append("roleType",          roleType);
-      form.append("whyHired",          whyHired.trim());
-      form.append("weekOnePriorities", weekOnePriorities.trim());
-      form.append("keyTools",          keyTools.trim());
-      form.append("howTeamWorks",      howTeamWorks.trim());
-      form.append("thirtyToNinety",    thirtyToNinety.trim());
-      form.append("keyContacts",       JSON.stringify(contacts));
-      form.append("teamNotes",         teamNotes.trim());
-      form.append("feedbackCadence",   feedbackCadence.trim());
-      if (contextFile) form.append("contextFile", contextFile);
+      form.append("hireName",          data.hireName.trim());
+      form.append("hireTitle",         data.hireTitle.trim());
+      form.append("department",        data.department.trim());
+      form.append("startDate",         data.startDate.trim());
+      form.append("managerName",       data.managerName.trim());
+      form.append("roleType",          data.roleType);
+      form.append("whyHired",          data.whyHired.trim());
+      form.append("weekOnePriorities", data.weekOnePriorities.trim());
+      form.append("keyTools",          data.keyTools.trim());
+      form.append("howTeamWorks",      data.howTeamWorks.trim());
+      form.append("thirtyToNinety",    data.thirtyToNinety.trim());
+      form.append("keyContacts",       JSON.stringify(data.contacts));
+      form.append("teamNotes",         data.teamNotes.trim());
+      form.append("feedbackCadence",   data.feedbackCadence.trim());
+      if (file) form.append("contextFile", file);
 
       const res = await fetch("/api/onboarding-kit", {
         method: "POST",
@@ -381,9 +535,9 @@ export default function OnboardingKitBuilderTool() {
       });
 
       if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
+        const d = await res.json().catch(() => ({}));
         throw new Error(
-          (data as { error?: string }).error ??
+          (d as { error?: string }).error ??
             "Something went wrong while building the kit. Your inputs are still here — try again and it should work."
         );
       }
@@ -402,6 +556,47 @@ export default function OnboardingKitBuilderTool() {
           : "Something went wrong while building the kit. Your inputs are still here — try again and it should work."
       );
       setScreen("error");
+    }
+  }
+
+  // ── Build from current state (called from retry / error screen) ───
+
+  async function handleBuild() {
+    if (!validateS3()) return;
+    await buildFromData(
+      {
+        hireName, hireTitle, department, startDate, managerName, roleType,
+        whyHired, weekOnePriorities, keyTools, howTeamWorks, thirtyToNinety,
+        contacts, teamNotes, feedbackCadence,
+      },
+      contextFile
+    );
+  }
+
+  // ── Checkout: save inputs, redirect to Stripe ─────────────
+
+  async function handleCheckout() {
+    setCheckoutLoading(true);
+    setCheckoutError("");
+
+    // Persist form data so it survives the Stripe redirect
+    saveToStorage({
+      hireName, hireTitle, department, startDate, managerName, roleType,
+      whyHired, weekOnePriorities, keyTools, howTeamWorks, thirtyToNinety,
+      contacts, teamNotes, feedbackCadence,
+    });
+
+    try {
+      const res = await fetch("/api/onboarding-kit-checkout", { method: "POST" });
+      if (!res.ok) throw new Error("Failed to create checkout session.");
+      const { url } = await res.json();
+      if (!url) throw new Error("No checkout URL returned.");
+      window.location.href = url;
+    } catch (err) {
+      setCheckoutError(
+        err instanceof Error ? err.message : "Something went wrong. Please try again."
+      );
+      setCheckoutLoading(false);
     }
   }
 
@@ -465,6 +660,7 @@ export default function OnboardingKitBuilderTool() {
     setFileBlob(null); setFilename("onboarding-kit.docx");
     setEmail(""); setEmailError(""); setEmailSubmitting(false);
     setErrorMsg(""); setS1Error(""); setS2Error(""); setS3Error("");
+    setCheckoutLoading(false); setCheckoutError(""); setPaymentCancelled(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -813,11 +1009,187 @@ export default function OnboardingKitBuilderTool() {
         <button
           type="button"
           className="btn btn-primary btn-lg btn-full"
-          onClick={handleBuild}
+          onClick={goToPaywall}
           style={{ marginTop: "8px" }}
         >
           Build My Kit →
         </button>
+      </div>
+    );
+  }
+
+  // ── Paywall screen ───────────────────────────────────────────
+  if (screen === "paywall") {
+    return (
+      <div className="okb-tool">
+
+        {/* Payment cancelled banner */}
+        {paymentCancelled && (
+          <div
+            style={{
+              background: "rgba(30,122,184,0.06)",
+              border: "1px solid rgba(30,122,184,0.2)",
+              borderRadius: "8px",
+              padding: "12px 16px",
+              marginBottom: "24px",
+              fontSize: "0.875rem",
+              color: "var(--text-secondary)",
+            }}
+          >
+            Payment wasn't completed. Your progress is saved — try again below.
+          </div>
+        )}
+
+        <div style={{ marginBottom: "24px" }}>
+          <h2 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--text-primary)", margin: "0 0 6px" }}>
+            Your kit is ready to build.
+          </h2>
+          <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", margin: 0, lineHeight: 1.6 }}>
+            Get access below to generate {hireName ? `${hireName}'s` : "the"} onboarding kit.
+          </p>
+        </div>
+
+        {/* Kit contents preview */}
+        <div
+          style={{
+            background: "var(--bg-alt, #F8F8F6)",
+            border: "1px solid var(--border, #E4E4E2)",
+            borderRadius: "10px",
+            padding: "18px 20px",
+            marginBottom: "20px",
+          }}
+        >
+          <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", margin: "0 0 12px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+            Your kit includes
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            {[
+              "Welcome Letter",
+              "First-Week Schedule",
+              "Key Contacts",
+              "Role Expectations (30/60/90)",
+              "New Hire Checklist",
+            ].map((item) => (
+              <div key={item} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <span style={{ color: "var(--cta, #1E7AB8)", fontSize: "0.875rem", fontWeight: 700 }}>·</span>
+                <span style={{ fontSize: "0.875rem", color: "var(--text-secondary)", fontWeight: 500 }}>{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Bundle offer */}
+        <div
+          style={{
+            background: "var(--dark, #161618)",
+            borderRadius: "12px",
+            padding: "24px 26px",
+            marginBottom: "16px",
+          }}
+        >
+          {/* Header row */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px", flexWrap: "wrap", gap: "8px" }}>
+            <span style={{ fontSize: "0.9375rem", fontWeight: 700, color: "#FFFFFF" }}>
+              HR Tools Package
+            </span>
+            <span
+              style={{
+                fontSize: "0.6875rem",
+                fontWeight: 700,
+                letterSpacing: "0.06em",
+                textTransform: "uppercase",
+                padding: "3px 10px",
+                borderRadius: "20px",
+                background: "rgba(30,122,184,0.25)",
+                color: "#60B4F0",
+                border: "1px solid rgba(30,122,184,0.35)",
+              }}
+            >
+              Founding Access
+            </span>
+          </div>
+
+          {/* Price */}
+          <div style={{ display: "flex", alignItems: "baseline", gap: "8px", marginBottom: "12px" }}>
+            <span style={{ fontSize: "2rem", fontWeight: 800, color: "#FFFFFF", lineHeight: 1 }}>$49</span>
+            <span style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.5)" }}>one-time</span>
+          </div>
+
+          {/* Description */}
+          <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.6, margin: "0 0 20px" }}>
+            Onboarding Kit Builder is live today. PIP Builder, Performance Review Builder, and more ship next — all included at no extra cost.
+          </p>
+
+          {/* CTA */}
+          <button
+            type="button"
+            onClick={handleCheckout}
+            disabled={checkoutLoading}
+            style={{
+              width: "100%",
+              padding: "13px 20px",
+              fontSize: "0.9375rem",
+              fontWeight: 700,
+              background: checkoutLoading ? "rgba(30,122,184,0.5)" : "#1E7AB8",
+              color: "#FFFFFF",
+              border: "none",
+              borderRadius: "8px",
+              cursor: checkoutLoading ? "not-allowed" : "pointer",
+              transition: "background 0.15s ease",
+              marginBottom: "12px",
+            }}
+          >
+            {checkoutLoading ? "Preparing checkout..." : "Get Access — $49 →"}
+          </button>
+
+          {checkoutError && (
+            <p style={{ fontSize: "0.8125rem", color: "#F87171", margin: "0 0 8px" }}>
+              {checkoutError}
+            </p>
+          )}
+
+          <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.4)", margin: 0, textAlign: "center" }}>
+            One-time payment. No subscription. Founding rate goes up at full launch.
+          </p>
+        </div>
+
+        {/* Edit inputs link */}
+        <button
+          type="button"
+          onClick={() => { setS3Error(""); setScreen("s3"); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+          style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "0.875rem", cursor: "pointer", padding: 0, opacity: 0.7 }}
+        >
+          ← Edit my inputs
+        </button>
+      </div>
+    );
+  }
+
+  // ── Verifying payment screen ─────────────────────────────────
+  if (screen === "verifying") {
+    return (
+      <div className="okb-tool">
+        <div style={{ textAlign: "center", padding: "40px 0" }}>
+          <div
+            style={{
+              display: "inline-block",
+              width: "32px",
+              height: "32px",
+              border: "3px solid rgba(30,122,184,0.2)",
+              borderTopColor: "#1E7AB8",
+              borderRadius: "50%",
+              animation: "spin 0.8s linear infinite",
+              marginBottom: "20px",
+            }}
+          />
+          <p style={{ fontSize: "1rem", fontWeight: 600, color: "var(--text-primary)", margin: "0 0 4px" }}>
+            Verifying your payment...
+          </p>
+          <p style={{ fontSize: "0.875rem", color: "var(--text-muted)", margin: 0 }}>
+            Just a moment.
+          </p>
+        </div>
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
       </div>
     );
   }

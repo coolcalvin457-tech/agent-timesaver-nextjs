@@ -385,17 +385,17 @@ export default function PostPage() {
               Keep reading
             </div>
             <a
+              href="/blog/your-ai-has-never-seen-your-best-work"
+              className="blog-next-link"
+            >
+              <span>Your AI Has Never Seen Your Best Work. Why Not Show It?</span>
+              <span style={{ color: "var(--cta)", marginLeft: "16px", flexShrink: 0 }}>→</span>
+            </a>
+            <a
               href="/blog/build-once-never-re-explain-ai"
               className="blog-next-link"
             >
               <span>Build Once and You&apos;ll Never Have to Re-Explain to AI Again</span>
-              <span style={{ color: "var(--cta)", marginLeft: "16px", flexShrink: 0 }}>→</span>
-            </a>
-            <a
-              href="/blog/your-team-thinks-youre-a-tech-wizard"
-              className="blog-next-link"
-            >
-              <span>Your Team Thinks You&apos;re a Tech Wizard. All You Did Was Learn One Workflow.</span>
               <span style={{ color: "var(--cta)", marginLeft: "16px", flexShrink: 0 }}>→</span>
             </a>
           </div>

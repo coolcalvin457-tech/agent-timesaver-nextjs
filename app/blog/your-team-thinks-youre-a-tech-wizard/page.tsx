@@ -252,17 +252,17 @@ export default function PostPage() {
               Keep reading
             </div>
             <a
+              href="/blog/your-ai-has-never-seen-your-best-work"
+              className="blog-next-link"
+            >
+              <span>Your AI Has Never Seen Your Best Work. Why Not Show It?</span>
+              <span style={{ color: "var(--cta)", marginLeft: "16px", flexShrink: 0 }}>→</span>
+            </a>
+            <a
               href="/blog/build-once-never-re-explain-ai"
               className="blog-next-link"
             >
               <span>Build Once and You&apos;ll Never Have to Re-Explain to AI Again</span>
-              <span style={{ color: "var(--cta)", marginLeft: "16px", flexShrink: 0 }}>→</span>
-            </a>
-            <a
-              href="/blog/how-to-start-using-ai-at-work"
-              className="blog-next-link"
-            >
-              <span>How to Actually Start Using AI at Work and Build Your Own Agent</span>
               <span style={{ color: "var(--cta)", marginLeft: "16px", flexShrink: 0 }}>→</span>
             </a>
           </div>

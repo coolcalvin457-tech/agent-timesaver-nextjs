@@ -19,6 +19,20 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: "your-ai-has-never-seen-your-best-work",
+    titleLines: [
+      "Your AI Has Never Seen Your Best Work.",
+      "Why Not Show It?",
+    ],
+    category: "Non-Technical AI Skills",
+    date: "March 14, 2026",
+    readingTime: "3 min read",
+    excerptLines: [
+      "The gap between generic AI responses and great ones",
+      "is one missing ingredient: your best work.",
+    ],
+  },
+  {
     slug: "your-team-thinks-youre-a-tech-wizard",
     titleLines: [
       "Your Team Thinks You're a Tech Wizard.",

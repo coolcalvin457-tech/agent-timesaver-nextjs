@@ -479,7 +479,8 @@ function buildContactsTable(contacts: KeyContact[]): Table {
     right: borderStyle,
   };
 
-  const headerShading = { type: ShadingType.SOLID, fill: "F0F0EE" };
+  // Fix: ShadingType.CLEAR (not SOLID) for correct background fill in Google Docs
+  const headerShading = { type: ShadingType.CLEAR, fill: "F0F0EE" };
 
   const headerRow = new TableRow({
     tableHeader: true,
@@ -523,8 +524,10 @@ function buildContactsTable(contacts: KeyContact[]): Table {
     ],
   });
 
-  const dataRows = contacts.map((contact, i) =>
-    new TableRow({
+  const dataRows = contacts.map((contact, i) => {
+    // Fix: explicit width on every data cell (not just header cells)
+    const rowShading = { type: ShadingType.CLEAR, fill: i % 2 === 0 ? "FFFFFF" : "F8F8F6" };
+    return new TableRow({
       children: [
         new TableCell({
           children: [
@@ -533,7 +536,8 @@ function buildContactsTable(contacts: KeyContact[]): Table {
               spacing: { after: 60 },
             }),
           ],
-          shading: { type: ShadingType.SOLID, fill: i % 2 === 0 ? "FFFFFF" : "F8F8F6" },
+          width: { size: 2300, type: WidthType.DXA },
+          shading: rowShading,
           borders: cellBorders,
           margins: { top: 80, bottom: 80, left: 120, right: 120 },
         }),
@@ -544,7 +548,8 @@ function buildContactsTable(contacts: KeyContact[]): Table {
               spacing: { after: 60 },
             }),
           ],
-          shading: { type: ShadingType.SOLID, fill: i % 2 === 0 ? "FFFFFF" : "F8F8F6" },
+          width: { size: 2500, type: WidthType.DXA },
+          shading: rowShading,
           borders: cellBorders,
           margins: { top: 80, bottom: 80, left: 120, right: 120 },
         }),
@@ -555,16 +560,20 @@ function buildContactsTable(contacts: KeyContact[]): Table {
               spacing: { after: 60 },
             }),
           ],
-          shading: { type: ShadingType.SOLID, fill: i % 2 === 0 ? "FFFFFF" : "F8F8F6" },
+          width: { size: 4560, type: WidthType.DXA },
+          shading: rowShading,
           borders: cellBorders,
           margins: { top: 80, bottom: 80, left: 120, right: 120 },
         }),
       ],
-    })
-  );
+    });
+  });
 
+  // Fix: columnWidths drives the tblGrid element — without this docx generates
+  // dummy 100/100/100 values which causes Google Docs to misread column layout
   return new Table({
     width: { size: 9360, type: WidthType.DXA },
+    columnWidths: [2300, 2500, 4560],
     rows: [headerRow, ...dataRows],
   });
 }
@@ -698,6 +707,10 @@ async function buildDocxFile(
       {
         properties: {
           page: {
+            size: {
+              width: 12240,  // US Letter: 8.5 inches in DXA
+              height: 15840, // US Letter: 11 inches in DXA
+            },
             margin: {
               top: 1080,    // 0.75 inches
               bottom: 1080,

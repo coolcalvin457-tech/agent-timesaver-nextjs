@@ -697,7 +697,7 @@ export default function OnboardingKitBuilderTool({
   };
 
   const fieldWrapStyle: React.CSSProperties = {
-    marginBottom: "20px",
+    marginBottom: "24px",
   };
 
   const labelStyle: React.CSSProperties = {
@@ -733,7 +733,7 @@ export default function OnboardingKitBuilderTool({
         </div>
 
         {/* Name + Title row */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "20px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "24px" }}>
           <div>
             <label style={labelStyle}>First name</label>
             <input
@@ -757,7 +757,7 @@ export default function OnboardingKitBuilderTool({
         </div>
 
         {/* Department + Start Date row */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "20px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "24px" }}>
           <div>
             <label style={labelStyle}>Department</label>
             <input
@@ -830,7 +830,7 @@ export default function OnboardingKitBuilderTool({
           type="button"
           className="btn btn-primary btn-lg btn-full"
           onClick={goToS2}
-          style={{ marginTop: "8px" }}
+          style={{ marginTop: "12px" }}
         >
           Continue
         </button>

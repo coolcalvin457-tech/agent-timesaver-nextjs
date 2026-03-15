@@ -88,10 +88,15 @@ export default function OnboardingKitBuilderPage({
           <div className="container">
             <div
               style={{
+                maxWidth: "960px",
+                margin: "0 auto",
+              }}
+            >
+            <div
+              style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(3, 1fr)",
                 gap: "24px",
-                marginBottom: "56px",
               }}
             >
               {[
@@ -153,16 +158,6 @@ export default function OnboardingKitBuilderPage({
                 </a>
               ))}
             </div>
-
-            {/* CTA after previews */}
-            <div style={{ textAlign: "center", paddingTop: "16px" }}>
-              <a
-                href="#build-kit"
-                className="btn btn-primary"
-                style={{ display: "inline-block", padding: "14px 36px", fontSize: "1rem" }}
-              >
-                Build My Kit →
-              </a>
             </div>
           </div>
         </section>

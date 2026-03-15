@@ -338,7 +338,7 @@ export default function TimesaverTool() {
             className="btn btn-primary btn-full"
             onClick={() => { track("tool_started"); go("jobTitle"); }}
           >
-            Get Started
+            Continue
           </button>
         </div>
       )}

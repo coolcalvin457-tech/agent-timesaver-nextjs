@@ -23,7 +23,7 @@ export default function Home() {
                   Own AI Agent.
                 </h1>
                 <p className="hero-subheadline">
-                  Tools, prompts, and guides for people who want to be more efficient.
+                  Less intimidating than it sounds. More useful than you'd think.
                 </p>
                 <HeroButton />
               </div>

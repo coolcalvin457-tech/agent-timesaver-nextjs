@@ -53,22 +53,10 @@ export default function OnboardingKitBuilderPage({
 
             <h1
               className="heading-1"
-              style={{ marginBottom: "16px", maxWidth: "600px" }}
+              style={{ marginBottom: "24px", maxWidth: "600px" }}
             >
               A position-specific onboarding kit for every new hire.
             </h1>
-
-            <p
-              className="body-lg"
-              style={{
-                color: "var(--text-secondary)",
-                maxWidth: "520px",
-                marginBottom: "20px",
-                lineHeight: 1.7,
-              }}
-            >
-              Includes warm welcome letter, first-week schedule, key contacts, 30/60/90 plan, and priority checklist.
-            </p>
 
             {/* Pricing callout — links to tool form */}
             <a
@@ -149,28 +137,29 @@ export default function OnboardingKitBuilderPage({
                   className="kit-sample-card"
                   style={item.featured ? {
                     border: "1.5px solid rgba(30,122,184,0.35)",
-                    background: "rgba(30,122,184,0.03)",
                   } : undefined}
                 >
-                  <h3
-                    style={{
-                      fontSize: "0.9375rem",
-                      fontWeight: 700,
-                      color: "var(--text-primary)",
-                      marginBottom: "16px",
-                    }}
-                  >
-                    {item.title}
-                  </h3>
-                  <span
-                    style={{
-                      fontSize: "0.8125rem",
-                      fontWeight: 600,
-                      color: "var(--cta)",
-                    }}
-                  >
-                    Preview →
-                  </span>
+                  <div style={{ position: "relative", zIndex: 2 }}>
+                    <h3
+                      style={{
+                        fontSize: "0.9375rem",
+                        fontWeight: 700,
+                        color: "var(--text-primary)",
+                        marginBottom: "8px",
+                      }}
+                    >
+                      {item.title}
+                    </h3>
+                    <span
+                      style={{
+                        fontSize: "0.8125rem",
+                        fontWeight: 600,
+                        color: "var(--cta)",
+                      }}
+                    >
+                      Preview →
+                    </span>
+                  </div>
                 </a>
               ))}
             </div>

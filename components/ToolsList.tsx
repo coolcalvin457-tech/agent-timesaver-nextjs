@@ -144,48 +144,6 @@ export default function ToolsList({ tools }: { tools: Tool[] }) {
               </div>
             )}
 
-            {/* Preview / Download links */}
-            {tool.image && (
-              <div
-                style={{
-                  display: "flex",
-                  gap: "16px",
-                  marginTop: "10px",
-                }}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <a
-                  href={tool.image}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    fontSize: "0.8125rem",
-                    color: "var(--text-secondary)",
-                    textDecoration: "none",
-                    fontWeight: 500,
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "var(--cta)")}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-secondary)")}
-                >
-                  Preview ↗
-                </a>
-                <a
-                  href={tool.image}
-                  download
-                  style={{
-                    fontSize: "0.8125rem",
-                    color: "var(--text-secondary)",
-                    textDecoration: "none",
-                    fontWeight: 500,
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "var(--cta)")}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-secondary)")}
-                >
-                  Download
-                </a>
-              </div>
-            )}
-
             {/* Spacer */}
             <div style={{ flexGrow: 1 }} />
 

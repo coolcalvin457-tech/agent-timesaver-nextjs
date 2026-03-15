@@ -116,18 +116,18 @@ export default function OnboardingKitBuilderPage({
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(3, 1fr)",
-                gap: "16px",
+                gridTemplateColumns: "repeat(2, 1fr)",
+                gap: "20px",
                 marginBottom: "40px",
               }}
             >
               {[
-                { title: "Warm Welcome Letter",  pdf: "/kit-samples/warm-welcome-letter.pdf" },
-                { title: "First-Week Schedule",   pdf: "/kit-samples/first-week-schedule.pdf" },
-                { title: "Key Contacts",          pdf: "/kit-samples/key-contacts.pdf" },
-                { title: "30-60-90 Day Plan",     pdf: "/kit-samples/30-60-90-day-plan.pdf" },
-                { title: "New Hire Checklist",    pdf: "/kit-samples/new-hire-checklist.pdf" },
-                { title: "Complete Kit",          pdf: "/kit-samples/onboarding-kit-sample.pdf", featured: true },
+                { title: "Warm Welcome Letter",  pdf: "/kit-samples/warm-welcome-letter.pdf",      thumb: "/kit-thumbnails/warm-welcome-letter.png" },
+                { title: "First-Week Schedule",   pdf: "/kit-samples/first-week-schedule.pdf",       thumb: "/kit-thumbnails/first-week-schedule.png" },
+                { title: "Key Contacts",          pdf: "/kit-samples/key-contacts.pdf",              thumb: "/kit-thumbnails/key-contacts.png" },
+                { title: "30-60-90 Day Plan",     pdf: "/kit-samples/30-60-90-day-plan.pdf",         thumb: "/kit-thumbnails/30-60-90-day-plan.png" },
+                { title: "New Hire Checklist",    pdf: "/kit-samples/new-hire-checklist.pdf",        thumb: "/kit-thumbnails/new-hire-checklist.png" },
+                { title: "Complete Kit",          pdf: "/kit-samples/onboarding-kit-sample.pdf",     thumb: "/kit-thumbnails/onboarding-kit-sample.png", featured: true },
               ].map((item) => (
                 <a
                   key={item.title}
@@ -139,6 +139,23 @@ export default function OnboardingKitBuilderPage({
                     border: "1.5px solid rgba(30,122,184,0.35)",
                   } : undefined}
                 >
+                  {/* Real PDF thumbnail — faded behind card content */}
+                  <img
+                    src={item.thumb}
+                    alt=""
+                    aria-hidden="true"
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      objectPosition: "top",
+                      opacity: 0.13,
+                      pointerEvents: "none",
+                    }}
+                  />
                   <div style={{ position: "relative", zIndex: 2 }}>
                     <h3
                       style={{

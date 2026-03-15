@@ -76,7 +76,7 @@ export default function OnboardingKitBuilderPage({
             <a
               href="#build-kit"
               className="btn btn-primary"
-              style={{ padding: "5px 12px", fontSize: "0.8125rem", borderRadius: "6px" }}
+              style={{ padding: "10px 24px", fontSize: "0.9375rem", borderRadius: "6px" }}
             >
               Build My Kit →
             </a>
@@ -130,7 +130,7 @@ export default function OnboardingKitBuilderPage({
                       height: "100%",
                       objectFit: "cover",
                       objectPosition: "top",
-                      opacity: 0.13,
+                      opacity: 0.18,
                       pointerEvents: "none",
                     }}
                   />
@@ -152,7 +152,7 @@ export default function OnboardingKitBuilderPage({
                         color: "var(--cta)",
                       }}
                     >
-                      Preview →
+                      Preview
                     </span>
                   </div>
                 </a>

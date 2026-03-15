@@ -320,7 +320,7 @@ export default function TimesaverTool() {
           <div className="tool-tag">AGENT: Timesaver</div>
 
           <h1 className="screen-headline">
-            See how many hours you could save.
+            See how many hours you'll save.
           </h1>
           <p className="screen-subheadline">
             Answer a few questions. Get 5 personalized AI workflows.

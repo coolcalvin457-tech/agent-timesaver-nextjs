@@ -31,7 +31,7 @@ export default function CommunityPage() {
                 margin: "0 auto",
               }}
             >
-              A place where professionals share what&apos;s working with AI.
+              A place where professionals share what&apos;s working with AI.<br />
               Real-life, applicable examples.
             </p>
           </div>
@@ -65,7 +65,7 @@ export default function CommunityPage() {
           {/* CTA */}
           <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
             <a href="/#timesaver" className="btn btn-primary btn-full">
-              Try AGENT: Timesaver →
+              Try AGENT: Timesaver
             </a>
             <a href="/" className="btn btn-outline btn-full">
               Back to homepage

@@ -146,15 +146,15 @@ export default function Home() {
                   don&apos;t have to.
                 </h2>
                 <p className="guide-body">
-                  I used to teach history and coach basketball. No technical
-                  background. Nothing to do with software. I spent 6 months
+                  I used to teach history and coach basketball. No technical background.
+                  Nothing to do with software. I spent 6 months
                   learning how AI agents actually work.
                 </p>
                 <p className="guide-body">
                   Now I&apos;m sharing what I know to help others apply AI to
                   their specific jobs, without starting from scratch.
                 </p>
-                <p className="guide-kicker">
+                <p className="guide-kicker" style={{ marginTop: "32px", fontSize: "1.25rem" }}>
                   If a basketball coach can figure this out, so can you.
                 </p>
               </div>

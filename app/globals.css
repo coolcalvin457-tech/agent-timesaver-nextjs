@@ -2521,6 +2521,12 @@ input, textarea {
   border-radius: var(--radius-card);
   padding: 36px;
   box-shadow: var(--shadow-card);
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.kit-preview-card:hover {
+  border-color: var(--cta);
+  box-shadow: 0 4px 24px rgba(30, 122, 184, 0.12);
 }
 
 .kit-sample-card {

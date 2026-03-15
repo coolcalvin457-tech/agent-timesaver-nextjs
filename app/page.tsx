@@ -90,7 +90,7 @@ export default function Home() {
               </div>
 
               {/* Right: kit preview card */}
-              <div className="kit-preview-card">
+              <a href="/prompt-builder" className="kit-preview-card" style={{ textDecoration: "none", cursor: "pointer", display: "block" }}>
                 <div className="kit-preview-label">What&apos;s included:</div>
 
                 <div className="kit-item">

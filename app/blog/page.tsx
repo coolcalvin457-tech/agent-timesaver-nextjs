@@ -100,7 +100,7 @@ export default function BlogPage() {
                 margin: "0 auto",
               }}
             >
-              Practical AI skills for real jobs. Real workflows you can try now.
+              Built for real jobs. Not demos.
             </p>
           </div>
         </div>

@@ -14,8 +14,7 @@ type Post = {
 export default function BlogList({ posts }: { posts: Post[] }) {
   const [activeFilter, setActiveFilter] = useState("All");
 
-  // Derive unique categories from posts array — new tabs appear automatically
-  const categories = ["All", ...Array.from(new Set(posts.map((p) => p.category)))];
+  const categories = ["All", "Human Resources"];
 
   const filtered =
     activeFilter === "All"
@@ -31,6 +30,7 @@ export default function BlogList({ posts }: { posts: Post[] }) {
           gap: "8px",
           marginBottom: "40px",
           flexWrap: "wrap",
+          justifyContent: "center",
         }}
       >
         {categories.map((cat) => {

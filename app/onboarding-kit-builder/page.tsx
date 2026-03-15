@@ -29,11 +29,11 @@ export default function OnboardingKitBuilderPage({
         {/* ── Hero section ─────────────────────────────────────── */}
         <section
           className="section section-alt"
-          style={{ paddingTop: "140px", paddingBottom: "48px" }}
+          style={{ paddingTop: "140px", paddingBottom: "56px" }}
         >
-          <div className="container" style={{ textAlign: "center" }}>
-            {/* Badge */}
-            <div style={{ marginBottom: "20px" }}>
+          <div className="container">
+            {/* Badge — left-aligned above the headline */}
+            <div style={{ marginBottom: "18px" }}>
               <span
                 style={{
                   display: "inline-block",
@@ -53,14 +53,17 @@ export default function OnboardingKitBuilderPage({
 
             <h1
               className="heading-1"
-              style={{ margin: "0 auto 32px", maxWidth: "720px" }}
+              style={{
+                marginBottom: "28px",
+                maxWidth: "720px",
+                fontSize: "clamp(2.25rem, 4vw, 3.5rem)",
+              }}
             >
               A position-specific onboarding kit for every new hire.
             </h1>
 
-            {/* Pricing callout + CTA row — centered */}
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "16px", flexWrap: "wrap" }}>
-              {/* Pricing callout */}
+            {/* Pricing callout — stacked above CTA */}
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "12px" }}>
               <a
                 href="#build-kit"
                 className="pricing-callout-link"
@@ -76,14 +79,7 @@ export default function OnboardingKitBuilderPage({
                   transition: "background 0.15s ease, border-color 0.15s ease",
                 }}
               >
-                <span
-                  style={{
-                    fontSize: "1.125rem",
-                    fontWeight: 800,
-                    color: "var(--cta)",
-                    lineHeight: 1,
-                  }}
-                >
+                <span style={{ fontSize: "1.125rem", fontWeight: 800, color: "var(--cta)", lineHeight: 1 }}>
                   $49
                 </span>
                 <span
@@ -97,13 +93,10 @@ export default function OnboardingKitBuilderPage({
                 />
                 <span style={{ fontSize: "0.8125rem", color: "var(--text-secondary)", lineHeight: 1.4 }}>
                   <strong style={{ fontWeight: 600 }}>Founding rate.</strong>{" "}
-                  <span style={{ color: "var(--text-muted)" }}>
-                    $97 at full launch · One-time purchase.
-                  </span>
+                  <span style={{ color: "var(--text-muted)" }}>$97 at full launch · One-time purchase.</span>
                 </span>
               </a>
 
-              {/* Primary CTA */}
               <a
                 href="#build-kit"
                 className="btn btn-primary"
@@ -167,20 +160,20 @@ export default function OnboardingKitBuilderPage({
                       pointerEvents: "none",
                     }}
                   />
-                  <div style={{ position: "relative", zIndex: 2 }}>
+                  <div style={{ position: "relative", zIndex: 2, width: "100%" }}>
                     <h3
                       style={{
-                        fontSize: "0.9375rem",
+                        fontSize: "0.875rem",
                         fontWeight: 700,
                         color: "var(--text-primary)",
-                        marginBottom: "8px",
+                        marginBottom: "6px",
                       }}
                     >
                       {item.title}
                     </h3>
                     <span
                       style={{
-                        fontSize: "0.8125rem",
+                        fontSize: "0.75rem",
                         fontWeight: 600,
                         color: "var(--cta)",
                       }}

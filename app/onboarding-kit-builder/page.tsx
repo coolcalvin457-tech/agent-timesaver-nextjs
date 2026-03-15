@@ -70,24 +70,28 @@ export default function OnboardingKitBuilderPage({
               Includes warm welcome letter, first-week schedule, key contacts, 30/60/90 plan, and priority checklist.
             </p>
 
-            {/* Pricing callout */}
-            <div
+            {/* Pricing callout — links to tool form */}
+            <a
+              href="#build-kit"
+              className="pricing-callout-link"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
                 gap: "12px",
-                padding: "10px 16px",
+                padding: "12px 20px",
                 background: "rgba(30,122,184,0.06)",
                 border: "1px solid rgba(30,122,184,0.15)",
                 borderRadius: "8px",
-                marginBottom: "48px",
+                marginBottom: "24px",
+                textDecoration: "none",
+                transition: "background 0.15s ease, border-color 0.15s ease",
               }}
             >
               <span
                 style={{
-                  fontSize: "1.25rem",
+                  fontSize: "1.375rem",
                   fontWeight: 800,
-                  color: "var(--text-primary)",
+                  color: "var(--cta)",
                   lineHeight: 1,
                 }}
               >
@@ -108,12 +112,12 @@ export default function OnboardingKitBuilderPage({
                   $97 at full launch · One-time purchase.
                 </span>
               </span>
-            </div>
+            </a>
           </div>
         </section>
 
         {/* ── What's in the kit ─────────────────────────────────── */}
-        <section className="section section-alt" style={{ paddingTop: "64px", paddingBottom: "64px" }}>
+        <section className="section section-alt" style={{ paddingTop: "32px", paddingBottom: "64px" }}>
           <div className="container-narrow">
             <h2
               className="heading-2"
@@ -135,20 +139,20 @@ export default function OnboardingKitBuilderPage({
                 { title: "Key Contacts",          pdf: "/kit-samples/key-contacts.pdf" },
                 { title: "30-60-90 Day Plan",     pdf: "/kit-samples/30-60-90-day-plan.pdf" },
                 { title: "New Hire Checklist",    pdf: "/kit-samples/new-hire-checklist.pdf" },
-                { title: "Full Sample Kit",       pdf: "/kit-samples/onboarding-kit-sample.pdf", isFullKit: true },
+                { title: "Complete Kit",           pdf: "/kit-samples/onboarding-kit-sample.pdf" },
               ].map((item) => (
                 <a
                   key={item.title}
                   href={item.pdf}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`kit-sample-card${item.isFullKit ? " kit-sample-card-dark" : ""}`}
+                  className="kit-sample-card"
                 >
                   <h3
                     style={{
                       fontSize: "0.9375rem",
                       fontWeight: 700,
-                      color: item.isFullKit ? "#ffffff" : "var(--text-primary)",
+                      color: "var(--text-primary)",
                       marginBottom: "16px",
                     }}
                   >
@@ -158,10 +162,10 @@ export default function OnboardingKitBuilderPage({
                     style={{
                       fontSize: "0.8125rem",
                       fontWeight: 600,
-                      color: item.isFullKit ? "rgba(255,255,255,0.7)" : "var(--cta)",
+                      color: "var(--cta)",
                     }}
                   >
-                    Preview sample →
+                    Preview →
                   </span>
                 </a>
               ))}

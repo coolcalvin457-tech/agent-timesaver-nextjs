@@ -2438,6 +2438,11 @@ input, textarea {
   border: 1px solid var(--dark);
 }
 
+.pricing-callout-link:hover {
+  background: rgba(30, 122, 184, 0.10);
+  border-color: rgba(30, 122, 184, 0.30);
+}
+
 .kit-preview-label {
   font-size: 0.75rem;
   font-weight: 700;

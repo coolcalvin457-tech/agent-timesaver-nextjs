@@ -6,11 +6,11 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "AGENT: Onboarding Kit Builder — promptaiagents.com",
   description:
-    "Build a position-specific onboarding kit for every new hire. Welcome letter, first-week schedule, key contacts, 30/60/90 plan, and priority checklist — as a ready-to-use .docx file.",
+    "A position-specific onboarding kit for every new hire. Welcome letter, first-week schedule, key contacts, 30/60/90 plan, and priority checklist — as a ready-to-use .docx file.",
   openGraph: {
     title: "AGENT: Onboarding Kit Builder — promptaiagents.com",
     description:
-      "Build a position-specific onboarding kit for every new hire. Delivered as a ready-to-use .docx file.",
+      "A position-specific onboarding kit for every new hire. Delivered as a ready-to-use .docx file.",
     url: "https://promptaiagents.com/onboarding-kit-builder",
     siteName: "promptaiagents.com",
     type: "website",
@@ -55,7 +55,7 @@ export default function OnboardingKitBuilderPage({
               className="heading-1"
               style={{ marginBottom: "16px", maxWidth: "600px" }}
             >
-              Build a position-specific onboarding kit for every new hire.
+              A position-specific onboarding kit for every new hire.
             </h1>
 
             <p
@@ -128,7 +128,7 @@ export default function OnboardingKitBuilderPage({
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
+                gridTemplateColumns: "repeat(3, 1fr)",
                 gap: "16px",
                 marginBottom: "40px",
               }}
@@ -139,7 +139,7 @@ export default function OnboardingKitBuilderPage({
                 { title: "Key Contacts",          pdf: "/kit-samples/key-contacts.pdf" },
                 { title: "30-60-90 Day Plan",     pdf: "/kit-samples/30-60-90-day-plan.pdf" },
                 { title: "New Hire Checklist",    pdf: "/kit-samples/new-hire-checklist.pdf" },
-                { title: "Complete Kit",           pdf: "/kit-samples/onboarding-kit-sample.pdf" },
+                { title: "Complete Kit",          pdf: "/kit-samples/onboarding-kit-sample.pdf", featured: true },
               ].map((item) => (
                 <a
                   key={item.title}
@@ -147,6 +147,10 @@ export default function OnboardingKitBuilderPage({
                   target="_blank"
                   rel="noopener noreferrer"
                   className="kit-sample-card"
+                  style={item.featured ? {
+                    border: "1.5px solid rgba(30,122,184,0.35)",
+                    background: "rgba(30,122,184,0.03)",
+                  } : undefined}
                 >
                   <h3
                     style={{

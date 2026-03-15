@@ -2418,14 +2418,14 @@ input, textarea {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 22px 24px;
+  padding: 28px 24px;
   background: var(--bg-surface, #FFFFFF);
   border: 1px solid var(--border, #E4E4E2);
   border-radius: var(--radius-card);
   text-decoration: none;
   transition: box-shadow 0.15s ease, transform 0.15s ease;
   cursor: pointer;
-  min-height: 100px;
+  min-height: 160px;
 }
 
 .kit-sample-card:hover {

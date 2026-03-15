@@ -29,7 +29,7 @@ export default function OnboardingKitBuilderPage({
         {/* ── Hero section ─────────────────────────────────────── */}
         <section
           className="section section-alt"
-          style={{ paddingTop: "140px", paddingBottom: "80px" }}
+          style={{ paddingTop: "140px", paddingBottom: "48px" }}
         >
           <div className="container" style={{ textAlign: "center" }}>
             {/* Badge */}
@@ -116,14 +116,14 @@ export default function OnboardingKitBuilderPage({
         </section>
 
         {/* ── What's in the kit ─────────────────────────────────── */}
-        <section className="section section-alt" style={{ paddingTop: "80px", paddingBottom: "96px" }}>
+        <section className="section" style={{ background: "#ffffff", paddingTop: "56px", paddingBottom: "96px" }}>
           <div className="container">
-            <h2
-              className="heading-2"
-              style={{ marginBottom: "40px", textAlign: "center" }}
+            <p
+              className="eyebrow"
+              style={{ textAlign: "center", marginBottom: "32px" }}
             >
-              Preview Examples:
-            </h2>
+              Preview Examples
+            </p>
             <div
               style={{
                 display: "grid",

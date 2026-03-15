@@ -36,7 +36,7 @@ const tools = [
     badgeClass: "tool-badge-free",
     label: "Free",
     name: "AGENT: Prompt Builder",
-    tagline: "Receive 12 job specific prompts.",
+    tagline: "Receive 12 job-specific prompts.",
     description:
       "Answer 4 questions about how you work. Get a personalized Prompt Kit: 12 ready-to-copy prompts organized by category, an AI Profile paragraph, and a Build Your AI System guide.",
     cta: "Get Free Prompts",

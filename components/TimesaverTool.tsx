@@ -606,7 +606,6 @@ export default function TimesaverTool() {
           <div className="results-tag">
             You could save {state.roi.totalHoursPerWeek} hours every week.
           </div>
-          <h1 className="results-headline">Here&apos;s how:</h1>
           <p className="results-subheadline">
             Time estimates are calculated using your answers and publicly
             available industry data.

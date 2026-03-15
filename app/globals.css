@@ -238,8 +238,8 @@ input, textarea {
 .nav-cta {
   background: var(--dark);
   color: #fff !important;
-  padding: 7px 15px;
-  border-radius: 7px;
+  padding: 5px 12px;
+  border-radius: 6px;
   font-size: 0.8125rem !important;
   font-weight: 500 !important;
   letter-spacing: 0.01em;

@@ -53,22 +53,10 @@ export default function OnboardingKitBuilderPage({
 
             <h1
               className="heading-1"
-              style={{ margin: "0 auto 16px", maxWidth: "720px" }}
+              style={{ margin: "0 auto 32px", maxWidth: "720px" }}
             >
               A position-specific onboarding kit for every new hire.
             </h1>
-
-            <p
-              className="body-lg"
-              style={{
-                color: "var(--text-secondary)",
-                maxWidth: "480px",
-                margin: "0 auto 36px",
-                lineHeight: 1.7,
-              }}
-            >
-              Five documents. One download. Built for the exact role you&apos;re hiring.
-            </p>
 
             {/* Pricing callout + CTA row — centered */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "16px", flexWrap: "wrap" }}>
@@ -132,20 +120,10 @@ export default function OnboardingKitBuilderPage({
           <div className="container">
             <h2
               className="heading-2"
-              style={{ marginBottom: "12px", textAlign: "center" }}
+              style={{ marginBottom: "40px", textAlign: "center" }}
             >
               Preview Examples:
             </h2>
-            <p
-              style={{
-                textAlign: "center",
-                color: "var(--text-secondary)",
-                fontSize: "0.9375rem",
-                marginBottom: "48px",
-              }}
-            >
-              Click any document to preview it in full.
-            </p>
             <div
               style={{
                 display: "grid",

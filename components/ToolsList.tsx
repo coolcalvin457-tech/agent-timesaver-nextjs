@@ -7,12 +7,11 @@ type Tool = {
   href: string;
   badgeClass: string;
   label: string;
+  badgeDisplay?: string;
   name: string;
   tagline: string;
   description: string;
   cta: string;
-  price?: string;
-  priceNote?: string;
   image?: string;
 };
 
@@ -90,7 +89,7 @@ export default function ToolsList({ tools }: { tools: Tool[] }) {
           >
             {/* Badge */}
             <div style={{ marginBottom: "20px" }}>
-              <span className={tool.badgeClass}>{tool.label}</span>
+              <span className={tool.badgeClass}>{tool.badgeDisplay ?? tool.label}</span>
             </div>
 
             {/* Name */}
@@ -189,40 +188,6 @@ export default function ToolsList({ tools }: { tools: Tool[] }) {
 
             {/* Spacer */}
             <div style={{ flexGrow: 1 }} />
-
-            {/* Pricing (paid tools only) */}
-            {tool.price && (
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "baseline",
-                  gap: "8px",
-                  marginTop: "24px",
-                  paddingTop: "4px",
-                }}
-              >
-                <span
-                  style={{
-                    fontSize: "1.25rem",
-                    fontWeight: 800,
-                    color: "var(--text-primary)",
-                    lineHeight: 1,
-                  }}
-                >
-                  {tool.price}
-                </span>
-                {tool.priceNote && (
-                  <span
-                    style={{
-                      fontSize: "0.8125rem",
-                      color: "var(--text-muted)",
-                    }}
-                  >
-                    {tool.priceNote}
-                  </span>
-                )}
-              </div>
-            )}
 
             {/* CTA */}
             <a

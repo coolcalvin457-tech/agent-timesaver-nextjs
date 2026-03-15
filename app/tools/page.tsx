@@ -59,12 +59,11 @@ const tools = [
     href: "/onboarding-kit-builder",
     badgeClass: "tool-badge-paid",
     label: "HR Tools",
+    badgeDisplay: "$49",
     name: "AGENT: Onboarding Kit Builder",
     tagline: "Built for the role, not just the company.",
     description:
       "Includes warm welcome letter, first-week schedule, key contacts, 30/60/90 plan, and priority checklist.",
-    price: "$49",
-    priceNote: "Founding rate · $97 at full launch · One-time",
     cta: "Build My Kit",
     image: "/tool-previews/onboarding-kit-preview.png",
   },

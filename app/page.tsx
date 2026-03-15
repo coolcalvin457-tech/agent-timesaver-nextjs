@@ -82,7 +82,7 @@ export default function Home() {
                 >
                   Answer a few questions about your job. Walk away with 12
                   ready-to-use prompts, a personal AI Profile, and a
-                  step-by-step guide for building an AI system.
+                  step-by-step guide for building your AI system.
                 </p>
                 <a href="/prompt-builder" className="btn btn-primary btn-lg">
                   Get Started →
@@ -91,7 +91,7 @@ export default function Home() {
 
               {/* Right: kit preview card */}
               <div className="kit-preview-card">
-                <div className="kit-preview-label">What&apos;s in your kit</div>
+                <div className="kit-preview-label">What&apos;s included:</div>
 
                 <div className="kit-item">
                   <div className="kit-item-check">✓</div>

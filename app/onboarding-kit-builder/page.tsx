@@ -33,24 +33,26 @@ export default function OnboardingKitBuilderPage({
         >
           <div className="container" style={{ textAlign: "center" }}>
             {/* HR Tools — plain label, no badge */}
+            {/* HR Tools — light blue label */}
             <p
               style={{
                 fontSize: "0.6875rem",
                 fontWeight: 600,
                 letterSpacing: "0.1em",
                 textTransform: "uppercase",
-                color: "var(--text-muted)",
+                color: "var(--cta)",
                 marginBottom: "20px",
               }}
             >
               HR Tools
             </p>
 
+            {/* maxWidth pulled in to force clean 2-line wrap */}
             <h1
               className="heading-1"
               style={{
                 margin: "0 auto 20px",
-                maxWidth: "720px",
+                maxWidth: "560px",
                 fontSize: "clamp(2.25rem, 4vw, 3.5rem)",
               }}
             >
@@ -62,7 +64,7 @@ export default function OnboardingKitBuilderPage({
               style={{
                 fontSize: "0.9375rem",
                 color: "var(--text-secondary)",
-                marginBottom: "32px",
+                marginBottom: "28px",
                 lineHeight: 1.6,
               }}
             >
@@ -72,11 +74,11 @@ export default function OnboardingKitBuilderPage({
               <span style={{ color: "var(--text-muted)" }}>$97 at full launch · One-time purchase.</span>
             </p>
 
-            {/* Single CTA */}
+            {/* Single CTA — matches nav button size */}
             <a
               href="#build-kit"
               className="btn btn-primary"
-              style={{ padding: "12px 32px", fontSize: "1rem" }}
+              style={{ padding: "5px 12px", fontSize: "0.8125rem", borderRadius: "6px" }}
             >
               Build My Kit →
             </a>

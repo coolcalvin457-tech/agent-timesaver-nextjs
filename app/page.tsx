@@ -23,7 +23,7 @@ export default function Home() {
                   Own AI Agent.
                 </h1>
                 <p className="hero-subheadline">
-                  Less intimidating than it sounds. More useful than you'd think.
+                  Less intimidating than it sounds.<br />More useful than you think.
                 </p>
                 <HeroButton />
               </div>

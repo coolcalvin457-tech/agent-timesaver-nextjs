@@ -29,19 +29,19 @@ export default function OnboardingKitBuilderPage({
         {/* ── Hero section ─────────────────────────────────────── */}
         <section
           className="section section-alt"
-          style={{ paddingTop: "120px", paddingBottom: "0" }}
+          style={{ paddingTop: "120px", paddingBottom: "72px" }}
         >
-          <div className="container-narrow">
+          <div className="container">
             {/* Badge */}
-            <div style={{ marginBottom: "16px" }}>
+            <div style={{ marginBottom: "14px" }}>
               <span
                 style={{
                   display: "inline-block",
-                  fontSize: "0.75rem",
+                  fontSize: "0.6875rem",
                   fontWeight: 700,
-                  letterSpacing: "0.06em",
+                  letterSpacing: "0.08em",
                   textTransform: "uppercase",
-                  padding: "4px 10px",
+                  padding: "3px 9px",
                   borderRadius: "var(--radius-tag)",
                   background: "rgba(30, 122, 184, 0.08)",
                   color: "var(--cta)",
@@ -53,54 +53,65 @@ export default function OnboardingKitBuilderPage({
 
             <h1
               className="heading-1"
-              style={{ marginBottom: "24px", maxWidth: "600px" }}
+              style={{ marginBottom: "32px", maxWidth: "680px" }}
             >
               A position-specific onboarding kit for every new hire.
             </h1>
 
-            {/* Pricing callout — links to tool form */}
-            <a
-              href="#build-kit"
-              className="pricing-callout-link"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "12px",
-                padding: "12px 20px",
-                background: "rgba(30,122,184,0.06)",
-                border: "1px solid rgba(30,122,184,0.15)",
-                borderRadius: "8px",
-                marginBottom: "24px",
-                textDecoration: "none",
-                transition: "background 0.15s ease, border-color 0.15s ease",
-              }}
-            >
-              <span
+            {/* Pricing callout + CTA row */}
+            <div style={{ display: "flex", alignItems: "center", gap: "16px", flexWrap: "wrap" }}>
+              {/* Pricing callout */}
+              <a
+                href="#build-kit"
+                className="pricing-callout-link"
                 style={{
-                  fontSize: "1.375rem",
-                  fontWeight: 800,
-                  color: "var(--cta)",
-                  lineHeight: 1,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  padding: "8px 14px",
+                  background: "rgba(30,122,184,0.06)",
+                  border: "1px solid rgba(30,122,184,0.15)",
+                  borderRadius: "8px",
+                  textDecoration: "none",
+                  transition: "background 0.15s ease, border-color 0.15s ease",
                 }}
               >
-                $49
-              </span>
-              <span
-                style={{
-                  width: "1px",
-                  height: "16px",
-                  background: "var(--border, #E4E4E2)",
-                  display: "inline-block",
-                  flexShrink: 0,
-                }}
-              />
-              <span style={{ fontSize: "0.875rem", color: "var(--text-secondary)", lineHeight: 1.4 }}>
-                <strong style={{ fontWeight: 600 }}>Founding rate.</strong>{" "}
-                <span style={{ color: "var(--text-muted)" }}>
-                  $97 at full launch · One-time purchase.
+                <span
+                  style={{
+                    fontSize: "1.125rem",
+                    fontWeight: 800,
+                    color: "var(--cta)",
+                    lineHeight: 1,
+                  }}
+                >
+                  $49
                 </span>
-              </span>
-            </a>
+                <span
+                  style={{
+                    width: "1px",
+                    height: "14px",
+                    background: "var(--border, #E4E4E2)",
+                    display: "inline-block",
+                    flexShrink: 0,
+                  }}
+                />
+                <span style={{ fontSize: "0.8125rem", color: "var(--text-secondary)", lineHeight: 1.4 }}>
+                  <strong style={{ fontWeight: 600 }}>Founding rate.</strong>{" "}
+                  <span style={{ color: "var(--text-muted)" }}>
+                    $97 at full launch · One-time purchase.
+                  </span>
+                </span>
+              </a>
+
+              {/* Primary CTA */}
+              <a
+                href="#build-kit"
+                className="btn btn-primary"
+                style={{ padding: "10px 28px", fontSize: "0.9375rem" }}
+              >
+                Build My Kit →
+              </a>
+            </div>
           </div>
         </section>
 
@@ -198,6 +209,13 @@ export default function OnboardingKitBuilderPage({
         <section id="build-kit" className="section" style={{ paddingTop: "96px" }}>
           <div className="container">
             <div style={{ maxWidth: "640px", margin: "0 auto" }}>
+              {/* Tool label */}
+              <p
+                className="eyebrow"
+                style={{ marginBottom: "20px" }}
+              >
+                AGENT: Onboarding Kit Builder
+              </p>
               <OnboardingKitBuilderTool
                 initialPaymentStatus={searchParams.payment}
                 initialSessionId={searchParams.session_id}

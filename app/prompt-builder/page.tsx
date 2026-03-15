@@ -3,7 +3,7 @@ import NavClient from "@/components/NavClient";
 import Footer from "@/components/Footer";
 
 export const metadata = {
-  title: "AGENT: Prompt Builder — promptaiagents.com",
+  title: "AGENT: Prompt Builder — Prompt AI Agents",
   description:
     "Get 12 ready-to-copy AI prompts personalized to your exact job. Built for non-technical professionals who want real results from AI.",
 };

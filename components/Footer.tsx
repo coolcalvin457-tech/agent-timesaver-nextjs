@@ -6,7 +6,7 @@ export default function Footer() {
 
           {/* Brand */}
           <div>
-            <div className="footer-brand-name">promptaiagents.com</div>
+            <div className="footer-brand-name">Prompt AI Agents</div>
             <div className="footer-tagline">Built for real jobs. Not demos.</div>
           </div>
 
@@ -34,7 +34,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="footer-bottom">
           <div className="footer-legal">
-            © 2026 promptaiagents.com. All rights reserved.
+            © 2026 Prompt AI Agents. All rights reserved.
           </div>
         </div>
       </div>

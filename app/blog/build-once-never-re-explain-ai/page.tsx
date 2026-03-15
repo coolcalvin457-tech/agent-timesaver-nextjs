@@ -3,7 +3,7 @@ import NavClient from "@/components/NavClient";
 
 export const metadata: Metadata = {
   title:
-    "Build Once and You'll Never Have to Re-Explain to AI Again | promptaiagents.com",
+    "Build Once and You'll Never Have to Re-Explain to AI Again | Prompt AI Agents",
   description:
     "AI starts every session blank by default. Here's how to build a context layer that changes that permanently — in 10 minutes.",
   openGraph: {
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description:
       "AI starts every session blank by default. Here's how to build a context layer that changes that permanently.",
     url: "https://promptaiagents.com/blog/build-once-never-re-explain-ai",
-    siteName: "promptaiagents.com",
+    siteName: "Prompt AI Agents",
     type: "article",
   },
 };

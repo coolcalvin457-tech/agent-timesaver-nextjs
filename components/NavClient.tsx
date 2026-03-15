@@ -16,7 +16,7 @@ export default function NavClient() {
       <div className="container">
         <div className="nav-inner">
           <a href="/" className="nav-logo">
-            promptaiagents.com
+            Prompt AI Agents
           </a>
           <ul className="nav-links">
             <li><a href="/tools">Tools</a></li>

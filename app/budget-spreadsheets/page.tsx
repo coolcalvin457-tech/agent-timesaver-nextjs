@@ -3,7 +3,7 @@ import NavClient from "@/components/NavClient";
 import Footer from "@/components/Footer";
 
 export const metadata = {
-  title: "AGENT: Budget Spreadsheets — promptaiagents.com",
+  title: "AGENT: Budget Spreadsheets — Prompt AI Agents",
   description:
     "Describe your budget and get a formatted spreadsheet in seconds.",
 };

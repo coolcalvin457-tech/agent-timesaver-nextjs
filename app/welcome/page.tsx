@@ -7,7 +7,7 @@ const GUIDES_URL = "/guides";
 // ──────────────────────────────────────────────────────────────────────────
 
 export const metadata: Metadata = {
-  title: "You're in — AGENT: Timesaver | promptaiagents.com",
+  title: "You're in — AGENT: Timesaver | Prompt AI Agents",
   description:
     "Your personalized AI workflows are on their way. Here's where to go next.",
 };
@@ -103,7 +103,7 @@ export default function WelcomePage() {
             textDecoration: "none",
           }}
         >
-          ← Back to promptaiagents.com
+          ← Back to Prompt AI Agents
         </a>
       </div>
     </main>

@@ -3,7 +3,7 @@ import NavClient from "@/components/NavClient";
 
 export const metadata: Metadata = {
   title:
-    "How to Actually Start Using AI at Work and Build Your Own Agent | promptaiagents.com",
+    "How to Actually Start Using AI at Work and Build Your Own Agent | Prompt AI Agents",
   description:
     "Most people use AI wrong — and they know it. Here's the shift that changes everything: build prompts from your actual work, not someone else's template.",
   openGraph: {
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description:
       "Most people use AI wrong — and they know it. Here's the shift that changes everything.",
     url: "https://promptaiagents.com/blog/how-to-start-using-ai-at-work",
-    siteName: "promptaiagents.com",
+    siteName: "Prompt AI Agents",
     type: "article",
   },
 };
@@ -295,7 +295,7 @@ export default function PostPage() {
             {/* Section 7: Origin / CTA */}
             <div className="blog-section">
               <p>
-                This is why I started promptaiagents.com. A year ago I was in
+                This is why I started Prompt AI Agents. A year ago I was in
                 a sweaty gym coaching basketball. Now I&apos;m shipping a new
                 AI app every week. I don&apos;t know how to code. I don&apos;t
                 have a computer science degree or any technical background.

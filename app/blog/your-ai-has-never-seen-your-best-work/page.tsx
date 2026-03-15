@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title:
-    "Your AI Has Never Seen Your Best Work. Why Not Show It? | promptaiagents.com",
+    "Your AI Has Never Seen Your Best Work. Why Not Show It? | Prompt AI Agents",
   description:
     "AI is required to produce an answer for every prompt. When the response feels generic, it needs an example to reference. Here's how to fix that.",
   openGraph: {
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     description:
       "AI is required to produce an answer for every prompt. When the response feels generic, it needs an example to reference.",
     url: "https://promptaiagents.com/blog/your-ai-has-never-seen-your-best-work",
-    siteName: "promptaiagents.com",
+    siteName: "Prompt AI Agents",
     type: "article",
   },
 };
@@ -217,7 +217,7 @@ export default function PostPage() {
                   href="/"
                   style={{ color: "var(--cta)", textDecoration: "none", fontWeight: 600 }}
                 >
-                  promptaiagents.com
+                  Prompt AI Agents
                 </a>
                 .
               </p>

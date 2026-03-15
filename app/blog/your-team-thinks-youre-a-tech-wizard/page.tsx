@@ -3,7 +3,7 @@ import NavClient from "@/components/NavClient";
 
 export const metadata: Metadata = {
   title:
-    "Your Team Thinks You're a Tech Wizard. All You Did Was Learn One Workflow. | promptaiagents.com",
+    "Your Team Thinks You're a Tech Wizard. All You Did Was Learn One Workflow. | Prompt AI Agents",
   description:
     "Your meeting ends. One prompt to AI gives you a summary, slide breakdown, and follow-up email before lunch. Here's the exact workflow.",
   openGraph: {
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description:
       "Your meeting ends. One prompt to AI gives you a summary, slide breakdown, and follow-up email before lunch.",
     url: "https://promptaiagents.com/blog/your-team-thinks-youre-a-tech-wizard",
-    siteName: "promptaiagents.com",
+    siteName: "Prompt AI Agents",
     type: "article",
   },
 };

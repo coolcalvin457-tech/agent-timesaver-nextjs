@@ -4,15 +4,15 @@ import BlogList from "@/components/BlogList";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Blog | promptaiagents.com",
+  title: "Blog | Prompt AI Agents",
   description:
     "Practical AI skills for non-technical people. Real workflows, honest takes, and a clear path forward.",
   openGraph: {
-    title: "Blog | promptaiagents.com",
+    title: "Blog | Prompt AI Agents",
     description:
       "Practical AI skills for non-technical people. Real workflows, honest takes, and a clear path forward.",
     url: "https://promptaiagents.com/blog",
-    siteName: "promptaiagents.com",
+    siteName: "Prompt AI Agents",
     type: "website",
   },
 };

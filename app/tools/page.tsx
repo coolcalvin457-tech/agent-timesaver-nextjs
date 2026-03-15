@@ -4,15 +4,15 @@ import Footer from "@/components/Footer";
 import ToolsList from "@/components/ToolsList";
 
 export const metadata: Metadata = {
-  title: "Tools | promptaiagents.com",
+  title: "Tools | Prompt AI Agents",
   description:
     "Free and paid AI tools built for real jobs. Start with your job title. Get workflows, prompts, and systems that actually fit your role.",
   openGraph: {
-    title: "Tools | promptaiagents.com",
+    title: "Tools | Prompt AI Agents",
     description:
       "Free and paid AI tools built for real jobs. Start with your job title. Get workflows, prompts, and systems that actually fit your role.",
     url: "https://promptaiagents.com/tools",
-    siteName: "promptaiagents.com",
+    siteName: "Prompt AI Agents",
     type: "website",
   },
 };

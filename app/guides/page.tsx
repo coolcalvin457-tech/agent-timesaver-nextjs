@@ -3,7 +3,7 @@ import NavClient from "@/components/NavClient";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Resources | promptaiagents.com",
+  title: "Resources | Prompt AI Agents",
   description:
     "Practical AI guides, tutorials, and workflows for people who want to work smarter. Built for real jobs. Not demos.",
 };

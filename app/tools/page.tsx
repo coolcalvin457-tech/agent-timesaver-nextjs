@@ -39,7 +39,7 @@ const tools = [
     tagline: "12 prompts built around your role. Ready to copy.",
     description:
       "Answer 4 questions about how you work. Get a personalized Prompt Kit: 12 ready-to-copy prompts organized by category, an AI Profile paragraph, and a Build Your AI System guide.",
-    cta: "Build My Prompt Kit",
+    cta: "Get Free Prompts",
     image: "/tool-previews/prompt-builder-preview.png",
   },
   {
@@ -51,7 +51,7 @@ const tools = [
     tagline: "Describe your budget. Get a spreadsheet.",
     description:
       "Include categories, timeframes, and any numbers you have. Upload a previous example if available. The more detail, the better the results.",
-    cta: "Build My Spreadsheet",
+    cta: "Get Free Spreadsheets",
     image: "/tool-previews/budget-spreadsheets-preview.png",
   },
   {

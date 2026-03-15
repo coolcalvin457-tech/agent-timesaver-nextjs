@@ -6,11 +6,11 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "AGENT: Onboarding Kit Builder — promptaiagents.com",
   description:
-    "Build a complete onboarding kit for your new hire. Welcome letter, first-week schedule, key contacts, 30/60/90 plan, and priority checklist — as a ready-to-use .docx file.",
+    "Build a position-specific onboarding kit for every new hire. Welcome letter, first-week schedule, key contacts, 30/60/90 plan, and priority checklist — as a ready-to-use .docx file.",
   openGraph: {
     title: "AGENT: Onboarding Kit Builder — promptaiagents.com",
     description:
-      "Build a complete onboarding kit for your new hire. Delivered as a ready-to-use .docx file.",
+      "Build a position-specific onboarding kit for every new hire. Delivered as a ready-to-use .docx file.",
     url: "https://promptaiagents.com/onboarding-kit-builder",
     siteName: "promptaiagents.com",
     type: "website",
@@ -55,7 +55,7 @@ export default function OnboardingKitBuilderPage({
               className="heading-1"
               style={{ marginBottom: "16px", maxWidth: "600px" }}
             >
-              Build a complete onboarding kit for your new hire.
+              Build a position-specific onboarding kit for every new hire.
             </h1>
 
             <p
@@ -130,57 +130,60 @@ export default function OnboardingKitBuilderPage({
               }}
             >
               {[
-                {
-                  title: "Warm Welcome Letter",
-                  body: "Written from the hiring manager to the new hire. Specific to the role — not a template they'll recognize.",
-                },
-                {
-                  title: "First-Week Schedule",
-                  body: "Day-by-day. Deliberately lighter the first two days. Built around orientation, introductions, and access.",
-                },
-                {
-                  title: "Key Contacts",
-                  body: "Not the org chart. The people that actually matter for this role, with a one-sentence reason why.",
-                },
-                {
-                  title: "30-60-90 Day Plan",
-                  body: "What success looks like at each milestone — specific to what this hire was brought on to do.",
-                },
-                {
-                  title: "New Hire Checklist",
-                  body: "Pre-start through Month 1. The checklist ladders toward the 30-day milestone so they feel like the same document.",
-                },
+                { title: "Warm Welcome Letter",  pdf: "/kit-samples/warm-welcome-letter.pdf" },
+                { title: "First-Week Schedule",   pdf: "/kit-samples/first-week-schedule.pdf" },
+                { title: "Key Contacts",          pdf: "/kit-samples/key-contacts.pdf" },
+                { title: "30-60-90 Day Plan",     pdf: "/kit-samples/30-60-90-day-plan.pdf" },
+                { title: "New Hire Checklist",    pdf: "/kit-samples/new-hire-checklist.pdf" },
+                { title: "Full Sample Kit",       pdf: "/kit-samples/onboarding-kit-sample.pdf", isFullKit: true },
               ].map((item) => (
-                <div
+                <a
                   key={item.title}
+                  href={item.pdf}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
                     padding: "22px 24px",
-                    background: "var(--bg-surface, #FFFFFF)",
-                    border: "1px solid var(--border, #E4E4E2)",
+                    background: item.isFullKit ? "var(--dark)" : "var(--bg-surface, #FFFFFF)",
+                    border: item.isFullKit ? "1px solid var(--dark)" : "1px solid var(--border, #E4E4E2)",
                     borderRadius: "var(--radius-card)",
+                    textDecoration: "none",
+                    transition: "box-shadow 0.15s ease, transform 0.15s ease",
+                    cursor: "pointer",
+                    minHeight: "100px",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 4px 16px rgba(0,0,0,0.10)";
+                    (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLAnchorElement).style.boxShadow = "none";
+                    (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)";
                   }}
                 >
                   <h3
                     style={{
                       fontSize: "0.9375rem",
                       fontWeight: 700,
-                      color: "var(--text-primary)",
-                      marginBottom: "8px",
+                      color: item.isFullKit ? "#ffffff" : "var(--text-primary)",
+                      marginBottom: "16px",
                     }}
                   >
                     {item.title}
                   </h3>
-                  <p
+                  <span
                     style={{
-                      fontSize: "0.875rem",
-                      color: "var(--text-secondary)",
-                      lineHeight: 1.6,
-                      margin: 0,
+                      fontSize: "0.8125rem",
+                      fontWeight: 600,
+                      color: item.isFullKit ? "rgba(255,255,255,0.7)" : "var(--cta)",
                     }}
                   >
-                    {item.body}
-                  </p>
-                </div>
+                    Preview sample →
+                  </span>
+                </a>
               ))}
             </div>
 

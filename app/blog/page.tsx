@@ -87,25 +87,26 @@ export default function BlogPage() {
           paddingBottom: "80px",
         }}
       >
-        <div className="container-narrow">
-          {/* Header */}
-          <div style={{ paddingTop: "40px", marginBottom: "56px" }}>
-            <h1 className="heading-1" style={{ marginBottom: "14px" }}>
+        {/* Page header */}
+        <div className="container">
+          <div style={{ paddingTop: "80px", marginBottom: "40px", textAlign: "center" }}>
+            <h1 className="heading-1" style={{ marginBottom: "14px", fontSize: "clamp(2.75rem, 6vw, 4.5rem)", lineHeight: 1.05 }}>
               Blog
             </h1>
             <p
               className="body-lg"
               style={{
                 color: "var(--text-secondary)",
-                maxWidth: "480px",
+                margin: "0 auto",
               }}
             >
-              Practical AI skills for non-technical people.<br />
-              Real workflows you can try now.
+              Practical AI skills for real jobs. Real workflows you can try now.
             </p>
           </div>
+        </div>
 
-          {/* Blog list with category filter */}
+        {/* Blog list with category filter */}
+        <div className="container-narrow">
           <BlogList posts={posts} />
         </div>
       </main>

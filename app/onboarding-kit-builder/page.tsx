@@ -5,11 +5,11 @@ import Footer from "@/components/Footer";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AGENT: Onboarding Kit Builder — promptaiagents.com",
+  title: "AGENT: Onboarding Kit — promptaiagents.com",
   description:
     "A position-specific onboarding kit for every new hire. Welcome letter, first-week schedule, key contacts, 30/60/90 plan, and priority checklist — as a ready-to-use .docx file.",
   openGraph: {
-    title: "AGENT: Onboarding Kit Builder — promptaiagents.com",
+    title: "AGENT: Onboarding Kit — promptaiagents.com",
     description:
       "A position-specific onboarding kit for every new hire. Delivered as a ready-to-use .docx file.",
     url: "https://promptaiagents.com/onboarding-kit-builder",
@@ -108,7 +108,7 @@ export default function OnboardingKitBuilderPage({
                 className="eyebrow"
                 style={{ marginBottom: "20px" }}
               >
-                AGENT: Onboarding Kit Builder
+                AGENT: Onboarding Kit
               </p>
               <OnboardingKitBuilderTool
                 initialPaymentStatus={searchParams.payment}

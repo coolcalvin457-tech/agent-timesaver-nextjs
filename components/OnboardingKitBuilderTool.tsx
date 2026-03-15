@@ -1121,7 +1121,7 @@ export default function OnboardingKitBuilderTool({
 
           {/* Description */}
           <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.6, margin: "0 0 20px" }}>
-            Onboarding Kit Builder is live today. PIP Builder, Performance Review Builder, and more ship next — all included at no extra cost.
+            Onboarding Kit is live today. PIP Builder, Performance Review Builder, and more ship next — all included at no extra cost.
           </p>
 
           {/* CTA */}

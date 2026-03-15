@@ -60,7 +60,7 @@ const tools = [
     badgeClass: "tool-badge-paid",
     label: "Human Resources",
     badgeDisplay: "$49",
-    name: "AGENT: Onboarding Kit Builder",
+    name: "AGENT: Onboarding Kit",
     tagline: "Use for every new hire.",
     description:
       "Includes warm welcome letter, first-week schedule, key contacts, 30/60/90 plan, and priority checklist.",

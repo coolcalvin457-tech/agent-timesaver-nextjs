@@ -47,16 +47,14 @@ export default function OnboardingKitBuilderPage({
               HR Tools
             </p>
 
-            {/* maxWidth pulled in to force clean 2-line wrap */}
             <h1
               className="heading-1"
               style={{
                 margin: "0 auto 20px",
-                maxWidth: "560px",
                 fontSize: "clamp(2.25rem, 4vw, 3.5rem)",
               }}
             >
-              A position-specific onboarding kit for every new hire.
+              A position-specific onboarding<br />kit for every new hire.
             </h1>
 
             {/* Price — plain subheader text, no button */}
@@ -86,14 +84,8 @@ export default function OnboardingKitBuilderPage({
         </section>
 
         {/* ── What's in the kit ─────────────────────────────────── */}
-        <section className="section" style={{ background: "#ffffff", paddingTop: "72px", paddingBottom: "96px" }}>
+        <section className="section" style={{ background: "#ffffff", paddingTop: "80px", paddingBottom: "96px" }}>
           <div className="container">
-            <p
-              className="eyebrow"
-              style={{ textAlign: "center", marginBottom: "40px" }}
-            >
-              Preview Examples
-            </p>
             <div
               style={{
                 display: "grid",

@@ -19,22 +19,24 @@ export default function GuidesPage() {
           paddingBottom: "80px",
         }}
       >
-        <div className="container-narrow">
-          <div style={{ paddingTop: "40px", marginBottom: "64px" }}>
-            <h1 className="heading-1" style={{ marginBottom: "14px" }}>
+        <div className="container">
+          <div style={{ paddingTop: "80px", marginBottom: "40px", textAlign: "center" }}>
+            <h1 className="heading-1" style={{ marginBottom: "14px", fontSize: "clamp(2.75rem, 6vw, 4.5rem)", lineHeight: 1.05 }}>
               Resources
             </h1>
             <p
               className="body-lg"
               style={{
                 color: "var(--text-secondary)",
-                maxWidth: "480px",
+                margin: "0 auto",
               }}
             >
               Practical AI guides built around real work situations. Built for real jobs. Not demos.
             </p>
           </div>
+        </div>
 
+        <div className="container-narrow">
           {/* Coming soon card */}
           <div
             style={{

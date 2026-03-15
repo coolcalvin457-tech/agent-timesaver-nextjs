@@ -119,7 +119,7 @@ export default function OnboardingKitBuilderPage({
               className="heading-2"
               style={{ marginBottom: "32px" }}
             >
-              What&apos;s in the kit?
+              Preview Examples:
             </h2>
             <div
               style={{
@@ -142,27 +142,7 @@ export default function OnboardingKitBuilderPage({
                   href={item.pdf}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                    padding: "22px 24px",
-                    background: item.isFullKit ? "var(--dark)" : "var(--bg-surface, #FFFFFF)",
-                    border: item.isFullKit ? "1px solid var(--dark)" : "1px solid var(--border, #E4E4E2)",
-                    borderRadius: "var(--radius-card)",
-                    textDecoration: "none",
-                    transition: "box-shadow 0.15s ease, transform 0.15s ease",
-                    cursor: "pointer",
-                    minHeight: "100px",
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 4px 16px rgba(0,0,0,0.10)";
-                    (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLAnchorElement).style.boxShadow = "none";
-                    (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)";
-                  }}
+                  className={`kit-sample-card${item.isFullKit ? " kit-sample-card-dark" : ""}`}
                 >
                   <h3
                     style={{

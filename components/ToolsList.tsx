@@ -32,7 +32,7 @@ export default function ToolsList({ tools }: { tools: Tool[] }) {
         style={{
           display: "flex",
           gap: "8px",
-          marginBottom: "40px",
+          marginBottom: "32px",
           flexWrap: "wrap",
           justifyContent: "center",
         }}

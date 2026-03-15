@@ -105,20 +105,20 @@ export default function OnboardingKitBuilderPage({
         </section>
 
         {/* ── What's in the kit ─────────────────────────────────── */}
-        <section className="section section-alt" style={{ paddingTop: "32px", paddingBottom: "64px" }}>
-          <div className="container-narrow">
+        <section className="section section-alt" style={{ paddingTop: "80px", paddingBottom: "96px" }}>
+          <div className="container">
             <h2
               className="heading-2"
-              style={{ marginBottom: "32px" }}
+              style={{ marginBottom: "40px", maxWidth: "640px" }}
             >
               Preview Examples:
             </h2>
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(2, 1fr)",
-                gap: "20px",
-                marginBottom: "40px",
+                gridTemplateColumns: "repeat(3, 1fr)",
+                gap: "24px",
+                marginBottom: "56px",
               }}
             >
               {[
@@ -182,11 +182,11 @@ export default function OnboardingKitBuilderPage({
             </div>
 
             {/* CTA after previews */}
-            <div style={{ textAlign: "center", paddingTop: "8px" }}>
+            <div style={{ textAlign: "center", paddingTop: "16px" }}>
               <a
                 href="#build-kit"
                 className="btn btn-primary"
-                style={{ display: "inline-block", padding: "14px 32px", fontSize: "1rem" }}
+                style={{ display: "inline-block", padding: "14px 36px", fontSize: "1rem" }}
               >
                 Build My Kit →
               </a>
@@ -195,7 +195,7 @@ export default function OnboardingKitBuilderPage({
         </section>
 
         {/* ── Tool section ─────────────────────────────────────── */}
-        <section id="build-kit" className="section" style={{ paddingTop: "64px" }}>
+        <section id="build-kit" className="section" style={{ paddingTop: "96px" }}>
           <div className="container">
             <div style={{ maxWidth: "640px", margin: "0 auto" }}>
               <OnboardingKitBuilderTool

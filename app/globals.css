@@ -2427,7 +2427,7 @@ input, textarea {
   position: relative;
   overflow: hidden;
   cursor: pointer;
-  min-height: 260px;
+  min-height: 300px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 2px 10px rgba(0,0,0,0.04);
 }
 

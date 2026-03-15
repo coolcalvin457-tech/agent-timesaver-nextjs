@@ -828,7 +828,7 @@ export default function OnboardingKitBuilderTool({
           onClick={goToS2}
           style={{ marginTop: "8px" }}
         >
-          Continue →
+          Continue
         </button>
       </div>
     );
@@ -902,7 +902,7 @@ export default function OnboardingKitBuilderTool({
           onClick={goToS3}
           style={{ marginTop: "8px" }}
         >
-          Continue →
+          Continue
         </button>
       </div>
     );
@@ -1012,7 +1012,7 @@ export default function OnboardingKitBuilderTool({
           onClick={goToPaywall}
           style={{ marginTop: "8px" }}
         >
-          Build My Kit →
+          Build My Kit
         </button>
       </div>
     );

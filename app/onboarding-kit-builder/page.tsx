@@ -79,13 +79,13 @@ export default function OnboardingKitBuilderPage({
               className="btn btn-primary"
               style={{ padding: "10px 24px", fontSize: "0.9375rem", borderRadius: "6px" }}
             >
-              Build My Kit →
+              Build My Kit
             </a>
           </div>
         </section>
 
         {/* ── What's in the kit ─────────────────────────────────── */}
-        <section className="section" style={{ background: "#ffffff", paddingTop: "80px", paddingBottom: "96px" }}>
+        <section className="section" style={{ background: "#ffffff", paddingTop: "80px", paddingBottom: "64px" }}>
           <div className="container">
             <div
               style={{
@@ -99,7 +99,7 @@ export default function OnboardingKitBuilderPage({
         </section>
 
         {/* ── Tool section ─────────────────────────────────────── */}
-        <section id="build-kit" className="section" style={{ paddingTop: "96px" }}>
+        <section id="build-kit" className="section" style={{ paddingTop: "64px" }}>
           <div className="container">
             <div style={{ maxWidth: "640px", margin: "0 auto" }}>
               {/* Tool label */}

@@ -34,7 +34,7 @@ export default function ToolsList({ tools }: { tools: Tool[] }) {
           gap: "8px",
           marginBottom: "40px",
           flexWrap: "wrap",
-          maxWidth: "720px",
+          justifyContent: "center",
         }}
       >
         {FILTERS.map((filter) => {

@@ -78,9 +78,9 @@ export default function ToolsPage() {
         }}
       >
         {/* Page header */}
-        <div className="container-narrow">
-          <div style={{ paddingTop: "40px", marginBottom: "64px" }}>
-            <h1 className="heading-1" style={{ marginBottom: "14px" }}>
+        <div className="container">
+          <div style={{ paddingTop: "40px", marginBottom: "48px", textAlign: "center" }}>
+            <h1 className="heading-1" style={{ marginBottom: "16px" }}>
               Tools
             </h1>
             <p
@@ -88,11 +88,10 @@ export default function ToolsPage() {
               style={{
                 color: "var(--text-secondary)",
                 maxWidth: "480px",
+                margin: "0 auto",
               }}
             >
-              AI tools built for real jobs.
-              <br />
-              Pick the one that fits where you are right now.
+              AI tools built for real jobs. Pick the one that fits where you are right now.
             </p>
           </div>
         </div>

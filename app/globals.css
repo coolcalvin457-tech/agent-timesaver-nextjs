@@ -1542,6 +1542,13 @@ input, textarea {
   color: rgba(255,255,255,0.35);
 }
 
+/* Tool container — remove light card bg/border inside dark chrome */
+.hero-tool-dark .tool-container {
+  background: var(--dark);
+  border-color: var(--dark-border);
+  box-shadow: none;
+}
+
 /* Screen / main content area */
 .hero-tool-dark .screen {
   background: var(--dark);

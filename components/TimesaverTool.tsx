@@ -320,17 +320,16 @@ export default function TimesaverTool() {
           <div className="tool-tag">AGENT: Timesaver</div>
 
           <h1 className="screen-headline">
-            See exactly where AI fits within your job.
+            See how many hours you could save.
           </h1>
           <p className="screen-subheadline">
-            Answer a few questions. Get 5 personalized AI workflows. See how
-            many hours you could save.
+            Answer a few questions. Get 5 personalized AI workflows.
           </p>
 
           <div className="primer-box">
             <div className="primer-label">⚡ AI Lesson #1</div>
             <p className="primer-body">
-              The more context you give, the more specific your results.
+              The more context you give, the more specific your results will be.
             </p>
           </div>
 
@@ -339,7 +338,7 @@ export default function TimesaverTool() {
             className="btn btn-primary btn-full"
             onClick={() => { track("tool_started"); go("jobTitle"); }}
           >
-            Get Started →
+            Get Started
           </button>
         </div>
       )}

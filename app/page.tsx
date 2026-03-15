@@ -46,7 +46,7 @@ export default function Home() {
         </section>
 
         {/* ── Section 2: Dream / Aspiration ───────────────────────────── */}
-        <section className="section section-dark" id="dream">
+        <section className="section section-dark" id="dream" style={{ paddingBottom: "72px" }}>
           <div className="container-narrow">
             <h2 className="heading-1" style={{ color: "#fff", marginBottom: "24px" }}>
               Imagine getting 5 to 10 hours back every week.
@@ -60,7 +60,7 @@ export default function Home() {
         </section>
 
         {/* ── Section 4: AGENT: Prompt Builder ────────────────────────── */}
-        <section className="section" id="prompt-builder">
+        <section className="section" id="prompt-builder" style={{ paddingTop: "72px", paddingBottom: "80px" }}>
           <div className="container">
             <div className="eyebrow">AGENT: Prompt Builder</div>
             <div className="prompt-builder-layout">
@@ -134,7 +134,7 @@ export default function Home() {
         </section>
 
         {/* ── Section 5: The Guide ─────────────────────────────────────── */}
-        <section className="section" id="about">
+        <section className="section" id="about" style={{ paddingTop: "72px" }}>
           <div className="container">
             <div className="eyebrow">Your guide</div>
             <div className="guide-layout">

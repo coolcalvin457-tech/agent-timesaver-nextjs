@@ -13,6 +13,7 @@ type Tool = {
   description: string;
   cta: string;
   image?: string;
+  isComingSoon?: boolean;
 };
 
 const FILTERS = ["All", "Human Resources"];
@@ -84,12 +85,17 @@ export default function ToolsList({ tools }: { tools: Tool[] }) {
           <div
             key={tool.slug}
             className="tool-card"
-            style={{ cursor: "pointer" }}
-            onClick={() => { window.location.href = tool.href; }}
+            style={{
+              cursor: tool.isComingSoon ? "default" : "pointer",
+              opacity: tool.isComingSoon ? 0.5 : 1,
+            }}
+            onClick={() => { if (!tool.isComingSoon) window.location.href = tool.href; }}
           >
             {/* Badge */}
             <div style={{ marginBottom: "20px" }}>
-              <span className={tool.badgeClass}>{tool.badgeDisplay ?? tool.label}</span>
+              <span className={tool.isComingSoon ? "tool-badge-coming-soon" : tool.badgeClass}>
+                {tool.badgeDisplay ?? tool.label}
+              </span>
             </div>
 
             {/* Name */}
@@ -117,6 +123,25 @@ export default function ToolsList({ tools }: { tools: Tool[] }) {
             >
               {tool.tagline}
             </p>
+
+            {/* Coming soon placeholder */}
+            {tool.isComingSoon && (
+              <div
+                style={{
+                  marginTop: "20px",
+                  height: "130px",
+                  borderRadius: "8px",
+                  border: "1px dashed var(--border)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <span style={{ fontSize: "0.8125rem", color: "var(--text-muted)" }}>
+                  In progress
+                </span>
+              </div>
+            )}
 
             {/* Preview image */}
             {tool.image && (
@@ -148,21 +173,22 @@ export default function ToolsList({ tools }: { tools: Tool[] }) {
             <div style={{ flexGrow: 1 }} />
 
             {/* CTA */}
-            <a
-              href={tool.href}
-              style={{
-                fontSize: "0.9375rem",
-                marginTop: "24px",
-                fontWeight: 600,
-                color: "var(--cta)",
-                marginTop: "20px",
-                display: "block",
-                textDecoration: "none",
-              }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              {tool.cta}
-            </a>
+            {!tool.isComingSoon && (
+              <a
+                href={tool.href}
+                style={{
+                  fontSize: "0.9375rem",
+                  marginTop: "24px",
+                  fontWeight: 600,
+                  color: "var(--cta)",
+                  display: "block",
+                  textDecoration: "none",
+                }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {tool.cta}
+              </a>
+            )}
           </div>
         ))}
       </div>

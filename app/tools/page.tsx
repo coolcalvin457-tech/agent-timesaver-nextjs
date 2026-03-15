@@ -67,6 +67,30 @@ const tools = [
     cta: "Build My Kit",
     image: "/tool-previews/onboarding-kit-preview.png",
   },
+  {
+    slug: "pip-builder",
+    href: "#",
+    badgeClass: "tool-badge-paid",
+    label: "HR Tools",
+    badgeDisplay: "Coming Soon",
+    name: "AGENT: PIP Builder",
+    tagline: "Document performance issues the right way.",
+    description: "",
+    cta: "",
+    isComingSoon: true,
+  },
+  {
+    slug: "performance-review-builder",
+    href: "#",
+    badgeClass: "tool-badge-paid",
+    label: "HR Tools",
+    badgeDisplay: "Coming Soon",
+    name: "AGENT: Performance Review Builder",
+    tagline: "Generate structured reviews in minutes.",
+    description: "",
+    cta: "",
+    isComingSoon: true,
+  },
 ];
 
 export default function ToolsPage() {

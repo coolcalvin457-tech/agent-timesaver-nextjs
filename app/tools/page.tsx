@@ -98,7 +98,7 @@ export default function ToolsPage() {
         </div>
 
         {/* Tools list with filter tabs */}
-        <div className="container-narrow">
+        <div className="container">
           <ToolsList tools={tools} />
 
           {/* More tools placeholder */}

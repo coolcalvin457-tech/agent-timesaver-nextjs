@@ -34,6 +34,7 @@ export default function ToolsList({ tools }: { tools: Tool[] }) {
           gap: "8px",
           marginBottom: "40px",
           flexWrap: "wrap",
+          maxWidth: "720px",
         }}
       >
         {FILTERS.map((filter) => {
@@ -46,9 +47,9 @@ export default function ToolsList({ tools }: { tools: Tool[] }) {
                 padding: "8px 18px",
                 borderRadius: "8px",
                 border: isActive
-                  ? "1px solid var(--dark)"
+                  ? "1px solid var(--cta)"
                   : "1px solid var(--border)",
-                background: isActive ? "var(--dark)" : "var(--surface)",
+                background: isActive ? "var(--cta)" : "var(--surface)",
                 color: isActive ? "#ffffff" : "var(--text-secondary)",
                 fontSize: "0.875rem",
                 fontWeight: isActive ? 600 : 500,

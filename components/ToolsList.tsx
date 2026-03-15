@@ -15,7 +15,7 @@ type Tool = {
   priceNote?: string;
 };
 
-const FILTERS = ["All", "Free", "HR Tools"];
+const FILTERS = ["All", "Free", "Human Resources"];
 
 export default function ToolsList({ tools }: { tools: Tool[] }) {
   const [activeFilter, setActiveFilter] = useState("All");
@@ -46,9 +46,9 @@ export default function ToolsList({ tools }: { tools: Tool[] }) {
                 padding: "8px 18px",
                 borderRadius: "8px",
                 border: isActive
-                  ? "1px solid var(--cta)"
+                  ? "1px solid var(--dark)"
                   : "1px solid var(--border)",
-                background: isActive ? "var(--cta)" : "var(--surface)",
+                background: isActive ? "var(--dark)" : "var(--surface)",
                 color: isActive ? "#ffffff" : "var(--text-secondary)",
                 fontSize: "0.875rem",
                 fontWeight: isActive ? 600 : 500,

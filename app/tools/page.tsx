@@ -55,7 +55,7 @@ const tools = [
     slug: "onboarding-kit-builder",
     href: "/onboarding-kit-builder",
     badgeClass: "tool-badge-paid",
-    label: "HR Tools",
+    label: "Human Resources",
     name: "AGENT: Onboarding Kit Builder",
     tagline: "Built for the role, not just the company.",
     description:
@@ -98,7 +98,7 @@ export default function ToolsPage() {
         </div>
 
         {/* Tools list with filter tabs */}
-        <div className="container">
+        <div className="container-narrow">
           <ToolsList tools={tools} />
 
           {/* More tools placeholder */}

@@ -56,7 +56,7 @@ export default function OnboardingKitBuilderPage({
                 lineHeight: 1.25,
               }}
             >
-              Position-specific onboarding kit.<br />Use it for every new hire.
+              Position-specific onboarding kit.<br />Use for every new hire.
             </h1>
 
             {/* Price — plain subheader text, no button */}

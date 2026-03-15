@@ -24,7 +24,7 @@ const tools = [
     badgeClass: "tool-badge-free",
     label: "Free",
     name: "AGENT: Timesaver",
-    tagline: "Find your 5 AI workflows in 5 minutes.",
+    tagline: "Find your 5 workflows.",
     description:
       "Start with your job title. Answer a few questions. Get 5 personalized AI workflows built for your exact role, plus an estimate of how many hours you could save each week.",
     cta: "Get Free Workflows",
@@ -36,7 +36,7 @@ const tools = [
     badgeClass: "tool-badge-free",
     label: "Free",
     name: "AGENT: Prompt Builder",
-    tagline: "12 prompts built around your role. Ready to copy.",
+    tagline: "Receive 12 job specific prompts.",
     description:
       "Answer 4 questions about how you work. Get a personalized Prompt Kit: 12 ready-to-copy prompts organized by category, an AI Profile paragraph, and a Build Your AI System guide.",
     cta: "Get Free Prompts",
@@ -48,7 +48,7 @@ const tools = [
     badgeClass: "tool-badge-free",
     label: "Free",
     name: "AGENT: Budget Spreadsheets",
-    tagline: "Describe your budget. Get a spreadsheet.",
+    tagline: "Budget for \"what-if\" scenarios.",
     description:
       "Include categories, timeframes, and any numbers you have. Upload a previous example if available. The more detail, the better the results.",
     cta: "Get Free Spreadsheets",
@@ -61,7 +61,7 @@ const tools = [
     label: "HR Tools",
     badgeDisplay: "$49",
     name: "AGENT: Onboarding Kit Builder",
-    tagline: "Built for the role, not just the company.",
+    tagline: "Use for every new hire.",
     description:
       "Includes warm welcome letter, first-week schedule, key contacts, 30/60/90 plan, and priority checklist.",
     cta: "Build My Kit",

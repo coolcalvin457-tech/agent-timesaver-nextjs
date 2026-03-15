@@ -30,7 +30,7 @@ export default function OnboardingKitBuilderPage({
         {/* ── Hero section ─────────────────────────────────────── */}
         <section
           className="section section-alt"
-          style={{ paddingTop: "140px", paddingBottom: "56px" }}
+          style={{ paddingTop: "140px", paddingBottom: "40px" }}
         >
           <div className="container" style={{ textAlign: "center" }}>
             {/* HR Tools — plain label, no badge */}
@@ -53,6 +53,7 @@ export default function OnboardingKitBuilderPage({
               style={{
                 margin: "0 auto 20px",
                 fontSize: "clamp(2.25rem, 4vw, 3.5rem)",
+                lineHeight: 1.25,
               }}
             >
               Position-specific onboarding kit.<br />Use it for every new hire.

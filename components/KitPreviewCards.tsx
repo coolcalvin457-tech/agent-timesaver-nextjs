@@ -54,6 +54,11 @@ export default function KitPreviewCards() {
             key={item.title}
             className="kit-sample-card"
             style={item.featured ? { border: "1.5px solid rgba(30,122,184,0.35)" } : undefined}
+            onClick={() => openPreview(item.pdf, item.title)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") openPreview(item.pdf, item.title); }}
+            aria-label={`Preview ${item.title}`}
           >
             {/* Faded thumbnail */}
             <img
@@ -96,20 +101,6 @@ export default function KitPreviewCards() {
               </h3>
 
               <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-                {/* Preview — opens inline modal */}
-                <button
-                  type="button"
-                  onClick={() => openPreview(item.pdf, item.title)}
-                  className="kit-icon-btn"
-                  title="Preview"
-                  aria-label={`Preview ${item.title}`}
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="11" cy="11" r="8"/>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                  </svg>
-                </button>
-
                 {/* Download */}
                 <a
                   href={item.pdf}
@@ -117,6 +108,7 @@ export default function KitPreviewCards() {
                   className="kit-icon-btn"
                   title="Download"
                   aria-label={`Download ${item.title}`}
+                  onClick={(e) => e.stopPropagation()}
                 >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>

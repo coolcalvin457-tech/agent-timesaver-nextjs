@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import NavClient from "@/components/NavClient";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title:
@@ -269,6 +270,7 @@ export default function PostPage() {
         </div>
 
       </main>
+      <Footer />
     </>
   );
 }

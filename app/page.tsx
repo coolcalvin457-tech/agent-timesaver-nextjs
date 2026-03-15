@@ -146,7 +146,8 @@ export default function Home() {
                   don&apos;t have to.
                 </h2>
                 <p className="guide-body">
-                  I used to teach history and coach basketball. No technical background.
+                  I used to teach history and coach basketball. No{" "}
+                  <span style={{ whiteSpace: "nowrap" }}>technical background.</span>{" "}
                   Nothing to do with software. I spent 6 months
                   learning how AI agents actually work.
                 </p>

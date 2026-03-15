@@ -16,6 +16,8 @@ export default function Footer() {
             <ul className="footer-col-links">
               <li><a href="/#timesaver">AGENT: Timesaver</a></li>
               <li><a href="/prompt-builder">AGENT: Prompt Builder</a></li>
+              <li><a href="/budget-spreadsheets">AGENT: Budget Spreadsheets</a></li>
+              <li><a href="/onboarding-kit-builder">AGENT: Onboarding Kit</a></li>
             </ul>
           </div>
 

@@ -15,7 +15,7 @@ type Tool = {
   priceNote?: string;
 };
 
-const FILTERS = ["All", "Free", "Human Resources"];
+const FILTERS = ["All", "Free", "HR Tools"];
 
 export default function ToolsList({ tools }: { tools: Tool[] }) {
   const [activeFilter, setActiveFilter] = useState("All");

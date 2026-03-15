@@ -6,11 +6,11 @@ import ToolsList from "@/components/ToolsList";
 export const metadata: Metadata = {
   title: "Tools | promptaiagents.com",
   description:
-    "Free and paid AI tools built for non-technical professionals. Start with your job title. Get workflows, prompts, and systems that actually fit your role.",
+    "Free and paid AI tools built for real jobs. Start with your job title. Get workflows, prompts, and systems that actually fit your role.",
   openGraph: {
     title: "Tools | promptaiagents.com",
     description:
-      "Free and paid AI tools built for non-technical professionals. Start with your job title. Get workflows, prompts, and systems that actually fit your role.",
+      "Free and paid AI tools built for real jobs. Start with your job title. Get workflows, prompts, and systems that actually fit your role.",
     url: "https://promptaiagents.com/tools",
     siteName: "promptaiagents.com",
     type: "website",
@@ -27,7 +27,7 @@ const tools = [
     tagline: "Find your 5 AI workflows in 5 minutes.",
     description:
       "Start with your job title. Answer a few questions. Get 5 personalized AI workflows built for your exact role, plus an estimate of how many hours you could save each week.",
-    cta: "Get Free Workflows →",
+    cta: "Get Free Workflows",
   },
   {
     slug: "prompt-builder",
@@ -38,7 +38,7 @@ const tools = [
     tagline: "12 prompts built around your role. Ready to copy.",
     description:
       "Answer 4 questions about how you work. Get a personalized Prompt Kit: 12 ready-to-copy prompts organized by category, an AI Profile paragraph, and a Build Your AI System guide.",
-    cta: "Build My Prompt Kit →",
+    cta: "Build My Prompt Kit",
   },
   {
     slug: "budget-spreadsheets",
@@ -49,20 +49,20 @@ const tools = [
     tagline: "Describe your budget. Get a spreadsheet.",
     description:
       "Include categories, timeframes, and any numbers you have. Upload a previous example if available. The more detail, the better the results.",
-    cta: "Build My Spreadsheet →",
+    cta: "Build My Spreadsheet",
   },
   {
     slug: "onboarding-kit-builder",
     href: "/onboarding-kit-builder",
     badgeClass: "tool-badge-paid",
-    label: "Human Resources",
+    label: "HR Tools",
     name: "AGENT: Onboarding Kit Builder",
     tagline: "Built for the role, not just the company.",
     description:
       "Includes warm welcome letter, first-week schedule, key contacts, 30/60/90 plan, and priority checklist.",
     price: "$49",
     priceNote: "Founding rate · $97 at full launch · One-time",
-    cta: "Build My Kit →",
+    cta: "Build My Kit",
   },
 ];
 
@@ -90,7 +90,7 @@ export default function ToolsPage() {
                 maxWidth: "480px",
               }}
             >
-              AI tools built for non-technical professionals.
+              AI tools built for real jobs.
               <br />
               Pick the one that fits where you are right now.
             </p>

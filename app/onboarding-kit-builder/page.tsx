@@ -1,4 +1,5 @@
 import OnboardingKitBuilderTool from "@/components/OnboardingKitBuilderTool";
+import KitPreviewCards from "@/components/KitPreviewCards";
 import NavClient from "@/components/NavClient";
 import Footer from "@/components/Footer";
 import type { Metadata } from "next";
@@ -92,88 +93,7 @@ export default function OnboardingKitBuilderPage({
                 margin: "0 auto",
               }}
             >
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(3, 1fr)",
-                gap: "24px",
-              }}
-            >
-              {[
-                { title: "Warm Welcome Letter",  pdf: "/kit-samples/warm-welcome-letter.pdf",      thumb: "/kit-thumbnails/warm-welcome-letter.png" },
-                { title: "First-Week Schedule",   pdf: "/kit-samples/first-week-schedule.pdf",       thumb: "/kit-thumbnails/first-week-schedule.png" },
-                { title: "Key Contacts",          pdf: "/kit-samples/key-contacts.pdf",              thumb: "/kit-thumbnails/key-contacts.png" },
-                { title: "30-60-90 Day Plan",     pdf: "/kit-samples/30-60-90-day-plan.pdf",         thumb: "/kit-thumbnails/30-60-90-day-plan.png" },
-                { title: "New Hire Checklist",    pdf: "/kit-samples/new-hire-checklist.pdf",        thumb: "/kit-thumbnails/new-hire-checklist.png" },
-                { title: "Complete Kit",          pdf: "/kit-samples/onboarding-kit-sample.pdf",     thumb: "/kit-thumbnails/onboarding-kit-sample.png", featured: true },
-              ].map((item) => (
-                <div
-                  key={item.title}
-                  className="kit-sample-card"
-                  style={item.featured ? {
-                    border: "1.5px solid rgba(30,122,184,0.35)",
-                  } : undefined}
-                >
-                  {/* Real PDF thumbnail — faded behind card content */}
-                  <img
-                    src={item.thumb}
-                    alt=""
-                    aria-hidden="true"
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      objectPosition: "top",
-                      opacity: 0.18,
-                      pointerEvents: "none",
-                    }}
-                  />
-                  <div style={{ position: "relative", zIndex: 2, width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                    <h3
-                      style={{
-                        fontSize: "0.875rem",
-                        fontWeight: 700,
-                        color: "var(--text-primary)",
-                        margin: 0,
-                      }}
-                    >
-                      {item.title}
-                    </h3>
-                    <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-                      {/* Preview */}
-                      <a
-                        href={item.pdf}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{ color: "var(--cta)", display: "flex", alignItems: "center" }}
-                        title="Preview"
-                      >
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <circle cx="11" cy="11" r="8"/>
-                          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                        </svg>
-                      </a>
-                      {/* Download */}
-                      <a
-                        href={item.pdf}
-                        download
-                        style={{ color: "var(--cta)", display: "flex", alignItems: "center" }}
-                        title="Download"
-                      >
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                          <polyline points="7 10 12 15 17 10"/>
-                          <line x1="12" y1="15" x2="12" y2="3"/>
-                        </svg>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <KitPreviewCards />
             </div>
           </div>
         </section>

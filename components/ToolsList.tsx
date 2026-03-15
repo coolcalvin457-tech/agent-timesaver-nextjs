@@ -152,6 +152,7 @@ export default function ToolsList({ tools }: { tools: Tool[] }) {
               href={tool.href}
               style={{
                 fontSize: "0.9375rem",
+                marginTop: "24px",
                 fontWeight: 600,
                 color: "var(--cta)",
                 marginTop: "20px",

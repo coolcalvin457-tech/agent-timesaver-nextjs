@@ -163,9 +163,9 @@ input, textarea {
 /* ── Layout Utilities ─────────────────────────────────────── */
 .container {
   width: 100%;
-  max-width: 1160px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 32px;
 }
 
 .container-narrow {
@@ -207,7 +207,6 @@ input, textarea {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin-right: -8px;
 }
 
 .nav-logo {
@@ -221,12 +220,12 @@ input, textarea {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 20px;
   list-style: none;
 }
 
 .nav-links a {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   color: var(--text-secondary);
   transition: color 0.15s;
@@ -239,9 +238,9 @@ input, textarea {
 .nav-cta {
   background: var(--dark);
   color: #fff !important;
-  padding: 5px 12px;
-  border-radius: 5px;
-  font-size: 0.8rem !important;
+  padding: 9px 18px;
+  border-radius: 8px;
+  font-size: 0.875rem !important;
   font-weight: 500 !important;
   letter-spacing: 0.01em;
   transition: background 0.15s, transform 0.15s !important;

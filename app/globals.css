@@ -186,6 +186,7 @@ input, textarea {
   background: rgba(248,248,246,0.5);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(228,228,226,0.6);
   transition: background 0.25s ease, padding 0.25s ease, border-bottom 0.25s ease, backdrop-filter 0.25s ease;
 }
 
@@ -2390,7 +2391,7 @@ input, textarea {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 64px;
-  align-items: center;
+  align-items: start;
 }
 
 .price-badge {

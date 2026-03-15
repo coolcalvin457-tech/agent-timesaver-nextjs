@@ -62,14 +62,14 @@ export default function Home() {
         {/* ── Section 4: AGENT: Prompt Builder ────────────────────────── */}
         <section className="section" id="prompt-builder" style={{ paddingTop: "72px", paddingBottom: "80px" }}>
           <div className="container">
-            <div className="eyebrow">AGENT: Prompt Builder</div>
             <div className="prompt-builder-layout">
 
               {/* Left: copy */}
               <div>
+                <div className="eyebrow" style={{ marginBottom: "16px" }}>AGENT: Prompt Builder</div>
                 <h2
                   className="heading-1"
-                  style={{ marginBottom: "16px", maxWidth: "440px" }}
+                  style={{ marginBottom: "16px" }}
                 >
                   12 prompts tailored for your exact job.
                 </h2>
@@ -77,7 +77,6 @@ export default function Home() {
                   className="body-lg"
                   style={{
                     color: "var(--text-secondary)",
-                    maxWidth: "420px",
                     marginBottom: "32px",
                   }}
                 >

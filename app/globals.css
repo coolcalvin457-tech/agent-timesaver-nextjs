@@ -2034,6 +2034,108 @@ input, textarea {
   color: var(--cta);
 }
 
+/* ── Prompt Builder — Dark Results ───────────────────────── */
+.pb-results-dark {
+  background: var(--dark);
+}
+
+.pb-results-dark .screen {
+  background: var(--dark);
+}
+
+.pb-results-dark .tool-tag {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.pb-results-dark .results-tag {
+  color: var(--cta);
+}
+
+.pb-results-dark .results-headline {
+  color: #ffffff;
+}
+
+.pb-results-dark .screen-subheadline {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.pb-results-dark .pb-category-label {
+  color: var(--cta);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.pb-results-dark .pb-category-num {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.pb-results-dark .pb-prompt-card {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.pb-results-dark .pb-prompt-card:hover {
+  border-color: rgba(30, 122, 184, 0.5);
+}
+
+.pb-results-dark .pb-prompt-title {
+  color: #ffffff;
+}
+
+.pb-results-dark .pb-prompt-text-wrapper {
+  background: rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.pb-results-dark .pb-prompt-text {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.pb-results-dark .pb-prompt-why {
+  color: rgba(255, 255, 255, 0.38);
+}
+
+.pb-results-dark .pb-system-section {
+  border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+.pb-results-dark .pb-system-eyebrow {
+  color: var(--cta);
+}
+
+.pb-results-dark .pb-system-headline {
+  color: #ffffff;
+}
+
+.pb-results-dark .pb-system-subline {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.pb-results-dark .pb-system-step {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.pb-results-dark .pb-system-step-label {
+  color: var(--cta);
+}
+
+.pb-results-dark .pb-system-step-body {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.pb-results-dark .pb-system-step-body strong {
+  color: #ffffff;
+}
+
+.pb-results-dark .pb-system-tip {
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.pb-results-dark .pb-system-tip strong {
+  color: var(--cta);
+}
+
 /* Tool list */
 .pb-tool-list {
   list-style: none;

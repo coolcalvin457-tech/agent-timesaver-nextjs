@@ -570,33 +570,17 @@ export default function PromptBuilderTool() {
     );
 
     return (
-      <div className="tool-container">
+      <div className="tool-container pb-results-dark">
         <div className="screen">
-          {/* Dark results header */}
-          <div style={{
-            background: "var(--dark)",
-            margin: "-40px -40px 32px -40px",
-            padding: "32px 40px",
-            borderBottom: "1px solid rgba(255,255,255,0.08)",
-          }}>
-            <p className="tool-tag" style={{ color: "rgba(255,255,255,0.4)", marginBottom: "20px" }}>
-              AGENT: PROMPT BUILDER
-            </p>
-            <p className="results-tag" style={{ color: "var(--cta)" }}>
-              Your Prompt Kit is ready.
-            </p>
-            <h2 className="results-headline" style={{ color: "#ffffff", marginBottom: "8px" }}>
-              {totalPrompts} AI prompts built for {jobTitle}.
-            </h2>
-            <p style={{
-              fontSize: "0.875rem",
-              color: "rgba(255,255,255,0.45)",
-              margin: 0,
-              lineHeight: 1.5,
-            }}>
-              Copy any prompt below and paste into ChatGPT or Claude.
-            </p>
-          </div>
+          {/* Header */}
+          <p className="tool-tag">AGENT: PROMPT BUILDER</p>
+          <p className="results-tag">Your Prompt Kit is ready.</p>
+          <h2 className="results-headline">
+            {totalPrompts} AI prompts built for {jobTitle}.
+          </h2>
+          <p className="screen-subheadline">
+            Copy any prompt below and paste into ChatGPT or Claude.
+          </p>
 
           {/* Prompt categories */}
           {promptKit.categories.map((category, catIndex) => (

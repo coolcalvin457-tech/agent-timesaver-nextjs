@@ -80,7 +80,7 @@ export default function ToolsPage() {
         {/* Page header */}
         <div className="container">
           <div style={{ paddingTop: "40px", marginBottom: "48px", textAlign: "center" }}>
-            <h1 className="heading-1" style={{ marginBottom: "16px" }}>
+            <h1 className="heading-1" style={{ marginBottom: "16px", fontSize: "clamp(3rem, 7vw, 5.5rem)", lineHeight: 1.05 }}>
               Tools
             </h1>
             <p

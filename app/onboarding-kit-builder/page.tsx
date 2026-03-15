@@ -31,30 +31,25 @@ export default function OnboardingKitBuilderPage({
           className="section section-alt"
           style={{ paddingTop: "140px", paddingBottom: "56px" }}
         >
-          <div className="container">
-            {/* Badge — left-aligned above the headline */}
-            <div style={{ marginBottom: "18px" }}>
-              <span
-                style={{
-                  display: "inline-block",
-                  fontSize: "0.6875rem",
-                  fontWeight: 700,
-                  letterSpacing: "0.08em",
-                  textTransform: "uppercase",
-                  padding: "3px 9px",
-                  borderRadius: "var(--radius-tag)",
-                  background: "rgba(30, 122, 184, 0.08)",
-                  color: "var(--cta)",
-                }}
-              >
-                HR Tools
-              </span>
-            </div>
+          <div className="container" style={{ textAlign: "center" }}>
+            {/* HR Tools — plain label, no badge */}
+            <p
+              style={{
+                fontSize: "0.6875rem",
+                fontWeight: 600,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                color: "var(--text-muted)",
+                marginBottom: "20px",
+              }}
+            >
+              HR Tools
+            </p>
 
             <h1
               className="heading-1"
               style={{
-                marginBottom: "28px",
+                margin: "0 auto 20px",
                 maxWidth: "720px",
                 fontSize: "clamp(2.25rem, 4vw, 3.5rem)",
               }}
@@ -62,58 +57,38 @@ export default function OnboardingKitBuilderPage({
               A position-specific onboarding kit for every new hire.
             </h1>
 
-            {/* Pricing callout — stacked above CTA */}
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "12px" }}>
-              <a
-                href="#build-kit"
-                className="pricing-callout-link"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "10px",
-                  padding: "8px 14px",
-                  background: "rgba(30,122,184,0.06)",
-                  border: "1px solid rgba(30,122,184,0.15)",
-                  borderRadius: "8px",
-                  textDecoration: "none",
-                  transition: "background 0.15s ease, border-color 0.15s ease",
-                }}
-              >
-                <span style={{ fontSize: "1.125rem", fontWeight: 800, color: "var(--cta)", lineHeight: 1 }}>
-                  $49
-                </span>
-                <span
-                  style={{
-                    width: "1px",
-                    height: "14px",
-                    background: "var(--border, #E4E4E2)",
-                    display: "inline-block",
-                    flexShrink: 0,
-                  }}
-                />
-                <span style={{ fontSize: "0.8125rem", color: "var(--text-secondary)", lineHeight: 1.4 }}>
-                  <strong style={{ fontWeight: 600 }}>Founding rate.</strong>{" "}
-                  <span style={{ color: "var(--text-muted)" }}>$97 at full launch · One-time purchase.</span>
-                </span>
-              </a>
+            {/* Price — plain subheader text, no button */}
+            <p
+              style={{
+                fontSize: "0.9375rem",
+                color: "var(--text-secondary)",
+                marginBottom: "32px",
+                lineHeight: 1.6,
+              }}
+            >
+              <span style={{ fontWeight: 800, color: "var(--cta)", fontSize: "1.125rem" }}>$49</span>
+              {" · "}
+              <strong style={{ fontWeight: 600, color: "var(--text-secondary)" }}>Founding rate.</strong>{" "}
+              <span style={{ color: "var(--text-muted)" }}>$97 at full launch · One-time purchase.</span>
+            </p>
 
-              <a
-                href="#build-kit"
-                className="btn btn-primary"
-                style={{ padding: "10px 28px", fontSize: "0.9375rem" }}
-              >
-                Build My Kit →
-              </a>
-            </div>
+            {/* Single CTA */}
+            <a
+              href="#build-kit"
+              className="btn btn-primary"
+              style={{ padding: "12px 32px", fontSize: "1rem" }}
+            >
+              Build My Kit →
+            </a>
           </div>
         </section>
 
         {/* ── What's in the kit ─────────────────────────────────── */}
-        <section className="section" style={{ background: "#ffffff", paddingTop: "56px", paddingBottom: "96px" }}>
+        <section className="section" style={{ background: "#ffffff", paddingTop: "72px", paddingBottom: "96px" }}>
           <div className="container">
             <p
               className="eyebrow"
-              style={{ textAlign: "center", marginBottom: "32px" }}
+              style={{ textAlign: "center", marginBottom: "40px" }}
             >
               Preview Examples
             </p>
@@ -160,7 +135,7 @@ export default function OnboardingKitBuilderPage({
                       pointerEvents: "none",
                     }}
                   />
-                  <div style={{ position: "relative", zIndex: 2, width: "100%" }}>
+                  <div style={{ position: "relative", zIndex: 2, width: "100%", textAlign: "right" }}>
                     <h3
                       style={{
                         fontSize: "0.875rem",

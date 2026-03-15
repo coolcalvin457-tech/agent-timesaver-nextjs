@@ -2417,6 +2417,7 @@ input, textarea {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  align-items: flex-end;
   padding: 20px;
   border-radius: 10px;
   border: 1px solid var(--border, #E4E4E2);

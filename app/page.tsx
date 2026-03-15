@@ -126,7 +126,7 @@ export default function Home() {
                     Paste directly into any AI tool, no reformatting needed.
                   </div>
                 </div>
-              </div>
+              </a>
 
             </div>
           </div>

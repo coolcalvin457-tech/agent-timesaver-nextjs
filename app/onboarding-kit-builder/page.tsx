@@ -107,11 +107,8 @@ export default function OnboardingKitBuilderPage({
                 { title: "New Hire Checklist",    pdf: "/kit-samples/new-hire-checklist.pdf",        thumb: "/kit-thumbnails/new-hire-checklist.png" },
                 { title: "Complete Kit",          pdf: "/kit-samples/onboarding-kit-sample.pdf",     thumb: "/kit-thumbnails/onboarding-kit-sample.png", featured: true },
               ].map((item) => (
-                <a
+                <div
                   key={item.title}
-                  href={item.pdf}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   className="kit-sample-card"
                   style={item.featured ? {
                     border: "1.5px solid rgba(30,122,184,0.35)",
@@ -134,28 +131,47 @@ export default function OnboardingKitBuilderPage({
                       pointerEvents: "none",
                     }}
                   />
-                  <div style={{ position: "relative", zIndex: 2, width: "100%", textAlign: "right" }}>
+                  <div style={{ position: "relative", zIndex: 2, width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                     <h3
                       style={{
                         fontSize: "0.875rem",
                         fontWeight: 700,
                         color: "var(--text-primary)",
-                        marginBottom: "6px",
+                        margin: 0,
                       }}
                     >
                       {item.title}
                     </h3>
-                    <span
-                      style={{
-                        fontSize: "0.75rem",
-                        fontWeight: 600,
-                        color: "var(--cta)",
-                      }}
-                    >
-                      Preview
-                    </span>
+                    <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+                      {/* Preview */}
+                      <a
+                        href={item.pdf}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: "var(--cta)", display: "flex", alignItems: "center" }}
+                        title="Preview"
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <circle cx="11" cy="11" r="8"/>
+                          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                        </svg>
+                      </a>
+                      {/* Download */}
+                      <a
+                        href={item.pdf}
+                        download
+                        style={{ color: "var(--cta)", display: "flex", alignItems: "center" }}
+                        title="Download"
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                          <polyline points="7 10 12 15 17 10"/>
+                          <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                      </a>
+                    </div>
                   </div>
-                </a>
+                </div>
               ))}
             </div>
             </div>

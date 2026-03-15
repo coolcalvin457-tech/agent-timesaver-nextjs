@@ -15,7 +15,7 @@ type Tool = {
   image?: string;
 };
 
-const FILTERS = ["All", "Free", "Human Resources"];
+const FILTERS = ["All", "Human Resources"];
 
 export default function ToolsList({ tools }: { tools: Tool[] }) {
   const [activeFilter, setActiveFilter] = useState("All");

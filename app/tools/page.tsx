@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import NavClient from "@/components/NavClient";
 import Footer from "@/components/Footer";
+import ToolsList from "@/components/ToolsList";
 
 export const metadata: Metadata = {
   title: "Tools | promptaiagents.com",
@@ -58,7 +59,7 @@ const tools = [
     name: "AGENT: Onboarding Kit Builder",
     tagline: "Built for the role, not just the company.",
     description:
-      "Answer a few questions about your new hire and get a complete, personalized onboarding kit — welcome letter, first-week schedule, key contacts, 30/60/90 plan, and new hire checklist — as a ready-to-use .docx file.",
+      "Includes warm welcome letter, first-week schedule, key contacts, 30/60/90 plan, and priority checklist.",
     price: "$49",
     priceNote: "Founding rate · $97 at full launch · One-time",
     cta: "Build My Kit →",
@@ -96,102 +97,9 @@ export default function ToolsPage() {
           </div>
         </div>
 
-        {/* Tools grid */}
+        {/* Tools list with filter tabs */}
         <div className="container">
-          <div className="tools-grid">
-            {tools.map((tool) => (
-              <a key={tool.slug} href={tool.href} className="tool-card">
-                {/* Badge */}
-                <div style={{ marginBottom: "20px" }}>
-                  <span className={tool.badgeClass}>{tool.label}</span>
-                </div>
-
-                {/* Name */}
-                <h2
-                  style={{
-                    fontSize: "1.25rem",
-                    fontWeight: 700,
-                    color: "var(--text-primary)",
-                    marginBottom: "8px",
-                    lineHeight: 1.3,
-                  }}
-                >
-                  {tool.name}
-                </h2>
-
-                {/* Tagline */}
-                <p
-                  style={{
-                    fontSize: "0.9375rem",
-                    fontWeight: 500,
-                    color: "var(--text-secondary)",
-                    marginBottom: "16px",
-                    lineHeight: 1.5,
-                  }}
-                >
-                  {tool.tagline}
-                </p>
-
-                {/* Description */}
-                <p
-                  className="body"
-                  style={{
-                    color: "var(--text-secondary)",
-                    lineHeight: 1.7,
-                    flexGrow: 1,
-                    marginBottom: "28px",
-                  }}
-                >
-                  {tool.description}
-                </p>
-
-                {/* Pricing (paid tools only) */}
-                {"price" in tool && tool.price && (
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "baseline",
-                      gap: "8px",
-                      marginBottom: "20px",
-                      paddingTop: "4px",
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontSize: "1.25rem",
-                        fontWeight: 800,
-                        color: "var(--text-primary)",
-                        lineHeight: 1,
-                      }}
-                    >
-                      {tool.price}
-                    </span>
-                    {"priceNote" in tool && tool.priceNote && (
-                      <span
-                        style={{
-                          fontSize: "0.8125rem",
-                          color: "var(--text-muted)",
-                        }}
-                      >
-                        {tool.priceNote}
-                      </span>
-                    )}
-                  </div>
-                )}
-
-                {/* CTA */}
-                <span
-                  style={{
-                    fontSize: "0.9375rem",
-                    fontWeight: 600,
-                    color: "var(--cta)",
-                  }}
-                >
-                  {tool.cta}
-                </span>
-              </a>
-            ))}
-          </div>
+          <ToolsList tools={tools} />
 
           {/* More tools placeholder */}
           <div className="tools-coming-soon">

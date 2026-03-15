@@ -1064,10 +1064,10 @@ export default function OnboardingKitBuilderTool({
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             {[
-              "Welcome Letter",
+              "Warm Welcome Letter",
               "First-Week Schedule",
               "Key Contacts",
-              "Role Expectations (30/60/90)",
+              "30-60-90 Day Plan",
               "New Hire Checklist",
             ].map((item) => (
               <div key={item} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -1149,7 +1149,7 @@ export default function OnboardingKitBuilderTool({
           )}
 
           <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.4)", margin: 0, textAlign: "center" }}>
-            One-time payment. No subscription. Founding rate goes up at full launch.
+            One-time purchase. No subscription. Founding rate goes up at full launch.
           </p>
         </div>
 
@@ -1317,10 +1317,10 @@ export default function OnboardingKitBuilderTool({
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
             {[
-              { title: "Welcome Letter", desc: `A personalized note from ${managerName || "the hiring manager"} to ${hireName || "the new hire"}.` },
+              { title: "Warm Welcome Letter", desc: `A personalized note from ${managerName || "the hiring manager"} to ${hireName || "the new hire"}.` },
               { title: "First-Week Schedule", desc: `Day-by-day outline for ${hireName ? `${hireName}'s` : "their"} first five days.` },
               { title: "Key Contacts", desc: `The people ${hireName || "they"} need to know and why.` },
-              { title: "Role Expectations (30/60/90)", desc: `What success looks like at 30, 60, and 90 days.` },
+              { title: "30-60-90 Day Plan", desc: `What success looks like at 30, 60, and 90 days.` },
               { title: "New Hire Checklist", desc: `Pre-start through Month 1.` },
             ].map((item) => (
               <div key={item.title} style={{ display: "flex", gap: "10px" }}>

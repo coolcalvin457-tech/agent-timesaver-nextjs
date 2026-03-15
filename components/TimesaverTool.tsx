@@ -330,8 +330,7 @@ export default function TimesaverTool() {
           <div className="primer-box">
             <div className="primer-label">⚡ AI Lesson #1</div>
             <p className="primer-body">
-              You get out what you put in. The more context you give, the more
-              specific your results.
+              The more context you give, the more specific your results.
             </p>
           </div>
 
@@ -387,12 +386,6 @@ export default function TimesaverTool() {
             autoFocus
           />
 
-          <div
-            className="branch-label"
-            style={{ marginBottom: "12px", fontSize: "0.875rem", fontWeight: 600, color: "var(--text-secondary)" }}
-          >
-            One more thing before we continue.
-          </div>
           <p
             style={{
               fontSize: "0.9375rem",
@@ -411,8 +404,7 @@ export default function TimesaverTool() {
             >
               <div className="branch-card-title">Yes, I have my job description</div>
               <div className="branch-card-desc">
-                Upload or paste it. Your results will be significantly more
-                personalized.
+                Upload a file or copy &amp; paste.
               </div>
               <span className="branch-badge branch-badge-a">Best results</span>
             </button>
@@ -424,17 +416,11 @@ export default function TimesaverTool() {
             >
               <div className="branch-card-title">No, just use my title</div>
               <div className="branch-card-desc">
-                No problem. We&apos;ll ask a couple of extra questions to fill
-                in the gaps.
+                Answer a couple follow-up questions.
               </div>
               <span className="branch-badge branch-badge-b">Quick start</span>
             </button>
           </div>
-
-          <p className="dynamic-note">
-            Either path will lead to the same results. The only difference is a
-            couple follow-up questions.
-          </p>
 
           <button
             className="btn btn-primary btn-full"

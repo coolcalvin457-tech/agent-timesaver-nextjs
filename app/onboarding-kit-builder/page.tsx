@@ -105,21 +105,9 @@ export default function OnboardingKitBuilderPage({
               <span style={{ fontSize: "0.875rem", color: "var(--text-secondary)", lineHeight: 1.4 }}>
                 <strong style={{ fontWeight: 600 }}>Founding rate.</strong>{" "}
                 <span style={{ color: "var(--text-muted)" }}>
-                  $97 at full launch · One-time payment.
+                  $97 at full launch · One-time purchase.
                 </span>
               </span>
-            </div>
-          </div>
-        </section>
-
-        {/* ── Tool section ─────────────────────────────────────── */}
-        <section className="section" style={{ paddingTop: "40px" }}>
-          <div className="container">
-            <div style={{ maxWidth: "640px", margin: "0 auto" }}>
-              <OnboardingKitBuilderTool
-                initialPaymentStatus={searchParams.payment}
-                initialSessionId={searchParams.session_id}
-              />
             </div>
           </div>
         </section>
@@ -129,31 +117,21 @@ export default function OnboardingKitBuilderPage({
           <div className="container-narrow">
             <h2
               className="heading-2"
-              style={{ marginBottom: "8px" }}
+              style={{ marginBottom: "32px" }}
             >
-              What's in the kit.
+              What&apos;s in the kit?
             </h2>
-            <p
-              className="body"
-              style={{
-                color: "var(--text-secondary)",
-                marginBottom: "40px",
-                maxWidth: "480px",
-              }}
-            >
-              Five documents. One file. Everything a new hire needs to know before Day 1.
-            </p>
-
             <div
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
                 gap: "16px",
+                marginBottom: "40px",
               }}
             >
               {[
                 {
-                  title: "Welcome Letter",
+                  title: "Warm Welcome Letter",
                   body: "Written from the hiring manager to the new hire. Specific to the role — not a template they'll recognize.",
                 },
                 {
@@ -165,7 +143,7 @@ export default function OnboardingKitBuilderPage({
                   body: "Not the org chart. The people that actually matter for this role, with a one-sentence reason why.",
                 },
                 {
-                  title: "Role Expectations (30/60/90)",
+                  title: "30-60-90 Day Plan",
                   body: "What success looks like at each milestone — specific to what this hire was brought on to do.",
                 },
                 {
@@ -205,75 +183,32 @@ export default function OnboardingKitBuilderPage({
                 </div>
               ))}
             </div>
-          </div>
-        </section>
 
-        {/* ── Five questions ────────────────────────────────────── */}
-        <section className="section" style={{ paddingTop: "64px", paddingBottom: "80px" }}>
-          <div className="container-narrow">
-            <h2 className="heading-2" style={{ marginBottom: "8px" }}>
-              The five questions most onboarding programs miss.
-            </h2>
-            <p
-              className="body"
-              style={{
-                color: "var(--text-secondary)",
-                maxWidth: "500px",
-                marginBottom: "36px",
-              }}
-            >
-              When new hires say they were left trying to "figure out how to win here," it's usually because nobody answered these before Day 1.
-            </p>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "540px" }}>
-              {[
-                "Why this person was hired, and why now.",
-                "What success looks like at 30, 60, and 90 days.",
-                "How the team actually works — not the org chart version.",
-                "Who they need to know and why those people matter.",
-                "When they'll get feedback and from whom.",
-              ].map((q, i) => (
-                <div
-                  key={i}
-                  style={{
-                    display: "flex",
-                    gap: "14px",
-                    alignItems: "flex-start",
-                  }}
-                >
-                  <span
-                    style={{
-                      minWidth: "28px",
-                      height: "28px",
-                      borderRadius: "50%",
-                      background: "rgba(30,122,184,0.08)",
-                      color: "var(--cta)",
-                      fontSize: "0.8125rem",
-                      fontWeight: 700,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                      marginTop: "1px",
-                    }}
-                  >
-                    {i + 1}
-                  </span>
-                  <p
-                    style={{
-                      fontSize: "0.9375rem",
-                      color: "var(--text-secondary)",
-                      margin: 0,
-                      lineHeight: 1.6,
-                    }}
-                  >
-                    {q}
-                  </p>
-                </div>
-              ))}
+            {/* CTA after previews */}
+            <div style={{ textAlign: "center", paddingTop: "8px" }}>
+              <a
+                href="#build-kit"
+                className="btn btn-primary"
+                style={{ display: "inline-block", padding: "14px 32px", fontSize: "1rem" }}
+              >
+                Build My Kit →
+              </a>
             </div>
           </div>
         </section>
+
+        {/* ── Tool section ─────────────────────────────────────── */}
+        <section id="build-kit" className="section" style={{ paddingTop: "64px" }}>
+          <div className="container">
+            <div style={{ maxWidth: "640px", margin: "0 auto" }}>
+              <OnboardingKitBuilderTool
+                initialPaymentStatus={searchParams.payment}
+                initialSessionId={searchParams.session_id}
+              />
+            </div>
+          </div>
+        </section>
+
       </main>
       <Footer />
     </>

@@ -82,7 +82,7 @@ async function sendOnboardingKitEmail(
                       Your kit includes
                     </p>
                     <table width="100%" cellpadding="0" cellspacing="0">
-                      ${["Welcome Letter", "First-Week Schedule", "Key Contacts", "Role Expectations (30/60/90)", "New Hire Checklist"].map(
+                      ${["Warm Welcome Letter", "First-Week Schedule", "Key Contacts", "30-60-90 Day Plan", "New Hire Checklist"].map(
                         (item) => `
                       <tr>
                         <td style="padding: 4px 0;">

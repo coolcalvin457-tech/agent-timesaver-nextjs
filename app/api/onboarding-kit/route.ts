@@ -18,6 +18,7 @@ import {
 interface KeyContact {
   name: string;
   title: string;
+  email?: string;
   why: string;
 }
 
@@ -274,6 +275,7 @@ Tone rules:
 Punctuation rules:
 - Never use em dashes (the — character). Use a period or a colon instead.
 - Never use the word "leverage", "unlock", "supercharge", or "automate".
+- Every sentence must be grammatically complete. Never truncate mid-sentence or mid-thought.
 
 Return ONLY valid JSON. No explanation text. No markdown. Just the raw JSON object.`;
 
@@ -311,7 +313,7 @@ Return this exact JSON structure:
 {
   "welcomeLetter": {
     "subject": "Welcome to the team, ${hireName}.",
-    "body": "3-4 paragraph body text. Paragraphs separated by \\n\\n. Paragraph 1: welcome them personally, reference why they were hired (use the 'why this hire' input directly). Paragraph 2: what their first week looks like and who they'll meet. Paragraph 3: what success looks like and why their work matters to the team. Paragraph 4: short, encouraging closing signed from ${managerName}. The closing paragraph should end with just the manager's name on its own line, like: \\n\\n${managerName}"
+    "body": "3-4 paragraph body text only. Paragraphs separated by \\n\\n. Do NOT include a salutation or sign-off — those are added automatically. Paragraph 1: welcome them personally, reference why they were hired (use the 'why this hire' input directly). Paragraph 2: what their first week looks like and who they'll meet. Paragraph 3: what success looks like and why their work matters to the team. Paragraph 4: short, warm closing from the hiring manager — end on encouragement, not logistics."
   },
   "firstWeekSchedule": [
     {
@@ -324,7 +326,7 @@ Return this exact JSON structure:
     { "day": "Day 5: [next weekday], [date]", "items": ["...", "...", "...", "..."] }
   ],
   "keyContacts": [
-    { "name": "contact name", "title": "job title", "why": "one sentence, practical, from the new hire's perspective. Not 'X is our VP of Y' but 'X owns Y and will be your main connection for Z'" }
+    { "name": "contact name", "title": "job title", "email": "placeholder email in firstname.lastname@company.com format — HR will replace with the real address", "why": "one sentence, practical, from the new hire's perspective. Not 'X is our VP of Y' but 'X owns Y and will be your main connection for Z'" }
   ],
   "roleExpectations": {
     "overview": "1-2 sentences framing the first 90 days as context-building and first visible contribution. Not as a test.",
@@ -541,8 +543,12 @@ function buildContactsTable(contacts: KeyContact[]): Table {
           children: [
             new Paragraph({
               children: [new TextRun({ text: contact.name, font: "Calibri", size: 20, bold: true, color: "161618" })],
-              spacing: { after: 60 },
+              spacing: { after: 40 },
             }),
+            ...(contact.email ? [new Paragraph({
+              children: [new TextRun({ text: contact.email, font: "Calibri", size: 18, color: "1E7AB8" })],
+              spacing: { after: 60 },
+            })] : []),
           ],
           width: { size: 2300, type: WidthType.DXA },
           shading: rowShading,
@@ -596,11 +602,15 @@ async function buildDocxFile(
 ): Promise<Buffer> {
   const children: (Paragraph | Table)[] = [];
 
-  // ── Section 1: Welcome Letter ────────────────────────────────
-  children.push(sectionLabel("Welcome Letter"));
-  children.push(h1(`Welcome to the team, ${hireName}.`));
+  // ── Section 1: Warm Welcome Letter ────────────────────────────────
+  children.push(sectionLabel("Warm Welcome Letter"));
+  children.push(h1("Welcome to the Team!"));
   children.push(divider());
-  children.push(body(kit.welcomeLetter.subject, { bold: true, size: 24 }));
+  children.push(body("We're excited to have you onboard.", { bold: true, size: 24 }));
+  children.push(spacer());
+
+  // Salutation
+  children.push(body(`Hi ${hireName},`, { size: 22 }));
   children.push(spacer());
 
   // Split body into paragraphs
@@ -609,6 +619,11 @@ async function buildDocxFile(
     children.push(body(para.trim(), { size: 22 }));
     children.push(spacer());
   });
+
+  // Sign-off
+  children.push(body("Sincerely,", { size: 22 }));
+  children.push(body(managerName, { size: 22 }));
+  children.push(spacer());
 
   children.push(pageBreak());
 
@@ -640,8 +655,8 @@ async function buildDocxFile(
   children.push(spacer());
   children.push(pageBreak());
 
-  // ── Section 4: Role Expectations / 30-60-90 ─────────────────
-  children.push(sectionLabel("Role Expectations"));
+  // ── Section 4: 30-60-90 Day Plan ─────────────────────────────
+  children.push(sectionLabel("30-60-90 Day Plan"));
   children.push(h1("Your First 90 Days"));
   children.push(divider());
   children.push(body(kit.roleExpectations.overview, { italic: true, color: "555555" }));

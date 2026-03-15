@@ -31,7 +31,7 @@ export default function GuidesPage() {
                 margin: "0 auto",
               }}
             >
-              Practical AI guides built around real work situations. Built for real jobs. Not demos.
+              Built for real jobs. Not demos.
             </p>
           </div>
         </div>

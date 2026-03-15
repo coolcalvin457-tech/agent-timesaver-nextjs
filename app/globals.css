@@ -1267,10 +1267,10 @@ input, textarea {
 
 .hero-headline {
   font-family: var(--font-display);
-  font-size: clamp(2.5rem, 5vw, 5rem);
+  font-size: clamp(2.5rem, 6.5vw, 5.75rem);
   font-weight: 400;
   line-height: 1.05;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
   color: var(--text-primary);
   margin-bottom: 24px;
 }

@@ -28,6 +28,7 @@ const tools = [
     description:
       "Start with your job title. Answer a few questions. Get 5 personalized AI workflows built for your exact role, plus an estimate of how many hours you could save each week.",
     cta: "Get Free Workflows",
+    image: "/tool-previews/timesaver-preview.png",
   },
   {
     slug: "prompt-builder",
@@ -39,6 +40,7 @@ const tools = [
     description:
       "Answer 4 questions about how you work. Get a personalized Prompt Kit: 12 ready-to-copy prompts organized by category, an AI Profile paragraph, and a Build Your AI System guide.",
     cta: "Build My Prompt Kit",
+    image: "/tool-previews/prompt-builder-preview.png",
   },
   {
     slug: "budget-spreadsheets",
@@ -50,6 +52,7 @@ const tools = [
     description:
       "Include categories, timeframes, and any numbers you have. Upload a previous example if available. The more detail, the better the results.",
     cta: "Build My Spreadsheet",
+    image: "/tool-previews/budget-spreadsheets-preview.png",
   },
   {
     slug: "onboarding-kit-builder",
@@ -63,6 +66,7 @@ const tools = [
     price: "$49",
     priceNote: "Founding rate · $97 at full launch · One-time",
     cta: "Build My Kit",
+    image: "/tool-previews/onboarding-kit-preview.png",
   },
 ];
 

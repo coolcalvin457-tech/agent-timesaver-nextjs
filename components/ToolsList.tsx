@@ -13,6 +13,7 @@ type Tool = {
   cta: string;
   price?: string;
   priceNote?: string;
+  image?: string;
 };
 
 const FILTERS = ["All", "Free", "Human Resources"];
@@ -81,9 +82,33 @@ export default function ToolsList({ tools }: { tools: Tool[] }) {
       {/* Tools grid */}
       <div className="tools-grid">
         {filtered.map((tool) => (
-          <a key={tool.slug} href={tool.href} className="tool-card">
+          <a
+            key={tool.slug}
+            href={tool.href}
+            className="tool-card"
+            style={{ position: "relative", overflow: "hidden" }}
+          >
+            {/* Background preview image */}
+            {tool.image && (
+              <img
+                src={tool.image}
+                alt=""
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  bottom: "-12px",
+                  right: "-12px",
+                  width: "72%",
+                  opacity: 0.07,
+                  pointerEvents: "none",
+                  borderRadius: "8px",
+                  display: "block",
+                }}
+              />
+            )}
+
             {/* Badge */}
-            <div style={{ marginBottom: "20px" }}>
+            <div style={{ marginBottom: "20px", position: "relative" }}>
               <span className={tool.badgeClass}>{tool.label}</span>
             </div>
 
@@ -95,6 +120,7 @@ export default function ToolsList({ tools }: { tools: Tool[] }) {
                 color: "var(--text-primary)",
                 marginBottom: "8px",
                 lineHeight: 1.3,
+                position: "relative",
               }}
             >
               {tool.name}
@@ -106,24 +132,13 @@ export default function ToolsList({ tools }: { tools: Tool[] }) {
                 fontSize: "0.9375rem",
                 fontWeight: 500,
                 color: "var(--text-secondary)",
-                marginBottom: "16px",
+                marginBottom: 0,
                 lineHeight: 1.5,
+                flexGrow: 1,
+                position: "relative",
               }}
             >
               {tool.tagline}
-            </p>
-
-            {/* Description */}
-            <p
-              className="body"
-              style={{
-                color: "var(--text-secondary)",
-                lineHeight: 1.7,
-                flexGrow: 1,
-                marginBottom: "28px",
-              }}
-            >
-              {tool.description}
             </p>
 
             {/* Pricing (paid tools only) */}
@@ -133,8 +148,9 @@ export default function ToolsList({ tools }: { tools: Tool[] }) {
                   display: "flex",
                   alignItems: "baseline",
                   gap: "8px",
-                  marginBottom: "20px",
+                  marginTop: "28px",
                   paddingTop: "4px",
+                  position: "relative",
                 }}
               >
                 <span
@@ -166,6 +182,9 @@ export default function ToolsList({ tools }: { tools: Tool[] }) {
                 fontSize: "0.9375rem",
                 fontWeight: 600,
                 color: "var(--cta)",
+                marginTop: tool.price ? "16px" : "28px",
+                display: "block",
+                position: "relative",
               }}
             >
               {tool.cta}

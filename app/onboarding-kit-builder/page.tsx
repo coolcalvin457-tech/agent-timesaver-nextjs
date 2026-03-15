@@ -55,7 +55,7 @@ export default function OnboardingKitBuilderPage({
                 fontSize: "clamp(2.25rem, 4vw, 3.5rem)",
               }}
             >
-              A position-specific onboarding<br />kit for every new hire.
+              Position-specific onboarding kit.<br />Use it for every new hire.
             </h1>
 
             {/* Price — plain subheader text, no button */}
@@ -101,7 +101,7 @@ export default function OnboardingKitBuilderPage({
         {/* ── Tool section ─────────────────────────────────────── */}
         <section id="build-kit" className="section" style={{ paddingTop: "64px" }}>
           <div className="container">
-            <div style={{ maxWidth: "640px", margin: "0 auto" }}>
+            <div style={{ maxWidth: "760px", margin: "0 auto" }}>
               {/* Tool label */}
               <p
                 className="eyebrow"

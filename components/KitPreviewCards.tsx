@@ -101,6 +101,20 @@ export default function KitPreviewCards() {
               </h3>
 
               <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+                {/* Preview icon — visual cue; card click also opens preview */}
+                <button
+                  type="button"
+                  onClick={() => openPreview(item.pdf, item.title)}
+                  className="kit-icon-btn"
+                  title="Preview"
+                  aria-label={`Preview ${item.title}`}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="11" cy="11" r="8"/>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  </svg>
+                </button>
+
                 {/* Download */}
                 <a
                   href={item.pdf}
@@ -168,7 +182,7 @@ export default function KitPreviewCards() {
 
             {/* PDF iframe */}
             <iframe
-              src={previewPdf}
+              src={`${previewPdf}#toolbar=0`}
               className="kit-modal-iframe"
               title={previewTitle}
             />

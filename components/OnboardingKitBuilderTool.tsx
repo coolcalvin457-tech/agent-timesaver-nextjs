@@ -28,7 +28,7 @@ interface SavedFormData {
   department: string;
   startDate: string;
   managerName: string;
-  roleType: RoleType;
+  roleType: RoleType | "";
   whyHired: string;
   weekOnePriorities: string;
   keyTools: string;
@@ -302,7 +302,7 @@ export default function OnboardingKitBuilderTool({
   const [department, setDepartment] = useState("");
   const [startDate, setStartDate] = useState("");
   const [managerName, setManagerName] = useState("");
-  const [roleType, setRoleType] = useState<RoleType>("individual_contributor");
+  const [roleType, setRoleType] = useState<RoleType | "">("");
 
   // ── Screen 2: The Role ─────────────────────────────────────
   const [whyHired, setWhyHired] = useState("");
@@ -350,7 +350,7 @@ export default function OnboardingKitBuilderTool({
     setDepartment(saved.department ?? "");
     setStartDate(saved.startDate ?? "");
     setManagerName(saved.managerName ?? "");
-    setRoleType(saved.roleType ?? "individual_contributor");
+    setRoleType(saved.roleType ?? "");
     setWhyHired(saved.whyHired ?? "");
     setWeekOnePriorities(saved.weekOnePriorities ?? "");
     setKeyTools(saved.keyTools ?? "");
@@ -435,6 +435,10 @@ export default function OnboardingKitBuilderTool({
   function validateS1(): boolean {
     if (!hireName.trim() || !hireTitle.trim() || !startDate.trim() || !managerName.trim()) {
       setS1Error("Please fill in all required fields.");
+      return false;
+    }
+    if (!roleType) {
+      setS1Error("Please select a role type before continuing.");
       return false;
     }
     setS1Error("");
@@ -651,7 +655,7 @@ export default function OnboardingKitBuilderTool({
   function handleReset() {
     setScreen("s1");
     setHireName(""); setHireTitle(""); setDepartment(""); setStartDate("");
-    setManagerName(""); setRoleType("individual_contributor");
+    setManagerName(""); setRoleType("");
     setWhyHired(""); setWeekOnePriorities(""); setKeyTools("");
     setContextFile(null); setContextFileError("");
     setHowTeamWorks(""); setThirtyToNinety("");

@@ -82,33 +82,14 @@ export default function ToolsList({ tools }: { tools: Tool[] }) {
       {/* Tools grid */}
       <div className="tools-grid">
         {filtered.map((tool) => (
-          <a
+          <div
             key={tool.slug}
-            href={tool.href}
             className="tool-card"
-            style={{ position: "relative", overflow: "hidden" }}
+            style={{ cursor: "pointer" }}
+            onClick={() => { window.location.href = tool.href; }}
           >
-            {/* Background preview image */}
-            {tool.image && (
-              <img
-                src={tool.image}
-                alt=""
-                aria-hidden="true"
-                style={{
-                  position: "absolute",
-                  bottom: "-12px",
-                  right: "-12px",
-                  width: "72%",
-                  opacity: 0.07,
-                  pointerEvents: "none",
-                  borderRadius: "8px",
-                  display: "block",
-                }}
-              />
-            )}
-
             {/* Badge */}
-            <div style={{ marginBottom: "20px", position: "relative" }}>
+            <div style={{ marginBottom: "20px" }}>
               <span className={tool.badgeClass}>{tool.label}</span>
             </div>
 
@@ -120,7 +101,6 @@ export default function ToolsList({ tools }: { tools: Tool[] }) {
                 color: "var(--text-primary)",
                 marginBottom: "8px",
                 lineHeight: 1.3,
-                position: "relative",
               }}
             >
               {tool.name}
@@ -134,12 +114,81 @@ export default function ToolsList({ tools }: { tools: Tool[] }) {
                 color: "var(--text-secondary)",
                 marginBottom: 0,
                 lineHeight: 1.5,
-                flexGrow: 1,
-                position: "relative",
               }}
             >
               {tool.tagline}
             </p>
+
+            {/* Preview image */}
+            {tool.image && (
+              <div
+                style={{
+                  marginTop: "20px",
+                  height: "130px",
+                  borderRadius: "8px",
+                  overflow: "hidden",
+                  border: "1px solid var(--border)",
+                  background: "var(--surface-raised, #f5f5f3)",
+                }}
+              >
+                <img
+                  src={tool.image}
+                  alt={`${tool.name} sample output`}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    objectPosition: "top left",
+                    display: "block",
+                  }}
+                />
+              </div>
+            )}
+
+            {/* Preview / Download links */}
+            {tool.image && (
+              <div
+                style={{
+                  display: "flex",
+                  gap: "16px",
+                  marginTop: "10px",
+                }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <a
+                  href={tool.image}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    fontSize: "0.8125rem",
+                    color: "var(--text-secondary)",
+                    textDecoration: "none",
+                    fontWeight: 500,
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "var(--cta)")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-secondary)")}
+                >
+                  Preview ↗
+                </a>
+                <a
+                  href={tool.image}
+                  download
+                  style={{
+                    fontSize: "0.8125rem",
+                    color: "var(--text-secondary)",
+                    textDecoration: "none",
+                    fontWeight: 500,
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "var(--cta)")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-secondary)")}
+                >
+                  Download
+                </a>
+              </div>
+            )}
+
+            {/* Spacer */}
+            <div style={{ flexGrow: 1 }} />
 
             {/* Pricing (paid tools only) */}
             {tool.price && (
@@ -148,9 +197,8 @@ export default function ToolsList({ tools }: { tools: Tool[] }) {
                   display: "flex",
                   alignItems: "baseline",
                   gap: "8px",
-                  marginTop: "28px",
+                  marginTop: "24px",
                   paddingTop: "4px",
-                  position: "relative",
                 }}
               >
                 <span
@@ -177,19 +225,21 @@ export default function ToolsList({ tools }: { tools: Tool[] }) {
             )}
 
             {/* CTA */}
-            <span
+            <a
+              href={tool.href}
               style={{
                 fontSize: "0.9375rem",
                 fontWeight: 600,
                 color: "var(--cta)",
-                marginTop: tool.price ? "16px" : "28px",
+                marginTop: "20px",
                 display: "block",
-                position: "relative",
+                textDecoration: "none",
               }}
+              onClick={(e) => e.stopPropagation()}
             >
               {tool.cta}
-            </span>
-          </a>
+            </a>
+          </div>
         ))}
       </div>
     </div>

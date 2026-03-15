@@ -51,7 +51,7 @@ export default function OnboardingKitBuilderPage({
             <h1
               className="heading-1"
               style={{
-                margin: "0 auto 20px",
+                margin: "0 auto 32px",
                 fontSize: "clamp(2.25rem, 4vw, 3.5rem)",
                 lineHeight: 1.25,
               }}
@@ -64,7 +64,7 @@ export default function OnboardingKitBuilderPage({
               style={{
                 fontSize: "0.9375rem",
                 color: "var(--text-secondary)",
-                marginBottom: "28px",
+                marginBottom: "36px",
                 lineHeight: 1.6,
               }}
             >

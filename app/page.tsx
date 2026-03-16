@@ -66,26 +66,27 @@ export default function Home() {
           <div className="container">
             <div className="prompt-builder-layout">
 
-              {/* Left: copy */}
+              {/* Left: copy + thumbnail */}
               <div>
                 <div className="eyebrow" style={{ marginBottom: "16px" }}>AGENT: Prompt Builder</div>
                 <h2
                   className="heading-1"
-                  style={{ marginBottom: "16px" }}
+                  style={{ marginBottom: "24px" }}
                 >
                   12 prompts tailored for your exact job.
                 </h2>
-                <p
-                  className="body-lg"
+                <img
+                  src="/tool-previews/prompt-builder-preview.png"
+                  alt="AGENT: Prompt Builder results — 12 AI prompts built for Project Manager"
                   style={{
-                    color: "var(--text-secondary)",
-                    marginBottom: "32px",
+                    width: "100%",
+                    borderRadius: "12px",
+                    border: "1px solid rgba(30,122,184,0.2)",
+                    boxShadow: "0 6px 32px rgba(0,0,0,0.10)",
+                    display: "block",
+                    marginBottom: "28px",
                   }}
-                >
-                  Answer a few questions about your job. Walk away with 12
-                  ready-to-use prompts, a personal AI Profile, and a
-                  step-by-step guide for building your AI system.
-                </p>
+                />
                 <a href="/prompt-builder" className="btn btn-primary btn-lg">
                   Get Started →
                 </a>

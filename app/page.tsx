@@ -62,7 +62,7 @@ export default function Home() {
         </section>
 
         {/* ── Section 4: AGENT: Prompt Builder ────────────────────────── */}
-        <section className="section" id="prompt-builder" style={{ paddingTop: "112px", paddingBottom: "96px" }}>
+        <section className="section" id="prompt-builder" style={{ paddingTop: "112px", paddingBottom: "64px" }}>
           <div className="container">
 
             {/* Centered header */}
@@ -111,7 +111,7 @@ export default function Home() {
         </section>
 
         {/* ── Section 5: The Guide ─────────────────────────────────────── */}
-        <section className="section" id="about" style={{ paddingTop: "140px", paddingBottom: "140px" }}>
+        <section className="section" id="about" style={{ paddingTop: "100px", paddingBottom: "140px" }}>
           <div className="container">
             <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center" }}>
               <div className="eyebrow" style={{ marginBottom: "20px" }}>Your guide</div>

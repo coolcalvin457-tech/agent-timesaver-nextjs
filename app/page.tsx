@@ -66,11 +66,11 @@ export default function Home() {
           <div className="container">
 
             {/* Centered header */}
-            <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center", marginBottom: "40px" }}>
+            <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center", marginBottom: "56px" }}>
               <div className="eyebrow" style={{ marginBottom: "16px" }}>AGENT: Prompt Builder</div>
               <h2
                 className="heading-1"
-                style={{ marginBottom: "32px", fontSize: "clamp(2.25rem, 4.5vw, 3.25rem)", lineHeight: 1.08 }}
+                style={{ marginBottom: "48px", fontSize: "clamp(2.25rem, 4.5vw, 3.25rem)", lineHeight: 1.08 }}
               >
                 <span style={{ display: "block" }}>12 prompts tailored for</span>
                 <span style={{ display: "block" }}>your exact job.</span>

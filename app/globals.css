@@ -2524,7 +2524,7 @@ input, textarea {
 
 .prompt-builder-screenshot-wrap {
   display: block;
-  max-width: 960px;
+  max-width: 840px;
   margin: 0 auto;
   border-radius: 16px;
   overflow: hidden;

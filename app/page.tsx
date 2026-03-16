@@ -126,7 +126,7 @@ export default function Home() {
                 I spent 6 months learning how AI agents actually work.
               </p>
               <p className="guide-body">
-                Now I&apos;m helping others apply AI to their actual jobs.<br />
+                Now I&apos;m helping others apply AI to their specific jobs.<br />
                 No starting from scratch.
               </p>
               <p className="guide-kicker" style={{ marginTop: "52px" }}>

@@ -1453,9 +1453,18 @@ input, textarea {
   flex-shrink: 0;
 }
 
+.guide-intro {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
+}
+
 .guide-headline {
   font-family: var(--font-display);
-  font-size: clamp(2.25rem, 4.5vw, 3.25rem);
+  font-size: clamp(2rem, 4vw, 2.75rem);
   font-weight: 400;
   color: var(--text-primary);
   margin-bottom: 28px;

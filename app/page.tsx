@@ -54,7 +54,8 @@ export default function Home() {
               </h2>
               <p className="dream-body">
                 Setting up personalized AI workflows is now within reach.<br />
-                Reports, meeting preps, follow-ups, you name it. Here&apos;s how to begin with a few prompts.
+                Reports, meeting preps, follow-ups, you name it.<br />
+                Here&apos;s how to begin with a few prompts.
               </p>
             </div>
           </div>
@@ -149,7 +150,7 @@ export default function Home() {
                 </h2>
                 <p className="guide-body">
                   I used to teach history and coach basketball. No technical background.<br />
-                  Nothing to do with software. I spent 6 months learning how AI agents actually work.
+                  Nothing to do with software. I spent 6 months learning how AI agents work.
                 </p>
                 <p className="guide-body">
                   Now I&apos;m sharing what I know to help others apply AI to their specific jobs,<br />

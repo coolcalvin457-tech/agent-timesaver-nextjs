@@ -1437,7 +1437,7 @@ input, textarea {
   display: grid;
   grid-template-columns: 220px 1fr;
   gap: 64px;
-  align-items: center;
+  align-items: flex-start;
   max-width: 920px;
 }
 

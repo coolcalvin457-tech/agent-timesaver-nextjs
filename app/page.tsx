@@ -64,17 +64,20 @@ export default function Home() {
         {/* ── Section 4: AGENT: Prompt Builder ────────────────────────── */}
         <section className="section" id="prompt-builder" style={{ paddingTop: "112px", paddingBottom: "80px" }}>
           <div className="container">
+
+            {/* Full-width header */}
+            <div className="eyebrow" style={{ marginBottom: "16px" }}>AGENT: Prompt Builder</div>
+            <h2
+              className="heading-1"
+              style={{ marginBottom: "48px", fontSize: "clamp(2.25rem, 4.5vw, 3.5rem)", lineHeight: 1.08 }}
+            >
+              12 prompts tailored for<br />your exact job.
+            </h2>
+
             <div className="prompt-builder-layout">
 
-              {/* Left: header + kit preview card */}
+              {/* Left: kit preview card */}
               <div>
-                <div className="eyebrow" style={{ marginBottom: "16px" }}>AGENT: Prompt Builder</div>
-                <h2
-                  className="heading-1"
-                  style={{ marginBottom: "32px", fontSize: "clamp(2.25rem, 4vw, 3.5rem)", lineHeight: 1.08 }}
-                >
-                  12 prompts tailored for<br />your exact job.
-                </h2>
                 <a href="/prompt-builder" className="kit-preview-card" style={{ textDecoration: "none", cursor: "pointer", display: "block", marginBottom: "20px" }}>
                   <div className="kit-preview-label">What&apos;s included:</div>
 
@@ -99,13 +102,16 @@ export default function Home() {
                     </div>
                   </div>
                 </a>
-                <a href="/prompt-builder" style={{ color: "var(--cta)", fontSize: "0.95rem", fontWeight: 500, textDecoration: "none", letterSpacing: "0.01em" }}>
-                  Build your prompt kit →
+                <a href="/prompt-builder" style={{ color: "var(--cta)", fontSize: "0.95rem", fontWeight: 500, textDecoration: "none", letterSpacing: "0.01em" }}
+                  onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.textDecoration = "underline"}
+                  onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.textDecoration = "none"}
+                >
+                  Build Prompts
                 </a>
               </div>
 
               {/* Right: tool preview screenshot */}
-              <a href="/prompt-builder" className="kit-preview-card" style={{ textDecoration: "none", cursor: "pointer", display: "block", padding: 0, overflow: "hidden", marginTop: "72px" }}>
+              <a href="/prompt-builder" className="kit-preview-card" style={{ textDecoration: "none", cursor: "pointer", display: "block", padding: 0, overflow: "hidden", marginTop: "32px" }}>
                 <img
                   src="/tool-previews/prompt-builder-preview.png"
                   alt="AGENT: Prompt Builder results — 12 AI prompts built for Project Manager"

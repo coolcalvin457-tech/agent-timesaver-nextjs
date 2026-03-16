@@ -80,15 +80,15 @@ export default function Home() {
               <div className="prompt-builder-kit-row" style={{ marginBottom: "24px" }}>
                 <div className="prompt-builder-kit-pill">
                   <span className="kit-item-check" style={{ fontSize: "0.75rem" }}>✓</span>
-                  <span><strong>Personalized Prompts</strong></span>
+                  <span>Personalized Prompts</span>
                 </div>
                 <div className="prompt-builder-kit-pill">
                   <span className="kit-item-check" style={{ fontSize: "0.75rem" }}>✓</span>
-                  <span><strong>AI Profile</strong></span>
+                  <span>AI Profile</span>
                 </div>
                 <div className="prompt-builder-kit-pill">
                   <span className="kit-item-check" style={{ fontSize: "0.75rem" }}>✓</span>
-                  <span><strong>AI Systems Guide</strong></span>
+                  <span>AI Systems Guide</span>
                 </div>
               </div>
 

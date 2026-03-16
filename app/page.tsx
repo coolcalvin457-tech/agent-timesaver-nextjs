@@ -98,7 +98,7 @@ export default function Home() {
               <img
                 src="/tool-previews/prompt-builder-preview.png"
                 alt="AGENT: Prompt Builder results — 12 AI prompts built for Project Manager"
-                style={{ width: "100%", display: "block", borderRadius: "inherit" }}
+                style={{ width: "100%", display: "block" }}
               />
             </a>
 

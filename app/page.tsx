@@ -98,34 +98,28 @@ export default function Home() {
                 <div className="kit-item">
                   <div className="kit-item-check">✓</div>
                   <div className="kit-item-text">
-                    <strong>12 personalized prompts</strong> across 4 work
-                    categories. Built around your role, not a generic template.
+                    <strong>12 Personalized Prompts.</strong> Built around your specific role, not a generic template.
                   </div>
                 </div>
 
                 <div className="kit-item">
                   <div className="kit-item-check">✓</div>
                   <div className="kit-item-text">
-                    <strong>Your AI Profile.</strong> Add it to ChatGPT, Claude, or
-                    Gemini&apos;s memory so every conversation begins with full
-                    context.
+                    <strong>Your AI Profile.</strong> Add it to Claude, ChatGPT, or Gemini&apos;s memory so every conversation begins with full context.
                   </div>
                 </div>
 
                 <div className="kit-item">
                   <div className="kit-item-check">✓</div>
                   <div className="kit-item-text">
-                    <strong>Build Your AI System guide.</strong> Folder
-                    structure, tool recommendations, and exactly where to
-                    put everything.
+                    <strong>Your AI Systems Guide.</strong> Folder structure, tool recommendations, and a layout of how to organize everything.
                   </div>
                 </div>
 
                 <div className="kit-item">
                   <div className="kit-item-check">✓</div>
                   <div className="kit-item-text">
-                    <strong>One-click copy buttons</strong> on every prompt.
-                    Paste directly into any AI tool, no reformatting needed.
+                    <strong>One-Click Copy Prompts.</strong> Paste directly into any AI tool, no reformatting needed.
                   </div>
                 </div>
               </a>

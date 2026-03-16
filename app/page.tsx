@@ -77,20 +77,25 @@ export default function Home() {
               </h2>
 
               {/* Compact horizontal kit items */}
-              <div className="prompt-builder-kit-row">
+              <div className="prompt-builder-kit-row" style={{ marginBottom: "36px" }}>
                 <div className="prompt-builder-kit-pill">
                   <span className="kit-item-check" style={{ fontSize: "0.75rem" }}>✓</span>
-                  <span><strong>12 Personalized Prompts</strong></span>
+                  <span><strong>Personalized Prompts</strong></span>
                 </div>
                 <div className="prompt-builder-kit-pill">
                   <span className="kit-item-check" style={{ fontSize: "0.75rem" }}>✓</span>
-                  <span><strong>Your AI Profile</strong></span>
+                  <span><strong>AI Profile</strong></span>
                 </div>
                 <div className="prompt-builder-kit-pill">
                   <span className="kit-item-check" style={{ fontSize: "0.75rem" }}>✓</span>
-                  <span><strong>Your AI Systems Guide</strong></span>
+                  <span><strong>AI Systems Guide</strong></span>
                 </div>
               </div>
+
+              {/* CTA — above screenshot */}
+              <a href="/prompt-builder" className="btn btn-primary btn-lg">
+                Build Your Prompt Kit →
+              </a>
             </div>
 
             {/* Large screenshot */}
@@ -101,13 +106,6 @@ export default function Home() {
                 style={{ width: "100%", display: "block" }}
               />
             </a>
-
-            {/* CTA below screenshot */}
-            <div style={{ textAlign: "center", marginTop: "40px" }}>
-              <a href="/prompt-builder" className="btn btn-primary btn-lg">
-                Build Your Prompt Kit →
-              </a>
-            </div>
 
           </div>
         </section>

@@ -126,31 +126,26 @@ export default function Home() {
         </section>
 
         {/* ── Section 5: The Guide ─────────────────────────────────────── */}
-        <section className="section" id="about" style={{ paddingTop: "72px" }}>
+        <section className="section" id="about" style={{ paddingTop: "140px", paddingBottom: "140px" }}>
           <div className="container">
-            <div className="eyebrow">Your guide</div>
-            <div className="guide-layout">
-              <div className="guide-avatar" aria-hidden="true">
-                🏀
-              </div>
-              <div>
-                <h2 className="guide-headline">
-                  <span style={{ display: "block", marginBottom: "16px" }}>Hi, I&apos;m Calvin.</span>
-                  I figured this out the hard way,<br />
-                  so you don&apos;t have to.
-                </h2>
-                <p className="guide-body">
-                  I used to teach history and coach basketball. No technical background.<br />
-                  Nothing to do with software. I spent 6 months learning how AI agents work.
-                </p>
-                <p className="guide-body">
-                  Now I&apos;m sharing what I know to help others apply AI to their specific jobs,<br />
-                  without starting from scratch.
-                </p>
-                <p className="guide-kicker" style={{ marginTop: "32px", fontSize: "1.25rem" }}>
-                  If a basketball coach can figure this out, so can you.
-                </p>
-              </div>
+            <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center" }}>
+              <div className="eyebrow" style={{ marginBottom: "16px" }}>Your guide</div>
+              <h2 className="guide-headline" style={{ marginBottom: "40px" }}>
+                <span style={{ display: "block" }}>Hi, I&apos;m Calvin.</span>
+                <span style={{ display: "block" }}>I figured this out the hard way,</span>
+                <span style={{ display: "block" }}>so you don&apos;t have to.</span>
+              </h2>
+              <p className="guide-body">
+                I used to teach history and coach basketball. No technical background.
+                Nothing to do with software. I spent 6 months learning how AI agents work.
+              </p>
+              <p className="guide-body">
+                Now I&apos;m sharing what I know to help others apply AI to their specific jobs,
+                without starting from scratch.
+              </p>
+              <p className="guide-kicker" style={{ marginTop: "32px" }}>
+                If a basketball coach can figure this out, so can you.
+              </p>
             </div>
           </div>
         </section>

@@ -66,7 +66,7 @@ export default function Home() {
           <div className="container">
 
             {/* Centered header */}
-            <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center", marginBottom: "56px" }}>
+            <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center", marginBottom: "40px" }}>
               <div className="eyebrow" style={{ marginBottom: "16px" }}>AGENT: Prompt Builder</div>
               <h2
                 className="heading-1"
@@ -77,7 +77,7 @@ export default function Home() {
               </h2>
 
               {/* Compact horizontal kit items */}
-              <div className="prompt-builder-kit-row" style={{ marginBottom: "36px" }}>
+              <div className="prompt-builder-kit-row" style={{ marginBottom: "24px" }}>
                 <div className="prompt-builder-kit-pill">
                   <span className="kit-item-check" style={{ fontSize: "0.75rem" }}>✓</span>
                   <span><strong>Personalized Prompts</strong></span>

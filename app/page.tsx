@@ -111,7 +111,7 @@ export default function Home() {
         </section>
 
         {/* ── Section 5: The Guide ─────────────────────────────────────── */}
-        <section className="section" id="about" style={{ paddingTop: "100px", paddingBottom: "140px" }}>
+        <section className="section" id="about" style={{ paddingTop: "100px", paddingBottom: "80px" }}>
           <div className="container">
             <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center" }}>
               <div className="eyebrow" style={{ marginBottom: "20px" }}>Your guide</div>

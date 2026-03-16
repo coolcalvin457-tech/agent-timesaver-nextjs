@@ -103,10 +103,7 @@ export default function Home() {
                     </div>
                   </div>
                 </a>
-                <a href="/prompt-builder" style={{ color: "var(--cta)", fontSize: "0.95rem", fontWeight: 500, textDecoration: "none", letterSpacing: "0.01em" }}
-                  onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.textDecoration = "underline"}
-                  onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.textDecoration = "none"}
-                >
+                <a href="/prompt-builder" className="prompt-builder-cta-link">
                   Build Prompts
                 </a>
               </div>

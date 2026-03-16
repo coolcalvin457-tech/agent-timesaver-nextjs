@@ -62,7 +62,7 @@ export default function Home() {
         </section>
 
         {/* ── Section 4: AGENT: Prompt Builder ────────────────────────── */}
-        <section className="section" id="prompt-builder" style={{ paddingTop: "72px", paddingBottom: "80px" }}>
+        <section className="section" id="prompt-builder" style={{ paddingTop: "112px", paddingBottom: "80px" }}>
           <div className="container">
             <div className="prompt-builder-layout">
 

@@ -62,66 +62,53 @@ export default function Home() {
         </section>
 
         {/* ── Section 4: AGENT: Prompt Builder ────────────────────────── */}
-        <section className="section" id="prompt-builder" style={{ paddingTop: "112px", paddingBottom: "80px" }}>
+        <section className="section" id="prompt-builder" style={{ paddingTop: "112px", paddingBottom: "96px" }}>
           <div className="container">
 
-            {/* Full-width header */}
-            <div className="eyebrow" style={{ marginBottom: "16px" }}>AGENT: Prompt Builder</div>
-            <h2
-              className="heading-1"
-              style={{ marginBottom: "48px", fontSize: "clamp(2.25rem, 4.5vw, 3.25rem)", lineHeight: 1.08 }}
-            >
-              <span style={{ display: "block" }}>12 prompts tailored for</span>
-              <span style={{ display: "block" }}>your exact job.</span>
-            </h2>
+            {/* Centered header */}
+            <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center", marginBottom: "40px" }}>
+              <div className="eyebrow" style={{ marginBottom: "16px" }}>AGENT: Prompt Builder</div>
+              <h2
+                className="heading-1"
+                style={{ marginBottom: "32px", fontSize: "clamp(2.25rem, 4.5vw, 3.25rem)", lineHeight: 1.08 }}
+              >
+                <span style={{ display: "block" }}>12 prompts tailored for</span>
+                <span style={{ display: "block" }}>your exact job.</span>
+              </h2>
 
-            <div className="prompt-builder-layout">
-
-              {/* Left: kit preview card */}
-              <div>
-                <a href="/prompt-builder" className="kit-preview-card" style={{ textDecoration: "none", cursor: "pointer", display: "block", marginBottom: "20px" }}>
-                  <div className="kit-preview-label">What&apos;s included:</div>
-
-                  <div className="kit-item">
-                    <div className="kit-item-check">✓</div>
-                    <div className="kit-item-text">
-                      <strong>12 Personalized Prompts.</strong> Built around your specific role, not a generic template.
-                    </div>
-                  </div>
-
-                  <div className="kit-item">
-                    <div className="kit-item-check">✓</div>
-                    <div className="kit-item-text">
-                      <strong>Your AI Profile.</strong> Add it to Claude, ChatGPT, or Gemini&apos;s memory so every conversation begins with full context.
-                    </div>
-                  </div>
-
-                  <div className="kit-item">
-                    <div className="kit-item-check">✓</div>
-                    <div className="kit-item-text">
-                      <strong>Your AI Systems Guide.</strong> Folder structure, tool recommendations, and a layout of how to organize everything.
-                    </div>
-                  </div>
-                </a>
-                <a href="/prompt-builder" className="prompt-builder-cta-link">
-                  Build Prompts
-                </a>
+              {/* Compact horizontal kit items */}
+              <div className="prompt-builder-kit-row">
+                <div className="prompt-builder-kit-pill">
+                  <span className="kit-item-check" style={{ fontSize: "0.75rem" }}>✓</span>
+                  <span><strong>12 Personalized Prompts</strong></span>
+                </div>
+                <div className="prompt-builder-kit-pill">
+                  <span className="kit-item-check" style={{ fontSize: "0.75rem" }}>✓</span>
+                  <span><strong>Your AI Profile</strong></span>
+                </div>
+                <div className="prompt-builder-kit-pill">
+                  <span className="kit-item-check" style={{ fontSize: "0.75rem" }}>✓</span>
+                  <span><strong>Your AI Systems Guide</strong></span>
+                </div>
               </div>
-
-              {/* Right: tool preview screenshot */}
-              <a href="/prompt-builder" className="kit-preview-card" style={{ textDecoration: "none", cursor: "pointer", display: "block", padding: 0, overflow: "hidden", marginTop: "32px" }}>
-                <img
-                  src="/tool-previews/prompt-builder-preview.png"
-                  alt="AGENT: Prompt Builder results — 12 AI prompts built for Project Manager"
-                  style={{
-                    width: "100%",
-                    display: "block",
-                    borderRadius: "inherit",
-                  }}
-                />
-              </a>
-
             </div>
+
+            {/* Large screenshot */}
+            <a href="/prompt-builder" className="prompt-builder-screenshot-wrap">
+              <img
+                src="/tool-previews/prompt-builder-preview.png"
+                alt="AGENT: Prompt Builder results — 12 AI prompts built for Project Manager"
+                style={{ width: "100%", display: "block", borderRadius: "inherit" }}
+              />
+            </a>
+
+            {/* CTA below screenshot */}
+            <div style={{ textAlign: "center", marginTop: "40px" }}>
+              <a href="/prompt-builder" className="btn btn-primary btn-lg">
+                Build Your Prompt Kit →
+              </a>
+            </div>
+
           </div>
         </section>
 

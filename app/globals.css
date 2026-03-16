@@ -2506,11 +2506,37 @@ input, textarea {
 
 /* ── AGENT: Prompt Builder Section ───────────────────────── */
 
-.prompt-builder-layout {
-  display: grid;
-  grid-template-columns: 1fr 1.15fr;
-  gap: 64px;
-  align-items: start;
+.prompt-builder-kit-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.prompt-builder-kit-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.prompt-builder-screenshot-wrap {
+  display: block;
+  max-width: 960px;
+  margin: 0 auto;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(30, 122, 184, 0.2);
+  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.12);
+  text-decoration: none;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.prompt-builder-screenshot-wrap:hover {
+  box-shadow: 0 12px 56px rgba(30, 122, 184, 0.18);
+  transform: translateY(-3px);
 }
 
 .prompt-builder-cta-link {

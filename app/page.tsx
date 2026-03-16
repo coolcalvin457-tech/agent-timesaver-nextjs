@@ -102,7 +102,7 @@ export default function Home() {
               </div>
 
               {/* Right: tool preview screenshot */}
-              <a href="/prompt-builder" className="kit-preview-card" style={{ textDecoration: "none", cursor: "pointer", display: "block", padding: 0, overflow: "hidden" }}>
+              <a href="/prompt-builder" className="kit-preview-card" style={{ textDecoration: "none", cursor: "pointer", display: "block", padding: 0, overflow: "hidden", marginTop: "72px" }}>
                 <img
                   src="/tool-previews/prompt-builder-preview.png"
                   alt="AGENT: Prompt Builder results — 12 AI prompts built for Project Manager"

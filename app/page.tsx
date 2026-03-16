@@ -71,11 +71,11 @@ export default function Home() {
                 <div className="eyebrow" style={{ marginBottom: "16px" }}>AGENT: Prompt Builder</div>
                 <h2
                   className="heading-1"
-                  style={{ marginBottom: "32px" }}
+                  style={{ marginBottom: "32px", fontSize: "clamp(2.25rem, 4vw, 3.5rem)", lineHeight: 1.08 }}
                 >
-                  12 prompts tailored for your exact job.
+                  12 prompts tailored for<br />your exact job.
                 </h2>
-                <a href="/prompt-builder" className="kit-preview-card" style={{ textDecoration: "none", cursor: "pointer", display: "block" }}>
+                <a href="/prompt-builder" className="kit-preview-card" style={{ textDecoration: "none", cursor: "pointer", display: "block", marginBottom: "20px" }}>
                   <div className="kit-preview-label">What&apos;s included:</div>
 
                   <div className="kit-item">
@@ -98,6 +98,9 @@ export default function Home() {
                       <strong>Your AI Systems Guide.</strong> Folder structure, tool recommendations, and a layout of how to organize everything.
                     </div>
                   </div>
+                </a>
+                <a href="/prompt-builder" style={{ color: "var(--cta)", fontSize: "0.95rem", fontWeight: 500, textDecoration: "none", letterSpacing: "0.01em" }}>
+                  Build your prompt kit →
                 </a>
               </div>
 

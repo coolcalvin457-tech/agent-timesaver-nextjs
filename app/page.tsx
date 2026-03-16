@@ -131,7 +131,7 @@ export default function Home() {
             <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center" }}>
               <div className="eyebrow" style={{ marginBottom: "20px" }}>Your guide</div>
               <p className="guide-intro">Hi, I&apos;m Calvin.</p>
-              <h2 className="guide-headline" style={{ marginBottom: "52px" }}>
+              <h2 className="guide-headline" style={{ marginBottom: "52px", marginTop: "28px" }}>
                 <span style={{ display: "block" }}>I figured this out the hard way,</span>
                 <span style={{ display: "block" }}>so you don&apos;t have to.</span>
               </h2>

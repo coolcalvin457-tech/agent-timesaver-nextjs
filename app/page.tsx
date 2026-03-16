@@ -66,63 +66,52 @@ export default function Home() {
           <div className="container">
             <div className="prompt-builder-layout">
 
-              {/* Left: copy + thumbnail */}
+              {/* Left: header + kit preview card */}
               <div>
                 <div className="eyebrow" style={{ marginBottom: "16px" }}>AGENT: Prompt Builder</div>
                 <h2
                   className="heading-1"
-                  style={{ marginBottom: "24px" }}
+                  style={{ marginBottom: "32px" }}
                 >
                   12 prompts tailored for your exact job.
                 </h2>
+                <a href="/prompt-builder" className="kit-preview-card" style={{ textDecoration: "none", cursor: "pointer", display: "block" }}>
+                  <div className="kit-preview-label">What&apos;s included:</div>
+
+                  <div className="kit-item">
+                    <div className="kit-item-check">✓</div>
+                    <div className="kit-item-text">
+                      <strong>12 Personalized Prompts.</strong> Built around your specific role, not a generic template.
+                    </div>
+                  </div>
+
+                  <div className="kit-item">
+                    <div className="kit-item-check">✓</div>
+                    <div className="kit-item-text">
+                      <strong>Your AI Profile.</strong> Add it to Claude, ChatGPT, or Gemini&apos;s memory so every conversation begins with full context.
+                    </div>
+                  </div>
+
+                  <div className="kit-item">
+                    <div className="kit-item-check">✓</div>
+                    <div className="kit-item-text">
+                      <strong>Your AI Systems Guide.</strong> Folder structure, tool recommendations, and a layout of how to organize everything.
+                    </div>
+                  </div>
+                </a>
+              </div>
+
+              {/* Right: tool preview screenshot */}
+              <a href="/prompt-builder" className="kit-preview-card" style={{ textDecoration: "none", cursor: "pointer", display: "block", padding: 0, overflow: "hidden" }}>
                 <img
                   src="/tool-previews/prompt-builder-preview.png"
                   alt="AGENT: Prompt Builder results — 12 AI prompts built for Project Manager"
                   style={{
                     width: "100%",
-                    borderRadius: "12px",
-                    border: "1px solid rgba(30,122,184,0.2)",
-                    boxShadow: "0 6px 32px rgba(0,0,0,0.10)",
                     display: "block",
-                    marginBottom: "28px",
+                    borderRadius: "inherit",
                   }}
                 />
-                <a href="/prompt-builder" className="btn btn-primary btn-lg">
-                  Get Started →
-                </a>
-              </div>
-
-              {/* Right: kit preview card */}
-              <a href="/prompt-builder" className="kit-preview-card" style={{ textDecoration: "none", cursor: "pointer", display: "block" }}>
-                <div className="kit-preview-label">What&apos;s included:</div>
-
-                <div className="kit-item">
-                  <div className="kit-item-check">✓</div>
-                  <div className="kit-item-text">
-                    <strong>12 Personalized Prompts.</strong> Built around your specific role, not a generic template.
-                  </div>
-                </div>
-
-                <div className="kit-item">
-                  <div className="kit-item-check">✓</div>
-                  <div className="kit-item-text">
-                    <strong>Your AI Profile.</strong> Add it to Claude, ChatGPT, or Gemini&apos;s memory so every conversation begins with full context.
-                  </div>
-                </div>
-
-                <div className="kit-item">
-                  <div className="kit-item-check">✓</div>
-                  <div className="kit-item-text">
-                    <strong>Your AI Systems Guide.</strong> Folder structure, tool recommendations, and a layout of how to organize everything.
-                  </div>
-                </div>
-
-                <div className="kit-item">
-                  <div className="kit-item-check">✓</div>
-                  <div className="kit-item-text">
-                    <strong>One-Click Copy Prompts.</strong> Paste directly into any AI tool, no reformatting needed.
-                  </div>
-                </div>
               </a>
 
             </div>

@@ -71,7 +71,8 @@ export default function Home() {
               className="heading-1"
               style={{ marginBottom: "48px", fontSize: "clamp(2.25rem, 4.5vw, 3.5rem)", lineHeight: 1.08 }}
             >
-              12 prompts tailored for<br />your exact job.
+              <span style={{ display: "block" }}>12 prompts tailored for</span>
+              <span style={{ display: "block" }}>your exact job.</span>
             </h2>
 
             <div className="prompt-builder-layout">

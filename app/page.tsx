@@ -66,7 +66,7 @@ export default function Home() {
           <div className="container">
 
             {/* Centered header */}
-            <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center", marginBottom: "40px" }}>
+            <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center", marginBottom: "56px" }}>
               <div className="eyebrow" style={{ marginBottom: "16px" }}>AGENT: Prompt Builder</div>
               <h2
                 className="heading-1"

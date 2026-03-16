@@ -46,16 +46,18 @@ export default function Home() {
         </section>
 
         {/* ── Section 2: Dream / Aspiration ───────────────────────────── */}
-        <section className="section section-dark" id="dream" style={{ paddingBottom: "72px" }}>
-          <div className="container-narrow">
-            <h2 className="heading-1" style={{ color: "#fff", marginBottom: "24px" }}>
-              Imagine getting 5 to 10 hours back every week.
-            </h2>
-            <p className="dream-body">
-              Setting up personalized AI workflows is now within reach. Reports,
-              meeting preps, follow-ups, you name it. Here&apos;s how to begin
-              with a few prompts.
-            </p>
+        <section className="section section-dark" id="dream" style={{ paddingTop: "120px", paddingBottom: "120px" }}>
+          <div className="container">
+            <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center" }}>
+              <h2 className="heading-1" style={{ color: "#fff", marginBottom: "24px" }}>
+                Imagine getting 5 to 10 hours back every week.
+              </h2>
+              <p className="dream-body">
+                Setting up personalized AI workflows is now within reach. Reports,
+                meeting preps, follow-ups, you name it. Here&apos;s how to begin
+                with a few prompts.
+              </p>
+            </div>
           </div>
         </section>
 
@@ -142,13 +144,12 @@ export default function Home() {
               </div>
               <div>
                 <h2 className="guide-headline">
-                  Hi, I&apos;m Calvin. I figured this out the hard way, so you
-                  don&apos;t have to.
+                  Hi, I&apos;m Calvin.<br />
+                  I figured this out the hard way, so you don&apos;t have to.
                 </h2>
                 <p className="guide-body">
-                  I used to teach history and coach basketball. No{" "}
-                  <span style={{ whiteSpace: "nowrap" }}>technical background.</span>{" "}
-                  Nothing to do with software. I spent 6 months
+                  I used to teach history and coach basketball. No technical
+                  background. Nothing to do with software. I spent 6 months
                   learning how AI agents actually work.
                 </p>
                 <p className="guide-body">

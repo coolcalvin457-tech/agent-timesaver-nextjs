@@ -1306,6 +1306,7 @@ input, textarea {
   color: rgba(255,255,255,0.7);
   line-height: 1.75;
   max-width: 640px;
+  margin: 0 auto;
 }
 
 .dream-body strong {
@@ -1434,10 +1435,10 @@ input, textarea {
 /* ── Guide Section ────────────────────────────────────────── */
 .guide-layout {
   display: grid;
-  grid-template-columns: 200px 1fr;
-  gap: 48px;
+  grid-template-columns: 220px 1fr;
+  gap: 64px;
   align-items: center;
-  max-width: 760px;
+  max-width: 920px;
 }
 
 .guide-avatar {
@@ -2521,12 +2522,13 @@ input, textarea {
   border-radius: var(--radius-card);
   padding: 36px;
   box-shadow: var(--shadow-card);
-  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
 .kit-preview-card:hover {
   border-color: var(--cta);
-  box-shadow: 0 4px 24px rgba(30, 122, 184, 0.12);
+  box-shadow: 0 8px 32px rgba(30, 122, 184, 0.15);
+  transform: translateY(-3px);
 }
 
 .kit-sample-card {

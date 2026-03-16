@@ -93,8 +93,8 @@ export default function Home() {
               </div>
 
               {/* CTA — above screenshot */}
-              <a href="/prompt-builder" className="btn btn-primary btn-lg">
-                Build Your Prompt Kit →
+              <a href="/prompt-builder" className="prompt-builder-cta-link">
+                Build Prompts →
               </a>
             </div>
 

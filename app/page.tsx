@@ -46,10 +46,10 @@ export default function Home() {
         </section>
 
         {/* ── Section 2: Dream / Aspiration ───────────────────────────── */}
-        <section className="section section-dark" id="dream" style={{ paddingTop: "120px", paddingBottom: "120px" }}>
+        <section className="section section-dark" id="dream" style={{ paddingTop: "140px", paddingBottom: "140px" }}>
           <div className="container">
             <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center" }}>
-              <h2 className="heading-1" style={{ color: "#fff", marginBottom: "40px", lineHeight: 1.2 }}>
+              <h2 className="heading-1" style={{ color: "#fff", marginBottom: "52px", lineHeight: 1.2, fontSize: "clamp(2.25rem, 4.5vw, 3.25rem)" }}>
                 Imagine getting 5 to 10 hours back<br />every week.
               </h2>
               <p className="dream-body">

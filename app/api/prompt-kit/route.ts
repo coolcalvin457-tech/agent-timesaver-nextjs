@@ -153,6 +153,7 @@ Rules:
 - Every prompt must be something they could copy and use TODAY in ChatGPT or Claude
 - Calibrate complexity to their AI usage level (beginners get simpler prompts, daily users get more advanced ones)
 - Address their stated challenge in at least 3 of the 12 prompts
+- Never name a prompt after an email task. Avoid titles containing "Email Writer", "Email Drafter", or "Email Rewriter". Name prompts by the deliverable or outcome instead (e.g. "Project Status Brief", "Scope Change Response", "Stakeholder Briefing", "Meeting Recap Builder")
 
 Return ONLY valid JSON in this exact format:
 {

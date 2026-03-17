@@ -289,16 +289,10 @@ export default function TimesaverTool() {
             Answer a few questions. Get 5 personalized AI workflows.
           </p>
 
-          <div className="primer-box">
-            <div className="primer-label">⚡ AI Lesson #1</div>
-            <p className="primer-body">
-              The more context you give, the more specific your results will be.
-            </p>
-          </div>
-
           <button
             id="timesaver-start-btn"
-            className="btn btn-primary btn-full"
+            className="btn btn-primary"
+            style={{ maxWidth: "260px", margin: "0 auto", display: "block" }}
             onClick={() => { track("tool_started"); go("jobTitle"); }}
           >
             Show Me →
@@ -346,6 +340,13 @@ export default function TimesaverTool() {
             }}
             autoFocus
           />
+
+          <div className="primer-box" style={{ marginBottom: "20px" }}>
+            <div className="primer-label">⚡ AI Lesson #1</div>
+            <p className="primer-body" style={{ margin: 0 }}>
+              The more context you give, the more specific your results will be.
+            </p>
+          </div>
 
           <p
             style={{

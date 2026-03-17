@@ -16,7 +16,7 @@ export default function Home() {
             <div className="hero-inner">
 
               {/* Left: copy */}
-              <div className="hero-copy">
+              <div className="hero-copy" style={{ paddingLeft: "32px" }}>
                 <h1 className="hero-headline">
                   How to Actually<br />
                   Create Your<br />

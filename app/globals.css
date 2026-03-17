@@ -1554,7 +1554,7 @@ input, textarea {
 
 /* Tool container — remove light card bg/border inside dark chrome */
 .hero-tool-dark .tool-container {
-  background: radial-gradient(ellipse at center, rgba(30,122,184,0.07) 0%, #161618 65%);
+  background: radial-gradient(ellipse at center, rgba(30,122,184,0.10) 0%, #161618 65%);
   border: 1px solid var(--dark-border);
   box-shadow: none;
   min-height: 420px;
@@ -1565,7 +1565,9 @@ input, textarea {
 
 /* Screen / main content area */
 .hero-tool-dark .screen {
-  background: var(--dark);
+  background: transparent;
+  padding-left: 56px;
+  padding-right: 56px;
 }
 
 /* Tool tag (mono label at top) */

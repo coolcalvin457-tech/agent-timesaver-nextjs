@@ -1542,14 +1542,16 @@ input, textarea {
 
 .hero-tool-clickable {
   cursor: pointer;
-  border: 2px solid transparent;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .hero-tool-clickable:hover {
-  border-color: #4da3e0;
-  box-shadow: 0 8px 32px rgba(30, 122, 184, 0.25), 0 16px 48px rgba(0,0,0,0.32);
   transform: translateY(-3px);
+  box-shadow: 0 8px 32px rgba(30, 122, 184, 0.15), 0 16px 48px rgba(0,0,0,0.32);
+}
+
+.hero-tool-clickable:hover .tool-container {
+  border-color: #4da3e0;
 }
 
 /* Browser chrome bar */

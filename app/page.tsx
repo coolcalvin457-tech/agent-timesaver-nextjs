@@ -1,4 +1,4 @@
-import TimesaverTool from "@/components/TimesaverTool";
+import HeroToolWrap from "@/components/HeroToolWrap";
 import HeroButton from "@/components/HeroButton";
 import NavClient from "@/components/NavClient";
 import Footer from "@/components/Footer";
@@ -30,15 +30,7 @@ export default function Home() {
 
               {/* Right: visual slot — tool embed */}
               <div className="hero-visual" style={{ paddingTop: "56px" }}>
-                <div className="browser-chrome hero-tool-dark">
-                  <div className="browser-bar">
-                    <div className="browser-dot browser-dot-red" />
-                    <div className="browser-dot browser-dot-yellow" />
-                    <div className="browser-dot browser-dot-green" />
-                    <div className="browser-url">promptaiagents.com/timesaver</div>
-                  </div>
-                  <TimesaverTool />
-                </div>
+                <HeroToolWrap />
               </div>
 
             </div>

@@ -453,7 +453,7 @@ export default function OnboardingKitBuilderTool({
 
   function validateS2(): boolean {
     if (whyHired.trim().length < 50) {
-      setS2Error("Add a bit more detail about why this hire was made — it helps us write a better kit.");
+      setS2Error("Add a bit more detail about why this hire was made. It helps us write a better kit.");
       return false;
     }
     setS2Error("");
@@ -466,7 +466,7 @@ export default function OnboardingKitBuilderTool({
       return false;
     }
     if (thirtyToNinety.trim().length < 50) {
-      setS3Error("Add a bit more detail about the 30/60/90 expectations — it shapes the entire kit.");
+      setS3Error("Add a bit more detail about the 30/60/90 expectations. It shapes the entire kit.");
       return false;
     }
     setS3Error("");
@@ -548,7 +548,7 @@ export default function OnboardingKitBuilderTool({
         const d = await res.json().catch(() => ({}));
         throw new Error(
           (d as { error?: string }).error ??
-            "Something went wrong while building the kit. Your inputs are still here — try again and it should work."
+            "Something went wrong while building the kit. Your inputs are still here. Try again and it should work."
         );
       }
 
@@ -563,7 +563,7 @@ export default function OnboardingKitBuilderTool({
       setErrorMsg(
         err instanceof Error
           ? err.message
-          : "Something went wrong while building the kit. Your inputs are still here — try again and it should work."
+          : "Something went wrong while building the kit. Your inputs are still here. Try again and it should work."
       );
       setScreen("error");
     }
@@ -908,7 +908,7 @@ export default function OnboardingKitBuilderTool({
             style={{ ...textareaStyle, minHeight: "120px" }}
             value={whyHired}
             onChange={(e) => setWhyHired(e.target.value)}
-            placeholder={`e.g. We're scaling our outbound motion and ${hireName || "Jordan"} was hired to build the top-of-funnel function from scratch. This role didn't exist before — they're creating the playbook.`}
+            placeholder={`e.g. We're scaling our outbound motion and ${hireName || "Jordan"} was hired to build the top-of-funnel function from scratch. This role didn't exist before. They're creating the playbook.`}
           />
           <QualitySignal value={whyHired} />
         </div>
@@ -971,7 +971,7 @@ export default function OnboardingKitBuilderTool({
             What does success look like for {hireName || "them"}?
           </h2>
           <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", margin: 0, lineHeight: 1.6 }}>
-            And how does your team actually work — not the org chart version, the real one.
+            And how does your team actually work? Not the org chart version. The real one.
           </p>
         </div>
 
@@ -982,7 +982,7 @@ export default function OnboardingKitBuilderTool({
             style={{ ...textareaStyle, minHeight: "100px" }}
             value={howTeamWorks}
             onChange={(e) => setHowTeamWorks(e.target.value)}
-            placeholder="e.g. Small team, moves fast. Slack is primary — email is rare. Decisions go through the manager but everyone's input is expected. Weekly standup Mondays at 9."
+            placeholder="e.g. Small team, moves fast. Slack is primary. Email is rare. Decisions go through the manager but everyone's input is expected. Weekly standup Mondays at 9."
           />
         </div>
 
@@ -995,7 +995,7 @@ export default function OnboardingKitBuilderTool({
             onChange={(e) => setThirtyToNinety(e.target.value)}
             placeholder="e.g. 30 days: understands all key accounts and has first prospecting list built. 60 days: first outbound sequence live. 90 days: pipeline contribution visible in HubSpot."
           />
-          <p style={helperStyle}>Write in plain language. You don't need three separate fields — just describe all three milestones in one response.</p>
+          <p style={helperStyle}>Write in plain language. You don't need three separate fields. Just describe all three milestones in one response.</p>
           <QualitySignal value={thirtyToNinety} />
         </div>
 
@@ -1088,7 +1088,7 @@ export default function OnboardingKitBuilderTool({
               color: "var(--text-secondary)",
             }}
           >
-            Payment wasn't completed. Your progress is saved — try again below.
+            Payment wasn't completed. Your progress is saved. Try again below.
           </div>
         )}
 
@@ -1191,7 +1191,7 @@ export default function OnboardingKitBuilderTool({
               marginBottom: "12px",
             }}
           >
-            {checkoutLoading ? "Preparing checkout..." : "Get Access — $99/year →"}
+            {checkoutLoading ? "Preparing checkout..." : "Get Access · $99/year →"}
           </button>
 
           {checkoutError && (
@@ -1543,7 +1543,7 @@ export default function OnboardingKitBuilderTool({
     <div className="okb-tool">
       <div style={{ padding: "8px 0" }}>
         <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", marginBottom: "20px", lineHeight: 1.6 }}>
-          {errorMsg || "Something went wrong while building the kit. Your inputs are still here — try again and it should work."}
+          {errorMsg || "Something went wrong while building the kit. Your inputs are still here. Try again and it should work."}
         </p>
         <button
           type="button"

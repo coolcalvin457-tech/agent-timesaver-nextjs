@@ -306,7 +306,7 @@ export default function BudgetSpreadsheetTool() {
         </button>
 
         <p className="bs-footnote">
-          Downloads as .xlsx — opens in Excel, Google Sheets, or Numbers.
+          Downloads as .xlsx. Opens in Excel, Google Sheets, or Numbers.
         </p>
       </div>
     );

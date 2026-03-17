@@ -532,7 +532,7 @@ export default function PromptBuilderTool() {
             12 prompts built for {jobTitle}.
           </h2>
           <p className="screen-subheadline" style={{ marginBottom: "28px" }}>
-            Enter your email to access your results. We&apos;ll send a copy to your inbox so you always have it.
+            Enter your email to view your results. We&apos;ll send a copy to your inbox.
           </p>
 
           <div className="save-card">
@@ -621,14 +621,14 @@ export default function PromptBuilderTool() {
             <h3 className="pb-system-headline">Build your AI System.</h3>
             <p className="pb-system-subline">
               Prompts are step one. A system is what makes AI work for you every
-              single day — not just today.
+              single day. Not just today.
             </p>
 
             {/* Step 01 — Set up your folder */}
             <div className="pb-system-step">
               <p className="pb-system-step-label">01 &nbsp;·&nbsp; Set up your AI folder</p>
               <p className="pb-system-step-body">
-                Create a folder called <strong>My AI System</strong> — on your
+                Create a folder called <strong>My AI System</strong> on your
                 computer, in Notion, Google Docs, or wherever you already work.
                 This is where everything lives. Once it exists, you stop
                 starting from scratch.
@@ -641,7 +641,7 @@ export default function PromptBuilderTool() {
               </div>
               <p className="pb-system-tip">
                 <strong>Using Claude Cowork?</strong> Your workspace folder
-                already is this system — and Claude reads it automatically at
+                already is this system. Claude reads it automatically at
                 the start of every session.
               </p>
             </div>
@@ -659,7 +659,7 @@ export default function PromptBuilderTool() {
                   { name: "Apple Notes", cost: "Free" },
                   { name: "Notion", cost: "Free" },
                   { name: "Microsoft Word", cost: "Free with Microsoft 365" },
-                  { name: "Obsidian", cost: "$4/month — syncs across devices" },
+                  { name: "Obsidian", cost: "$4/month. Syncs across devices." },
                 ].map((tool) => (
                   <li key={tool.name} className="pb-tool-item">
                     <span className="pb-tool-name">{tool.name}</span>
@@ -675,7 +675,7 @@ export default function PromptBuilderTool() {
               <p className="pb-system-step-body">
                 This is a short paragraph AI reads before every conversation so
                 it already knows who you are and how to help. Paste it into
-                your AI tool&apos;s settings once — and every prompt you use
+                your AI tool&apos;s settings once. Every prompt you use
                 gets better automatically.
               </p>
               <div className="pb-prompt-text-wrapper" style={{ marginBottom: "12px" }}>

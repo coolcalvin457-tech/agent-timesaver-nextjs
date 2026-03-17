@@ -994,7 +994,7 @@ export default function PIPBuilderTool({
             borderRadius: "8px", padding: "12px 16px", marginBottom: "24px",
             fontSize: "0.875rem", color: "var(--text-secondary)",
           }}>
-            Payment wasn't completed. Your progress is saved — try again below.
+            Payment wasn't completed. Your progress is saved. Try again below.
           </div>
         )}
 
@@ -1074,7 +1074,7 @@ export default function PIPBuilderTool({
               transition: "background 0.15s ease", marginBottom: "12px",
             }}
           >
-            {checkoutLoading ? "Preparing checkout..." : "Get Access — $99/year →"}
+            {checkoutLoading ? "Preparing checkout..." : "Get Access · $99/year →"}
           </button>
 
           {checkoutError && (

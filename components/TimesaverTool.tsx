@@ -139,7 +139,7 @@ export default function TimesaverTool() {
           ...s,
           workflows: data.workflows,
           roi: data.roi,
-          screen: "results",
+          screen: "gate",
         }));
       } catch {
         setError("Something went wrong generating your results. Please try again.");
@@ -293,11 +293,7 @@ export default function TimesaverTool() {
       // Silently continue — gate submission shouldn't block the user
     }
 
-    go("confirm");
-  };
-
-  const handleSkipGate = () => {
-    go("confirm");
+    go("results");
   };
 
   const totalQuestions = state.questions.length;
@@ -607,8 +603,7 @@ export default function TimesaverTool() {
             You could save {state.roi.totalHoursPerWeek} hours every week.
           </div>
           <p className="results-subheadline">
-            Time estimates are calculated using your answers and publicly
-            available industry data.
+            Based on your answers and industry data.
           </p>
 
           {/* Workflow Cards */}
@@ -619,7 +614,7 @@ export default function TimesaverTool() {
                 <div className="workflow-title">{wf.title}</div>
                 <div className="workflow-desc">{wf.description}</div>
                 <div className="workflow-time">
-                  ⏱ Saves ~{wf.timeSavedPerWeek}h/week &mdash; {wf.tool}
+                  ⏱ Saves ~{wf.timeSavedPerWeek}h/week · {wf.tool}
                 </div>
               </div>
             ))}
@@ -636,52 +631,13 @@ export default function TimesaverTool() {
             <div className="roi-sub">Based on publicly available industry data</div>
           </div>
 
-          {/* Email Capture — primary */}
-          {!state.emailSaved && (
-            <div className="save-card">
-              <div className="save-card-headline">Save Results.</div>
-              <div className="save-card-subline">
-                We&apos;ll send them straight to your inbox.
-              </div>
-              <form onSubmit={handleEmailSave}>
-                <div className="email-row">
-                  <input
-                    className="input"
-                    type="email"
-                    placeholder="Your email address..."
-                    value={emailInput}
-                    onChange={(e) => setEmailInput(e.target.value)}
-                    required
-                    disabled={emailSending}
-                  />
-                  <button
-                    className="btn btn-primary"
-                    type="submit"
-                    disabled={emailSending}
-                  >
-                    {emailSending ? "Sending..." : "Email Me My Results →"}
-                  </button>
-                </div>
-                {emailError && (
-                  <div style={{
-                    marginTop: "8px",
-                    fontSize: "0.875rem",
-                    color: "#c0392b",
-                  }}>
-                    {emailError}
-                  </div>
-                )}
-              </form>
-            </div>
-          )}
-
           {/* Social Share */}
           <div className="share-row">
             <div className="share-label">Share your results</div>
             <div className="share-buttons">
               <a
                 className="share-btn share-btn-x"
-                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`I could save ${state.roi.totalHoursPerWeek} hours every week with AI — find out how much time you're leaving on the table 👀`)}&url=${encodeURIComponent("https://promptaiagents.com")}`}
+                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`I could save ${state.roi.totalHoursPerWeek} hours every week with AI. Find out how much time you're leaving on the table 👀`)}&url=${encodeURIComponent("https://promptaiagents.com")}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -704,17 +660,11 @@ export default function TimesaverTool() {
             </div>
           </div>
 
-          {/* If email skipped — show gate card */}
-          {!state.emailSaved && (
-            <button
-              className="btn btn-ghost btn-full"
-              style={{ marginTop: "8px", fontSize: "0.875rem" }}
-              onClick={() => go("gate")}
-              type="button"
-            >
-              No thanks, I&apos;ll keep exploring.
-            </button>
-          )}
+          <div style={{ marginTop: "24px" }}>
+            <a href="/" className="btn btn-primary btn-full">
+              Return to Homepage →
+            </a>
+          </div>
         </div>
       )}
 
@@ -724,22 +674,10 @@ export default function TimesaverTool() {
           <div className="tool-tag">AGENT: Timesaver</div>
 
           <div className="gate-card">
-            <div className="gate-headline">Your AI Library is waiting.</div>
-            <div className="gate-subline">Free access to:</div>
-
-            <ul className="gate-perks">
-              {[
-                "Workflows for specific AI tools",
-                "Results for any role or industry",
-                "Written guides and tutorials, updated weekly",
-                "A community of eager AI learners just like you",
-              ].map((perk, i) => (
-                <li key={i} className="gate-perk">
-                  <span className="perk-check">✓</span>
-                  {perk}
-                </li>
-              ))}
-            </ul>
+            <div className="gate-headline">Your results are ready.</div>
+            <div className="gate-subline">
+              Enter your email to view your workflows. We&apos;ll send a copy to your inbox.
+            </div>
 
             <form onSubmit={handleGateEmail}>
               <div className="email-row" style={{ marginBottom: "8px" }}>
@@ -752,20 +690,11 @@ export default function TimesaverTool() {
                   required
                 />
                 <button className="btn btn-primary" type="submit">
-                  Join Now →
+                  See My Results →
                 </button>
               </div>
             </form>
           </div>
-
-          <button
-            className="btn btn-ghost btn-full"
-            style={{ marginTop: "16px", fontSize: "0.875rem" }}
-            onClick={handleSkipGate}
-            type="button"
-          >
-            No thanks
-          </button>
         </div>
       )}
 
@@ -775,9 +704,9 @@ export default function TimesaverTool() {
           <div className="tool-tag" style={{ textAlign: "center" }}>AGENT: Timesaver</div>
 
           <div className="confirm-icon">✅</div>
-          <div className="confirm-headline">You&apos;re in.</div>
+          <div className="confirm-headline">You&apos;re all set.</div>
           <p className="confirm-subline">
-            Check your inbox. Results are on the way.
+            Check your inbox. Your workflows are saved there.
           </p>
 
           <div className="next-steps">

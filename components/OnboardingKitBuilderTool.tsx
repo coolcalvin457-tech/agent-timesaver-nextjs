@@ -335,6 +335,12 @@ export default function OnboardingKitBuilderTool({
   // ── Paywall / checkout state ──────────────────────────────
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState("");
+
+  // ── Returning purchaser state ─────────────────────────────
+  const [showReturningCheck, setShowReturningCheck] = useState(false);
+  const [returningEmail, setReturningEmail] = useState("");
+  const [returningCheckLoading, setReturningCheckLoading] = useState(false);
+  const [returningCheckError, setReturningCheckError] = useState("");
   const [paymentCancelled, setPaymentCancelled] = useState(false);
 
   // ── Error / validation state ──────────────────────────────
@@ -591,9 +597,16 @@ export default function OnboardingKitBuilderTool({
     });
 
     try {
-      const res = await fetch("/api/onboarding-kit-checkout", { method: "POST" });
+      const res = await fetch("/api/hr-package-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          successPath: "onboarding-kit-builder",
+          cancelPath: "onboarding-kit-builder",
+        }),
+      });
       if (!res.ok) throw new Error("Failed to create checkout session.");
-      const { url } = await res.json();
+      const { url } = await res.json() as { url?: string };
       if (!url) throw new Error("No checkout URL returned.");
       window.location.href = url;
     } catch (err) {
@@ -601,6 +614,41 @@ export default function OnboardingKitBuilderTool({
         err instanceof Error ? err.message : "Something went wrong. Please try again."
       );
       setCheckoutLoading(false);
+    }
+  }
+
+  // ── Returning purchaser check ─────────────────────────────
+
+  async function handleReturningEmailCheck() {
+    if (!returningEmail.trim()) return;
+    setReturningCheckLoading(true);
+    setReturningCheckError("");
+
+    try {
+      const res = await fetch("/api/verify-subscription", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: returningEmail.trim() }),
+      });
+      const { verified } = await res.json() as { verified: boolean };
+
+      if (verified) {
+        // Active subscription confirmed — skip Stripe, build directly
+        const saved = loadFromStorage();
+        await buildFromData(
+          saved ?? {
+            hireName, hireTitle, department, startDate, managerName, roleType,
+            whyHired, weekOnePriorities, keyTools, howTeamWorks, thirtyToNinety,
+            contacts, teamNotes, feedbackCadence,
+          }
+        );
+      } else {
+        setReturningCheckError("No active subscription found for that email. Purchase below.");
+      }
+    } catch {
+      setReturningCheckError("Something went wrong. Please try again.");
+    } finally {
+      setReturningCheckLoading(false);
     }
   }
 
@@ -1109,19 +1157,19 @@ export default function OnboardingKitBuilderTool({
                 border: "1px solid rgba(30,122,184,0.35)",
               }}
             >
-              Founding Access
+              Annual Subscription
             </span>
           </div>
 
           {/* Price */}
           <div style={{ display: "flex", alignItems: "baseline", gap: "8px", marginBottom: "12px" }}>
-            <span style={{ fontSize: "2rem", fontWeight: 800, color: "#FFFFFF", lineHeight: 1 }}>$49</span>
-            <span style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.5)" }}>one-time</span>
+            <span style={{ fontSize: "2rem", fontWeight: 800, color: "#FFFFFF", lineHeight: 1 }}>$99</span>
+            <span style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.5)" }}>/year</span>
           </div>
 
           {/* Description */}
           <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.6, margin: "0 0 20px" }}>
-            Onboarding Kit is live today. PIP Builder, Performance Review Builder, and more ship next — all included at no extra cost.
+            Includes Onboarding Kit, PIP Builder, and every HR tool added to the package. One purchase, all tools.
           </p>
 
           {/* CTA */}
@@ -1143,7 +1191,7 @@ export default function OnboardingKitBuilderTool({
               marginBottom: "12px",
             }}
           >
-            {checkoutLoading ? "Preparing checkout..." : "Get Access — $49 →"}
+            {checkoutLoading ? "Preparing checkout..." : "Get Access — $99/year →"}
           </button>
 
           {checkoutError && (
@@ -1153,8 +1201,64 @@ export default function OnboardingKitBuilderTool({
           )}
 
           <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.4)", margin: 0, textAlign: "center" }}>
-            One-time purchase. No subscription. Founding rate goes up at full launch.
+            Annual subscription. Cancel anytime.
           </p>
+        </div>
+
+        {/* Returning purchaser */}
+        <div style={{ textAlign: "center", marginBottom: "16px" }}>
+          {!showReturningCheck ? (
+            <button
+              type="button"
+              onClick={() => setShowReturningCheck(true)}
+              style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "0.8125rem", cursor: "pointer", padding: 0, textDecoration: "underline" }}
+            >
+              Already have access? Enter your email.
+            </button>
+          ) : (
+            <div style={{ background: "var(--bg-alt, #F8F8F6)", border: "1px solid var(--border, #E4E4E2)", borderRadius: "8px", padding: "14px 16px", textAlign: "left" }}>
+              <p style={{ margin: "0 0 10px", fontSize: "0.875rem", fontWeight: 600, color: "var(--text-primary)" }}>
+                Enter the email you purchased with:
+              </p>
+              <div style={{ display: "flex", gap: "8px" }}>
+                <input
+                  type="email"
+                  value={returningEmail}
+                  onChange={(e) => setReturningEmail(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      handleReturningEmailCheck();
+                    }
+                  }}
+                  placeholder="your@email.com"
+                  style={{
+                    flex: 1, padding: "10px 12px", fontSize: "0.9375rem",
+                    border: "1px solid var(--border, #E4E4E2)", borderRadius: "6px",
+                    background: "#FFFFFF", color: "var(--text-primary)", outline: "none", boxSizing: "border-box" as const,
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={handleReturningEmailCheck}
+                  disabled={returningCheckLoading || !returningEmail.trim()}
+                  style={{
+                    padding: "10px 16px", fontSize: "0.875rem", fontWeight: 600,
+                    background: "var(--dark, #161618)", color: "#FFFFFF",
+                    border: "none", borderRadius: "6px",
+                    cursor: returningCheckLoading || !returningEmail.trim() ? "not-allowed" : "pointer",
+                    opacity: returningCheckLoading || !returningEmail.trim() ? 0.5 : 1,
+                    flexShrink: 0, whiteSpace: "nowrap" as const,
+                  }}
+                >
+                  {returningCheckLoading ? "Checking..." : "Check access"}
+                </button>
+              </div>
+              {returningCheckError && (
+                <p style={{ fontSize: "0.8125rem", color: "#DC2626", marginTop: "8px" }}>{returningCheckError}</p>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Edit inputs link */}
@@ -1413,6 +1517,22 @@ export default function OnboardingKitBuilderTool({
           >
             Build another kit
           </button>
+        </div>
+
+        {/* Bundle callout */}
+        <div style={{ marginTop: "32px", padding: "20px 22px", background: "var(--bg-alt, #F8F8F6)", border: "1px solid var(--border, #E4E4E2)", borderRadius: "10px" }}>
+          <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--cta)", margin: "0 0 10px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+            Part of the HR Tools Package
+          </p>
+          <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", margin: "0 0 12px", lineHeight: 1.6 }}>
+            Your subscription also includes AGENT: PIP Builder. Structured, defensible Performance Improvement Plans as a ready-to-use .docx file.
+          </p>
+          <a
+            href="/pip-builder"
+            style={{ fontSize: "0.875rem", fontWeight: 600, color: "var(--cta)", textDecoration: "none" }}
+          >
+            Try PIP Builder →
+          </a>
         </div>
       </div>
     );

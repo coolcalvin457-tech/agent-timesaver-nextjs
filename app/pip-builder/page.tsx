@@ -1,24 +1,23 @@
-import OnboardingKitBuilderTool from "@/components/OnboardingKitBuilderTool";
-import KitPreviewCards from "@/components/KitPreviewCards";
+import PIPBuilderTool from "@/components/PIPBuilderTool";
 import NavClient from "@/components/NavClient";
 import Footer from "@/components/Footer";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AGENT: Onboarding Kit — Prompt AI Agents",
+  title: "AGENT: PIP Builder — Prompt AI Agents",
   description:
-    "A position-specific onboarding kit for every new hire. Welcome letter, first-week schedule, key contacts, 30/60/90 plan, and priority checklist — as a ready-to-use .docx file.",
+    "A PIP that holds up. Describe the performance situation, get a structured, defensible Performance Improvement Plan as a ready-to-use .docx file.",
   openGraph: {
-    title: "AGENT: Onboarding Kit — Prompt AI Agents",
+    title: "AGENT: PIP Builder — Prompt AI Agents",
     description:
-      "A position-specific onboarding kit for every new hire. Delivered as a ready-to-use .docx file.",
-    url: "https://promptaiagents.com/onboarding-kit-builder",
+      "A PIP that holds up. Structured, defensible, and delivered as a ready-to-use .docx file.",
+    url: "https://promptaiagents.com/pip-builder",
     siteName: "Prompt AI Agents",
     type: "website",
   },
 };
 
-export default function OnboardingKitBuilderPage({
+export default function PIPBuilderPage({
   searchParams,
 }: {
   searchParams: { payment?: string; session_id?: string };
@@ -33,8 +32,6 @@ export default function OnboardingKitBuilderPage({
           style={{ paddingTop: "140px", paddingBottom: "40px" }}
         >
           <div className="container" style={{ textAlign: "center" }}>
-            {/* HR Tools — plain label, no badge */}
-            {/* HR Tools — light blue label */}
             <p
               style={{
                 fontSize: "0.6875rem",
@@ -56,10 +53,34 @@ export default function OnboardingKitBuilderPage({
                 lineHeight: 1.25,
               }}
             >
-              Position-specific onboarding kit.<br />Use for every new hire.
+              A PIP that holds up.<br />Built for the conversation you have to have.
             </h1>
 
-            {/* Price — plain subheader text, no button */}
+            <p
+              style={{
+                fontSize: "0.9375rem",
+                color: "var(--text-secondary)",
+                marginBottom: "12px",
+                lineHeight: 1.6,
+                maxWidth: "560px",
+                margin: "0 auto 16px",
+              }}
+            >
+              Specific. Measurable. Documented. A .docx file ready to review with your legal team before issuing.
+            </p>
+
+            {/* Trust line */}
+            <p
+              style={{
+                fontSize: "0.8125rem",
+                color: "var(--text-muted)",
+                marginBottom: "32px",
+              }}
+            >
+              We don't store your inputs.
+            </p>
+
+            {/* Price */}
             <p
               style={{
                 fontSize: "0.9375rem",
@@ -74,43 +95,35 @@ export default function OnboardingKitBuilderPage({
               <span style={{ color: "var(--text-muted)" }}>Annual subscription. Includes all HR tools.</span>
             </p>
 
-            {/* Single CTA — matches nav button size */}
             <a
-              href="#build-kit"
+              href="#build-pip"
               className="btn btn-primary"
               style={{ padding: "10px 24px", fontSize: "0.9375rem", borderRadius: "6px" }}
             >
-              Build My Kit
+              Build My PIP
             </a>
-          </div>
-        </section>
 
-        {/* ── What's in the kit ─────────────────────────────────── */}
-        <section className="section" style={{ background: "#ffffff", paddingTop: "80px", paddingBottom: "64px" }}>
-          <div className="container">
-            <div
+            {/* Opens in */}
+            <p
               style={{
-                maxWidth: "960px",
-                margin: "0 auto",
+                fontSize: "0.8125rem",
+                color: "var(--text-muted)",
+                marginTop: "16px",
               }}
             >
-            <KitPreviewCards />
-            </div>
+              Opens in Microsoft Word or Google Docs.
+            </p>
           </div>
         </section>
 
         {/* ── Tool section ─────────────────────────────────────── */}
-        <section id="build-kit" className="section" style={{ paddingTop: "64px" }}>
+        <section id="build-pip" className="section" style={{ paddingTop: "64px" }}>
           <div className="container">
             <div style={{ maxWidth: "760px", margin: "0 auto" }}>
-              {/* Tool label */}
-              <p
-                className="eyebrow"
-                style={{ marginBottom: "20px" }}
-              >
-                AGENT: Onboarding Kit
+              <p className="eyebrow" style={{ marginBottom: "20px" }}>
+                AGENT: PIP Builder
               </p>
-              <OnboardingKitBuilderTool
+              <PIPBuilderTool
                 initialPaymentStatus={searchParams.payment}
                 initialSessionId={searchParams.session_id}
               />
@@ -151,10 +164,10 @@ export default function OnboardingKitBuilderPage({
                   lineHeight: 1.7,
                 }}
               >
-                This tool is part of the HR Tools Package. One purchase includes both Onboarding Kit and AGENT: PIP Builder — structured, defensible Performance Improvement Plans as a ready-to-use .docx file.
+                This tool is part of the HR Tools Package. One purchase includes both PIP Builder and AGENT: Onboarding Kit — position-specific onboarding kits for every new hire.
               </p>
               <a
-                href="/pip-builder"
+                href="/onboarding-kit-builder"
                 style={{
                   fontSize: "0.875rem",
                   fontWeight: 600,
@@ -162,12 +175,11 @@ export default function OnboardingKitBuilderPage({
                   textDecoration: "none",
                 }}
               >
-                See AGENT: PIP Builder →
+                See AGENT: Onboarding Kit →
               </a>
             </div>
           </div>
         </section>
-
       </main>
       <Footer />
     </>

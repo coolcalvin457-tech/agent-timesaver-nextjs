@@ -59,7 +59,7 @@ const tools = [
     href: "/onboarding-kit-builder",
     badgeClass: "tool-badge-paid",
     label: "Human Resources",
-    badgeDisplay: "$49",
+    badgeDisplay: "$99/yr",
     name: "AGENT: Onboarding Kit",
     tagline: "Use for every new hire.",
     description:
@@ -69,15 +69,15 @@ const tools = [
   },
   {
     slug: "pip-builder",
-    href: "#",
+    href: "/pip-builder",
     badgeClass: "tool-badge-paid",
     label: "Human Resources",
-    badgeDisplay: "Coming Soon",
+    badgeDisplay: "$99/yr",
     name: "AGENT: PIP Builder",
-    tagline: "Document performance issues the right way.",
-    description: "",
-    cta: "",
-    isComingSoon: true,
+    tagline: "A PIP that holds up.",
+    description:
+      "Answer questions about the performance gap, improvement targets, and support offered. Get a structured, defensible PIP document as a ready-to-use .docx file.",
+    cta: "Build My PIP",
   },
   {
     slug: "performance-review-builder",

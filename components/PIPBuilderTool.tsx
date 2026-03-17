@@ -1,0 +1,1384 @@
+"use client";
+
+import { useState, useEffect } from "react";
+
+// ─── Types ─────────────────────────────────────────────────────────────────────
+
+type Screen =
+  | "s1"
+  | "s2"
+  | "s3"
+  | "paywall"
+  | "verifying"
+  | "loading"
+  | "email-gate"
+  | "sent"
+  | "error";
+
+type IssueType = "performance" | "behavioral";
+type Timeline = "30" | "60" | "90";
+type CheckinSchedule = "weekly" | "biweekly" | "custom";
+
+interface SavedFormData {
+  employeeRole: string;
+  department: string;
+  tenure: string;
+  managerName: string;
+  issueType: IssueType | "";
+  priorCoaching: boolean | null;
+  deficiencies: string;
+  performanceStandard: string;
+  improvementTargets: string;
+  timeline: Timeline | "";
+  checkinSchedule: CheckinSchedule | "";
+  checkinCustom: string;
+  supportOffered: string;
+  consequences: string;
+  includeEAP: boolean;
+}
+
+// ─── Constants ─────────────────────────────────────────────────────────────────
+
+const PIP_STORAGE_KEY = "pip_form_data";
+
+const LOADING_STEPS = [
+  "Opening statement",
+  "Performance deficiencies",
+  "Improvement targets",
+  "Support and resources",
+  "Check-in schedule",
+  "Consequences",
+  "Signature block",
+];
+
+// ─── Storage helpers ────────────────────────────────────────────────────────────
+
+function saveToStorage(data: SavedFormData): void {
+  try {
+    sessionStorage.setItem(PIP_STORAGE_KEY, JSON.stringify(data));
+  } catch {
+    // sessionStorage unavailable — continue without saving
+  }
+}
+
+function loadFromStorage(): SavedFormData | null {
+  try {
+    const raw = sessionStorage.getItem(PIP_STORAGE_KEY);
+    return raw ? (JSON.parse(raw) as SavedFormData) : null;
+  } catch {
+    return null;
+  }
+}
+
+function clearStorage(): void {
+  try {
+    sessionStorage.removeItem(PIP_STORAGE_KEY);
+  } catch {
+    // ignore
+  }
+}
+
+// ─── Shared styles ──────────────────────────────────────────────────────────────
+
+const inputStyle: React.CSSProperties = {
+  width: "100%",
+  padding: "10px 12px",
+  fontSize: "0.9375rem",
+  border: "1px solid var(--border, #E4E4E2)",
+  borderRadius: "6px",
+  background: "#FFFFFF",
+  color: "var(--text-primary)",
+  outline: "none",
+  boxSizing: "border-box",
+};
+
+const textareaStyle: React.CSSProperties = {
+  ...inputStyle,
+  resize: "vertical" as const,
+  minHeight: "100px",
+  lineHeight: 1.6,
+};
+
+const labelStyle: React.CSSProperties = {
+  display: "block",
+  fontSize: "0.875rem",
+  fontWeight: 600,
+  color: "var(--text-primary)",
+  marginBottom: "6px",
+};
+
+const helperStyle: React.CSSProperties = {
+  fontSize: "0.8125rem",
+  color: "var(--text-muted)",
+  marginTop: "5px",
+  lineHeight: 1.5,
+};
+
+const errorStyle: React.CSSProperties = {
+  fontSize: "0.8125rem",
+  color: "#DC2626",
+  marginTop: "6px",
+};
+
+const fieldGroupStyle: React.CSSProperties = {
+  marginBottom: "20px",
+};
+
+const radioGroupStyle: React.CSSProperties = {
+  display: "flex",
+  flexDirection: "column" as const,
+  gap: "8px",
+  marginTop: "4px",
+};
+
+const radioOptionStyle = (selected: boolean): React.CSSProperties => ({
+  display: "flex",
+  alignItems: "flex-start",
+  gap: "10px",
+  padding: "10px 14px",
+  border: `1px solid ${selected ? "var(--cta, #1E7AB8)" : "var(--border, #E4E4E2)"}`,
+  borderRadius: "8px",
+  cursor: "pointer",
+  background: selected ? "rgba(30,122,184,0.04)" : "#FFFFFF",
+  transition: "border-color 0.15s ease, background 0.15s ease",
+});
+
+// ─── Component ─────────────────────────────────────────────────────────────────
+
+interface PIPBuilderToolProps {
+  initialPaymentStatus?: string;
+  initialSessionId?: string;
+}
+
+export default function PIPBuilderTool({
+  initialPaymentStatus,
+  initialSessionId,
+}: PIPBuilderToolProps) {
+  // ── Screen state ──────────────────────────────────────────
+  const [screen, setScreen] = useState<Screen>("s1");
+
+  // ── Screen 1: The Situation ───────────────────────────────
+  const [employeeRole, setEmployeeRole] = useState("");
+  const [department, setDepartment] = useState("");
+  const [tenure, setTenure] = useState("");
+  const [managerName, setManagerName] = useState("");
+  const [issueType, setIssueType] = useState<IssueType | "">("");
+  const [priorCoaching, setPriorCoaching] = useState<boolean | null>(null);
+
+  // ── Screen 2: The Performance Gap ────────────────────────
+  const [deficiencies, setDeficiencies] = useState("");
+  const [performanceStandard, setPerformanceStandard] = useState("");
+  const [improvementTargets, setImprovementTargets] = useState("");
+  const [timeline, setTimeline] = useState<Timeline | "">("");
+
+  // ── Screen 3: Support and Monitoring ─────────────────────
+  const [checkinSchedule, setCheckinSchedule] = useState<CheckinSchedule | "">("");
+  const [checkinCustom, setCheckinCustom] = useState("");
+  const [supportOffered, setSupportOffered] = useState("");
+  const [consequences, setConsequences] = useState("");
+  const [includeEAP, setIncludeEAP] = useState(false);
+
+  // ── Error state per screen ────────────────────────────────
+  const [s1Error, setS1Error] = useState("");
+  const [s2Error, setS2Error] = useState("");
+  const [s3Error, setS3Error] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  // ── Paywall / checkout state ──────────────────────────────
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [checkoutError, setCheckoutError] = useState("");
+  const [paymentCancelled, setPaymentCancelled] = useState(false);
+
+  // ── Returning purchaser state ─────────────────────────────
+  const [showReturningCheck, setShowReturningCheck] = useState(false);
+  const [returningEmail, setReturningEmail] = useState("");
+  const [returningCheckLoading, setReturningCheckLoading] = useState(false);
+  const [returningCheckError, setReturningCheckError] = useState("");
+
+  // ── Loading animation state ───────────────────────────────
+  const [loadingStep, setLoadingStep] = useState(0);
+
+  // ── Email gate state ──────────────────────────────────────
+  const [email, setEmail] = useState("");
+  const [emailSubmitting, setEmailSubmitting] = useState(false);
+  const [emailError, setEmailError] = useState("");
+
+  // ── Result state ──────────────────────────────────────────
+  const [fileBlob, setFileBlob] = useState<Blob | null>(null);
+  const [filename, setFilename] = useState("pip-document.docx");
+  const [resultRole, setResultRole] = useState("");
+  const [resultTimeline, setResultTimeline] = useState("");
+
+  // ── Loading animation ─────────────────────────────────────
+  useEffect(() => {
+    if (screen !== "loading") return;
+    setLoadingStep(0);
+    const timers = LOADING_STEPS.map((_, i) =>
+      setTimeout(() => setLoadingStep(i), i * 4500)
+    );
+    return () => timers.forEach(clearTimeout);
+  }, [screen]);
+
+  // ── Payment detection on mount ────────────────────────────
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (!initialPaymentStatus) return;
+
+    const saved = loadFromStorage();
+
+    if (initialPaymentStatus === "cancelled") {
+      if (saved) restoreFromSaved(saved);
+      clearStorage();
+      setPaymentCancelled(true);
+      setScreen("paywall");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    if (initialPaymentStatus === "success" && initialSessionId) {
+      if (!saved) {
+        setErrorMsg(
+          "Your payment was successful, but we couldn't recover your form data. Please contact us at results@promptaiagents.com and we'll sort it out."
+        );
+        setScreen("error");
+        return;
+      }
+
+      restoreFromSaved(saved);
+      setScreen("verifying");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      fetch(`/api/verify-payment?session_id=${initialSessionId}`)
+        .then((r) => r.json())
+        .then(({ verified }: { verified: boolean }) => {
+          if (verified) {
+            clearStorage();
+            buildFromData(saved);
+          } else {
+            setCheckoutError(
+              "Payment could not be verified. Please try again or contact results@promptaiagents.com."
+            );
+            setScreen("paywall");
+          }
+        })
+        .catch(() => {
+          setCheckoutError(
+            "Something went wrong verifying your payment. Please contact results@promptaiagents.com."
+          );
+          setScreen("paywall");
+        });
+    }
+  }, []); // intentionally run once on mount only
+
+  // ── Storage helpers ───────────────────────────────────────
+
+  function getCurrentFormData(): SavedFormData {
+    return {
+      employeeRole, department, tenure, managerName,
+      issueType, priorCoaching,
+      deficiencies, performanceStandard, improvementTargets, timeline,
+      checkinSchedule, checkinCustom, supportOffered, consequences, includeEAP,
+    };
+  }
+
+  function restoreFromSaved(saved: SavedFormData): void {
+    setEmployeeRole(saved.employeeRole ?? "");
+    setDepartment(saved.department ?? "");
+    setTenure(saved.tenure ?? "");
+    setManagerName(saved.managerName ?? "");
+    setIssueType(saved.issueType ?? "");
+    setPriorCoaching(saved.priorCoaching ?? null);
+    setDeficiencies(saved.deficiencies ?? "");
+    setPerformanceStandard(saved.performanceStandard ?? "");
+    setImprovementTargets(saved.improvementTargets ?? "");
+    setTimeline(saved.timeline ?? "");
+    setCheckinSchedule(saved.checkinSchedule ?? "");
+    setCheckinCustom(saved.checkinCustom ?? "");
+    setSupportOffered(saved.supportOffered ?? "");
+    setConsequences(saved.consequences ?? "");
+    setIncludeEAP(saved.includeEAP ?? false);
+  }
+
+  // ── Validation ────────────────────────────────────────────
+
+  function validateS1(): boolean {
+    if (!employeeRole.trim() || !department.trim() || !tenure.trim() || !managerName.trim()) {
+      setS1Error("Please fill in all required fields.");
+      return false;
+    }
+    if (!issueType) {
+      setS1Error("Please select an issue type before continuing.");
+      return false;
+    }
+    if (priorCoaching === null) {
+      setS1Error("Please indicate whether prior coaching has been given.");
+      return false;
+    }
+    setS1Error("");
+    return true;
+  }
+
+  function validateS2(): boolean {
+    if (deficiencies.trim().length < 80) {
+      setS2Error("Add a bit more detail here. Specific language is what makes a PIP defensible.");
+      return false;
+    }
+    if (improvementTargets.trim().length < 50) {
+      setS2Error("Add a bit more detail to the improvement targets.");
+      return false;
+    }
+    if (!timeline) {
+      setS2Error("Please select a plan duration.");
+      return false;
+    }
+    setS2Error("");
+    return true;
+  }
+
+  function validateS3(): boolean {
+    if (!checkinSchedule) {
+      setS3Error("Please select a check-in schedule.");
+      return false;
+    }
+    if (checkinSchedule === "custom" && !checkinCustom.trim()) {
+      setS3Error("Please describe the custom check-in schedule.");
+      return false;
+    }
+    if (consequences.trim().length < 20) {
+      setS3Error("Please describe the consequences if targets are not met.");
+      return false;
+    }
+    setS3Error("");
+    return true;
+  }
+
+  // ── Navigation ────────────────────────────────────────────
+
+  function goToS2() {
+    if (!validateS1()) return;
+    setScreen("s2");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function goToS3() {
+    if (!validateS2()) return;
+    setScreen("s3");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function goBackToS1() {
+    setS1Error("");
+    setScreen("s1");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function goBackToS2() {
+    setS2Error("");
+    setScreen("s2");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function goToPaywall() {
+    if (!validateS3()) return;
+    setPaymentCancelled(false);
+    setCheckoutError("");
+    setScreen("paywall");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  // ── Core build logic ──────────────────────────────────────
+
+  async function buildFromData(data: SavedFormData) {
+    setScreen("loading");
+    setErrorMsg("");
+    setResultRole(data.employeeRole);
+    setResultTimeline(data.timeline || "30");
+
+    try {
+      const payload = {
+        employeeRole: data.employeeRole.trim(),
+        department: data.department.trim(),
+        tenure: data.tenure.trim(),
+        managerName: data.managerName.trim(),
+        issueType: data.issueType || "performance",
+        priorCoaching: data.priorCoaching ?? false,
+        deficiencies: data.deficiencies.trim(),
+        performanceStandard: data.performanceStandard.trim(),
+        improvementTargets: data.improvementTargets.trim(),
+        timeline: data.timeline || "30",
+        checkinSchedule: data.checkinSchedule || "weekly",
+        checkinCustom: data.checkinCustom.trim(),
+        supportOffered: data.supportOffered.trim(),
+        consequences: data.consequences.trim(),
+        includeEAP: data.includeEAP,
+      };
+
+      const res = await fetch("/api/pip-builder", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const d = await res.json().catch(() => ({}));
+        throw new Error(
+          (d as { error?: string }).error ??
+            "Something went wrong building the document. Your inputs are saved. Try again and it should work."
+        );
+      }
+
+      const blob = await res.blob();
+      const rawFilename = res.headers.get("X-PIP-Filename");
+      const rawTimeline = res.headers.get("X-Timeline");
+
+      setFileBlob(blob);
+      setFilename(rawFilename ? decodeURIComponent(rawFilename) : "pip-document.docx");
+      if (rawTimeline) setResultTimeline(rawTimeline);
+      setScreen("email-gate");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (err) {
+      setErrorMsg(
+        err instanceof Error
+          ? err.message
+          : "Something went wrong building the document. Your inputs are saved. Try again and it should work."
+      );
+      setScreen("error");
+    }
+  }
+
+  async function handleBuild() {
+    if (!validateS3()) return;
+    await buildFromData(getCurrentFormData());
+  }
+
+  async function handleRetry() {
+    await buildFromData(getCurrentFormData());
+  }
+
+  // ── Checkout ──────────────────────────────────────────────
+
+  async function handleCheckout() {
+    setCheckoutLoading(true);
+    setCheckoutError("");
+
+    saveToStorage(getCurrentFormData());
+
+    try {
+      const res = await fetch("/api/hr-package-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          successPath: "pip-builder",
+          cancelPath: "pip-builder",
+        }),
+      });
+      if (!res.ok) throw new Error("Failed to create checkout session.");
+      const { url } = await res.json() as { url?: string };
+      if (!url) throw new Error("No checkout URL returned.");
+      window.location.href = url;
+    } catch (err) {
+      setCheckoutError(
+        err instanceof Error ? err.message : "Something went wrong. Please try again."
+      );
+      setCheckoutLoading(false);
+    }
+  }
+
+  // ── Returning purchaser check ─────────────────────────────
+
+  async function handleReturningEmailCheck() {
+    if (!returningEmail.trim()) return;
+    setReturningCheckLoading(true);
+    setReturningCheckError("");
+
+    try {
+      const res = await fetch("/api/verify-subscription", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: returningEmail.trim() }),
+      });
+      const { verified } = await res.json() as { verified: boolean };
+
+      if (verified) {
+        await buildFromData(getCurrentFormData());
+      } else {
+        setReturningCheckError("No active subscription found for that email. Purchase below.");
+      }
+    } catch {
+      setReturningCheckError("Something went wrong. Please try again.");
+    } finally {
+      setReturningCheckLoading(false);
+    }
+  }
+
+  // ── Email submit ──────────────────────────────────────────
+
+  async function handleEmailSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!email.trim() || !fileBlob) return;
+
+    setEmailSubmitting(true);
+    setEmailError("");
+
+    try {
+      // Trigger browser download immediately
+      const blobUrl = URL.createObjectURL(fileBlob);
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(blobUrl);
+
+      // Send email with the file attached
+      const reader = new FileReader();
+      reader.readAsDataURL(fileBlob);
+      reader.onloadend = async () => {
+        const base64 = (reader.result as string).split(",")[1];
+        await fetch("/api/pip-builder-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: email.trim(),
+            filename,
+            employeeRole: resultRole,
+            timeline: resultTimeline,
+            fileData: base64,
+          }),
+        });
+      };
+
+      setScreen("sent");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch {
+      setEmailError("Something went wrong. Try downloading again.");
+      setEmailSubmitting(false);
+    }
+  }
+
+  function handleReset() {
+    setScreen("s1");
+    setEmployeeRole(""); setDepartment(""); setTenure(""); setManagerName("");
+    setIssueType(""); setPriorCoaching(null);
+    setDeficiencies(""); setPerformanceStandard(""); setImprovementTargets(""); setTimeline("");
+    setCheckinSchedule(""); setCheckinCustom(""); setSupportOffered(""); setConsequences(""); setIncludeEAP(false);
+    setEmail(""); setFileBlob(null); setFilename("pip-document.docx");
+    setS1Error(""); setS2Error(""); setS3Error(""); setErrorMsg("");
+    setCheckoutError(""); setPaymentCancelled(false);
+    setShowReturningCheck(false); setReturningEmail(""); setReturningCheckError("");
+    clearStorage();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  // ──────────────────────────────────────────────────────────
+  // ── Render screens ────────────────────────────────────────
+  // ──────────────────────────────────────────────────────────
+
+  // ── Screen 1: The Situation ───────────────────────────────
+  if (screen === "s1") {
+    return (
+      <div className="okb-tool">
+        <div style={{ marginBottom: "28px" }}>
+          <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--cta)", margin: "0 0 8px", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+            01 · The Situation
+          </p>
+          <h2 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--text-primary)", margin: "0 0 6px" }}>
+            Tell us about the situation.
+          </h2>
+          <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", margin: 0, lineHeight: 1.6 }}>
+            We'll build a PIP that's specific, measurable, and defensible. No employee names needed.
+          </p>
+        </div>
+
+        {/* Employee Role */}
+        <div style={fieldGroupStyle}>
+          <label style={labelStyle}>
+            Employee role / title <span style={{ color: "#DC2626" }}>*</span>
+          </label>
+          <input
+            type="text"
+            value={employeeRole}
+            onChange={(e) => setEmployeeRole(e.target.value)}
+            placeholder="e.g. Sales Account Executive"
+            style={inputStyle}
+          />
+        </div>
+
+        {/* Department */}
+        <div style={fieldGroupStyle}>
+          <label style={labelStyle}>
+            Department <span style={{ color: "#DC2626" }}>*</span>
+          </label>
+          <input
+            type="text"
+            value={department}
+            onChange={(e) => setDepartment(e.target.value)}
+            placeholder="e.g. Sales"
+            style={inputStyle}
+          />
+        </div>
+
+        {/* Tenure */}
+        <div style={fieldGroupStyle}>
+          <label style={labelStyle}>
+            Tenure <span style={{ color: "#DC2626" }}>*</span>
+          </label>
+          <input
+            type="text"
+            value={tenure}
+            onChange={(e) => setTenure(e.target.value)}
+            placeholder="e.g. 8 months"
+            style={inputStyle}
+          />
+        </div>
+
+        {/* Manager Name */}
+        <div style={fieldGroupStyle}>
+          <label style={labelStyle}>
+            Manager name <span style={{ color: "#DC2626" }}>*</span>
+          </label>
+          <input
+            type="text"
+            value={managerName}
+            onChange={(e) => setManagerName(e.target.value)}
+            placeholder="e.g. Michael Torres"
+            style={inputStyle}
+          />
+        </div>
+
+        {/* Issue Type */}
+        <div style={fieldGroupStyle}>
+          <label style={labelStyle}>
+            Issue type <span style={{ color: "#DC2626" }}>*</span>
+          </label>
+          <div style={radioGroupStyle}>
+            {(["performance", "behavioral"] as IssueType[]).map((type) => (
+              <div
+                key={type}
+                style={radioOptionStyle(issueType === type)}
+                onClick={() => setIssueType(type)}
+              >
+                <div
+                  style={{
+                    width: "16px", height: "16px", borderRadius: "50%", flexShrink: 0, marginTop: "2px",
+                    border: `2px solid ${issueType === type ? "var(--cta, #1E7AB8)" : "var(--border, #E4E4E2)"}`,
+                    background: issueType === type ? "var(--cta, #1E7AB8)" : "transparent",
+                    transition: "all 0.15s ease",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                  }}
+                >
+                  {issueType === type && (
+                    <div style={{ width: "5px", height: "5px", borderRadius: "50%", background: "#FFFFFF" }} />
+                  )}
+                </div>
+                <div>
+                  <p style={{ margin: 0, fontSize: "0.875rem", fontWeight: 600, color: "var(--text-primary)", textTransform: "capitalize" }}>
+                    {type}
+                  </p>
+                  <p style={{ margin: "2px 0 0", fontSize: "0.8125rem", color: "var(--text-muted)" }}>
+                    {type === "performance"
+                      ? "Missed deadlines, quotas, error rates"
+                      : "Conduct, communication, professionalism"}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p style={helperStyle}>
+            Performance issues are measurable. Behavioral issues are observable. When in doubt, choose based on what you can document.
+          </p>
+        </div>
+
+        {/* Prior Coaching */}
+        <div style={fieldGroupStyle}>
+          <label style={labelStyle}>
+            Prior coaching or feedback given? <span style={{ color: "#DC2626" }}>*</span>
+          </label>
+          <div style={{ display: "flex", gap: "10px" }}>
+            {([true, false] as const).map((val) => (
+              <div
+                key={String(val)}
+                style={{
+                  ...radioOptionStyle(priorCoaching === val),
+                  flex: 1,
+                  justifyContent: "center",
+                }}
+                onClick={() => setPriorCoaching(val)}
+              >
+                <span style={{ fontSize: "0.875rem", fontWeight: 600, color: "var(--text-primary)" }}>
+                  {val ? "Yes" : "No"}
+                </span>
+              </div>
+            ))}
+          </div>
+          <p style={helperStyle}>
+            PIPs are most defensible when prior feedback is documented. We'll frame the document accordingly.
+          </p>
+        </div>
+
+        {s1Error && <p style={errorStyle}>{s1Error}</p>}
+
+        <button
+          type="button"
+          className="btn btn-primary btn-lg btn-full"
+          onClick={goToS2}
+          style={{ marginTop: "8px" }}
+        >
+          Continue →
+        </button>
+      </div>
+    );
+  }
+
+  // ── Screen 2: The Performance Gap ────────────────────────
+  if (screen === "s2") {
+    return (
+      <div className="okb-tool">
+        <button
+          type="button"
+          onClick={goBackToS1}
+          style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "0.875rem", cursor: "pointer", padding: "0 0 20px", display: "block" }}
+        >
+          ← Back
+        </button>
+
+        <div style={{ marginBottom: "28px" }}>
+          <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--cta)", margin: "0 0 8px", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+            02 · The Performance Gap
+          </p>
+          <h2 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--text-primary)", margin: "0 0 6px" }}>
+            What specifically isn't meeting expectations?
+          </h2>
+          <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", margin: 0, lineHeight: 1.6 }}>
+            Specific language is what makes a PIP defensible. Describe what happened, when, and what standard it fell short of.
+          </p>
+        </div>
+
+        {/* Specific Deficiencies */}
+        <div style={fieldGroupStyle}>
+          <label style={labelStyle}>
+            Specific deficiencies <span style={{ color: "#DC2626" }}>*</span>
+          </label>
+          <textarea
+            value={deficiencies}
+            onChange={(e) => setDeficiencies(e.target.value)}
+            placeholder={`e.g. Failed to meet Q1 outbound call quota (50 calls/week) for three consecutive months, averaging 28 calls/week. Missed client follow-up deadlines on 6 of 8 tracked accounts in February, measured via CRM activity log.`}
+            style={{ ...textareaStyle, minHeight: "120px" }}
+          />
+          <p style={helperStyle}>
+            Include dates, frequencies, and how it was measured. Vague language is the most common reason PIPs don't hold up.
+          </p>
+        </div>
+
+        {/* Performance Standard */}
+        <div style={fieldGroupStyle}>
+          <label style={labelStyle}>
+            Performance standard being missed{" "}
+            <span style={{ fontWeight: 400, color: "var(--text-muted)" }}>(optional)</span>
+          </label>
+          <textarea
+            value={performanceStandard}
+            onChange={(e) => setPerformanceStandard(e.target.value)}
+            placeholder="e.g. The role requires 50 outbound calls per week and client follow-up within 24 hours of contact, per the Sales Handbook (updated Jan 2026)."
+            style={textareaStyle}
+          />
+          <p style={helperStyle}>
+            If you have a documented standard (handbook, job description, offer letter), include it here. It strengthens the document. If you don't, leave it blank.
+          </p>
+        </div>
+
+        {/* Improvement Targets */}
+        <div style={fieldGroupStyle}>
+          <label style={labelStyle}>
+            Improvement targets <span style={{ color: "#DC2626" }}>*</span>
+          </label>
+          <textarea
+            value={improvementTargets}
+            onChange={(e) => setImprovementTargets(e.target.value)}
+            placeholder="e.g. Meet weekly call quota of 50 for 4 consecutive weeks. All client follow-ups logged within 24 hours, with zero exceptions over the plan period. Both tracked via HubSpot."
+            style={{ ...textareaStyle, minHeight: "100px" }}
+          />
+        </div>
+
+        {/* Timeline */}
+        <div style={fieldGroupStyle}>
+          <label style={labelStyle}>
+            Plan duration <span style={{ color: "#DC2626" }}>*</span>
+          </label>
+          <div style={{ display: "flex", gap: "10px" }}>
+            {(["30", "60", "90"] as Timeline[]).map((t) => (
+              <div
+                key={t}
+                style={{
+                  ...radioOptionStyle(timeline === t),
+                  flex: 1,
+                  justifyContent: "center",
+                  flexDirection: "column" as const,
+                  alignItems: "center",
+                  padding: "12px 8px",
+                }}
+                onClick={() => setTimeline(t)}
+              >
+                <span style={{ fontSize: "1rem", fontWeight: 700, color: "var(--text-primary)" }}>
+                  {t}
+                </span>
+                <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>days</span>
+              </div>
+            ))}
+          </div>
+          <p style={helperStyle}>
+            30 days is standard for clear performance issues. 60–90 days for more complex behavioral situations.
+          </p>
+        </div>
+
+        {s2Error && <p style={errorStyle}>{s2Error}</p>}
+
+        <button
+          type="button"
+          className="btn btn-primary btn-lg btn-full"
+          onClick={goToS3}
+          style={{ marginTop: "8px" }}
+        >
+          Continue →
+        </button>
+      </div>
+    );
+  }
+
+  // ── Screen 3: Support and Monitoring ─────────────────────
+  if (screen === "s3") {
+    return (
+      <div className="okb-tool">
+        <button
+          type="button"
+          onClick={goBackToS2}
+          style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "0.875rem", cursor: "pointer", padding: "0 0 20px", display: "block" }}
+        >
+          ← Back
+        </button>
+
+        <div style={{ marginBottom: "28px" }}>
+          <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--cta)", margin: "0 0 8px", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+            03 · Support and Monitoring
+          </p>
+          <h2 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--text-primary)", margin: "0 0 6px" }}>
+            How will you support and monitor improvement?
+          </h2>
+          <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", margin: 0, lineHeight: 1.6 }}>
+            This section protects both the employee and the company.
+          </p>
+        </div>
+
+        {/* Check-in Schedule */}
+        <div style={fieldGroupStyle}>
+          <label style={labelStyle}>
+            Check-in schedule <span style={{ color: "#DC2626" }}>*</span>
+          </label>
+          <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
+            {(["weekly", "biweekly", "custom"] as CheckinSchedule[]).map((opt) => (
+              <div
+                key={opt}
+                style={{
+                  ...radioOptionStyle(checkinSchedule === opt),
+                  flex: 1,
+                  justifyContent: "center",
+                  padding: "10px 8px",
+                }}
+                onClick={() => setCheckinSchedule(opt)}
+              >
+                <span style={{ fontSize: "0.875rem", fontWeight: 600, color: "var(--text-primary)", textAlign: "center" as const }}>
+                  {opt === "biweekly" ? "Bi-weekly" : opt.charAt(0).toUpperCase() + opt.slice(1)}
+                </span>
+              </div>
+            ))}
+          </div>
+          {checkinSchedule === "custom" && (
+            <input
+              type="text"
+              value={checkinCustom}
+              onChange={(e) => setCheckinCustom(e.target.value)}
+              placeholder="e.g. Every Friday with manager, monthly with HR"
+              style={{ ...inputStyle, marginTop: "8px" }}
+            />
+          )}
+        </div>
+
+        {/* Support Offered */}
+        <div style={fieldGroupStyle}>
+          <label style={labelStyle}>
+            Support being offered{" "}
+            <span style={{ fontWeight: 400, color: "var(--text-muted)" }}>(optional)</span>
+          </label>
+          <textarea
+            value={supportOffered}
+            onChange={(e) => setSupportOffered(e.target.value)}
+            placeholder="e.g. Weekly 30-minute coaching session with manager. Access to the company's sales training library. Performance dashboard reviewed together at each check-in."
+            style={textareaStyle}
+          />
+          <p style={helperStyle}>
+            Even a brief line here strengthens the document. It shows the company took a reasonable step before any disciplinary action.
+          </p>
+        </div>
+
+        {/* Consequences */}
+        <div style={fieldGroupStyle}>
+          <label style={labelStyle}>
+            Consequences if targets are not met <span style={{ color: "#DC2626" }}>*</span>
+          </label>
+          <textarea
+            value={consequences}
+            onChange={(e) => setConsequences(e.target.value)}
+            placeholder="e.g. Failure to meet the improvement targets outlined in this plan may result in further corrective action, up to and including termination of employment."
+            style={textareaStyle}
+          />
+          <p style={helperStyle}>
+            Plain language is fine. State it clearly so there's no ambiguity about what happens next.
+          </p>
+        </div>
+
+        {/* EAP Toggle */}
+        <div style={{ ...fieldGroupStyle, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 14px", background: "var(--bg-alt, #F8F8F6)", borderRadius: "8px", border: "1px solid var(--border, #E4E4E2)" }}>
+          <div>
+            <p style={{ margin: 0, fontSize: "0.875rem", fontWeight: 600, color: "var(--text-primary)" }}>
+              Include EAP reference
+            </p>
+            <p style={{ margin: "2px 0 0", fontSize: "0.8125rem", color: "var(--text-muted)" }}>
+              Adds an EAP reference to the support section
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setIncludeEAP(!includeEAP)}
+            style={{
+              width: "44px", height: "24px", borderRadius: "12px", border: "none",
+              background: includeEAP ? "var(--cta, #1E7AB8)" : "var(--border, #E4E4E2)",
+              cursor: "pointer", position: "relative", transition: "background 0.2s ease", flexShrink: 0,
+            }}
+            aria-checked={includeEAP}
+            role="switch"
+          >
+            <div style={{
+              position: "absolute", top: "3px",
+              left: includeEAP ? "22px" : "3px",
+              width: "18px", height: "18px",
+              borderRadius: "50%", background: "#FFFFFF",
+              transition: "left 0.2s ease",
+              boxShadow: "0 1px 3px rgba(0,0,0,0.2)",
+            }} />
+          </button>
+        </div>
+
+        {s3Error && <p style={errorStyle}>{s3Error}</p>}
+
+        <button
+          type="button"
+          className="btn btn-primary btn-lg btn-full"
+          onClick={goToPaywall}
+          style={{ marginTop: "8px" }}
+        >
+          Build My PIP →
+        </button>
+      </div>
+    );
+  }
+
+  // ── Paywall screen ───────────────────────────────────────
+  if (screen === "paywall") {
+    return (
+      <div className="okb-tool">
+        {/* Payment cancelled banner */}
+        {paymentCancelled && (
+          <div style={{
+            background: "rgba(30,122,184,0.06)", border: "1px solid rgba(30,122,184,0.2)",
+            borderRadius: "8px", padding: "12px 16px", marginBottom: "24px",
+            fontSize: "0.875rem", color: "var(--text-secondary)",
+          }}>
+            Payment wasn't completed. Your progress is saved — try again below.
+          </div>
+        )}
+
+        <div style={{ marginBottom: "24px" }}>
+          <h2 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--text-primary)", margin: "0 0 6px" }}>
+            Your PIP is ready to build.
+          </h2>
+          <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", margin: 0, lineHeight: 1.6 }}>
+            Get access below to generate the document.
+          </p>
+        </div>
+
+        {/* Document sections preview */}
+        <div style={{
+          background: "var(--bg-alt, #F8F8F6)", border: "1px solid var(--border, #E4E4E2)",
+          borderRadius: "10px", padding: "18px 20px", marginBottom: "20px",
+        }}>
+          <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", margin: "0 0 12px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+            Your document includes
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            {[
+              "Opening Statement",
+              "Performance Deficiencies",
+              "Improvement Targets",
+              "Support and Resources",
+              "Check-in Schedule",
+              "Consequences",
+              "Signature Block",
+            ].map((item) => (
+              <div key={item} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <span style={{ color: "var(--cta, #1E7AB8)", fontSize: "0.875rem", fontWeight: 700 }}>·</span>
+                <span style={{ fontSize: "0.875rem", color: "var(--text-secondary)", fontWeight: 500 }}>{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Bundle / price card */}
+        <div style={{ background: "var(--dark, #161618)", borderRadius: "12px", padding: "24px 26px", marginBottom: "16px" }}>
+          {/* Header row */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px", flexWrap: "wrap", gap: "8px" }}>
+            <span style={{ fontSize: "0.9375rem", fontWeight: 700, color: "#FFFFFF" }}>
+              HR Tools Package
+            </span>
+            <span style={{
+              fontSize: "0.6875rem", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase",
+              padding: "3px 10px", borderRadius: "20px",
+              background: "rgba(30,122,184,0.25)", color: "#60B4F0",
+              border: "1px solid rgba(30,122,184,0.35)",
+            }}>
+              Annual Subscription
+            </span>
+          </div>
+
+          {/* Price */}
+          <div style={{ display: "flex", alignItems: "baseline", gap: "8px", marginBottom: "12px" }}>
+            <span style={{ fontSize: "2rem", fontWeight: 800, color: "#FFFFFF", lineHeight: 1 }}>$99</span>
+            <span style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.5)" }}>/year</span>
+          </div>
+
+          {/* Description */}
+          <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.6, margin: "0 0 20px" }}>
+            Includes Onboarding Kit, PIP Builder, and every HR tool added to the package. One purchase, all tools.
+          </p>
+
+          {/* CTA */}
+          <button
+            type="button"
+            onClick={handleCheckout}
+            disabled={checkoutLoading}
+            style={{
+              width: "100%", padding: "13px 20px", fontSize: "0.9375rem", fontWeight: 700,
+              background: checkoutLoading ? "rgba(30,122,184,0.5)" : "#1E7AB8",
+              color: "#FFFFFF", border: "none", borderRadius: "8px",
+              cursor: checkoutLoading ? "not-allowed" : "pointer",
+              transition: "background 0.15s ease", marginBottom: "12px",
+            }}
+          >
+            {checkoutLoading ? "Preparing checkout..." : "Get Access — $99/year →"}
+          </button>
+
+          {checkoutError && (
+            <p style={{ fontSize: "0.8125rem", color: "#F87171", margin: "0 0 8px" }}>
+              {checkoutError}
+            </p>
+          )}
+
+          <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.4)", margin: 0, textAlign: "center" }}>
+            Annual subscription. Cancel anytime.
+          </p>
+        </div>
+
+        {/* Returning purchaser */}
+        <div style={{ textAlign: "center", marginBottom: "16px" }}>
+          {!showReturningCheck ? (
+            <button
+              type="button"
+              onClick={() => setShowReturningCheck(true)}
+              style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "0.8125rem", cursor: "pointer", padding: 0, textDecoration: "underline" }}
+            >
+              Already have access? Enter your email.
+            </button>
+          ) : (
+            <div style={{ background: "var(--bg-alt, #F8F8F6)", border: "1px solid var(--border, #E4E4E2)", borderRadius: "8px", padding: "14px 16px", textAlign: "left" }}>
+              <p style={{ margin: "0 0 10px", fontSize: "0.875rem", fontWeight: 600, color: "var(--text-primary)" }}>
+                Enter the email you purchased with:
+              </p>
+              <div style={{ display: "flex", gap: "8px" }}>
+                <input
+                  type="email"
+                  value={returningEmail}
+                  onChange={(e) => setReturningEmail(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleReturningEmailCheck()}
+                  placeholder="your@email.com"
+                  style={{ ...inputStyle, flex: 1 }}
+                />
+                <button
+                  type="button"
+                  onClick={handleReturningEmailCheck}
+                  disabled={returningCheckLoading || !returningEmail.trim()}
+                  style={{
+                    padding: "10px 16px", fontSize: "0.875rem", fontWeight: 600,
+                    background: "var(--dark, #161618)", color: "#FFFFFF",
+                    border: "none", borderRadius: "6px",
+                    cursor: returningCheckLoading || !returningEmail.trim() ? "not-allowed" : "pointer",
+                    opacity: returningCheckLoading || !returningEmail.trim() ? 0.5 : 1,
+                    flexShrink: 0, whiteSpace: "nowrap" as const,
+                  }}
+                >
+                  {returningCheckLoading ? "Checking..." : "Check access"}
+                </button>
+              </div>
+              {returningCheckError && (
+                <p style={{ ...errorStyle, marginTop: "8px" }}>{returningCheckError}</p>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Edit inputs link */}
+        <button
+          type="button"
+          onClick={() => { setS3Error(""); setScreen("s3"); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+          style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "0.875rem", cursor: "pointer", padding: 0, opacity: 0.7 }}
+        >
+          ← Edit my inputs
+        </button>
+      </div>
+    );
+  }
+
+  // ── Verifying payment screen ──────────────────────────────
+  if (screen === "verifying") {
+    return (
+      <div className="okb-tool">
+        <div style={{ textAlign: "center", padding: "40px 0" }}>
+          <div style={{
+            display: "inline-block", width: "32px", height: "32px",
+            border: "3px solid rgba(30,122,184,0.2)", borderTopColor: "#1E7AB8",
+            borderRadius: "50%", animation: "spin 0.8s linear infinite", marginBottom: "20px",
+          }} />
+          <p style={{ fontSize: "1rem", fontWeight: 600, color: "var(--text-primary)", margin: "0 0 4px" }}>
+            Verifying your purchase...
+          </p>
+          <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", margin: 0 }}>
+            This only takes a moment.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Loading screen ────────────────────────────────────────
+  if (screen === "loading") {
+    return (
+      <div className="okb-tool">
+        <div style={{ textAlign: "center", padding: "8px 0 28px" }}>
+          <h2 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--text-primary)", margin: "0 0 6px" }}>
+            Building your PIP.
+          </h2>
+          <p className="loading-subline" style={{ fontSize: "0.875rem", color: "var(--text-muted)", margin: 0 }}>
+            About 20 seconds.
+          </p>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          {LOADING_STEPS.map((step, i) => {
+            const isDone = i < loadingStep;
+            const isActive = i === loadingStep;
+            return (
+              <div key={step} style={{
+                display: "flex", alignItems: "center", gap: "12px",
+                padding: "10px 14px",
+                background: isDone ? "rgba(26,122,74,0.06)" : isActive ? "rgba(30,122,184,0.06)" : "var(--bg-alt, #F8F8F6)",
+                border: `1px solid ${isDone ? "rgba(26,122,74,0.2)" : isActive ? "rgba(30,122,184,0.2)" : "var(--border, #E4E4E2)"}`,
+                borderRadius: "8px",
+                transition: "all 0.3s ease",
+              }}>
+                <div style={{ width: "20px", height: "20px", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  {isDone ? (
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                      <circle cx="9" cy="9" r="9" fill="#1A7A4A" fillOpacity="0.15" />
+                      <path d="M5 9l2.8 2.8L13 6.5" stroke="#1A7A4A" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  ) : isActive ? (
+                    <div style={{
+                      width: "10px", height: "10px", borderRadius: "50%", background: "#1E7AB8",
+                      animation: "pulse 1.2s ease-in-out infinite",
+                    }} />
+                  ) : (
+                    <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: "var(--border, #E4E4E2)" }} />
+                  )}
+                </div>
+                <span style={{
+                  fontSize: "0.875rem", fontWeight: isActive ? 600 : isDone ? 500 : 400,
+                  color: isDone ? "#1A7A4A" : isActive ? "var(--text-primary)" : "var(--text-muted)",
+                }}>
+                  {step}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  // ── Email gate screen ─────────────────────────────────────
+  if (screen === "email-gate") {
+    const displayTimeline = resultTimeline || "30";
+    return (
+      <div className="okb-tool">
+        <div style={{ marginBottom: "24px" }}>
+          <h2 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--text-primary)", margin: "0 0 6px" }}>
+            Your PIP document is ready.
+          </h2>
+        </div>
+
+        {/* Document preview */}
+        <div style={{
+          background: "var(--bg-alt, #F8F8F6)", border: "1px solid var(--border, #E4E4E2)",
+          borderRadius: "10px", padding: "18px 20px", marginBottom: "20px",
+        }}>
+          <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", margin: "0 0 12px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+            Your document includes
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            {[
+              { label: "Opening Statement", detail: "Purpose of the plan and the context for issuing it." },
+              { label: "Performance Deficiencies", detail: "Specific gaps documented in observable, measurable language." },
+              { label: `Improvement Targets`, detail: `Clear expectations for the ${displayTimeline}-day plan period.` },
+              { label: "Support and Resources", detail: "What the company is offering to support improvement." },
+              { label: "Check-in Schedule", detail: "Scheduled touchpoints to review progress." },
+              { label: "Consequences", detail: "What happens if improvement targets are not met." },
+              { label: "Signature Block", detail: "Acknowledgment of receipt. Not agreement." },
+            ].map((item) => (
+              <div key={item.label} style={{ paddingBottom: "8px", borderBottom: "1px solid var(--border, #E4E4E2)" }}>
+                <p style={{ margin: 0, fontSize: "0.875rem", fontWeight: 600, color: "var(--text-primary)" }}>
+                  <span style={{ color: "var(--cta, #1E7AB8)", marginRight: "6px" }}>·</span>{item.label}
+                </p>
+                <p style={{ margin: "2px 0 0 14px", fontSize: "0.8125rem", color: "var(--text-muted)" }}>
+                  {item.detail}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Trust line */}
+        <p style={{ fontSize: "0.8125rem", color: "var(--text-muted)", margin: "0 0 20px", textAlign: "center" }}>
+          We don't store your inputs.
+        </p>
+
+        {/* Email form */}
+        <form onSubmit={handleEmailSubmit}>
+          <div style={fieldGroupStyle}>
+            <label style={labelStyle}>Where should we send it?</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="your@email.com"
+              required
+              style={inputStyle}
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="btn btn-primary btn-lg btn-full"
+            disabled={emailSubmitting || !email.trim()}
+            style={{ marginBottom: "12px", opacity: emailSubmitting ? 0.7 : 1 }}
+          >
+            {emailSubmitting ? "Sending..." : "Send My PIP"}
+          </button>
+        </form>
+
+        {emailError && <p style={{ ...errorStyle, marginBottom: "8px" }}>{emailError}</p>}
+
+        {/* Tip line */}
+        <p style={{ fontSize: "0.8125rem", color: "var(--text-muted)", lineHeight: 1.5, margin: "12px 0 0", padding: "12px 14px", background: "rgba(30,122,184,0.05)", borderRadius: "8px", borderLeft: "3px solid rgba(30,122,184,0.3)" }}>
+          Review with your manager and legal team before issuing.
+        </p>
+
+        <button
+          type="button"
+          onClick={handleReset}
+          style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "0.875rem", cursor: "pointer", marginTop: "20px", padding: 0, textDecoration: "underline" }}
+        >
+          Start over
+        </button>
+      </div>
+    );
+  }
+
+  // ── Sent screen ───────────────────────────────────────────
+  if (screen === "sent") {
+    return (
+      <div className="okb-tool">
+        <div style={{ textAlign: "center", padding: "8px 0" }}>
+          <div style={{ display: "inline-block", marginBottom: "20px" }}>
+            <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+              <rect width="56" height="56" rx="12" fill="#1A7A4A" fillOpacity="0.1" />
+              <path d="M16 28l7 7L40 20" stroke="#1A7A4A" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+          <h2 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--text-primary)", margin: "0 0 8px" }}>
+            Emailed and downloaded.
+          </h2>
+          <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", margin: "0 0 32px", lineHeight: 1.6 }}>
+            Check your downloads folder. Open the .docx in Word or Google Docs, review with your legal team, and fill in the employee name before issuing.
+          </p>
+          <button
+            type="button"
+            className="btn btn-primary btn-lg btn-full"
+            onClick={handleReset}
+          >
+            Build another PIP
+          </button>
+        </div>
+
+        {/* Bundle callout */}
+        <div style={{ marginTop: "32px", padding: "20px 22px", background: "var(--bg-alt, #F8F8F6)", border: "1px solid var(--border, #E4E4E2)", borderRadius: "10px" }}>
+          <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--cta)", margin: "0 0 10px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+            Part of the HR Tools Package
+          </p>
+          <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", margin: "0 0 12px", lineHeight: 1.6 }}>
+            Your subscription also includes AGENT: Onboarding Kit. Position-specific onboarding kits for every new hire, delivered as a ready-to-use .docx.
+          </p>
+          <a
+            href="/onboarding-kit-builder"
+            style={{ fontSize: "0.875rem", fontWeight: 600, color: "var(--cta)", textDecoration: "none" }}
+          >
+            Try Onboarding Kit →
+          </a>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Error screen ──────────────────────────────────────────
+  return (
+    <div className="okb-tool">
+      <div style={{ padding: "8px 0" }}>
+        <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", marginBottom: "20px", lineHeight: 1.6 }}>
+          {errorMsg || "Something went wrong building the document. Your inputs are saved. Try again and it should work."}
+        </p>
+        <button
+          type="button"
+          className="btn btn-primary btn-lg btn-full"
+          onClick={handleRetry}
+          style={{ marginBottom: "12px" }}
+        >
+          Try again
+        </button>
+        <button
+          type="button"
+          onClick={handleReset}
+          style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "0.875rem", cursor: "pointer", padding: 0, textDecoration: "underline", display: "block" }}
+        >
+          Start over
+        </button>
+      </div>
+    </div>
+  );
+}

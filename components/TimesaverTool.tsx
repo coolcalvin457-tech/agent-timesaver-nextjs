@@ -3,10 +3,6 @@
 import { useState, useRef, useCallback } from "react";
 import { track } from "@vercel/analytics";
 
-// ── Update these URLs when your community and guides are live ──────────────
-const COMMUNITY_URL = "https://www.skool.com"; // TODO: replace with your Skool community link
-const GUIDES_URL = "/guides";
-// ──────────────────────────────────────────────────────────────────────────
 import type { Question } from "@/app/api/questions/route";
 import type { Workflow, ROI } from "@/app/api/workflows/route";
 
@@ -18,8 +14,7 @@ type Screen =
   | "question"
   | "loading"
   | "results"
-  | "gate"
-  | "confirm";
+  | "gate";
 
 type Path = "A" | "B" | null;
 
@@ -36,7 +31,6 @@ interface AppState {
   answers: string[];
   workflows: Workflow[];
   roi: ROI | null;
-  emailSaved: boolean;
 }
 
 // ─── Component ─────────────────────────────────────────────────────────────────
@@ -54,18 +48,16 @@ export default function TimesaverTool() {
     answers: [],
     workflows: [],
     roi: null,
-    emailSaved: false,
   });
 
   const [jobTitleInput, setJobTitleInput] = useState("");
-  const [emailInput, setEmailInput] = useState("");
   const [emailGateInput, setEmailGateInput] = useState("");
   const [fileUploaded, setFileUploaded] = useState<string | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [emailSending, setEmailSending] = useState(false);
-  const [emailError, setEmailError] = useState<string | null>(null);
+  const [loadingType, setLoadingType] = useState<"questions" | "workflows">("questions");
+  const [gateSending, setGateSending] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -85,6 +77,7 @@ export default function TimesaverTool() {
     ) => {
       setIsLoading(true);
       setError(null);
+      setLoadingType("questions");
       go("loading");
 
       try {
@@ -122,6 +115,7 @@ export default function TimesaverTool() {
     async (jobTitle: string, answers: string[], path: Path, jobDescription?: string) => {
       setIsLoading(true);
       setError(null);
+      setLoadingType("workflows");
       go("loading");
 
       try {
@@ -242,42 +236,12 @@ export default function TimesaverTool() {
     }
   };
 
-  const handleEmailSave = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!emailInput.trim()) return;
-
-    setEmailSending(true);
-    setEmailError(null);
-
-    try {
-      const res = await fetch("/api/email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: emailInput.trim(),
-          jobTitle: state.jobTitle,
-          workflows: state.workflows,
-          roi: state.roi,
-        }),
-      });
-
-      if (!res.ok) throw new Error("Failed to send email");
-
-      track("email_submitted", { jobTitle: state.jobTitle });
-      setState((s) => ({ ...s, emailSaved: true }));
-      go("confirm");
-    } catch {
-      setEmailError("Something went wrong. Please try again.");
-    } finally {
-      setEmailSending(false);
-    }
-  };
-
   const handleGateEmail = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!emailGateInput.trim()) return;
+    if (!emailGateInput.trim() || gateSending) return;
 
-    // Best-effort: add to list, don't block on failure
+    setGateSending(true);
+
     try {
       await fetch("/api/email", {
         method: "POST",
@@ -291,8 +255,11 @@ export default function TimesaverTool() {
       });
     } catch {
       // Silently continue — gate submission shouldn't block the user
+    } finally {
+      setGateSending(false);
     }
 
+    track("email_submitted", { jobTitle: state.jobTitle });
     go("results");
   };
 
@@ -334,7 +301,7 @@ export default function TimesaverTool() {
             className="btn btn-primary btn-full"
             onClick={() => { track("tool_started"); go("jobTitle"); }}
           >
-            Continue
+            Show Me →
           </button>
         </div>
       )}
@@ -343,7 +310,6 @@ export default function TimesaverTool() {
       {state.screen === "jobTitle" && (
         <div className="screen">
           <div className="tool-tag">AGENT: Timesaver</div>
-          <div className="step-label">Step 1 of 2</div>
 
           <h1 className="screen-headline">What&apos;s your job title?</h1>
           <p className="screen-subheadline">
@@ -417,9 +383,15 @@ export default function TimesaverTool() {
             </button>
           </div>
 
+          {jobTitleInput.trim().length > 1 && state.path === null && (
+            <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", marginTop: "12px", marginBottom: "0" }}>
+              Select one to continue.
+            </p>
+          )}
+
           <button
             className="btn btn-primary btn-full"
-            style={{ marginTop: "24px" }}
+            style={{ marginTop: "12px" }}
             disabled={!canContinueJobTitle}
             onClick={handleJobTitleContinue}
           >
@@ -432,6 +404,13 @@ export default function TimesaverTool() {
       {state.screen === "jdUpload" && (
         <div className="screen">
           <div className="tool-tag">AGENT: Timesaver</div>
+          <button
+            type="button"
+            onClick={() => go("jobTitle")}
+            style={{ background: "none", border: "none", color: "var(--text-secondary)", fontSize: "0.875rem", cursor: "pointer", padding: "0 0 16px", display: "block" }}
+          >
+            ← Back
+          </button>
           <div className="path-indicator path-indicator-a">Path A: Job Description</div>
 
           <h1 className="screen-headline">Upload or paste your job description.</h1>
@@ -500,9 +479,18 @@ export default function TimesaverTool() {
         <div className="loading-screen" style={{ minHeight: "320px" }}>
           <div className="tool-tag" style={{ textAlign: "center" }}>AGENT: Timesaver</div>
           <div className="spinner" />
-          <div className="loading-headline">Building personalized workflows...</div>
-          <div className="loading-subline">Calculating hours saved...</div>
-          <div className="loading-subline" style={{ marginTop: "8px" }}>About 15 seconds.</div>
+          {loadingType === "questions" ? (
+            <>
+              <div className="loading-headline">Personalizing your questions...</div>
+              <div className="loading-subline" style={{ marginTop: "8px" }}>About 5 seconds.</div>
+            </>
+          ) : (
+            <>
+              <div className="loading-headline">Building your workflows...</div>
+              <div className="loading-subline">Calculating hours saved...</div>
+              <div className="loading-subline" style={{ marginTop: "8px" }}>About 15 seconds.</div>
+            </>
+          )}
         </div>
       )}
 
@@ -537,7 +525,7 @@ export default function TimesaverTool() {
             className="step-label"
             style={{ marginBottom: "16px" }}
           >
-            Almost there. Question {state.questionIndex + 1} of {totalQuestions}.
+            {isLastQuestion ? "Almost there. " : ""}Question {state.questionIndex + 1} of {totalQuestions}.
           </div>
 
           <div className="question-stem">{currentQuestion.stem}</div>
@@ -598,6 +586,15 @@ export default function TimesaverTool() {
       {state.screen === "results" && state.roi && (
         <div className="screen">
           <div className="tool-tag">AGENT: Timesaver</div>
+
+          <div style={{
+            display: "flex", alignItems: "center", gap: "8px",
+            background: "rgba(30,122,184,0.06)", border: "1px solid rgba(30,122,184,0.15)",
+            borderRadius: "8px", padding: "10px 14px", marginBottom: "20px",
+            fontSize: "0.875rem", color: "var(--text-secondary)",
+          }}>
+            <span style={{ color: "var(--cta)" }}>✓</span> Sent to your inbox.
+          </div>
 
           <div className="results-tag">
             You could save {state.roi.totalHoursPerWeek} hours every week.
@@ -660,9 +657,12 @@ export default function TimesaverTool() {
             </div>
           </div>
 
-          <div style={{ marginTop: "24px" }}>
-            <a href="/" className="btn btn-primary btn-full">
-              Return to Homepage →
+          <div style={{ marginTop: "24px", display: "flex", flexDirection: "column", gap: "12px" }}>
+            <a href="/prompt-builder" className="btn btn-primary btn-full">
+              Try Prompt Builder
+            </a>
+            <a href="/budget-spreadsheets" className="btn btn-outline btn-full">
+              Try Budget Spreadsheets
             </a>
           </div>
         </div>
@@ -688,9 +688,10 @@ export default function TimesaverTool() {
                   value={emailGateInput}
                   onChange={(e) => setEmailGateInput(e.target.value)}
                   required
+                  disabled={gateSending}
                 />
-                <button className="btn btn-primary" type="submit">
-                  See My Results →
+                <button className="btn btn-primary" type="submit" disabled={gateSending}>
+                  {gateSending ? "Sending..." : "See My Results →"}
                 </button>
               </div>
             </form>
@@ -698,59 +699,6 @@ export default function TimesaverTool() {
         </div>
       )}
 
-      {/* ── Screen 08: Confirmation ───────────────────────────────────────── */}
-      {state.screen === "confirm" && (
-        <div className="screen" style={{ textAlign: "center" }}>
-          <div className="tool-tag" style={{ textAlign: "center" }}>AGENT: Timesaver</div>
-
-          <div className="confirm-icon">✅</div>
-          <div className="confirm-headline">You&apos;re all set.</div>
-          <p className="confirm-subline">
-            Check your inbox. Your workflows are saved there.
-          </p>
-
-          <div className="next-steps">
-            <div className="next-step next-step-disabled">
-              <span className="step-num">1</span>
-              Community: coming soon
-            </div>
-            <a href={GUIDES_URL} className="next-step">
-              <span className="step-num">2</span>
-              Browse the website and find other helpful resources
-            </a>
-            <a href="#tool" className="next-step" onClick={() => {
-              setState((s) => ({
-                screen: "intro",
-                path: null,
-                jobTitle: "",
-                jobDescription: "",
-                questions: [],
-                questionIndex: 0,
-                selectedChoice: null,
-                writeInValue: "",
-                showWriteIn: false,
-                answers: [],
-                workflows: [],
-                roi: null,
-                emailSaved: false,
-              }));
-              setJobTitleInput("");
-              setEmailInput("");
-              setEmailGateInput("");
-              setFileUploaded(null);
-            }}>
-              <span className="step-num">3</span>
-              Try another AGENT tool when you&apos;re ready
-            </a>
-          </div>
-
-          <div className="confirm-cta-group">
-            <a href="/" className="btn btn-primary btn-full">
-              Return to Homepage →
-            </a>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

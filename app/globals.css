@@ -1524,7 +1524,7 @@ input, textarea {
   padding: 5px 12px;
   font-size: 0.75rem;
   color: var(--text-muted);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
 }
 
 /* ── Hero Tool Dark Mode ──────────────────────────────────── */
@@ -1557,6 +1557,7 @@ input, textarea {
   background: var(--dark);
   border: 1px solid var(--dark-border);
   box-shadow: none;
+  min-height: 420px;
 }
 
 /* Screen / main content area */

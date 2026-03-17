@@ -1570,16 +1570,19 @@ input, textarea {
 
 /* Tool tag (mono label at top) */
 .hero-tool-dark .tool-tag {
-  color: rgba(255,255,255,0.45);
+  color: var(--cta);
+  margin-bottom: 32px;
 }
 
 /* Headlines */
 .hero-tool-dark .screen-headline {
   color: #FFFFFF;
+  margin-bottom: 24px;
 }
 
 .hero-tool-dark .screen-subheadline {
   color: rgba(255,255,255,0.55);
+  margin-bottom: 32px;
 }
 
 /* Step / question text */

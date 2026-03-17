@@ -132,12 +132,14 @@ input, textarea {
 .body-lg {
   font-size: 1.0625rem;
   font-weight: 300;
+  color: #767674;
   line-height: 1.65;
 }
 
 .body {
   font-size: 0.9375rem;
   font-weight: 300;
+  color: #767674;
   line-height: 1.6;
 }
 
@@ -481,7 +483,7 @@ input, textarea {
   font-size: 0.9375rem;
   font-weight: 300;
   letter-spacing: 0.01em;
-  color: var(--text-secondary);
+  color: #767674;
   line-height: 1.6;
   margin-bottom: 24px;
 }
@@ -1283,7 +1285,7 @@ input, textarea {
   font-size: clamp(1rem, 1.75vw, 1.125rem);
   font-weight: 300;
   letter-spacing: 0.01em;
-  color: var(--text-muted);
+  color: #767674;
   line-height: 1.7;
   max-width: 460px;
   margin-bottom: 40px;

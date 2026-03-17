@@ -1560,7 +1560,6 @@ input, textarea {
   min-height: 420px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
 }
 
 /* Screen / main content area */
@@ -1568,12 +1567,15 @@ input, textarea {
   background: transparent;
   padding-left: 44px;
   padding-right: 44px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Tool tag (mono label at top) */
 .hero-tool-dark .tool-tag {
   color: var(--cta);
-  margin-bottom: 32px;
+  margin-bottom: 0;
 }
 
 /* Headlines */

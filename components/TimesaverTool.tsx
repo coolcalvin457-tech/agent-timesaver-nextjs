@@ -279,24 +279,26 @@ export default function TimesaverTool() {
     <div className="tool-container" ref={topRef}>
       {/* ── Screen 00: Intro ─────────────────────────────────────────────── */}
       {state.screen === "intro" && (
-        <div className="screen">
+        <div className="screen" style={{ display: "flex", flexDirection: "column", minHeight: "100%" }}>
           <div className="tool-tag">AGENT: Timesaver</div>
 
-          <h1 className="screen-headline">
-            See how many hours you'll save.
-          </h1>
-          <p className="screen-subheadline">
-            Answer a few questions. Get 5 personalized AI workflows.
-          </p>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <h1 className="screen-headline">
+              See how many hours you'll save.
+            </h1>
+            <p className="screen-subheadline">
+              Answer a few questions.<br />Get 5 personalized AI workflows.
+            </p>
 
-          <button
-            id="timesaver-start-btn"
-            className="btn btn-primary"
-            style={{ maxWidth: "260px", margin: "0 auto", display: "block" }}
-            onClick={() => { track("tool_started"); go("jobTitle"); }}
-          >
-            Show Me →
-          </button>
+            <button
+              id="timesaver-start-btn"
+              className="btn btn-primary"
+              style={{ maxWidth: "260px", margin: "0 auto", display: "block" }}
+              onClick={() => { track("tool_started"); go("jobTitle"); }}
+            >
+              Show Me →
+            </button>
+          </div>
         </div>
       )}
 

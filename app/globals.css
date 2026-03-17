@@ -1542,16 +1542,14 @@ input, textarea {
 
 .hero-tool-clickable {
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 2px solid transparent;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .hero-tool-clickable:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 32px rgba(30, 122, 184, 0.15), 0 16px 48px rgba(0,0,0,0.32);
-}
-
-.hero-tool-clickable:hover .tool-container {
   border-color: #4da3e0;
+  box-shadow: 0 8px 32px rgba(30, 122, 184, 0.25), 0 16px 48px rgba(0,0,0,0.32);
+  transform: translateY(-3px);
 }
 
 /* Browser chrome bar */
@@ -1763,13 +1761,13 @@ input, textarea {
 .hero-tool-dark .btn-primary {
   background: transparent;
   color: #FFFFFF;
-  border: 1.5px solid #4da3e0;
+  border: 1.5px solid rgba(77, 163, 224, 0.45);
 }
 
 .hero-tool-dark .btn-primary:hover {
-  background: rgba(30,122,184,0.12);
-  border-color: #6db8ea;
-  box-shadow: 0 0 16px rgba(30,122,184,0.2);
+  background: rgba(30,122,184,0.10);
+  border-color: rgba(77, 163, 224, 0.7);
+  box-shadow: 0 0 12px rgba(30,122,184,0.15);
 }
 
 /* ── Lead Magnet CTA Section ──────────────────────────────── */

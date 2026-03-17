@@ -1759,12 +1759,15 @@ input, textarea {
 
 /* Primary button inside the dark tool — light instead of dark */
 .hero-tool-dark .btn-primary {
-  background: #FFFFFF;
-  color: var(--dark);
+  background: transparent;
+  color: #FFFFFF;
+  border: 1.5px solid #4da3e0;
 }
 
 .hero-tool-dark .btn-primary:hover {
-  background: rgba(255,255,255,0.9);
+  background: rgba(30,122,184,0.12);
+  border-color: #6db8ea;
+  box-shadow: 0 0 16px rgba(30,122,184,0.2);
 }
 
 /* ── Lead Magnet CTA Section ──────────────────────────────── */

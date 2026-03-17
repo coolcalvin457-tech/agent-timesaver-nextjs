@@ -282,7 +282,7 @@ export default function TimesaverTool() {
         <div className="screen" style={{ display: "flex", flexDirection: "column", minHeight: "100%" }}>
           <div className="tool-tag">AGENT: Timesaver</div>
 
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", paddingTop: "12px" }}>
             <h1 className="screen-headline">
               See how many hours you'll save.
             </h1>
@@ -293,10 +293,10 @@ export default function TimesaverTool() {
             <button
               id="timesaver-start-btn"
               className="btn btn-primary"
-              style={{ maxWidth: "260px", margin: "0 auto", display: "block" }}
+              style={{ alignSelf: "flex-start" }}
               onClick={() => { track("tool_started"); go("jobTitle"); }}
             >
-              Show Me →
+              Show Me
             </button>
           </div>
         </div>

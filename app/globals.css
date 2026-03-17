@@ -1558,6 +1558,9 @@ input, textarea {
   border: 1px solid var(--dark-border);
   box-shadow: none;
   min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 /* Screen / main content area */

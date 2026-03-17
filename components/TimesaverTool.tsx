@@ -280,9 +280,9 @@ export default function TimesaverTool() {
       {/* ── Screen 00: Intro ─────────────────────────────────────────────── */}
       {state.screen === "intro" && (
         <div className="screen" style={{ display: "flex", flexDirection: "column", minHeight: "100%", textAlign: "center" }}>
-          <div className="tool-tag" style={{ textAlign: "center", marginTop: "12px" }}>AGENT: Timesaver</div>
+          <div className="tool-tag" style={{ textAlign: "center", marginTop: "4px" }}>AGENT: Timesaver</div>
 
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", paddingBottom: "20px" }}>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", paddingBottom: "48px" }}>
             <h1 className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25 }}>
               See how many hours<br />you could save.
             </h1>

@@ -283,8 +283,8 @@ export default function TimesaverTool() {
           <div className="tool-tag" style={{ textAlign: "center" }}>AGENT: Timesaver</div>
 
           <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", paddingTop: "12px" }}>
-            <h1 className="screen-headline">
-              See how many you<br />could save.
+            <h1 className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)" }}>
+              See how many hours you<br />could save.
             </h1>
             <p className="screen-subheadline">
               <span style={{ display: "block" }}>Answer a few questions.</span>

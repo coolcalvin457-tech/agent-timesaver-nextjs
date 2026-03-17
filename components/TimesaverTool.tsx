@@ -292,7 +292,7 @@ export default function TimesaverTool() {
             <button
               id="timesaver-start-btn"
               className="btn btn-primary"
-              style={{ padding: "10px 28px", fontSize: "0.9rem", fontWeight: 500 }}
+              style={{ padding: "10px 28px", fontSize: "0.9rem", fontWeight: 500, letterSpacing: "0.04em" }}
               onClick={() => { track("tool_started"); go("jobTitle"); }}
             >
               Show Me

@@ -1587,7 +1587,7 @@ input, textarea {
 /* Tool tag (mono label at top) */
 .hero-tool-dark .tool-tag {
   color: var(--cta);
-  margin-bottom: 0;
+  margin-bottom: 20px;
 }
 
 /* Headlines */

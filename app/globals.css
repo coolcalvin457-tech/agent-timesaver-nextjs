@@ -1566,8 +1566,8 @@ input, textarea {
 /* Screen / main content area */
 .hero-tool-dark .screen {
   background: transparent;
-  padding-left: 56px;
-  padding-right: 56px;
+  padding-left: 44px;
+  padding-right: 44px;
 }
 
 /* Tool tag (mono label at top) */

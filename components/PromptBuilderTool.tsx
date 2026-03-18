@@ -235,7 +235,7 @@ export default function PromptBuilderTool() {
             <p
               style={{
                 fontSize: "0.8125rem",
-                color: "var(--text-muted, #888886)",
+                color: "rgba(255,255,255,0.4)",
                 marginBottom: "8px",
               }}
             >
@@ -248,9 +248,9 @@ export default function PromptBuilderTool() {
                 gap: "8px",
                 cursor: "pointer",
                 fontSize: "0.875rem",
-                color: jobDescFile ? "var(--cta, #1E7AB8)" : "var(--text-secondary, #555553)",
-                background: "var(--surface-alt, #f0f0ee)",
-                border: "1px solid var(--border, #e4e4e2)",
+                color: jobDescFile ? "var(--cta, #1E7AB8)" : "rgba(255,255,255,0.55)",
+                background: "rgba(255,255,255,0.05)",
+                border: "1px solid rgba(255,255,255,0.1)",
                 borderRadius: "8px",
                 padding: "8px 14px",
               }}
@@ -270,7 +270,7 @@ export default function PromptBuilderTool() {
                 style={{
                   background: "none",
                   border: "none",
-                  color: "var(--text-muted, #888886)",
+                  color: "rgba(255,255,255,0.35)",
                   fontSize: "0.8125rem",
                   cursor: "pointer",
                   marginLeft: "10px",
@@ -580,7 +580,7 @@ export default function PromptBuilderTool() {
             display: "flex", alignItems: "center", gap: "8px",
             background: "rgba(30,122,184,0.06)", border: "1px solid rgba(30,122,184,0.15)",
             borderRadius: "8px", padding: "10px 14px", marginBottom: "20px",
-            fontSize: "0.875rem", color: "var(--text-secondary)",
+            fontSize: "0.875rem", color: "rgba(255,255,255,0.6)",
           }}>
             <span style={{ color: "var(--cta)" }}>✓</span> Sent to your inbox.
           </div>

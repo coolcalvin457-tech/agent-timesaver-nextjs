@@ -12,10 +12,10 @@ export default function PromptBuilderPage() {
   return (
     <>
       <NavClient />
-      <main>
+      <main style={{ background: "linear-gradient(180deg, #1A1B22 0%, #0E0E10 100%)", minHeight: "100vh" }}>
         {/* ── Hero section ─────────────────────────────────────── */}
         <section
-          className="section section-alt"
+          className="section"
           style={{ paddingTop: "120px", paddingBottom: "24px" }}
         >
           <div className="container" style={{ textAlign: "center" }}>
@@ -29,7 +29,7 @@ export default function PromptBuilderPage() {
                   alignItems: "center",
                   gap: "6px",
                   fontSize: "0.875rem",
-                  color: "var(--text-muted)",
+                  color: "rgba(255,255,255,0.4)",
                   textDecoration: "none",
                 }}
               >
@@ -58,6 +58,7 @@ export default function PromptBuilderPage() {
                 margin: "0 auto 0",
                 fontSize: "clamp(2.25rem, 4vw, 3.5rem)",
                 lineHeight: 1.25,
+                color: "#ffffff",
               }}
             >
               12 prompts built for your exact job.
@@ -70,7 +71,9 @@ export default function PromptBuilderPage() {
         <section className="section" style={{ paddingTop: "40px" }}>
           <div className="container">
             <div style={{ maxWidth: "760px", margin: "0 auto" }}>
-              <PromptBuilderTool />
+              <div className="hero-tool-dark">
+                <PromptBuilderTool />
+              </div>
             </div>
           </div>
         </section>

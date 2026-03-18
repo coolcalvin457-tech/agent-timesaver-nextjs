@@ -1789,6 +1789,49 @@ input, textarea {
   box-shadow: 0 0 12px rgba(30,122,184,0.15);
 }
 
+/* Outline button on dark */
+.hero-tool-dark .btn-outline {
+  border-color: rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.7);
+}
+
+.hero-tool-dark .btn-outline:hover {
+  border-color: rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.05);
+}
+
+/* Write-in toggle */
+.hero-tool-dark .write-in-toggle {
+  color: rgba(255,255,255,0.45);
+}
+
+.hero-tool-dark .write-in-toggle:hover {
+  color: var(--cta);
+}
+
+/* Loading screen */
+.hero-tool-dark .loading-headline {
+  color: #ffffff;
+}
+
+.hero-tool-dark .loading-subline {
+  color: rgba(255,255,255,0.45);
+}
+
+.hero-tool-dark .spinner {
+  border-color: rgba(255,255,255,0.08);
+  border-top-color: var(--cta);
+}
+
+/* Email gate screen — results-tag and results-headline */
+.hero-tool-dark .results-tag {
+  color: var(--cta);
+}
+
+.hero-tool-dark .results-headline {
+  color: #ffffff;
+}
+
 /* ── Screen flip transition ───────────────────────────────── */
 @keyframes flipIn {
   from { transform: scaleX(0.05); opacity: 0; }

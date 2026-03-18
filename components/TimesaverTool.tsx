@@ -418,7 +418,7 @@ export default function TimesaverTool() {
             ← Back
           </button>
 
-          <h1 className="screen-headline">Upload or paste your job description.</h1>
+          <h1 className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25 }}>Upload or paste your job description.</h1>
 
           {fileUploaded ? (
             <div className="upload-success">

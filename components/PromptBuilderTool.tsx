@@ -234,7 +234,7 @@ export default function PromptBuilderTool() {
           />
 
           {/* Optional file upload */}
-          <div style={{ marginTop: "24px" }}>
+          <div style={{ marginTop: "36px" }}>
             <p
               style={{
                 fontSize: "0.8125rem",
@@ -242,7 +242,7 @@ export default function PromptBuilderTool() {
                 marginBottom: "12px",
               }}
             >
-              Optional: upload a job description for more specific prompts
+              Optional: upload a job description for more specific prompts.
             </p>
             <label
               className="choose-file-btn"

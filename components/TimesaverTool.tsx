@@ -435,7 +435,6 @@ export default function TimesaverTool() {
               onClick={() => fileInputRef.current?.click()}
             >
               <div className="upload-zone-label">Drag and drop your file here</div>
-              <div className="upload-zone-sub">or click to browse</div>
               <button
                 className="btn btn-outline btn-sm"
                 onClick={(e) => {
@@ -457,13 +456,11 @@ export default function TimesaverTool() {
             </div>
           )}
 
-          <div className="divider-or">or</div>
-
           <textarea
             ref={textareaRef}
             className="textarea"
             placeholder="Or paste your job description here..."
-            style={{ marginBottom: "24px" }}
+            style={{ marginTop: "20px", marginBottom: "24px" }}
             defaultValue={state.jobDescription}
           />
 
@@ -501,11 +498,13 @@ export default function TimesaverTool() {
         <div className="screen">
           <div className="tool-tag">AGENT: Timesaver</div>
 
-          <div
-            className={`path-indicator ${state.path === "A" ? "path-indicator-a" : "path-indicator-b"}`}
+          <button
+            type="button"
+            onClick={() => go("jobTitle")}
+            style={{ background: "none", border: "none", color: "var(--text-secondary)", fontSize: "0.875rem", cursor: "pointer", padding: "0 0 16px", display: "block", textAlign: "left" }}
           >
-            {state.path === "A" ? "Path A: Job Description" : "Path B: Job Title"}
-          </div>
+            ← Back
+          </button>
 
           {/* Progress pips */}
           <div className="progress-bar" style={{ marginBottom: "24px" }}>
@@ -531,7 +530,6 @@ export default function TimesaverTool() {
           </div>
 
           <div className="question-stem">{currentQuestion.stem}</div>
-          <div className="question-subheadline">{currentQuestion.subheadline}</div>
 
           <div className="choices">
             {currentQuestion.choices.map((choice, i) => (
@@ -579,7 +577,7 @@ export default function TimesaverTool() {
             disabled={!canContinueQuestion}
             onClick={handleNextQuestion}
           >
-            {isLastQuestion ? "Show My Results →" : "Next →"}
+            {isLastQuestion ? "See My Results" : "Continue"}
           </button>
         </div>
       )}
@@ -693,7 +691,7 @@ export default function TimesaverTool() {
                   disabled={gateSending}
                 />
                 <button className="btn btn-primary" type="submit" disabled={gateSending}>
-                  {gateSending ? "Sending..." : "See My Results →"}
+                  {gateSending ? "Sending..." : "See My Results"}
                 </button>
               </div>
             </form>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { track } from "@vercel/analytics";
 
 import type { Question } from "@/app/api/questions/route";
@@ -63,10 +63,31 @@ export default function TimesaverTool() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const topRef = useRef<HTMLDivElement>(null);
 
+  const [flipStage, setFlipStage] = useState<"idle" | "out" | "in">("idle");
+  const pendingScreen = useRef<Screen | null>(null);
+
   const go = useCallback((screen: Screen) => {
-    setState((s) => ({ ...s, screen }));
+    pendingScreen.current = screen;
+    setFlipStage("out");
     topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, []);
+
+  useEffect(() => {
+    if (flipStage === "out") {
+      const t = setTimeout(() => {
+        if (pendingScreen.current) {
+          setState((s) => ({ ...s, screen: pendingScreen.current! }));
+          pendingScreen.current = null;
+        }
+        setFlipStage("in");
+      }, 200);
+      return () => clearTimeout(t);
+    }
+    if (flipStage === "in") {
+      const t = setTimeout(() => setFlipStage("idle"), 200);
+      return () => clearTimeout(t);
+    }
+  }, [flipStage]);
 
   // ── API Call 1: Generate questions ─────────────────────────────────────────
   const loadQuestions = useCallback(
@@ -274,9 +295,13 @@ export default function TimesaverTool() {
       ? state.writeInValue.trim().length > 0
       : state.selectedChoice !== null;
 
+  const flipClass =
+    flipStage === "out" ? "screen-flip-out" :
+    flipStage === "in"  ? "screen-flip-in"  : "";
+
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
-    <div className="tool-container" ref={topRef}>
+    <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
       {/* ── Screen 00: Intro ─────────────────────────────────────────────── */}
       {state.screen === "intro" && (
         <div className="screen" style={{ display: "flex", flexDirection: "column", minHeight: "100%", textAlign: "center", justifyContent: "center" }}>

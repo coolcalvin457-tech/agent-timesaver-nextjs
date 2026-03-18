@@ -333,7 +333,7 @@ input, textarea {
 }
 
 .btn-lg {
-  padding: 16px 36px;
+  padding: 16px 28px;
   font-size: 1rem;
 }
 
@@ -1559,6 +1559,10 @@ input, textarea {
   transform: translateY(-3px);
 }
 
+.hero-tool-clickable:hover .btn-primary {
+  border-color: #4da3e0;
+}
+
 /* Browser chrome bar */
 .hero-tool-dark .browser-bar {
   background: var(--dark-surface);
@@ -1777,6 +1781,27 @@ input, textarea {
   background: rgba(30,122,184,0.10);
   border-color: rgba(77, 163, 224, 0.7);
   box-shadow: 0 0 12px rgba(30,122,184,0.15);
+}
+
+/* ── Screen flip transition ───────────────────────────────── */
+@keyframes flipOut {
+  from { transform: perspective(900px) rotateY(0deg);   opacity: 1; }
+  to   { transform: perspective(900px) rotateY(88deg);  opacity: 0; }
+}
+
+@keyframes flipIn {
+  from { transform: perspective(900px) rotateY(-88deg); opacity: 0; }
+  to   { transform: perspective(900px) rotateY(0deg);   opacity: 1; }
+}
+
+.screen-flip-out {
+  animation: flipOut 0.2s ease-in forwards;
+  transform-origin: center center;
+}
+
+.screen-flip-in {
+  animation: flipIn 0.2s ease-out forwards;
+  transform-origin: center center;
 }
 
 /* ── Lead Magnet CTA Section ──────────────────────────────── */

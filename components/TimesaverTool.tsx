@@ -413,16 +413,12 @@ export default function TimesaverTool() {
           <button
             type="button"
             onClick={() => go("jobTitle")}
-            style={{ background: "none", border: "none", color: "var(--text-secondary)", fontSize: "0.875rem", cursor: "pointer", padding: "0 0 16px", display: "block" }}
+            style={{ background: "none", border: "none", color: "var(--text-secondary)", fontSize: "0.875rem", cursor: "pointer", padding: "0 0 16px", display: "block", textAlign: "left" }}
           >
             ← Back
           </button>
-          <div className="path-indicator path-indicator-a">Path A: Job Description</div>
 
           <h1 className="screen-headline">Upload or paste your job description.</h1>
-          <p className="screen-subheadline">
-            The more detail, the better your results. Any format works.
-          </p>
 
           {fileUploaded ? (
             <div className="upload-success">
@@ -432,12 +428,12 @@ export default function TimesaverTool() {
           ) : (
             <div
               className={`upload-zone ${isDragOver ? "drag-over" : ""}`}
+              style={{ padding: "20px 16px", gap: "8px" }}
               onDragOver={(e) => { e.preventDefault(); setIsDragOver(true); }}
               onDragLeave={() => setIsDragOver(false)}
               onDrop={handleDrop}
               onClick={() => fileInputRef.current?.click()}
             >
-              <div className="upload-icon">📄</div>
               <div className="upload-zone-label">Drag and drop your file here</div>
               <div className="upload-zone-sub">or click to browse</div>
               <button
@@ -475,7 +471,7 @@ export default function TimesaverTool() {
             className="btn btn-primary btn-full"
             onClick={handleJDContinue}
           >
-            Start Saving Time →
+            Continue
           </button>
         </div>
       )}

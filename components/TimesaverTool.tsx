@@ -341,7 +341,7 @@ export default function TimesaverTool() {
 
           <input
             className="input"
-            style={{ marginBottom: "24px" }}
+            style={{ marginBottom: "20px" }}
             type="text"
             placeholder="e.g. Real Estate Agent, HR Director, 3rd Grade Teacher..."
             value={jobTitleInput}
@@ -357,10 +357,10 @@ export default function TimesaverTool() {
             style={{
               fontSize: "0.9375rem",
               color: "var(--text-secondary)",
-              marginBottom: "12px",
+              marginBottom: "10px",
             }}
           >
-            Do you have your job description handy?
+            Do you have a copy of your job description?
           </p>
 
           <div className="branch-cards">
@@ -369,9 +369,9 @@ export default function TimesaverTool() {
               onClick={() => handlePathSelect("A")}
               type="button"
             >
-              <div className="branch-card-title">Yes</div>
+              <div className="branch-card-title">YES</div>
               <div className="branch-card-desc">
-                Upload a file or<br />copy &amp; paste.
+                Upload a file, or<br />copy &amp; paste.
               </div>
               <span className="branch-badge branch-badge-a">Best results</span>
             </button>
@@ -381,16 +381,16 @@ export default function TimesaverTool() {
               onClick={() => handlePathSelect("B")}
               type="button"
             >
-              <div className="branch-card-title">No</div>
+              <div className="branch-card-title">NO</div>
               <div className="branch-card-desc">
-                Just use my title.
+                Just use my title and I&apos;ll describe.
               </div>
               <span className="branch-badge branch-badge-b">Quick start</span>
             </button>
           </div>
 
           {jobTitleInput.trim().length > 1 && state.path === null && (
-            <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", marginTop: "12px", marginBottom: "0" }}>
+            <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", marginTop: "10px", marginBottom: "0" }}>
               Select one to continue.
             </p>
           )}
@@ -401,7 +401,7 @@ export default function TimesaverTool() {
             disabled={!canContinueJobTitle}
             onClick={handleJobTitleContinue}
           >
-            Continue →
+            Continue
           </button>
         </div>
       )}

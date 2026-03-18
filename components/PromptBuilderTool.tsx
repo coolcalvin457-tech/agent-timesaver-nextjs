@@ -239,7 +239,7 @@ export default function PromptBuilderTool() {
               style={{
                 fontSize: "0.8125rem",
                 color: "rgba(255,255,255,0.4)",
-                marginBottom: "8px",
+                marginBottom: "12px",
               }}
             >
               Optional: upload a job description for more specific prompts

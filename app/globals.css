@@ -476,7 +476,7 @@ input, textarea {
   line-height: 1.15;
   letter-spacing: -0.025em;
   color: var(--text-primary);
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .screen-subheadline {

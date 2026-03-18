@@ -1832,6 +1832,49 @@ input, textarea {
   color: #ffffff;
 }
 
+/* ── Prompt Builder branded frame ────────────────────────── */
+/* Replaces browser-chrome on the /prompt-builder page.       */
+/* Top bar holds the mono label; bottom bar mirrors it.       */
+
+.pb-frame {
+  border-radius: 20px;
+  overflow: hidden;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.pb-frame.hero-tool-dark {
+  border: 1px solid var(--dark-border);
+  transition: border-color 0.2s ease;
+}
+
+.pb-frame.hero-tool-dark:hover {
+  border-color: rgba(30,122,184,0.5);
+}
+
+.pb-frame-header {
+  padding: 20px 44px;
+  display: flex;
+  align-items: center;
+}
+
+.pb-frame-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--cta);
+  transition: color 0.2s ease;
+}
+
+.pb-frame.hero-tool-dark:hover .pb-frame-label {
+  color: rgba(77,163,224,0.9);
+}
+
+.pb-frame-footer {
+  height: 20px;
+}
+
 /* ── Screen flip transition ───────────────────────────────── */
 @keyframes flipIn {
   from { transform: scaleX(0.05); opacity: 0; }

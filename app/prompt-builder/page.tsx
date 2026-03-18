@@ -40,13 +40,12 @@ export default function PromptBuilderPage() {
         <section className="section" style={{ paddingTop: "56px", paddingBottom: "96px" }}>
           <div className="container">
             <div style={{ maxWidth: "760px", margin: "0 auto" }}>
-              <div className="browser-chrome hero-tool-dark">
-                <div className="browser-bar">
-                  <div className="browser-dot browser-dot-red" />
-                  <div className="browser-dot browser-dot-yellow" />
-                  <div className="browser-dot browser-dot-green" />
+              <div className="pb-frame hero-tool-dark">
+                <div className="pb-frame-header">
+                  <span className="pb-frame-label">AGENT: Prompt Builder</span>
                 </div>
                 <PromptBuilderTool />
+                <div className="pb-frame-footer" />
               </div>
             </div>
           </div>

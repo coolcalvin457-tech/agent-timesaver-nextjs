@@ -76,6 +76,7 @@ export default function PromptBuilderTool() {
   const [showWriteIn, setShowWriteIn] = useState(false);
   const [writeInValue, setWriteInValue] = useState("");
   const [flipStage, setFlipStage] = useState<"idle" | "in">("idle");
+  const [loadingMsgIndex, setLoadingMsgIndex] = useState(0);
 
   // File upload state
   const [jobDescFile, setJobDescFile] = useState<File | null>(null);
@@ -108,6 +109,18 @@ export default function PromptBuilderTool() {
       return;
     }
     topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [screen]);
+
+  // ── Cycling loading messages ────────────────────────────────────
+  useEffect(() => {
+    if (screen !== "loading") {
+      setLoadingMsgIndex(0);
+      return;
+    }
+    const interval = setInterval(() => {
+      setLoadingMsgIndex((prev) => (prev + 1) % 5);
+    }, 6000);
+    return () => clearInterval(interval);
   }, [screen]);
 
   const flipClass = flipStage === "in" ? "screen-flip-in" : "";
@@ -504,16 +517,23 @@ export default function PromptBuilderTool() {
 
   // ── Screen: Loading ────────────────────────────────────────────
   if (screen === "loading") {
+    const loadingMessages = [
+      `Personalizing prompts for ${jobTitle || "your role"}...`,
+      "Grounding in your job role...",
+      "Writing job-specific prompts...",
+      "Running quality checks...",
+      "Almost ready...",
+    ];
     return (
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="loading-screen" style={{ minHeight: "320px" }}>
           <div className="spinner" />
           <p className="loading-headline">Building your Prompt Kit...</p>
-          <p className="loading-subline">
-            Personalizing 12 prompts for {jobTitle || "your role"}
+          <p key={loadingMsgIndex} className="loading-subline">
+            {loadingMessages[loadingMsgIndex]}
           </p>
           <p className="loading-subline" style={{ marginTop: "8px" }}>
-            About 20 seconds.
+            About a minute.
           </p>
         </div>
       </div>
@@ -525,11 +545,11 @@ export default function PromptBuilderTool() {
     return (
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
-          <p className="results-tag">Congrats! Your Prompt Kit is ready.</p>
-          <h2 className="results-headline">
+          <p className="results-tag" style={{ marginBottom: "6px" }}>Congrats! Your Prompt Kit is ready.</p>
+          <h2 className="results-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, marginBottom: "10px" }}>
             12 prompts built for {jobTitle}.
           </h2>
-          <p className="screen-subheadline" style={{ marginBottom: "28px" }}>
+          <p className="screen-subheadline" style={{ marginTop: 0, marginBottom: "24px" }}>
             Enter your email to view your results. We&apos;ll send a copy to your inbox.
           </p>
 
@@ -551,7 +571,7 @@ export default function PromptBuilderTool() {
                 onClick={handleEmailSubmit}
                 disabled={emailLoading || !email.trim()}
               >
-                {emailLoading ? "Loading..." : "See My Results →"}
+                {emailLoading ? "Loading..." : "See My Results"}
               </button>
             </div>
           </div>

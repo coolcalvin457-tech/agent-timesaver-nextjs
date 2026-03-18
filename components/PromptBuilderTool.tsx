@@ -82,6 +82,7 @@ export default function PromptBuilderTool() {
   const [jobDescText, setJobDescText] = useState("");
 
   const topRef = useRef<HTMLDivElement>(null);
+  const isFirstRender = useRef(true);
 
   // ── Track tool start on mount ──────────────────────────────────
   useEffect(() => {
@@ -102,6 +103,10 @@ export default function PromptBuilderTool() {
   }, [flipStage]);
 
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [screen]);
 
@@ -261,7 +266,7 @@ export default function PromptBuilderTool() {
                 style={{ display: "none" }}
                 onChange={handleFileChange}
               />
-              {jobDescFile ? `✓ ${jobDescFile.name}` : "Choose file (.txt)"}
+              {jobDescFile ? `✓ ${jobDescFile.name}` : "Choose file"}
             </label>
             {jobDescFile && (
               <button
@@ -287,7 +292,7 @@ export default function PromptBuilderTool() {
             onClick={() => { track("q1_completed", { jobTitle }); go("q2"); }}
             disabled={!jobTitle.trim()}
           >
-            Next →
+            Continue
           </button>
         </div>
       </div>
@@ -346,7 +351,7 @@ export default function PromptBuilderTool() {
                 onClick={() => advanceQ2(writeInValue.trim())}
                 disabled={!canAdvanceQ2}
               >
-                Next →
+                Continue
               </button>
             </>
           ) : (
@@ -411,7 +416,7 @@ export default function PromptBuilderTool() {
                 onClick={() => advanceQ3(writeInValue.trim())}
                 disabled={!canAdvanceQ3}
               >
-                Next →
+                Continue
               </button>
             </>
           ) : (
@@ -491,7 +496,7 @@ export default function PromptBuilderTool() {
                 onClick={() => advanceQ4(writeInValue.trim())}
                 disabled={!canAdvanceQ4}
               >
-                Build My Prompt Kit →
+                Build My Prompt Kit
               </button>
             </>
           ) : (

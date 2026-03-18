@@ -20,20 +20,6 @@ export default function PromptBuilderPage() {
         >
           <div className="container" style={{ textAlign: "center" }}>
 
-            {/* Eyebrow */}
-            <p
-              style={{
-                fontSize: "0.6875rem",
-                fontWeight: 600,
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "var(--cta)",
-                marginBottom: "20px",
-              }}
-            >
-              AGENT: Prompt Builder
-            </p>
-
             {/* Headline */}
             <h1
               className="heading-1"
@@ -51,7 +37,7 @@ export default function PromptBuilderPage() {
         </section>
 
         {/* ── Tool section ─────────────────────────────────────── */}
-        <section className="section" style={{ paddingTop: "40px" }}>
+        <section className="section" style={{ paddingTop: "56px", paddingBottom: "96px" }}>
           <div className="container">
             <div style={{ maxWidth: "760px", margin: "0 auto" }}>
               <div className="hero-tool-dark">

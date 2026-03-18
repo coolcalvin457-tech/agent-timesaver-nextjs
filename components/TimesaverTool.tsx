@@ -426,12 +426,28 @@ export default function TimesaverTool() {
               <span>{fileUploaded}</span>
             </div>
           ) : (
-            <div>
+            <div
+              onClick={() => fileInputRef.current?.click()}
+              onDragOver={(e) => { e.preventDefault(); setIsDragOver(true); }}
+              onDragLeave={() => setIsDragOver(false)}
+              onDrop={handleDrop}
+              style={{
+                border: `1.5px dashed ${isDragOver ? "var(--cta)" : "rgba(30,122,184,0.6)"}`,
+                borderRadius: "var(--radius-input)",
+                padding: "20px",
+                textAlign: "center",
+                cursor: "pointer",
+                marginBottom: "0",
+              }}
+            >
+              <div style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.7)", marginBottom: "12px" }}>
+                Drag and drop, or
+              </div>
               <button
-                className="btn btn-outline btn-full"
-                onClick={() => fileInputRef.current?.click()}
+                className="btn btn-outline btn-sm"
+                onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}
                 type="button"
-                style={{ borderColor: "var(--cta)" }}
+                style={{ borderColor: "var(--cta)", color: "#fff", background: "transparent" }}
               >
                 Choose File
               </button>

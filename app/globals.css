@@ -1877,9 +1877,9 @@ input, textarea {
   color: rgba(77,163,224,0.9);
 }
 
-/* 52px top gives label breathing room above and below; 36px on sides and bottom */
+/* Uniform 52px on all four sides — matches the top label gap */
 .pb-frame-body {
-  padding: 52px 36px 36px;
+  padding: 52px;
 }
 
 /* Choose File button hover */

@@ -331,10 +331,9 @@ export default function TimesaverTool() {
         <div className="screen">
           <div className="tool-tag">AGENT: Timesaver</div>
 
-          <h1 className="screen-headline">What&apos;s your job title?</h1>
+          <h1 className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25 }}>What&apos;s your job title?</h1>
           <p className="screen-subheadline">
-            Be specific. &ldquo;Senior HR Business Partner&rdquo; beats
-            &ldquo;HR&rdquo; every time.
+            Be specific. &ldquo;Senior HR Business Partner&rdquo; beats &ldquo;HR.&rdquo;
           </p>
 
           {error && (
@@ -355,7 +354,7 @@ export default function TimesaverTool() {
 
           <input
             className="input"
-            style={{ marginBottom: "28px" }}
+            style={{ marginBottom: "24px" }}
             type="text"
             placeholder="e.g. Real Estate Agent, HR Director, 3rd Grade Teacher..."
             value={jobTitleInput}
@@ -366,13 +365,6 @@ export default function TimesaverTool() {
             }}
             autoFocus
           />
-
-          <div className="primer-box" style={{ marginBottom: "20px" }}>
-            <div className="primer-label">⚡ AI Lesson #1</div>
-            <p className="primer-body" style={{ margin: 0 }}>
-              The more context you give, the more specific your results will be.
-            </p>
-          </div>
 
           <p
             style={{
@@ -390,9 +382,9 @@ export default function TimesaverTool() {
               onClick={() => handlePathSelect("A")}
               type="button"
             >
-              <div className="branch-card-title">Yes, I have my job description</div>
+              <div className="branch-card-title">Yes</div>
               <div className="branch-card-desc">
-                Upload a file or copy &amp; paste.
+                Upload a file or<br />copy &amp; paste.
               </div>
               <span className="branch-badge branch-badge-a">Best results</span>
             </button>
@@ -402,9 +394,9 @@ export default function TimesaverTool() {
               onClick={() => handlePathSelect("B")}
               type="button"
             >
-              <div className="branch-card-title">No, just use my title</div>
+              <div className="branch-card-title">No</div>
               <div className="branch-card-desc">
-                Answer a couple follow-up questions.
+                Just use my title.
               </div>
               <span className="branch-badge branch-badge-b">Quick start</span>
             </button>

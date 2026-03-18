@@ -586,13 +586,13 @@ input, textarea {
 }
 
 .branch-badge-a {
-  background: rgba(22,66,91,0.08);
-  color: var(--brand);
+  background: rgba(91,58,130,0.08);
+  color: var(--path-b);
 }
 
 .branch-badge-b {
-  background: rgba(91,58,130,0.08);
-  color: var(--path-b);
+  background: rgba(22,66,91,0.08);
+  color: var(--brand);
 }
 
 .branch-card-path-a:hover,

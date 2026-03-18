@@ -214,7 +214,7 @@ export default function PromptBuilderTool() {
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
           <ProgressBar />
-          <p className="screen-headline">What&apos;s your job title?</p>
+          <p className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25 }}>What&apos;s your job title?</p>
           <p className="screen-subheadline">
             Be specific. &ldquo;Senior HR Business Partner&rdquo; is better than &ldquo;HR.&rdquo;
           </p>
@@ -313,7 +313,7 @@ export default function PromptBuilderTool() {
         <div className="screen">
           <BackButton onClick={() => goBack("q2")} />
           <ProgressBar />
-          <p className="screen-headline">
+          <p className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25 }}>
             What best describes most of your work?
           </p>
           <div className="choices">
@@ -376,7 +376,7 @@ export default function PromptBuilderTool() {
         <div className="screen">
           <BackButton onClick={() => goBack("q3")} />
           <ProgressBar />
-          <p className="screen-headline">
+          <p className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25 }}>
             How do you currently use AI tools like ChatGPT, Claude, or Gemini?
           </p>
           <div className="choices">
@@ -439,7 +439,7 @@ export default function PromptBuilderTool() {
         <div className="screen">
           <BackButton onClick={() => goBack("q4")} />
           <ProgressBar />
-          <p className="screen-headline">
+          <p className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25 }}>
             Is there anything you&apos;ve found challenging about using AI?
           </p>
           {error && (

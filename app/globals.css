@@ -1605,6 +1605,7 @@ input, textarea {
 .hero-tool-dark .tool-tag {
   color: var(--cta);
   margin-bottom: 20px;
+  text-transform: uppercase;
 }
 
 /* Headlines */
@@ -1863,10 +1864,11 @@ input, textarea {
 .pb-frame-label {
   position: absolute;
   top: 20px;
-  left: 52px;
+  left: 96px;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.09em;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--cta);
   transition: color 0.2s ease;

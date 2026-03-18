@@ -301,8 +301,7 @@ export default function TimesaverTool() {
 
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
-    <div className="tool-container" ref={topRef}>
-      <div className={flipClass} style={{ flex: 1, display: "flex", flexDirection: "column", minHeight: 0 }}>
+    <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
       {/* ── Screen 00: Intro ─────────────────────────────────────────────── */}
       {state.screen === "intro" && (
         <div className="screen" style={{ display: "flex", flexDirection: "column", minHeight: "100%", textAlign: "center", justifyContent: "center" }}>
@@ -719,7 +718,6 @@ export default function TimesaverTool() {
         </div>
       )}
 
-      </div>
     </div>
   );
 }

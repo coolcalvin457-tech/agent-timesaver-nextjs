@@ -77,6 +77,7 @@ export default function PromptBuilderTool() {
   const [writeInValue, setWriteInValue] = useState("");
   const [flipStage, setFlipStage] = useState<"idle" | "in">("idle");
   const [loadingMsgIndex, setLoadingMsgIndex] = useState(0);
+  const [expandedWhys, setExpandedWhys] = useState<Set<string>>(new Set());
 
   // File upload state
   const [jobDescFile, setJobDescFile] = useState<File | null>(null);
@@ -181,6 +182,18 @@ export default function PromptBuilderTool() {
       setError("Something went wrong. Please try again.");
       go("q4");
     }
+  };
+
+  const toggleWhy = (id: string) => {
+    setExpandedWhys((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
   };
 
   const handleCopy = (id: string, text: string) => {
@@ -637,7 +650,27 @@ export default function PromptBuilderTool() {
                         {copiedId === id ? "✓ Copied" : "Copy"}
                       </button>
                     </div>
-                    <p className="pb-prompt-why">{prompt.why}</p>
+                    <button
+                      type="button"
+                      onClick={() => toggleWhy(id)}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        color: "rgba(255,255,255,0.3)",
+                        fontSize: "0.75rem",
+                        cursor: "pointer",
+                        padding: "10px 0 0 0",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "4px",
+                        letterSpacing: "0.01em",
+                      }}
+                    >
+                      {expandedWhys.has(id) ? "▲ Hide explanation" : "▼ Why this works"}
+                    </button>
+                    {expandedWhys.has(id) && (
+                      <p className="pb-prompt-why" style={{ marginTop: "8px" }}>{prompt.why}</p>
+                    )}
                   </div>
                 );
               })}

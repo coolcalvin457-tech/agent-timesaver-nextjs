@@ -2073,10 +2073,10 @@ input, textarea {
 
 .pb-prompt-text {
   font-family: var(--font-mono);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   color: var(--text-secondary);
-  line-height: 1.65;
-  padding-right: 64px;
+  line-height: 1.7;
+  padding-right: 0;
 }
 
 .pb-copy-btn {

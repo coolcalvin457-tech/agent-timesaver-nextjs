@@ -117,7 +117,32 @@ async function sendPromptKitEmail(
                 Copy any prompt below and paste it directly into ChatGPT or Claude. Each one is ready to use — just fill in the brackets and go.
               </p>
 
+              <!-- AI Profile -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
+                <tr>
+                  <td style="background:#f0f7fc; border:1px solid #bdd9ee; border-radius:12px; padding:24px;">
+                    <p style="margin:0 0 4px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#16425b;">
+                      Step 1 &nbsp;/&nbsp; Set up your AI Profile first
+                    </p>
+                    <p style="margin:0 0 14px 0; font-size:13px; color:#555553; line-height:1.6;">
+                      Paste this into your AI tool's settings once. Every prompt you use after that gets better automatically — AI already knows who you are before you say a word.
+                    </p>
+                    <p style="margin:0 0 14px 0; font-size:13px; color:#333331; line-height:1.7; font-family:monospace; background:#ffffff; border:1px solid #d0e8f5; border-radius:8px; padding:14px 16px;">
+                      ${promptKit.aiProfile}
+                    </p>
+                    <p style="margin:0; font-size:12px; color:#888886; line-height:1.6;">
+                      <strong>ChatGPT:</strong> Settings &rarr; Personalization &rarr; Custom Instructions &nbsp;&nbsp;
+                      <strong>Claude:</strong> Settings &rarr; Profile &nbsp;&nbsp;
+                      <strong>Gemini:</strong> Settings &rarr; Extensions &amp; Personalization
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
               <!-- Prompts by category -->
+              <p style="margin:0 0 16px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#16425b;">
+                Step 2 &nbsp;/&nbsp; Your ${totalPrompts} prompts
+              </p>
               <table width="100%" cellpadding="0" cellspacing="0">
                 ${categoryRows}
               </table>
@@ -127,8 +152,8 @@ async function sendPromptKitEmail(
                 <tr>
                   <td>
                     <a href="https://promptaiagents.com"
-                       style="display:inline-block; background:linear-gradient(180deg,#2C97DD 0%,#1562A0 100%); color:#ffffff; font-size:15px; font-weight:600; text-decoration:none; padding:14px 28px; border-radius:10px;">
-                      Explore more AI tools →
+                       style="display:inline-block; background:#161618; color:#ffffff; font-size:15px; font-weight:600; text-decoration:none; padding:14px 28px; border-radius:10px;">
+                      Your prompts are ready. Now build the workflows. &rarr;
                     </a>
                   </td>
                 </tr>

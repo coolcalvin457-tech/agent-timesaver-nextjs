@@ -426,26 +426,15 @@ export default function TimesaverTool() {
               <span>{fileUploaded}</span>
             </div>
           ) : (
-            <div
-              className={`upload-zone ${isDragOver ? "drag-over" : ""}`}
-              style={{ padding: "20px 16px", gap: "8px" }}
-              onDragOver={(e) => { e.preventDefault(); setIsDragOver(true); }}
-              onDragLeave={() => setIsDragOver(false)}
-              onDrop={handleDrop}
-              onClick={() => fileInputRef.current?.click()}
-            >
-              <div className="upload-zone-label">Drag and drop your file here</div>
+            <div>
               <button
-                className="btn btn-outline btn-sm"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  fileInputRef.current?.click();
-                }}
+                className="btn btn-outline btn-full"
+                onClick={() => fileInputRef.current?.click()}
                 type="button"
               >
                 Choose File
               </button>
-              <div className="upload-formats">PDF, DOCX, TXT</div>
+              <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)", textAlign: "center", marginTop: "8px" }}>PDF, DOCX, TXT</div>
               <input
                 ref={fileInputRef}
                 type="file"

@@ -214,9 +214,8 @@ export default function PromptBuilderTool() {
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
           <ProgressBar />
-          <p className="step-label">Question 1 of 4</p>
-          <p className="question-stem">What&apos;s your job title?</p>
-          <p className="question-subheadline">
+          <p className="screen-headline">What&apos;s your job title?</p>
+          <p className="screen-subheadline">
             Be specific. &ldquo;Senior HR Business Partner&rdquo; is better than &ldquo;HR.&rdquo;
           </p>
           <input
@@ -314,8 +313,7 @@ export default function PromptBuilderTool() {
         <div className="screen">
           <BackButton onClick={() => goBack("q2")} />
           <ProgressBar />
-          <p className="step-label">Question 2 of 4</p>
-          <p className="question-stem">
+          <p className="screen-headline">
             What best describes most of your work?
           </p>
           <div className="choices">
@@ -378,8 +376,7 @@ export default function PromptBuilderTool() {
         <div className="screen">
           <BackButton onClick={() => goBack("q3")} />
           <ProgressBar />
-          <p className="step-label">Question 3 of 4</p>
-          <p className="question-stem">
+          <p className="screen-headline">
             How do you currently use AI tools like ChatGPT, Claude, or Gemini?
           </p>
           <div className="choices">
@@ -442,8 +439,7 @@ export default function PromptBuilderTool() {
         <div className="screen">
           <BackButton onClick={() => goBack("q4")} />
           <ProgressBar />
-          <p className="step-label">Almost there. Question 4 of 4</p>
-          <p className="question-stem">
+          <p className="screen-headline">
             Is there anything you&apos;ve found challenging about using AI?
           </p>
           {error && (

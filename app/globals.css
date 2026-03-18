@@ -1583,6 +1583,11 @@ input, textarea {
   min-height: 415px;
   display: flex;
   flex-direction: column;
+  transition: border-color 0.2s ease;
+}
+
+.hero-tool-dark .tool-container:hover {
+  border-color: var(--cta);
 }
 
 /* Screen / main content area */

@@ -383,7 +383,7 @@ export default function TimesaverTool() {
             >
               <div className="branch-card-title">NO</div>
               <div className="branch-card-desc">
-                Just use my title<br />and I&apos;ll describe.
+                I&apos;ll answer multiple<br />choice questions.
               </div>
               <span className="branch-badge branch-badge-b">Quick start</span>
             </button>

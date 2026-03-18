@@ -1853,7 +1853,7 @@ input, textarea {
 }
 
 .pb-frame-header {
-  padding: 20px 44px;
+  padding: 20px 44px 20px 64px;
   display: flex;
   align-items: center;
 }
@@ -1873,6 +1873,17 @@ input, textarea {
 
 .pb-frame-footer {
   height: 20px;
+}
+
+/* Choose File button hover */
+.choose-file-btn {
+  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.choose-file-btn:hover {
+  border-color: rgba(30,122,184,0.45) !important;
+  background: rgba(30,122,184,0.08) !important;
+  color: rgba(255,255,255,0.8) !important;
 }
 
 /* ── Screen flip transition ───────────────────────────────── */

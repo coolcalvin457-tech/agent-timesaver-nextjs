@@ -213,7 +213,6 @@ export default function PromptBuilderTool() {
     return (
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
-          <div className="tool-tag">AGENT: Prompt Builder</div>
           <ProgressBar />
           <p className="step-label">Question 1 of 4</p>
           <p className="question-stem">What&apos;s your job title?</p>
@@ -247,6 +246,7 @@ export default function PromptBuilderTool() {
               Optional: upload a job description for more specific prompts
             </p>
             <label
+              className="choose-file-btn"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -312,7 +312,6 @@ export default function PromptBuilderTool() {
     return (
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
-          <div className="tool-tag">AGENT: Prompt Builder</div>
           <BackButton onClick={() => goBack("q2")} />
           <ProgressBar />
           <p className="step-label">Question 2 of 4</p>
@@ -377,7 +376,6 @@ export default function PromptBuilderTool() {
     return (
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
-          <div className="tool-tag">AGENT: Prompt Builder</div>
           <BackButton onClick={() => goBack("q3")} />
           <ProgressBar />
           <p className="step-label">Question 3 of 4</p>
@@ -442,7 +440,6 @@ export default function PromptBuilderTool() {
     return (
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
-          <div className="tool-tag">AGENT: Prompt Builder</div>
           <BackButton onClick={() => goBack("q4")} />
           <ProgressBar />
           <p className="step-label">Almost there. Question 4 of 4</p>
@@ -514,7 +511,6 @@ export default function PromptBuilderTool() {
     return (
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="loading-screen" style={{ minHeight: "320px" }}>
-          <div className="tool-tag" style={{ textAlign: "center" }}>AGENT: Prompt Builder</div>
           <div className="spinner" />
           <p className="loading-headline">Building your Prompt Kit...</p>
           <p className="loading-subline">
@@ -533,7 +529,6 @@ export default function PromptBuilderTool() {
     return (
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
-          <div className="tool-tag">AGENT: Prompt Builder</div>
           <p className="results-tag">Congrats! Your Prompt Kit is ready.</p>
           <h2 className="results-headline">
             12 prompts built for {jobTitle}.
@@ -591,7 +586,6 @@ export default function PromptBuilderTool() {
           </div>
 
           {/* Header */}
-          <div className="tool-tag">AGENT: Prompt Builder</div>
           <p className="results-tag">Your Prompt Kit is ready.</p>
           <h2 className="results-headline">
             {totalPrompts} AI prompts built for {jobTitle}.

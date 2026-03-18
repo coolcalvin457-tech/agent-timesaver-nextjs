@@ -38,7 +38,7 @@ export default function PromptBuilderPage() {
         </section>
 
         {/* ── Tool section ─────────────────────────────────────── */}
-        <section className="section" style={{ paddingTop: "56px", paddingBottom: "96px" }}>
+        <section className="section" style={{ paddingTop: "32px", paddingBottom: "96px" }}>
           <div className="container">
             <div style={{ maxWidth: "760px", margin: "0 auto" }}>
               <div className="pb-frame hero-tool-dark">

@@ -42,9 +42,7 @@ export default function PromptBuilderPage() {
           <div className="container">
             <div style={{ maxWidth: "760px", margin: "0 auto" }}>
               <div className="pb-frame hero-tool-dark">
-                <div className="pb-frame-header">
-                  <span className="pb-frame-label">AGENT: Prompt Builder</span>
-                </div>
+                <span className="pb-frame-label">AGENT: Prompt Builder</span>
                 <div className="pb-frame-body">
                   <PromptBuilderTool />
                 </div>

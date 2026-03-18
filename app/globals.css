@@ -1834,49 +1834,52 @@ input, textarea {
 
 /* ── Prompt Builder branded frame ────────────────────────── */
 /* Replaces browser-chrome on the /prompt-builder page.       */
-/* Top bar holds the mono label; bottom bar mirrors it.       */
+/* Label floats absolutely in the top gap; body is uniform.   */
 
 .pb-frame {
   border-radius: 20px;
   overflow: hidden;
   max-width: 640px;
   margin: 0 auto;
+  position: relative;
 }
 
 .pb-frame.hero-tool-dark {
   border: 1px solid var(--dark-border);
-  transition: border-color 0.2s ease;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .pb-frame.hero-tool-dark:hover {
   border-color: rgba(30,122,184,0.5);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 32px rgba(30,122,184,0.15), 0 20px 52px rgba(0,0,0,0.36);
 }
 
-.pb-frame-header {
-  padding: 20px 24px 20px 68px;
-  display: flex;
-  align-items: center;
-}
-
-.pb-frame-body {
-  padding: 0 24px 24px;
+/* Fire inner border in unison with the outer frame hover */
+.pb-frame.hero-tool-dark:hover .tool-container {
+  border-color: var(--cta);
 }
 
 .pb-frame-label {
+  position: absolute;
+  top: 14px;
+  left: 28px;
   font-family: var(--font-mono);
   font-size: 0.72rem;
   letter-spacing: 0.09em;
   text-transform: uppercase;
   color: var(--cta);
   transition: color 0.2s ease;
+  pointer-events: none;
 }
 
 .pb-frame.hero-tool-dark:hover .pb-frame-label {
   color: rgba(77,163,224,0.9);
 }
 
-.pb-frame-footer {
-  height: 20px;
+/* Uniform 36px gap on all four sides between outer and inner border */
+.pb-frame-body {
+  padding: 36px;
 }
 
 /* Choose File button hover */

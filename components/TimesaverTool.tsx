@@ -291,7 +291,7 @@ export default function TimesaverTool() {
     <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
       {/* ── Screen 00: Intro ─────────────────────────────────────────────── */}
       {state.screen === "intro" && (
-        <div className="screen" style={{ display: "flex", flexDirection: "column", minHeight: "100%", textAlign: "center", justifyContent: "center", paddingBottom: "48px" }}>
+        <div className="screen" style={{ display: "flex", flexDirection: "column", textAlign: "center", justifyContent: "center", paddingTop: "32px", paddingBottom: "48px" }}>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0" }}>
             <div className="tool-tag" style={{ textAlign: "center", marginBottom: "20px" }}>AGENT: Timesaver</div>
             <h1 className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25, marginBottom: "20px" }}>

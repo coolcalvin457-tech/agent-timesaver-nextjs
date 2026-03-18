@@ -542,7 +542,7 @@ input, textarea {
   background: var(--surface);
   border: 2px solid var(--border);
   border-radius: var(--radius-card);
-  padding: 20px;
+  padding: 16px;
   cursor: pointer;
   transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
   position: relative;
@@ -1580,7 +1580,7 @@ input, textarea {
   background: radial-gradient(ellipse at center, rgba(30,122,184,0.10) 0%, #161618 65%);
   border: 1px solid var(--dark-border);
   box-shadow: none;
-  min-height: 420px;
+  min-height: 460px;
   display: flex;
   flex-direction: column;
 }

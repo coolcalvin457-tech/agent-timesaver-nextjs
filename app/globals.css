@@ -1580,7 +1580,7 @@ input, textarea {
   background: radial-gradient(ellipse at center, rgba(30,122,184,0.10) 0%, #161618 65%);
   border: 1px solid var(--dark-border);
   box-shadow: none;
-  min-height: 200px;
+  min-height: 360px;
   display: flex;
   flex-direction: column;
 }

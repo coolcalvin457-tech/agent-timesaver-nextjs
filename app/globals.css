@@ -1785,22 +1785,22 @@ input, textarea {
 
 /* ── Screen flip transition ───────────────────────────────── */
 @keyframes flipOut {
-  from { transform: perspective(900px) rotateY(0deg);   opacity: 1; }
-  to   { transform: perspective(900px) rotateY(88deg);  opacity: 0; }
+  from { transform: scaleX(1); opacity: 1; }
+  to   { transform: scaleX(0); opacity: 0; }
 }
 
 @keyframes flipIn {
-  from { transform: perspective(900px) rotateY(-88deg); opacity: 0; }
-  to   { transform: perspective(900px) rotateY(0deg);   opacity: 1; }
+  from { transform: scaleX(0); opacity: 0; }
+  to   { transform: scaleX(1); opacity: 1; }
 }
 
 .screen-flip-out {
-  animation: flipOut 0.2s ease-in forwards;
+  animation: flipOut 0.18s ease-in both;
   transform-origin: center center;
 }
 
 .screen-flip-in {
-  animation: flipIn 0.2s ease-out forwards;
+  animation: flipIn 0.18s ease-out both;
   transform-origin: center center;
 }
 

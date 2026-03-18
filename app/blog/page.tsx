@@ -94,11 +94,8 @@ export default function BlogPage() {
               Blog
             </h1>
             <p
-              className="body-lg"
-              style={{
-                color: "var(--text-secondary)",
-                margin: "0 auto",
-              }}
+              className="hero-subheadline"
+              style={{ margin: "0 auto" }}
             >
               Built for real jobs. Not demos.
             </p>

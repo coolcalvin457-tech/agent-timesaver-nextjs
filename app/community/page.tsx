@@ -25,11 +25,8 @@ export default function CommunityPage() {
               Community
             </h1>
             <p
-              className="body-lg"
-              style={{
-                color: "var(--text-secondary)",
-                margin: "0 auto",
-              }}
+              className="hero-subheadline"
+              style={{ margin: "0 auto" }}
             >
               A place where professionals share what&apos;s working with AI.<br />
               Real-life, applicable examples.

@@ -135,9 +135,12 @@ async function sendResultsEmail(
               <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:32px;">
                 <tr>
                   <td>
-                    <a href="https://promptaiagents.com"
+                    <p style="margin:0 0 16px 0; font-size:15px; color:#555553; line-height:1.6;">
+                      Your workflows are ready. Now build the prompts to run them.
+                    </p>
+                    <a href="https://promptaiagents.com/prompt-builder"
                        style="display:inline-block; background:#161618; color:#ffffff; font-size:15px; font-weight:600; text-decoration:none; padding:14px 28px; border-radius:10px;">
-                      Visit promptaiagents.com →
+                      Try AGENT: Prompt Builder
                     </a>
                   </td>
                 </tr>

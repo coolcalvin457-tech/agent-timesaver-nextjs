@@ -625,13 +625,14 @@ export default function PromptBuilderTool() {
                 return (
                   <div key={id} className="pb-prompt-card">
                     <p className="pb-prompt-title">{prompt.title}</p>
-                    <div className="pb-prompt-text-wrapper">
+                    <div className="pb-prompt-text-wrapper" style={{ flexDirection: "column", alignItems: "stretch" }}>
                       <p className="pb-prompt-text">{prompt.prompt}</p>
                       <button
                         className={`pb-copy-btn ${
                           copiedId === id ? "copied" : ""
                         }`}
                         onClick={() => handleCopy(id, prompt.prompt)}
+                        style={{ alignSelf: "flex-end", marginTop: "10px" }}
                       >
                         {copiedId === id ? "✓ Copied" : "Copy"}
                       </button>
@@ -706,11 +707,12 @@ export default function PromptBuilderTool() {
                 your AI tool&apos;s settings once. Every prompt you use
                 gets better automatically.
               </p>
-              <div className="pb-prompt-text-wrapper" style={{ marginBottom: "12px" }}>
+              <div className="pb-prompt-text-wrapper" style={{ marginBottom: "12px", flexDirection: "column", alignItems: "stretch" }}>
                 <p className="pb-prompt-text">{promptKit.aiProfile}</p>
                 <button
                   className={`pb-copy-btn ${copiedId === "aiProfile" ? "copied" : ""}`}
                   onClick={() => handleCopy("aiProfile", promptKit.aiProfile)}
+                  style={{ alignSelf: "flex-end", marginTop: "10px" }}
                 >
                   {copiedId === "aiProfile" ? "✓ Copied" : "Copy"}
                 </button>

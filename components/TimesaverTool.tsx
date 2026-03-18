@@ -465,7 +465,7 @@ export default function TimesaverTool() {
             ref={textareaRef}
             className="textarea"
             placeholder="Or paste your job description here..."
-            style={{ marginTop: "20px", marginBottom: "24px" }}
+            style={{ marginTop: "28px", marginBottom: "24px" }}
             defaultValue={state.jobDescription}
           />
 

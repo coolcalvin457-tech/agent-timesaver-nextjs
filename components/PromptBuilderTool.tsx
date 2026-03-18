@@ -27,11 +27,10 @@ const CHALLENGES = [
   "I'm not sure which AI tool to use for what",
 ];
 
-type Screen = "intro" | "q1" | "q2" | "q3" | "q4" | "loading" | "email-gate" | "results";
+type Screen = "q1" | "q2" | "q3" | "q4" | "loading" | "email-gate" | "results";
 const QUESTION_SCREENS: Screen[] = ["q1", "q2", "q3", "q4"];
 
 const PREV_SCREEN: Partial<Record<Screen, Screen>> = {
-  q1: "intro",
   q2: "q1",
   q3: "q2",
   q4: "q3",
@@ -64,7 +63,7 @@ function BackButton({ onClick }: { onClick: () => void }) {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 export default function PromptBuilderTool() {
-  const [screen, setScreen] = useState<Screen>("intro");
+  const [screen, setScreen] = useState<Screen>("q1");
   const [jobTitle, setJobTitle] = useState("");
   const [workType, setWorkType] = useState("");
   const [aiUsage, setAiUsage] = useState("");
@@ -83,6 +82,11 @@ export default function PromptBuilderTool() {
   const [jobDescText, setJobDescText] = useState("");
 
   const topRef = useRef<HTMLDivElement>(null);
+
+  // ── Track tool start on mount ──────────────────────────────────
+  useEffect(() => {
+    track("tool_started");
+  }, []);
 
   // ── Screen transition helpers ───────────────────────────────────
   const go = useCallback((s: Screen) => {
@@ -199,51 +203,12 @@ export default function PromptBuilderTool() {
     </div>
   );
 
-  // ── Screen: Intro ──────────────────────────────────────────────
-  if (screen === "intro") {
-    return (
-      <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
-        <div className="screen">
-          <div className="tool-tag">AGENT: Prompt Builder</div>
-          <h1 className="screen-headline">
-            Build your own AI Prompt Kit.
-          </h1>
-          <p className="screen-subheadline">
-            Answer 4 questions. Get 12 AI prompts built around your exact job.
-          </p>
-
-          <div className="pb-perks">
-            {[
-              "Personalized prompts.",
-              "Organized by category (writing, analysis, future planning, and more).",
-              "One-click copy. Paste into ChatGPT, Claude, or Gemini.",
-              "Sent to your inbox so you always have it.",
-            ].map((perk) => (
-              <div key={perk} className="pb-perk">
-                <span className="perk-check">✓</span>
-                <span>{perk}</span>
-              </div>
-            ))}
-          </div>
-
-          <button
-            className="btn btn-primary btn-full btn-lg"
-            onClick={() => { track("tool_started"); go("q1"); }}
-          >
-            Build My Prompt Kit →
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   // ── Screen: Q1 — Job Title ─────────────────────────────────────
   if (screen === "q1") {
     return (
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
           <div className="tool-tag">AGENT: Prompt Builder</div>
-          <BackButton onClick={() => goBack("q1")} />
           <ProgressBar />
           <p className="step-label">Question 1 of 4</p>
           <p className="question-stem">What&apos;s your job title?</p>

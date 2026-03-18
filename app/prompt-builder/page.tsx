@@ -16,12 +16,12 @@ export default function PromptBuilderPage() {
         {/* ── Hero section ─────────────────────────────────────── */}
         <section
           className="section section-alt"
-          style={{ paddingTop: "140px", paddingBottom: "40px" }}
+          style={{ paddingTop: "120px", paddingBottom: "24px" }}
         >
           <div className="container" style={{ textAlign: "center" }}>
 
             {/* Back to Tools — breadcrumb nav */}
-            <div style={{ textAlign: "left", marginBottom: "48px" }}>
+            <div style={{ textAlign: "left", marginBottom: "36px" }}>
               <a
                 href="/tools"
                 style={{
@@ -55,7 +55,7 @@ export default function PromptBuilderPage() {
             <h1
               className="heading-1"
               style={{
-                margin: "0 auto 32px",
+                margin: "0 auto 0",
                 fontSize: "clamp(2.25rem, 4vw, 3.5rem)",
                 lineHeight: 1.25,
               }}
@@ -63,25 +63,13 @@ export default function PromptBuilderPage() {
               12 prompts built for your exact job.
             </h1>
 
-            {/* CTA */}
-            <a
-              href="#build-prompt-kit"
-              className="btn btn-primary"
-              style={{ padding: "10px 24px", fontSize: "0.9375rem", borderRadius: "6px" }}
-            >
-              Build My Prompt Kit
-            </a>
-
           </div>
         </section>
 
         {/* ── Tool section ─────────────────────────────────────── */}
-        <section id="build-prompt-kit" className="section" style={{ paddingTop: "64px" }}>
+        <section className="section" style={{ paddingTop: "40px" }}>
           <div className="container">
             <div style={{ maxWidth: "760px", margin: "0 auto" }}>
-              <p className="eyebrow" style={{ marginBottom: "20px" }}>
-                AGENT: Prompt Builder
-              </p>
               <PromptBuilderTool />
             </div>
           </div>

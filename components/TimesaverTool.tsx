@@ -341,7 +341,7 @@ export default function TimesaverTool() {
 
           <input
             className="input"
-            style={{ marginBottom: "20px" }}
+            style={{ marginBottom: "36px" }}
             type="text"
             placeholder="e.g. Real Estate Agent, HR Director, 3rd Grade Teacher..."
             value={jobTitleInput}
@@ -397,7 +397,7 @@ export default function TimesaverTool() {
 
           <button
             className="btn btn-primary btn-full"
-            style={{ marginTop: "12px" }}
+            style={{ marginTop: "28px" }}
             disabled={!canContinueJobTitle}
             onClick={handleJobTitleContinue}
           >

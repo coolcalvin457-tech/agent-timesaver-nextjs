@@ -357,7 +357,7 @@ export default function TimesaverTool() {
             style={{
               fontSize: "0.9375rem",
               color: "var(--text-secondary)",
-              marginBottom: "10px",
+              marginBottom: "14px",
             }}
           >
             Do you have a copy of your job description?

@@ -1588,6 +1588,7 @@ input, textarea {
 /* Screen / main content area */
 .hero-tool-dark .screen {
   background: transparent;
+  padding-top: 28px;
   padding-left: 44px;
   padding-right: 44px;
   flex: 1;

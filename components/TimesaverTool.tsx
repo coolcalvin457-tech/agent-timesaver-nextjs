@@ -63,28 +63,17 @@ export default function TimesaverTool() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const topRef = useRef<HTMLDivElement>(null);
 
-  const [flipStage, setFlipStage] = useState<"idle" | "out" | "in">("idle");
-  const pendingScreen = useRef<Screen | null>(null);
+  const [flipStage, setFlipStage] = useState<"idle" | "in">("idle");
 
   const go = useCallback((screen: Screen) => {
-    pendingScreen.current = screen;
-    setFlipStage("out");
+    setState((s) => ({ ...s, screen }));
+    setFlipStage("in");
     topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, []);
 
   useEffect(() => {
-    if (flipStage === "out") {
-      const t = setTimeout(() => {
-        if (pendingScreen.current) {
-          setState((s) => ({ ...s, screen: pendingScreen.current! }));
-          pendingScreen.current = null;
-        }
-        setFlipStage("in");
-      }, 200);
-      return () => clearTimeout(t);
-    }
     if (flipStage === "in") {
-      const t = setTimeout(() => setFlipStage("idle"), 200);
+      const t = setTimeout(() => setFlipStage("idle"), 220);
       return () => clearTimeout(t);
     }
   }, [flipStage]);
@@ -295,9 +284,7 @@ export default function TimesaverTool() {
       ? state.writeInValue.trim().length > 0
       : state.selectedChoice !== null;
 
-  const flipClass =
-    flipStage === "out" ? "screen-flip-out" :
-    flipStage === "in"  ? "screen-flip-in"  : "";
+  const flipClass = flipStage === "in" ? "screen-flip-in" : "";
 
   // ── Render ─────────────────────────────────────────────────────────────────
   return (

@@ -1784,23 +1784,13 @@ input, textarea {
 }
 
 /* ── Screen flip transition ───────────────────────────────── */
-@keyframes flipOut {
-  from { transform: scaleX(1); opacity: 1; }
-  to   { transform: scaleX(0); opacity: 0; }
-}
-
 @keyframes flipIn {
-  from { transform: scaleX(0); opacity: 0; }
-  to   { transform: scaleX(1); opacity: 1; }
-}
-
-.screen-flip-out {
-  animation: flipOut 0.18s ease-in both;
-  transform-origin: center center;
+  from { transform: scaleX(0.05); opacity: 0; }
+  to   { transform: scaleX(1);    opacity: 1; }
 }
 
 .screen-flip-in {
-  animation: flipIn 0.18s ease-out both;
+  animation: flipIn 0.22s ease-out;
   transform-origin: center center;
 }
 

@@ -1862,7 +1862,7 @@ input, textarea {
 
 .pb-frame-label {
   position: absolute;
-  top: 14px;
+  top: 20px;
   left: 28px;
   font-family: var(--font-mono);
   font-size: 0.72rem;
@@ -1877,9 +1877,9 @@ input, textarea {
   color: rgba(77,163,224,0.9);
 }
 
-/* Uniform 36px gap on all four sides between outer and inner border */
+/* 52px top gives label breathing room above and below; 36px on sides and bottom */
 .pb-frame-body {
-  padding: 36px;
+  padding: 52px 36px 36px;
 }
 
 /* Choose File button hover */

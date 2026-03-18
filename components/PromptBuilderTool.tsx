@@ -234,7 +234,7 @@ export default function PromptBuilderTool() {
           />
 
           {/* Optional file upload */}
-          <div style={{ marginTop: "20px" }}>
+          <div style={{ marginTop: "24px" }}>
             <p
               style={{
                 fontSize: "0.8125rem",

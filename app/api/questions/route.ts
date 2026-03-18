@@ -162,6 +162,7 @@ Rules:
 - No jargon — write like a smart, direct colleague
 - No em dashes
 - Don't use "I would like to" phrasing — keep it direct
+- Use "during a typical workday" not "on a typical workday" when referencing their day
 
 Return ONLY valid JSON in this exact format, no explanation:
 {

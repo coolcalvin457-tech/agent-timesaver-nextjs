@@ -716,7 +716,7 @@ input, textarea {
   font-weight: 700;
   color: var(--text-primary);
   line-height: 1.4;
-  margin-bottom: 6px;
+  margin-bottom: 20px;
 }
 
 .question-subheadline {

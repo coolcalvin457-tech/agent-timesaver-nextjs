@@ -434,7 +434,7 @@ export default function TimesaverTool() {
               style={{
                 border: `1.5px dashed ${isDragOver ? "var(--cta)" : "rgba(30,122,184,0.6)"}`,
                 borderRadius: "var(--radius-input)",
-                padding: "20px",
+                padding: "28px 20px",
                 textAlign: "center",
                 cursor: "pointer",
                 marginBottom: "0",

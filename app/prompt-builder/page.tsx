@@ -45,8 +45,9 @@ export default function PromptBuilderPage() {
                 <div className="pb-frame-header">
                   <span className="pb-frame-label">AGENT: Prompt Builder</span>
                 </div>
-                <PromptBuilderTool />
-                <div className="pb-frame-footer" />
+                <div className="pb-frame-body">
+                  <PromptBuilderTool />
+                </div>
               </div>
             </div>
           </div>

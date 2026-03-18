@@ -1853,9 +1853,13 @@ input, textarea {
 }
 
 .pb-frame-header {
-  padding: 20px 44px 20px 64px;
+  padding: 20px 24px 20px 68px;
   display: flex;
   align-items: center;
+}
+
+.pb-frame-body {
+  padding: 0 24px 24px;
 }
 
 .pb-frame-label {
@@ -1877,13 +1881,11 @@ input, textarea {
 
 /* Choose File button hover */
 .choose-file-btn {
-  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+  transition: transform 0.15s ease;
 }
 
 .choose-file-btn:hover {
-  border-color: rgba(30,122,184,0.45) !important;
-  background: rgba(30,122,184,0.08) !important;
-  color: rgba(255,255,255,0.8) !important;
+  transform: scale(1.03);
 }
 
 /* ── Screen flip transition ───────────────────────────────── */

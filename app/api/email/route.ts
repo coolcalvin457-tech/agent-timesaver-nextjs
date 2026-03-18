@@ -136,7 +136,7 @@ async function sendResultsEmail(
                 <tr>
                   <td>
                     <a href="https://promptaiagents.com"
-                       style="display:inline-block; background:linear-gradient(180deg,#2C97DD 0%,#1562A0 100%); color:#ffffff; font-size:15px; font-weight:600; text-decoration:none; padding:14px 28px; border-radius:10px;">
+                       style="display:inline-block; background:#161618; color:#ffffff; font-size:15px; font-weight:600; text-decoration:none; padding:14px 28px; border-radius:10px;">
                       Visit promptaiagents.com →
                     </a>
                   </td>

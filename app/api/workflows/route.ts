@@ -191,33 +191,36 @@ async function generateWorkflowsWithClaude(
     : "";
   const answersSection = answers.map((a, i) => `Q${i + 1}: ${a}`).join("\n");
 
-  const prompt = `You are helping a non-technical professional discover how AI can save them time in their specific job.
+  const systemPrompt = `You are an expert at helping corporate professionals understand exactly how AI can replace manual, time-consuming work in their specific job. You know which AI tools are best suited for which tasks, you write in plain language, and you produce recommendations that feel like they were written by a colleague who knows their role inside out. Not a generic AI assistant.`;
 
-Job Title: "${jobTitle}"${contextSection}
+  const prompt = `Job Title: "${jobTitle}"${contextSection}
 
 Their answers to follow-up questions:
 ${answersSection}
 
-Generate exactly 5 personalized AI workflow recommendations based on their specific role and answers. These should be immediately actionable — not vague advice.
+Generate exactly 5 AI workflow recommendations for this person. Each workflow must be specific to their job title and directly informed by their answers above.
 
 For each workflow:
-- Give it a short, memorable name (3-7 words)
-- Write a 2-3 sentence description explaining exactly how to use it in their job
-- Name the specific AI tool (Claude, Perplexity, Notion AI, Gemini, ChatGPT, etc.)
+- Give it a short, memorable name (3-7 words) that references their specific type of work, not a generic task category
+- Write 2-3 sentences using this structure: (1) Start with the trigger — when they would use this, or what they hand to the AI. (2) Describe the exact action — what to give it and how to use it. (3) State the concrete outcome — what they get back and how fast.
+- Name the specific AI tool best suited for this task (Claude, Perplexity, Notion AI, Gemini, ChatGPT, etc.)
 - Estimate realistic hours saved per week (0.5 to 4 hours — be conservative and credible)
 
-Also calculate ROI:
+Tool variety rule: Do not assign Claude to all 5 workflows. Vary tools where they genuinely fit better. Perplexity is better for research and monitoring. Notion AI is better for notes, databases, and documentation. Use judgment based on what the task actually requires.
+
+Answer tie-back rule: At least 2 workflows must directly address something the user named in their answers. If they said writing takes most of their time, one workflow title and description must be explicitly about their type of writing. If they said they are just starting with AI, write all descriptions at a beginner-friendly level with clear, literal instructions.
+
+ROI calculation:
 - Total hours saved per week (sum of all 5 workflows)
 - Annual hours (weekly x 52)
-- Dollar value using publicly available average salary data for their industry/role
-- Industry label (1-2 words)
+- Dollar value: look up BLS median annual wage for their specific job title and industry, divide by 2,080 working hours per year, multiply by annual hours saved. Format as "$X,XXX"
+- Industry label (1-3 words, e.g., "Human Resources", "Financial Services", "K-12 Education")
 
 Rules:
-- Be specific to their actual role and answers — not generic
-- No em dashes
+- No em dashes anywhere
 - No jargon
-- Each workflow must be something they could start TODAY
-- Keep descriptions direct and practical
+- Write descriptions like a direct colleague sharing a shortcut, not a product feature list
+- Each workflow must be something they could start today
 
 Return ONLY valid JSON in this exact format:
 {
@@ -233,13 +236,14 @@ Return ONLY valid JSON in this exact format:
     "totalHoursPerWeek": 7.5,
     "annualHours": 390,
     "valueAtSalary": "$9,750",
-    "industry": "Marketing"
+    "industry": "Human Resources"
   }
 }`;
 
   const message = await client.messages.create({
     model: process.env.CLAUDE_MODEL ?? "claude-sonnet-4-6",
-    max_tokens: 2048,
+    max_tokens: 3000,
+    system: systemPrompt,
     messages: [{ role: "user", content: prompt }],
   });
 

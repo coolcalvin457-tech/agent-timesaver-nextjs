@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 // ─── Types ────────────────────────────────────────────────────────────────────
 export interface Question {
   stem: string;
-  subheadline: string;
   choices: string[];
 }
 
@@ -15,8 +14,7 @@ export interface QuestionsResponse {
 const MOCK_QUESTIONS: Record<string, Question[]> = {
   marketing: [
     {
-      stem: "Where does most of your time go each week?",
-      subheadline: "Pick the one that feels most true right now.",
+      stem: "Where does most of your time go during a typical week (not your busiest)?",
       choices: [
         "Writing content — emails, posts, copy, briefs",
         "Reporting and pulling data from multiple tools",
@@ -26,7 +24,6 @@ const MOCK_QUESTIONS: Record<string, Question[]> = {
     },
     {
       stem: "What does your current content or campaign workflow look like?",
-      subheadline: "Be honest — there's no wrong answer here.",
       choices: [
         "It's mostly improvised — we figure it out as we go",
         "We have a loose process but it breaks down regularly",
@@ -36,7 +33,6 @@ const MOCK_QUESTIONS: Record<string, Question[]> = {
     },
     {
       stem: "Which outcome would have the biggest impact on your work this month?",
-      subheadline: "Choose the one that would move the needle most.",
       choices: [
         "Producing more high-quality content in less time",
         "Making better data-driven decisions faster",
@@ -48,7 +44,6 @@ const MOCK_QUESTIONS: Record<string, Question[]> = {
   sales: [
     {
       stem: "What part of your sales cycle eats the most time?",
-      subheadline: "Pick the stage that slows you down most.",
       choices: [
         "Prospecting and building qualified lead lists",
         "Writing personalized outreach and follow-ups",
@@ -58,7 +53,6 @@ const MOCK_QUESTIONS: Record<string, Question[]> = {
     },
     {
       stem: "How many personalized outreach messages do you send in a typical week?",
-      subheadline: "Rough estimate is fine.",
       choices: [
         "Fewer than 10 — quality over quantity",
         "10 to 30 — trying to find the right balance",
@@ -68,7 +62,6 @@ const MOCK_QUESTIONS: Record<string, Question[]> = {
     },
     {
       stem: "What would a 10-hour-per-week time savings mean for your quota?",
-      subheadline: "Choose the closest outcome.",
       choices: [
         "I could finally hit my number consistently",
         "I'd be going after bigger, harder deals",
@@ -79,8 +72,7 @@ const MOCK_QUESTIONS: Record<string, Question[]> = {
   ],
   default: [
     {
-      stem: "Which type of work takes up the most time in your week?",
-      subheadline: "Pick the one that fits your role best.",
+      stem: "Which type of work takes up the most time during a typical week (not your busiest)?",
       choices: [
         "Writing and communication — emails, documents, reports",
         "Research and gathering information from multiple sources",
@@ -90,7 +82,6 @@ const MOCK_QUESTIONS: Record<string, Question[]> = {
     },
     {
       stem: "How would you describe the way you currently use AI tools?",
-      subheadline: "Be honest — this shapes your results.",
       choices: [
         "I barely use them — not sure where to start",
         "I've tried a few things but haven't stuck with anything",
@@ -100,7 +91,6 @@ const MOCK_QUESTIONS: Record<string, Question[]> = {
     },
     {
       stem: "What would getting back 5 to 10 hours a week actually change for you?",
-      subheadline: "Choose the outcome that resonates most.",
       choices: [
         "I'd finally finish projects I've been putting off",
         "I'd spend more time on the strategic work I actually enjoy",
@@ -148,36 +138,40 @@ async function generateQuestionsWithClaude(
     ? `\nJob Description:\n${jobDescription.slice(0, 3000)}`
     : "";
 
-  const prompt = `You are helping build a personalized AI workflow recommendation tool for non-technical professionals.
+  const systemPrompt = `You write sharp, specific questions for working professionals. Your job is to surface the most useful information about how someone actually spends their time, so AI workflow recommendations can be tailored to their real work and not a generic job description.`;
 
-A user has entered their job title: "${jobTitle}"${contextSection}
+  const jdInstruction = jobDescription
+    ? `Pull specific responsibilities, tasks, and language directly from the job description above into the question choices. The choices should name real tasks from their role, not generic categories.`
+    : `Use your knowledge of this specific role to write choices that name real tasks professionals in this position actually do — not broad categories.`;
 
-Generate exactly ${questionCount} multiple-choice questions to help understand how they spend their time, what their biggest bottlenecks are, and what outcomes they care most about. These questions will be used to recommend 5 personalized AI workflows.
+  const prompt = `A user has entered their job title: "${jobTitle}"${contextSection}
 
-Rules:
-- Questions must be specific to their role, not generic
-- Each question should have exactly 4 answer choices
-- Answer choices should be parallel in structure and length
-- Write a short subheadline (1 sentence) that adds context or encourages honest answers
-- No jargon — write like a smart, direct colleague
+Generate exactly ${questionCount} multiple-choice questions to understand how they work. These answers will be used to recommend 5 specific AI workflows for their job.
+
+Question design rules:
+- Each question must hit a distinct angle — cover these in order: (1) where their time actually goes during a typical week, (2) how mature or broken their current workflow is, (3) what a meaningful breakthrough would look like for them
+- Questions must read as specific to this job title — a question for a "${jobTitle}" should sound completely different from a question for a different role
+- ${jdInstruction}
+- Each question must have exactly 4 answer choices, parallel in structure and length
+- If a question could be ambiguous about timeframe or scope, fold the clarification into the stem itself in parentheses — e.g., "What takes up the most time during a typical week (not your busiest)?"
 - No em dashes
-- Don't use "I would like to" phrasing — keep it direct
-- Use "during a typical workday" not "on a typical workday" when referencing their day
+- No jargon
+- Write like a direct colleague, not a survey form
 
 Return ONLY valid JSON in this exact format, no explanation:
 {
   "questions": [
     {
       "stem": "Question text here?",
-      "subheadline": "One-sentence context here.",
       "choices": ["Choice A", "Choice B", "Choice C", "Choice D"]
     }
   ]
 }`;
 
   const message = await client.messages.create({
-    model: "claude-sonnet-4-6",
+    model: process.env.CLAUDE_MODEL ?? "claude-sonnet-4-6",
     max_tokens: 1024,
+    system: systemPrompt,
     messages: [{ role: "user", content: prompt }],
   });
 

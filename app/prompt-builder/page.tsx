@@ -25,12 +25,13 @@ export default function PromptBuilderPage() {
               className="heading-1"
               style={{
                 margin: "0 auto 0",
-                fontSize: "clamp(2.25rem, 4vw, 3.5rem)",
+                fontSize: "clamp(2rem, 3.5vw, 3rem)",
                 lineHeight: 1.25,
                 color: "#ffffff",
               }}
             >
-              12 prompts built for your exact job.
+              <span style={{ display: "block" }}>12 prompts built for</span>
+              <span style={{ display: "block" }}>your exact job.</span>
             </h1>
 
           </div>

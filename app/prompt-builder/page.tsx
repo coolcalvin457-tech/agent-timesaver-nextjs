@@ -20,23 +20,6 @@ export default function PromptBuilderPage() {
         >
           <div className="container" style={{ textAlign: "center" }}>
 
-            {/* Back to Tools — breadcrumb nav */}
-            <div style={{ textAlign: "left", marginBottom: "36px" }}>
-              <a
-                href="/tools"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "6px",
-                  fontSize: "0.875rem",
-                  color: "rgba(255,255,255,0.4)",
-                  textDecoration: "none",
-                }}
-              >
-                ← Back to Tools
-              </a>
-            </div>
-
             {/* Eyebrow */}
             <p
               style={{

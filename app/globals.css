@@ -1882,6 +1882,15 @@ input, textarea {
   padding: 52px;
 }
 
+/* Input always shows blue border inside Prompt Builder frame */
+.pb-frame .input {
+  border-color: rgba(30,122,184,0.45);
+}
+
+.pb-frame .input:focus {
+  border-color: var(--cta);
+}
+
 /* Choose File button hover */
 .choose-file-btn {
   transition: transform 0.15s ease;

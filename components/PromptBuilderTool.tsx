@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
+import { track } from "@vercel/analytics";
 import type { PromptKitResponse } from "@/app/api/prompt-kit/route";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -75,10 +76,32 @@ export default function PromptBuilderTool() {
   const [error, setError] = useState("");
   const [showWriteIn, setShowWriteIn] = useState(false);
   const [writeInValue, setWriteInValue] = useState("");
+  const [flipStage, setFlipStage] = useState<"idle" | "in">("idle");
 
   // File upload state
   const [jobDescFile, setJobDescFile] = useState<File | null>(null);
   const [jobDescText, setJobDescText] = useState("");
+
+  const topRef = useRef<HTMLDivElement>(null);
+
+  // ── Screen transition helpers ───────────────────────────────────
+  const go = useCallback((s: Screen) => {
+    setScreen(s);
+    setFlipStage("in");
+  }, []);
+
+  useEffect(() => {
+    if (flipStage === "in") {
+      const t = setTimeout(() => setFlipStage("idle"), 220);
+      return () => clearTimeout(t);
+    }
+  }, [flipStage]);
+
+  useEffect(() => {
+    topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [screen]);
+
+  const flipClass = flipStage === "in" ? "screen-flip-in" : "";
 
   // ── Helpers ────────────────────────────────────────────────────
   const progressIndex = QUESTION_SCREENS.indexOf(screen);
@@ -97,7 +120,7 @@ export default function PromptBuilderTool() {
     const prev = PREV_SCREEN[from];
     if (prev) {
       resetWriteIn();
-      setScreen(prev);
+      go(prev);
     }
   };
 
@@ -113,7 +136,7 @@ export default function PromptBuilderTool() {
   };
 
   const handleGenerate = async (finalChallenge: string) => {
-    setScreen("loading");
+    go("loading");
     setError("");
     try {
       const res = await fetch("/api/prompt-kit", {
@@ -130,10 +153,11 @@ export default function PromptBuilderTool() {
       if (!res.ok) throw new Error("API error");
       const data: PromptKitResponse = await res.json();
       setPromptKit(data);
-      setScreen("email-gate");
+      track("results_viewed", { jobTitle });
+      go("email-gate");
     } catch {
       setError("Something went wrong. Please try again.");
-      setScreen("q4");
+      go("q4");
     }
   };
 
@@ -154,8 +178,10 @@ export default function PromptBuilderTool() {
       body: JSON.stringify({ email, jobTitle, promptKit }),
     }).catch(() => {}); // Fail silently
 
+    track("email_submitted", { jobTitle });
+
     // Show results immediately
-    setScreen("results");
+    go("results");
     setEmailLoading(false);
   };
 
@@ -176,9 +202,9 @@ export default function PromptBuilderTool() {
   // ── Screen: Intro ──────────────────────────────────────────────
   if (screen === "intro") {
     return (
-      <div className="tool-container">
+      <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
-          <p className="tool-tag">AGENT: Prompt Builder</p>
+          <div className="tool-tag">AGENT: Prompt Builder</div>
           <h1 className="screen-headline">
             Build your own AI Prompt Kit.
           </h1>
@@ -202,7 +228,7 @@ export default function PromptBuilderTool() {
 
           <button
             className="btn btn-primary btn-full btn-lg"
-            onClick={() => setScreen("q1")}
+            onClick={() => { track("tool_started"); go("q1"); }}
           >
             Build My Prompt Kit →
           </button>
@@ -214,9 +240,9 @@ export default function PromptBuilderTool() {
   // ── Screen: Q1 — Job Title ─────────────────────────────────────
   if (screen === "q1") {
     return (
-      <div className="tool-container">
+      <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
-          <p className="tool-tag">AGENT: Prompt Builder</p>
+          <div className="tool-tag">AGENT: Prompt Builder</div>
           <BackButton onClick={() => goBack("q1")} />
           <ProgressBar />
           <p className="step-label">Question 1 of 4</p>
@@ -230,9 +256,12 @@ export default function PromptBuilderTool() {
             placeholder="e.g. Marketing Manager, Account Executive, Nurse Practitioner..."
             value={jobTitle}
             onChange={(e) => setJobTitle(e.target.value)}
-            onKeyDown={(e) =>
-              e.key === "Enter" && jobTitle.trim() && setScreen("q2")
-            }
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && jobTitle.trim()) {
+                track("q1_completed", { jobTitle });
+                go("q2");
+              }
+            }}
             autoFocus
           />
 
@@ -290,7 +319,7 @@ export default function PromptBuilderTool() {
           <button
             className="btn btn-primary btn-full"
             style={{ marginTop: "20px" }}
-            onClick={() => setScreen("q2")}
+            onClick={() => { track("q1_completed", { jobTitle }); go("q2"); }}
             disabled={!jobTitle.trim()}
           >
             Next →
@@ -306,13 +335,14 @@ export default function PromptBuilderTool() {
     const advanceQ2 = (value: string) => {
       setWorkType(value);
       resetWriteIn();
-      setScreen("q3");
+      track("q2_completed", { workType: value });
+      go("q3");
     };
 
     return (
-      <div className="tool-container">
+      <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
-          <p className="tool-tag">AGENT: Prompt Builder</p>
+          <div className="tool-tag">AGENT: Prompt Builder</div>
           <BackButton onClick={() => goBack("q2")} />
           <ProgressBar />
           <p className="step-label">Question 2 of 4</p>
@@ -370,13 +400,14 @@ export default function PromptBuilderTool() {
     const advanceQ3 = (value: string) => {
       setAiUsage(value);
       resetWriteIn();
-      setScreen("q4");
+      track("q3_completed", { aiUsage: value });
+      go("q4");
     };
 
     return (
-      <div className="tool-container">
+      <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
-          <p className="tool-tag">AGENT: Prompt Builder</p>
+          <div className="tool-tag">AGENT: Prompt Builder</div>
           <BackButton onClick={() => goBack("q3")} />
           <ProgressBar />
           <p className="step-label">Question 3 of 4</p>
@@ -434,29 +465,34 @@ export default function PromptBuilderTool() {
     const advanceQ4 = (value: string) => {
       setChallenge(value);
       resetWriteIn();
+      track("q4_completed", { challenge: value });
       handleGenerate(value);
     };
 
     return (
-      <div className="tool-container">
+      <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
-          <p className="tool-tag">AGENT: Prompt Builder</p>
+          <div className="tool-tag">AGENT: Prompt Builder</div>
           <BackButton onClick={() => goBack("q4")} />
           <ProgressBar />
-          <p className="step-label">Question 4 of 4</p>
+          <p className="step-label">Almost there. Question 4 of 4</p>
           <p className="question-stem">
             Is there anything you&apos;ve found challenging about using AI?
           </p>
           {error && (
-            <p
+            <div
               style={{
-                color: "var(--cta)",
+                padding: "12px 16px",
+                background: "rgba(220,50,50,0.07)",
+                border: "1px solid rgba(220,50,50,0.15)",
+                borderRadius: "var(--radius-input)",
                 fontSize: "0.875rem",
-                marginBottom: "12px",
+                color: "#c0392b",
+                marginBottom: "16px",
               }}
             >
               {error}
-            </p>
+            </div>
           )}
           <div className="choices">
             {CHALLENGES.map((option) => (
@@ -506,8 +542,9 @@ export default function PromptBuilderTool() {
   // ── Screen: Loading ────────────────────────────────────────────
   if (screen === "loading") {
     return (
-      <div className="tool-container">
-        <div className="loading-screen">
+      <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
+        <div className="loading-screen" style={{ minHeight: "320px" }}>
+          <div className="tool-tag" style={{ textAlign: "center" }}>AGENT: Prompt Builder</div>
           <div className="spinner" />
           <p className="loading-headline">Building your Prompt Kit...</p>
           <p className="loading-subline">
@@ -524,9 +561,9 @@ export default function PromptBuilderTool() {
   // ── Screen: Email Gate ─────────────────────────────────────────
   if (screen === "email-gate" && promptKit) {
     return (
-      <div className="tool-container">
+      <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
-          <p className="tool-tag">AGENT: Prompt Builder</p>
+          <div className="tool-tag">AGENT: Prompt Builder</div>
           <p className="results-tag">Congrats! Your Prompt Kit is ready.</p>
           <h2 className="results-headline">
             12 prompts built for {jobTitle}.
@@ -570,10 +607,21 @@ export default function PromptBuilderTool() {
     );
 
     return (
-      <div className="tool-container pb-results-dark">
+      <div className={`tool-container pb-results-dark${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
+
+          {/* Sent confirmation */}
+          <div style={{
+            display: "flex", alignItems: "center", gap: "8px",
+            background: "rgba(30,122,184,0.06)", border: "1px solid rgba(30,122,184,0.15)",
+            borderRadius: "8px", padding: "10px 14px", marginBottom: "20px",
+            fontSize: "0.875rem", color: "var(--text-secondary)",
+          }}>
+            <span style={{ color: "var(--cta)" }}>✓</span> Sent to your inbox.
+          </div>
+
           {/* Header */}
-          <p className="tool-tag">AGENT: PROMPT BUILDER</p>
+          <div className="tool-tag">AGENT: Prompt Builder</div>
           <p className="results-tag">Your Prompt Kit is ready.</p>
           <h2 className="results-headline">
             {totalPrompts} AI prompts built for {jobTitle}.
@@ -698,6 +746,17 @@ export default function PromptBuilderTool() {
               </ul>
             </div>
           </div>
+
+          {/* Cross-sell CTAs */}
+          <div style={{ marginTop: "24px", display: "flex", flexDirection: "column", gap: "12px" }}>
+            <a href="/" className="btn btn-primary btn-full">
+              Try AGENT: Timesaver
+            </a>
+            <a href="/budget-spreadsheets" className="btn btn-outline btn-full">
+              Try Budget Spreadsheets
+            </a>
+          </div>
+
         </div>
       </div>
     );

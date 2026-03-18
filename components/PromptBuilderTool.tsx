@@ -677,68 +677,19 @@ export default function PromptBuilderTool() {
             </div>
           ))}
 
-          {/* ── Build Your AI System ─────────────────────────── */}
+          {/* ── The setup that makes AI remember you ─────────── */}
           <div className="pb-system-section">
             <p className="pb-system-eyebrow">Step 2</p>
-            <h3 className="pb-system-headline">Build your AI System.</h3>
+            <h3 className="pb-system-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}>The setup that makes AI remember you.</h3>
             <p className="pb-system-subline">
-              Prompts are step one. A system is what makes AI work for you every
-              single day. Not just today.
+              Prompts are step one. This is what makes them work every time — not just today.
             </p>
 
-            {/* Step 01 — Set up your folder */}
+            {/* Step 1 — AI Profile */}
             <div className="pb-system-step">
-              <p className="pb-system-step-label">01 &nbsp;·&nbsp; Set up your AI folder</p>
+              <p className="pb-system-step-label">1 &nbsp;·&nbsp; Your AI Profile</p>
               <p className="pb-system-step-body">
-                Create a folder called <strong>My AI System</strong> on your
-                computer, in Notion, Google Docs, or wherever you already work.
-                This is where everything lives. Once it exists, you stop
-                starting from scratch.
-              </p>
-              <div className="pb-folder-tree">
-                <p className="pb-folder-tree-item pb-folder-root">📁 My AI System/</p>
-                <p className="pb-folder-tree-item pb-folder-indent">📄 My AI Profile</p>
-                <p className="pb-folder-tree-item pb-folder-indent">📁 Prompt Library/</p>
-                <p className="pb-folder-tree-item pb-folder-indent">📁 AI Wins/</p>
-              </div>
-              <p className="pb-system-tip">
-                <strong>Using Claude Cowork?</strong> Your workspace folder
-                already is this system. Claude reads it automatically at
-                the start of every session.
-              </p>
-            </div>
-
-            {/* Step 02 — Save your prompts */}
-            <div className="pb-system-step">
-              <p className="pb-system-step-label">02 &nbsp;·&nbsp; Save your prompts somewhere you&apos;ll actually open</p>
-              <p className="pb-system-step-body">
-                Don&apos;t just rely on this page or the email. Pick one and
-                save your Prompt Library folder there:
-              </p>
-              <ul className="pb-tool-list">
-                {[
-                  { name: "Google Docs", cost: "Free" },
-                  { name: "Apple Notes", cost: "Free" },
-                  { name: "Notion", cost: "Free" },
-                  { name: "Microsoft Word", cost: "Free with Microsoft 365" },
-                  { name: "Obsidian", cost: "$4/month. Syncs across devices." },
-                ].map((tool) => (
-                  <li key={tool.name} className="pb-tool-item">
-                    <span className="pb-tool-name">{tool.name}</span>
-                    <span className="pb-tool-cost">{tool.cost}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Step 03 — AI Profile */}
-            <div className="pb-system-step">
-              <p className="pb-system-step-label">03 &nbsp;·&nbsp; Your AI Profile</p>
-              <p className="pb-system-step-body">
-                This is a short paragraph AI reads before every conversation so
-                it already knows who you are and how to help. Paste it into
-                your AI tool&apos;s settings once. Every prompt you use
-                gets better automatically.
+                Paste this into AI once. You won&apos;t have to re-introduce yourself or start from scratch ever again.
               </p>
               <div className="pb-prompt-text-wrapper" style={{ marginBottom: "12px", flexDirection: "column", alignItems: "stretch" }}>
                 <p className="pb-prompt-text">{promptKit.aiProfile}</p>
@@ -757,8 +708,25 @@ export default function PromptBuilderTool() {
                 <li><strong>ChatGPT:</strong> Settings → Personalization → Custom Instructions</li>
                 <li><strong>Claude:</strong> Settings → Profile → What should Claude know about you?</li>
                 <li><strong>Gemini:</strong> Settings → Extensions &amp; Personalization</li>
-                <li><strong>Any tool:</strong> Paste at the top of your first message in any new chat</li>
+                <li><strong>Any tool:</strong> No settings panel? Paste your AI Profile at the top of every new chat. AI will read it before it responds.</li>
               </ul>
+            </div>
+
+            {/* Step 2 — Folder structure */}
+            <div className="pb-system-step">
+              <p className="pb-system-step-label">2 &nbsp;·&nbsp; Set up your AI folder</p>
+              <p className="pb-system-step-body">
+                Create this structure wherever you already work — your desktop, Notion, Google Drive. Once it exists, you stop starting over.
+              </p>
+              <div className="pb-folder-tree">
+                <p className="pb-folder-tree-item pb-folder-root">📁 My AI System/</p>
+                <p className="pb-folder-tree-item pb-folder-indent">📄 AI Profile.md</p>
+                <p className="pb-folder-tree-item pb-folder-indent">📁 Prompt Library/</p>
+                <p className="pb-folder-tree-item pb-folder-indent">📁 Saved Results/</p>
+              </div>
+              <p className="pb-system-step-body" style={{ marginTop: "16px" }}>
+                Save AI&apos;s best outputs as <strong>.md files</strong> — plain text files that any AI tool reads instantly. After a great AI response, ask: <em>&ldquo;Format this as a .md file I can save.&rdquo;</em> Drop it in your Saved Results folder. Over time, AI can reference what it already built for you instead of starting from scratch.
+              </p>
             </div>
           </div>
 

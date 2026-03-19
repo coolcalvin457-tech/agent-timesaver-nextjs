@@ -457,7 +457,7 @@ export default function BudgetSpreadsheetTool() {
             What do you need a budget for?
           </p>
           <p className="screen-subheadline">
-            Be specific. Time period, total budget, and key categories all help.
+            Be specific. More detail means a better spreadsheet.
           </p>
           <textarea
             className="input"

@@ -464,7 +464,7 @@ export default function BudgetSpreadsheetTool() {
             rows={5}
             style={{ resize: "vertical", marginBottom: "8px" }}
             placeholder={
-              "e.g. Q3 marketing budget, $50K total, with categories for paid ads, content, and tools\ne.g. What if we added 2 headcount per department: model 3 scenarios\ne.g. Annual conference budget for 200 people"
+              "e.g. Q3 marketing budget, $50K total, with categories for paid ads, content, and tools\n\ne.g. What if we added 2 headcount per department: model 3 scenarios"
             }
             value={description}
             onChange={(e) => setDescription(e.target.value)}

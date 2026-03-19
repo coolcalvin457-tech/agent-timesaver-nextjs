@@ -33,8 +33,8 @@ export default function BudgetSpreadsheetsPage() {
                 color: "#ffffff",
               }}
             >
-              <span style={{ display: "block" }}>Describe your budget.</span>
-              <span style={{ display: "block" }}>Get a spreadsheet.</span>
+              <span style={{ display: "block" }}>Describe Your Budget.</span>
+              <span style={{ display: "block" }}>Get a Spreadsheet.</span>
             </h1>
           </div>
         </section>

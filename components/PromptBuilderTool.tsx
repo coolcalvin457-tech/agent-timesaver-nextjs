@@ -563,7 +563,7 @@ export default function PromptBuilderTool() {
             12 Prompts Built for {jobTitle}.
           </h2>
           <p className="screen-subheadline" style={{ marginTop: 0, marginBottom: "24px" }}>
-            Enter your email to view your results. We&apos;ll send a copy to your inbox.
+            Enter your email to see your results. A copy goes to your inbox.
           </p>
 
           <div className="save-card">

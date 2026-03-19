@@ -689,8 +689,7 @@ export default function BudgetSpreadsheetTool() {
             className="screen-subheadline"
             style={{ marginTop: 0, marginBottom: "20px" }}
           >
-            Enter your email to download. We&apos;ll send a copy to your inbox
-            too.
+            Enter your email to download. A copy goes to your inbox.
           </p>
 
           <form className="save-card" onSubmit={handleEmailSubmit} noValidate>
@@ -799,6 +798,41 @@ export default function BudgetSpreadsheetTool() {
           >
             Build Another Spreadsheet
           </button>
+
+          <div
+            style={{
+              marginTop: "32px",
+              paddingTop: "24px",
+              borderTop: "1px solid rgba(255,255,255,0.08)",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              gap: "40px",
+            }}
+          >
+            <a
+              href="/"
+              style={{
+                fontSize: "0.875rem",
+                color: "rgba(255,255,255,0.4)",
+                textDecoration: "none",
+                letterSpacing: "0.01em",
+              }}
+            >
+              AGENT: Timesaver
+            </a>
+            <a
+              href="/prompt-builder"
+              style={{
+                fontSize: "0.875rem",
+                color: "rgba(255,255,255,0.4)",
+                textDecoration: "none",
+                letterSpacing: "0.01em",
+              }}
+            >
+              AGENT: Prompt Builder
+            </a>
+          </div>
         </div>
       </div>
     );

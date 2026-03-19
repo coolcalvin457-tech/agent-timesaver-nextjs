@@ -1689,6 +1689,20 @@ input, textarea {
   background: rgba(30,122,184,0.08);
 }
 
+/* Textarea — darker than single-line inputs so it sits flush in the dark frame */
+/* Covers both .input (Budget Spreadsheets, Prompt Builder) and .textarea (Timesaver) */
+.hero-tool-dark textarea.input,
+.hero-tool-dark textarea.textarea {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.1);
+}
+
+.hero-tool-dark textarea.input:focus,
+.hero-tool-dark textarea.textarea:focus {
+  border-color: var(--cta);
+  background: rgba(30,122,184,0.06);
+}
+
 /* Branch cards */
 .hero-tool-dark .branch-card {
   background: var(--dark-surface);

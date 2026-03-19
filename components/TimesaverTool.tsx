@@ -662,12 +662,12 @@ export default function TimesaverTool() {
             </div>
           </div>
 
-          <div style={{ marginTop: "24px", display: "flex", flexDirection: "column", gap: "12px" }}>
-            <a href="/prompt-builder" className="btn btn-primary btn-full">
-              Try Prompt Builder
+          <div style={{ marginTop: "32px", paddingTop: "24px", borderTop: "1px solid rgba(255,255,255,0.08)", display: "flex", flexDirection: "row", justifyContent: "center", gap: "40px" }}>
+            <a href="/prompt-builder" style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.4)", textDecoration: "none", letterSpacing: "0.01em" }}>
+              AGENT: Prompt Builder
             </a>
-            <a href="/budget-spreadsheets" className="btn btn-outline btn-full">
-              Try Budget Spreadsheets
+            <a href="/budget-spreadsheets" style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.4)", textDecoration: "none", letterSpacing: "0.01em" }}>
+              AGENT: Budget Spreadsheets
             </a>
           </div>
         </div>
@@ -681,7 +681,7 @@ export default function TimesaverTool() {
           <div className="gate-card">
             <div className="gate-headline">Your results are ready.</div>
             <div className="gate-subline">
-              Enter your email to view your workflows. We&apos;ll send a copy to your inbox.
+              Enter your email to view your workflows. A copy goes to your inbox.
             </div>
 
             <form onSubmit={handleGateEmail}>

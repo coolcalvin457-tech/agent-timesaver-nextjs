@@ -35,7 +35,8 @@ async function sendOnboardingKitEmail(
   hireTitle: string,
   fileData: string
 ): Promise<void> {
-  const from = process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev";
+  const fromAddress = process.env.RESEND_FROM_EMAIL ?? "results@promptaiagents.com";
+  const from = `Prompt AI Agents <${fromAddress}>`;
 
   const html = `
 <!DOCTYPE html>

@@ -730,7 +730,7 @@ export default function OnboardingKitBuilderTool({
     fontSize: "0.9375rem",
     border: "1px solid var(--border, #E4E4E2)",
     borderRadius: "8px",
-    background: "var(--bg-surface, #FFFFFF)",
+    background: "var(--surface, #FFFFFF)",
     color: "var(--text-primary, #161618)",
     outline: "none",
     boxSizing: "border-box",
@@ -1235,7 +1235,7 @@ export default function OnboardingKitBuilderTool({
                   style={{
                     flex: 1, padding: "10px 12px", fontSize: "0.9375rem",
                     border: "1px solid var(--border, #E4E4E2)", borderRadius: "6px",
-                    background: "#FFFFFF", color: "var(--text-primary)", outline: "none", boxSizing: "border-box" as const,
+                    background: "var(--surface, #FFFFFF)", color: "var(--text-primary)", outline: "none", boxSizing: "border-box" as const,
                   }}
                 />
                 <button

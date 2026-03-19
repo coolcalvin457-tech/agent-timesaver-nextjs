@@ -265,12 +265,37 @@ async function generateOnboardingKit(
 
 The kit is a context-building document, not a logistics checklist. The new hire should finish reading it knowing: why they were hired, what success looks like, how the team actually works, and exactly where to go when they're stuck.
 
-Tone rules:
-- The welcome letter must sound human and specific. Never use corporate phrases like "we are pleased to have you" or "we look forward to your contributions."
-- Every milestone in the 30/60/90 must be role-specific. Never use generic placeholders like "get up to speed with company processes."
-- The first-week schedule must feel achievable. Day 1 and Day 2 should be orientation, introductions, and relationship-building. Not a sprint to productivity.
-- The checklist must ladder toward the 30-day milestone from the 30/60/90. They should feel like the same document.
-- Key contacts should explain WHY the person matters to the new hire. Practical, not organizational.
+Before writing any section, do a grounding pass on the inputs:
+- What is the actual job? What does this person own?
+- What specific tools, team dynamics, and milestones were provided?
+- Would the output for this person look meaningfully different from the output for someone with a different title? If not, it is too generic.
+
+Welcome letter rules:
+- Sound human and specific. Never use "we are pleased to have you" or "we look forward to your contributions."
+- Reference exactly why this person was hired, using the "why this hire, why now" language directly.
+- Paragraph 1: personal welcome, reference why they were hired. Paragraph 2: what week one looks like and who they'll meet. Paragraph 3: what success looks like and why their work matters. Paragraph 4: short, warm closing from the hiring manager.
+
+First-week schedule rules:
+- Day 1 and Day 2 must be deliberately lighter: orientation, introductions, system access, relationship-building. Not a sprint to productivity.
+- A new hire who arrives and cannot log into their assigned tools on Day 1 interprets that as indifference. System access setup must appear on Day 1.
+- Day 3 and 4 build toward first actual work. Day 5 includes a brief end-of-week check-in or reflection with the manager.
+- Each day: 4 to 6 items, time-anchored where natural. Items must feel achievable, not overwhelming.
+
+30/60/90 rules:
+- Never use generic placeholders like "get up to speed with company processes" or "build relationships with the team." Every milestone must be role-specific.
+- IC milestones: individual deliverables, ramp to contribution, first visible output.
+- Manager-track milestones: understanding direct reports, running first team meeting, relationship with key stakeholders, observing processes before making changes.
+- Open with 1 to 2 sentences framing the first 90 days as context-building and first visible contribution. Not as a test.
+
+Key contacts rules:
+- Write from the new hire's perspective: why does this person matter to them specifically?
+- Not "X is our VP of Y" but "X owns Y and will be your main connection for Z."
+- Use any structured contacts provided. If none were provided, infer 3 to 4 plausible contacts from the role, department, and team context.
+
+Checklist rules:
+- Pre-start must always include: complete I-9 documentation, return signed offer letter, confirm system access before Day 1.
+- Month One items must ladder directly toward the 30-day milestone from the 30/60/90. The checklist and the role expectations should feel like the same document, not two separate things.
+- Day One checklist should feel welcoming, not administrative.
 
 Punctuation rules:
 - Never use em dashes (the — character). Use a period or a colon instead.
@@ -344,7 +369,7 @@ Return this exact JSON structure:
 
   const message = await client.messages.create({
     model: process.env.CLAUDE_MODEL ?? "claude-sonnet-4-6",
-    max_tokens: 4000,
+    max_tokens: 6000,
     system: systemPrompt,
     messages: [{ role: "user", content: userMessage }],
   });

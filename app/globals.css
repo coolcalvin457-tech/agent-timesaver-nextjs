@@ -3524,3 +3524,116 @@ input, textarea {
     grid-template-columns: 1fr !important;
   }
 }
+
+/* ── HR Tools — Dark Mode (inside .hero-tool-dark frame) ──────────────── */
+/* When okb-tool renders inside the pb-frame dark shell, transform it from  */
+/* a white card into the same glowing dark card used by tool-container.     */
+/* CSS variable overrides cascade into ALL inline styles using var(--xxx).  */
+
+.hero-tool-dark .okb-tool {
+  background: radial-gradient(ellipse at center, rgba(30,122,184,0.09) 0%, #161618 65%);
+  border: 1px solid rgba(30,122,184,0.28);
+  box-shadow: none;
+  transition: border-color 0.2s ease;
+
+  /* Cascade dark values into child inline styles that use CSS variables */
+  --text-primary:   #FFFFFF;
+  --text-secondary: rgba(255,255,255,0.72);
+  --text-muted:     rgba(255,255,255,0.40);
+  --surface:        rgba(255,255,255,0.07);
+  --bg-alt:         rgba(255,255,255,0.04);
+  --border:         rgba(255,255,255,0.10);
+  --border-subtle:  rgba(255,255,255,0.06);
+  --cta:            #4da3e0;
+}
+
+.hero-tool-dark .okb-tool:hover {
+  border-color: var(--cta);
+}
+
+/* Fire okb-tool border in unison with the outer pb-frame hover */
+.hero-tool-dark:hover .okb-tool {
+  border-color: var(--cta);
+}
+
+/* btn-primary inside the dark okb-tool — ghost button like Prompt Builder */
+.hero-tool-dark .okb-tool .btn-primary {
+  background: transparent;
+  color: #FFFFFF;
+  border: 1.5px solid rgba(77,163,224,0.45);
+}
+
+.hero-tool-dark .okb-tool .btn-primary:hover {
+  background: rgba(30,122,184,0.10);
+  border-color: rgba(77,163,224,0.70);
+  box-shadow: 0 0 12px rgba(30,122,184,0.15);
+}
+
+/* Textarea gets a deeper tint so it reads clearly against the gradient bg */
+.hero-tool-dark .okb-tool textarea {
+  background: rgba(255,255,255,0.05) !important;
+  border-color: rgba(255,255,255,0.10) !important;
+  color: #FFFFFF !important;
+}
+
+.hero-tool-dark .okb-tool textarea:focus {
+  border-color: #4da3e0 !important;
+  background: rgba(30,122,184,0.06) !important;
+}
+
+.hero-tool-dark .okb-tool textarea::placeholder {
+  color: rgba(255,255,255,0.28) !important;
+}
+
+/* Text inputs */
+.hero-tool-dark .okb-tool input[type="text"],
+.hero-tool-dark .okb-tool input[type="email"] {
+  background: rgba(255,255,255,0.07) !important;
+  border-color: rgba(255,255,255,0.10) !important;
+  color: #FFFFFF !important;
+}
+
+.hero-tool-dark .okb-tool input[type="text"]:focus,
+.hero-tool-dark .okb-tool input[type="email"]:focus {
+  border-color: #4da3e0 !important;
+}
+
+.hero-tool-dark .okb-tool input::placeholder {
+  color: rgba(255,255,255,0.28) !important;
+}
+
+/* Loading step rows — active/done states already use rgba, idle state uses --bg-alt */
+/* --bg-alt is already overridden above so idle rows will be rgba(255,255,255,0.04) */
+
+/* ── Kit preview cards — dark section on OKB page ────────────────────── */
+.dark-kit-section {
+  background: rgba(255,255,255,0.02) !important;
+}
+
+.dark-kit-section .kit-sample-card {
+  background: var(--dark-surface, #1E1E20);
+  border-color: var(--dark-border, #2A2A2C);
+  box-shadow: 0 1px 6px rgba(0,0,0,0.30), 0 2px 12px rgba(0,0,0,0.20);
+}
+
+.dark-kit-section .kit-sample-card::after {
+  background: linear-gradient(to bottom, var(--dark-surface, #1E1E20) 0%, transparent 60%);
+}
+
+.dark-kit-section .kit-sample-card:hover {
+  box-shadow: 0 6px 24px rgba(0,0,0,0.50), 0 2px 8px rgba(0,0,0,0.30);
+}
+
+.dark-kit-section .kit-sample-card h3 {
+  color: rgba(255,255,255,0.88);
+}
+
+.dark-kit-section .kit-icon-btn {
+  background: rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.55);
+  border-color: rgba(255,255,255,0.10);
+}
+
+.dark-kit-section .kit-icon-btn:hover {
+  opacity: 0.85;
+}

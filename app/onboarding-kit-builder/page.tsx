@@ -26,15 +26,18 @@ export default function OnboardingKitBuilderPage({
   return (
     <>
       <NavClient />
-      <main>
+      <main
+        style={{
+          background: "linear-gradient(180deg, #1A1B22 0%, #0E0E10 100%)",
+          minHeight: "100vh",
+        }}
+      >
         {/* ── Hero section ─────────────────────────────────────── */}
         <section
-          className="section section-alt"
+          className="section"
           style={{ paddingTop: "140px", paddingBottom: "40px" }}
         >
           <div className="container" style={{ textAlign: "center" }}>
-            {/* HR Tools — plain label, no badge */}
-            {/* HR Tools — light blue label */}
             <p
               style={{
                 fontSize: "0.6875rem",
@@ -54,27 +57,26 @@ export default function OnboardingKitBuilderPage({
                 margin: "0 auto 32px",
                 fontSize: "clamp(2.25rem, 4vw, 3.5rem)",
                 lineHeight: 1.25,
+                color: "#ffffff",
               }}
             >
               Position-specific onboarding kit.<br />Use for every new hire.
             </h1>
 
-            {/* Price — plain subheader text, no button */}
             <p
               style={{
                 fontSize: "0.9375rem",
-                color: "var(--text-secondary)",
+                color: "rgba(255,255,255,0.55)",
                 marginBottom: "36px",
                 lineHeight: 1.6,
               }}
             >
               <span style={{ fontWeight: 800, color: "var(--cta)", fontSize: "1.125rem" }}>$99</span>
               {" · "}
-              <strong style={{ fontWeight: 600, color: "var(--text-secondary)" }}>HR Tools Package.</strong>{" "}
-              <span style={{ color: "var(--text-muted)" }}>Annual subscription. Includes all HR tools.</span>
+              <strong style={{ fontWeight: 600, color: "rgba(255,255,255,0.72)" }}>HR Tools Package.</strong>{" "}
+              <span>Annual subscription. Includes all HR tools.</span>
             </p>
 
-            {/* Single CTA — matches nav button size */}
             <a
               href="#build-kit"
               className="btn btn-primary"
@@ -86,48 +88,44 @@ export default function OnboardingKitBuilderPage({
         </section>
 
         {/* ── What's in the kit ─────────────────────────────────── */}
-        <section className="section" style={{ background: "#ffffff", paddingTop: "80px", paddingBottom: "64px" }}>
+        <section
+          className="section dark-kit-section"
+          style={{ paddingTop: "80px", paddingBottom: "64px" }}
+        >
           <div className="container">
-            <div
-              style={{
-                maxWidth: "960px",
-                margin: "0 auto",
-              }}
-            >
-            <KitPreviewCards />
+            <div style={{ maxWidth: "960px", margin: "0 auto" }}>
+              <KitPreviewCards />
             </div>
           </div>
         </section>
 
         {/* ── Tool section ─────────────────────────────────────── */}
-        <section id="build-kit" className="section" style={{ paddingTop: "64px" }}>
+        <section id="build-kit" className="section" style={{ paddingTop: "64px", paddingBottom: "96px" }}>
           <div className="container">
             <div style={{ maxWidth: "760px", margin: "0 auto" }}>
-              {/* Tool label */}
-              <p
-                className="eyebrow"
-                style={{ marginBottom: "20px" }}
-              >
-                AGENT: Onboarding Kit
-              </p>
-              <OnboardingKitBuilderTool
-                initialPaymentStatus={searchParams.payment}
-                initialSessionId={searchParams.session_id}
-              />
+              <div className="pb-frame hero-tool-dark" style={{ maxWidth: "760px" }}>
+                <span className="pb-frame-label">AGENT: Onboarding Kit</span>
+                <div className="pb-frame-body">
+                  <OnboardingKitBuilderTool
+                    initialPaymentStatus={searchParams.payment}
+                    initialSessionId={searchParams.session_id}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
         {/* ── Bundle callout ────────────────────────────────────── */}
-        <section className="section" style={{ paddingTop: "32px", paddingBottom: "80px" }}>
+        <section className="section" style={{ paddingTop: "0", paddingBottom: "80px" }}>
           <div className="container">
             <div
               style={{
                 maxWidth: "760px",
                 margin: "0 auto",
                 padding: "24px 28px",
-                background: "var(--bg-alt, #F8F8F6)",
-                border: "1px solid var(--border, #E4E4E2)",
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(255,255,255,0.08)",
                 borderRadius: "12px",
               }}
             >
@@ -136,7 +134,7 @@ export default function OnboardingKitBuilderPage({
                   fontSize: "0.75rem",
                   fontWeight: 700,
                   color: "var(--cta)",
-                  margin: "0 0 16px",
+                  margin: "0 0 12px",
                   textTransform: "uppercase",
                   letterSpacing: "0.06em",
                 }}
@@ -146,8 +144,8 @@ export default function OnboardingKitBuilderPage({
               <p
                 style={{
                   fontSize: "0.9375rem",
-                  color: "var(--text-secondary)",
-                  margin: "0 0 16px",
+                  color: "rgba(255,255,255,0.60)",
+                  margin: "0 0 14px",
                   lineHeight: 1.7,
                 }}
               >
@@ -167,7 +165,6 @@ export default function OnboardingKitBuilderPage({
             </div>
           </div>
         </section>
-
       </main>
       <Footer />
     </>

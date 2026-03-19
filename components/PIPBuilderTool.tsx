@@ -86,7 +86,7 @@ const inputStyle: React.CSSProperties = {
   fontSize: "0.9375rem",
   border: "1px solid var(--border, #E4E4E2)",
   borderRadius: "6px",
-  background: "#FFFFFF",
+  background: "var(--surface, #FFFFFF)",
   color: "var(--text-primary)",
   outline: "none",
   boxSizing: "border-box",
@@ -139,7 +139,7 @@ const radioOptionStyle = (selected: boolean): React.CSSProperties => ({
   border: `1px solid ${selected ? "var(--cta, #1E7AB8)" : "var(--border, #E4E4E2)"}`,
   borderRadius: "8px",
   cursor: "pointer",
-  background: selected ? "rgba(30,122,184,0.04)" : "#FFFFFF",
+  background: selected ? "rgba(30,122,184,0.10)" : "var(--surface, #FFFFFF)",
   transition: "border-color 0.15s ease, background 0.15s ease",
 });
 

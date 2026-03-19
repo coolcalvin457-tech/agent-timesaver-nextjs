@@ -25,10 +25,15 @@ export default function PIPBuilderPage({
   return (
     <>
       <NavClient />
-      <main>
+      <main
+        style={{
+          background: "linear-gradient(180deg, #1A1B22 0%, #0E0E10 100%)",
+          minHeight: "100vh",
+        }}
+      >
         {/* ── Hero section ─────────────────────────────────────── */}
         <section
-          className="section section-alt"
+          className="section"
           style={{ paddingTop: "140px", paddingBottom: "40px" }}
         >
           <div className="container" style={{ textAlign: "center" }}>
@@ -48,9 +53,10 @@ export default function PIPBuilderPage({
             <h1
               className="heading-1"
               style={{
-                margin: "0 auto 32px",
+                margin: "0 auto 24px",
                 fontSize: "clamp(2.25rem, 4vw, 3.5rem)",
                 lineHeight: 1.25,
+                color: "#ffffff",
               }}
             >
               A PIP that holds up.<br />Built for the conversation you have to have.
@@ -59,7 +65,7 @@ export default function PIPBuilderPage({
             <p
               style={{
                 fontSize: "0.9375rem",
-                color: "var(--text-secondary)",
+                color: "rgba(255,255,255,0.55)",
                 marginBottom: "12px",
                 lineHeight: 1.6,
                 maxWidth: "560px",
@@ -69,30 +75,28 @@ export default function PIPBuilderPage({
               Specific. Measurable. Documented. A .docx file ready to review with your legal team before issuing.
             </p>
 
-            {/* Trust line */}
             <p
               style={{
                 fontSize: "0.8125rem",
-                color: "var(--text-muted)",
-                marginBottom: "32px",
+                color: "rgba(255,255,255,0.35)",
+                marginBottom: "28px",
               }}
             >
               We don't store your inputs.
             </p>
 
-            {/* Price */}
             <p
               style={{
                 fontSize: "0.9375rem",
-                color: "var(--text-secondary)",
+                color: "rgba(255,255,255,0.55)",
                 marginBottom: "36px",
                 lineHeight: 1.6,
               }}
             >
               <span style={{ fontWeight: 800, color: "var(--cta)", fontSize: "1.125rem" }}>$99</span>
               {" · "}
-              <strong style={{ fontWeight: 600, color: "var(--text-secondary)" }}>HR Tools Package.</strong>{" "}
-              <span style={{ color: "var(--text-muted)" }}>Annual subscription. Includes all HR tools.</span>
+              <strong style={{ fontWeight: 600, color: "rgba(255,255,255,0.72)" }}>HR Tools Package.</strong>{" "}
+              <span>Annual subscription. Includes all HR tools.</span>
             </p>
 
             <a
@@ -103,11 +107,10 @@ export default function PIPBuilderPage({
               Build My PIP
             </a>
 
-            {/* Opens in */}
             <p
               style={{
                 fontSize: "0.8125rem",
-                color: "var(--text-muted)",
+                color: "rgba(255,255,255,0.30)",
                 marginTop: "16px",
               }}
             >
@@ -117,30 +120,32 @@ export default function PIPBuilderPage({
         </section>
 
         {/* ── Tool section ─────────────────────────────────────── */}
-        <section id="build-pip" className="section" style={{ paddingTop: "64px" }}>
+        <section id="build-pip" className="section" style={{ paddingTop: "48px", paddingBottom: "96px" }}>
           <div className="container">
             <div style={{ maxWidth: "760px", margin: "0 auto" }}>
-              <p className="eyebrow" style={{ marginBottom: "20px" }}>
-                AGENT: PIP Builder
-              </p>
-              <PIPBuilderTool
-                initialPaymentStatus={searchParams.payment}
-                initialSessionId={searchParams.session_id}
-              />
+              <div className="pb-frame hero-tool-dark" style={{ maxWidth: "760px" }}>
+                <span className="pb-frame-label">AGENT: PIP Builder</span>
+                <div className="pb-frame-body">
+                  <PIPBuilderTool
+                    initialPaymentStatus={searchParams.payment}
+                    initialSessionId={searchParams.session_id}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
         {/* ── Bundle callout ────────────────────────────────────── */}
-        <section className="section" style={{ paddingTop: "32px", paddingBottom: "80px" }}>
+        <section className="section" style={{ paddingTop: "0", paddingBottom: "80px" }}>
           <div className="container">
             <div
               style={{
                 maxWidth: "760px",
                 margin: "0 auto",
                 padding: "24px 28px",
-                background: "var(--bg-alt, #F8F8F6)",
-                border: "1px solid var(--border, #E4E4E2)",
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(255,255,255,0.08)",
                 borderRadius: "12px",
               }}
             >
@@ -149,7 +154,7 @@ export default function PIPBuilderPage({
                   fontSize: "0.75rem",
                   fontWeight: 700,
                   color: "var(--cta)",
-                  margin: "0 0 16px",
+                  margin: "0 0 12px",
                   textTransform: "uppercase",
                   letterSpacing: "0.06em",
                 }}
@@ -159,8 +164,8 @@ export default function PIPBuilderPage({
               <p
                 style={{
                   fontSize: "0.9375rem",
-                  color: "var(--text-secondary)",
-                  margin: "0 0 16px",
+                  color: "rgba(255,255,255,0.60)",
+                  margin: "0 0 14px",
                   lineHeight: 1.7,
                 }}
               >

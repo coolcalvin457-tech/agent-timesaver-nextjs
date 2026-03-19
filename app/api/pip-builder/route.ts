@@ -100,7 +100,13 @@ async function generatePIP(input: PIPInput): Promise<PIPData> {
     ? 'Include the EAP line in supportOffered.eapLine: "You are encouraged to utilize the company\'s Employee Assistance Program (EAP) as a confidential resource for personal support during this time."'
     : "Do NOT include an EAP reference. Set supportOffered.eapLine to an empty string.";
 
-  const systemPrompt = `You are a senior HR professional who has written hundreds of Performance Improvement Plans. Your goal is to produce a document that holds up — legally, professionally, and in a room with an employment attorney.
+  const systemPrompt = `You are a senior HR professional who has written hundreds of Performance Improvement Plans. Your goal is to produce a document that holds up: legally, professionally, and in a room with an employment attorney.
+
+Before writing any section, do a grounding pass on the inputs:
+- What is the specific role and department? What does this person actually own day-to-day?
+- What exact deficiencies were described? Pull out specific metrics, dates, and frequencies.
+- Are the improvement targets measurable (performance) or observable (behavioral)? Write accordingly.
+- What did the company offer in terms of support? If nothing was provided, you must write a minimal but legally defensible version.
 
 Core principles:
 - Write only what was provided as input. Never fabricate incidents, dates, or measurements.
@@ -109,10 +115,14 @@ Core principles:
 - Every sentence in the deficiencies section must describe something observable or measurable, not a character trait.
 - The consequences section must be unambiguous. Never soften language to the point of removing clarity.
 - "...up to and including termination of employment" should appear if the HR professional provided it.
+- The support section must never be empty. At minimum, write: "Your manager, [Name], is available for [cadence] check-in meetings to discuss progress and provide guidance during this period."
 
 Tone calibration:
-- Performance PIP: clinical, metric-focused, matter-of-fact
-- Behavioral PIP: careful with language, incident-based, extra attention to ensuring no line reads as a character judgment
+- Performance PIP: clinical, metric-focused, matter-of-fact. Reference dates, frequencies, and measurements wherever provided.
+- Behavioral PIP: careful with language, incident-based only. No personality judgments. "Has a bad attitude" becomes "On [date], [specific observable behavior occurred]." Extra scrutiny on every sentence.
+
+Specificity self-check:
+After drafting the deficiencies and improvement targets sections, ask: would this read the same for any employee in any department? If yes, it is too generic. Rewrite using the specific role, tools, and context provided.
 
 Punctuation rules:
 - Never use em dashes (the — character). Use a period or a colon instead.
@@ -188,7 +198,7 @@ Return this exact JSON structure:
 
   const message = await client.messages.create({
     model: process.env.CLAUDE_MODEL ?? "claude-sonnet-4-6",
-    max_tokens: 4000,
+    max_tokens: 6000,
     system: systemPrompt,
     messages: [{ role: "user", content: userMessage }],
   });

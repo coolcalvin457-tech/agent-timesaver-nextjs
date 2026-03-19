@@ -54,7 +54,7 @@ export default function OnboardingKitBuilderPage({
             <h1
               className="heading-1"
               style={{
-                margin: "0 auto 32px",
+                margin: "0 auto 24px",
                 fontSize: "clamp(2.25rem, 4vw, 3.5rem)",
                 lineHeight: 1.25,
                 color: "#ffffff",
@@ -62,6 +62,29 @@ export default function OnboardingKitBuilderPage({
             >
               Position-specific onboarding kit.<br />Use for every new hire.
             </h1>
+
+            <p
+              style={{
+                fontSize: "0.9375rem",
+                color: "rgba(255,255,255,0.55)",
+                marginBottom: "12px",
+                lineHeight: 1.6,
+                maxWidth: "560px",
+                margin: "0 auto 12px",
+              }}
+            >
+              Welcome letter. First-week schedule. Key contacts. 30/60/90 plan. New hire checklist. One .docx file, built for the role.
+            </p>
+
+            <p
+              style={{
+                fontSize: "0.8125rem",
+                color: "rgba(255,255,255,0.35)",
+                marginBottom: "28px",
+              }}
+            >
+              We don't store your inputs.
+            </p>
 
             <p
               style={{
@@ -84,16 +107,49 @@ export default function OnboardingKitBuilderPage({
             >
               Build My Kit
             </a>
+
+            <p
+              style={{
+                fontSize: "0.8125rem",
+                color: "rgba(255,255,255,0.30)",
+                marginTop: "16px",
+              }}
+            >
+              Opens in Microsoft Word or Google Docs.
+            </p>
           </div>
         </section>
 
         {/* ── What's in the kit ─────────────────────────────────── */}
         <section
           className="section dark-kit-section"
-          style={{ paddingTop: "80px", paddingBottom: "64px" }}
+          style={{ paddingTop: "64px", paddingBottom: "64px" }}
         >
           <div className="container">
             <div style={{ maxWidth: "960px", margin: "0 auto" }}>
+              <div style={{ textAlign: "center", marginBottom: "40px" }}>
+                <h2
+                  style={{
+                    fontSize: "clamp(1.375rem, 2.5vw, 1.75rem)",
+                    fontWeight: 700,
+                    color: "#ffffff",
+                    margin: "0 0 10px",
+                    lineHeight: 1.3,
+                  }}
+                >
+                  What's in the kit.
+                </h2>
+                <p
+                  style={{
+                    fontSize: "0.9375rem",
+                    color: "rgba(255,255,255,0.45)",
+                    margin: 0,
+                    lineHeight: 1.6,
+                  }}
+                >
+                  Preview or download each section. Click any card to open it.
+                </p>
+              </div>
               <KitPreviewCards />
             </div>
           </div>

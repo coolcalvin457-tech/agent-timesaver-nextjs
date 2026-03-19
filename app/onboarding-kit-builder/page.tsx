@@ -54,7 +54,7 @@ export default function OnboardingKitBuilderPage({
             <h1
               className="heading-1"
               style={{
-                margin: "0 auto 24px",
+                margin: "0 auto 28px",
                 fontSize: "clamp(2.25rem, 4vw, 3.5rem)",
                 lineHeight: 1.25,
                 color: "#ffffff",
@@ -66,56 +66,15 @@ export default function OnboardingKitBuilderPage({
             <p
               style={{
                 fontSize: "0.9375rem",
-                color: "rgba(255,255,255,0.55)",
-                marginBottom: "12px",
-                lineHeight: 1.6,
-                maxWidth: "560px",
-                margin: "0 auto 12px",
-              }}
-            >
-              Welcome letter. First-week schedule. Key contacts. 30/60/90 plan. New hire checklist. One .docx file, built for the role.
-            </p>
-
-            <p
-              style={{
-                fontSize: "0.8125rem",
-                color: "rgba(255,255,255,0.35)",
-                marginBottom: "28px",
-              }}
-            >
-              We don't store your inputs.
-            </p>
-
-            <p
-              style={{
-                fontSize: "0.9375rem",
-                color: "rgba(255,255,255,0.55)",
-                marginBottom: "36px",
+                color: "rgba(255,255,255,0.45)",
+                margin: 0,
                 lineHeight: 1.6,
               }}
             >
               <span style={{ fontWeight: 800, color: "var(--cta)", fontSize: "1.125rem" }}>$99</span>
               {" · "}
-              <strong style={{ fontWeight: 600, color: "rgba(255,255,255,0.72)" }}>HR Tools Package.</strong>{" "}
-              <span>Annual subscription. Includes all HR tools.</span>
-            </p>
-
-            <a
-              href="#build-kit"
-              className="btn btn-primary"
-              style={{ padding: "10px 24px", fontSize: "0.9375rem", borderRadius: "6px" }}
-            >
-              Build My Kit
-            </a>
-
-            <p
-              style={{
-                fontSize: "0.8125rem",
-                color: "rgba(255,255,255,0.30)",
-                marginTop: "16px",
-              }}
-            >
-              Opens in Microsoft Word or Google Docs.
+              <strong style={{ fontWeight: 600, color: "rgba(255,255,255,0.65)" }}>HR Tools Package.</strong>{" "}
+              Annual subscription. Includes all HR tools.
             </p>
           </div>
         </section>

@@ -753,24 +753,18 @@ export default function BudgetSpreadsheetTool() {
         className={`tool-container${flipClass ? ` ${flipClass}` : ""}`}
         ref={topRef}
       >
-        <div className="screen">
-          <div
+        <div className="screen" style={{ paddingTop: "32px" }}>
+          <p
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              background: "rgba(30,122,184,0.06)",
-              border: "1px solid rgba(30,122,184,0.15)",
-              borderRadius: "8px",
-              padding: "10px 14px",
+              fontSize: "0.8125rem",
+              color: "rgba(255,255,255,0.45)",
               marginBottom: "20px",
-              fontSize: "0.875rem",
-              color: "rgba(255,255,255,0.6)",
+              marginTop: 0,
             }}
           >
-            <span style={{ color: "var(--cta)" }}>✓</span> Sent to your inbox.
-            Check your downloads folder too.
-          </div>
+            <span style={{ color: "var(--cta)", marginRight: "6px" }}>✓</span>
+            Sent to your inbox. File downloaded automatically.
+          </p>
 
           <h2
             className="results-headline"
@@ -786,9 +780,7 @@ export default function BudgetSpreadsheetTool() {
             className="screen-subheadline"
             style={{ marginTop: 0, marginBottom: "28px" }}
           >
-            Open it in Excel, Google Sheets, or Numbers. A second sheet called
-            &ldquo;How to Use This&rdquo; walks you through every column and
-            formula.
+            Open in Excel, Google Sheets, or Numbers. The &ldquo;How to Use&rdquo; tab walks you through every formula.
           </p>
 
           <button

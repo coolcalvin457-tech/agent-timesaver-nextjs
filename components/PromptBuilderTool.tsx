@@ -725,12 +725,12 @@ export default function PromptBuilderTool() {
           </div>
 
           {/* Cross-sell CTAs */}
-          <div style={{ marginTop: "24px", display: "flex", flexDirection: "column", gap: "12px" }}>
-            <a href="/" className="btn btn-primary btn-full">
-              Try AGENT: Timesaver
+          <div style={{ marginTop: "32px", paddingTop: "24px", borderTop: "1px solid rgba(255,255,255,0.08)", display: "flex", flexDirection: "row", justifyContent: "center", gap: "40px" }}>
+            <a href="/" style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.4)", textDecoration: "none", letterSpacing: "0.01em" }}>
+              AGENT: Timesaver
             </a>
-            <a href="/budget-spreadsheets" className="btn btn-outline btn-full">
-              Try Budget Spreadsheets
+            <a href="/budget-spreadsheets" style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.4)", textDecoration: "none", letterSpacing: "0.01em" }}>
+              AGENT: Budget Spreadsheets
             </a>
           </div>
 

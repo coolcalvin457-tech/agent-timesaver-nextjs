@@ -560,7 +560,7 @@ export default function PromptBuilderTool() {
         <div className="screen">
           <p className="results-tag" style={{ marginBottom: "6px" }}>Congrats! Your Prompt Kit is ready.</p>
           <h2 className="results-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, marginBottom: "10px" }}>
-            12 prompts built for {jobTitle}.
+            12 Prompts Built for {jobTitle}.
           </h2>
           <p className="screen-subheadline" style={{ marginTop: 0, marginBottom: "24px" }}>
             Enter your email to view your results. We&apos;ll send a copy to your inbox.
@@ -617,7 +617,7 @@ export default function PromptBuilderTool() {
           {/* Header */}
           <p className="results-tag" style={{ marginBottom: "8px" }}>Your Prompt Kit is ready.</p>
           <h2 className="results-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, marginBottom: "14px" }}>
-            {totalPrompts} AI prompts built for {jobTitle}.
+            12 Prompts Built for Your Exact Job.
           </h2>
           <p className="screen-subheadline" style={{ marginBottom: "36px" }}>
             Copy any prompt below and paste into ChatGPT or Claude.

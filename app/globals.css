@@ -3606,6 +3606,14 @@ input, textarea {
 /* --bg-alt is already overridden above so idle rows will be rgba(255,255,255,0.04) */
 
 /* ── Kit preview cards — dark section on OKB page ────────────────────── */
+/* ── Button zoom hover ──────────────────────────────────── */
+.btn-zoom {
+  transition: transform 0.18s ease !important;
+}
+.btn-zoom:hover {
+  transform: scale(1.05) !important;
+}
+
 .dark-kit-section {
   background: transparent !important;
 }
@@ -3616,18 +3624,31 @@ input, textarea {
   box-shadow: 0 1px 3px rgba(0,0,0,0.40), 0 4px 20px rgba(0,0,0,0.30);
 }
 
+/* Blue gradient accent line at the top of each card */
+.dark-kit-section .kit-sample-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(to right, rgba(30,122,184,0.25), rgba(30,122,184,0.70), rgba(30,122,184,0.25));
+  z-index: 4;
+  pointer-events: none;
+}
+
 /* Thumbnail: bump opacity so it reads as an actual document on dark bg */
 .dark-kit-section .kit-sample-card img[aria-hidden="true"] {
   opacity: 0.50 !important;
 }
 
 .dark-kit-section .kit-sample-card::after {
-  height: 110px;
-  background: linear-gradient(to bottom, #1C1C1F 0%, #1C1C1F 45%, transparent 100%);
+  height: 120px;
+  background: linear-gradient(to bottom, #1C1C1F 0%, #1C1C1F 55%, transparent 100%);
 }
 
 .dark-kit-section .kit-sample-card:hover {
-  border-color: rgba(30,122,184,0.40);
+  border-color: rgba(30,122,184,0.45);
   box-shadow: 0 6px 28px rgba(0,0,0,0.50), 0 2px 8px rgba(0,0,0,0.30);
   transform: translateY(-2px);
 }

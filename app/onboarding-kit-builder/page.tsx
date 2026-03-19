@@ -67,7 +67,7 @@ export default function OnboardingKitBuilderPage({
               style={{
                 fontSize: "0.9375rem",
                 color: "rgba(255,255,255,0.45)",
-                margin: 0,
+                margin: "0 0 32px",
                 lineHeight: 1.6,
               }}
             >
@@ -76,25 +76,24 @@ export default function OnboardingKitBuilderPage({
               <strong style={{ fontWeight: 600, color: "rgba(255,255,255,0.65)" }}>HR Tools Package.</strong>{" "}
               Annual subscription.
             </p>
+
+            <a
+              href="#build-kit"
+              className="btn btn-primary btn-zoom"
+              style={{ padding: "10px 28px", fontSize: "0.9375rem", borderRadius: "6px" }}
+            >
+              Build My Kit
+            </a>
           </div>
         </section>
 
         {/* ── What's in the kit ─────────────────────────────────── */}
         <section
           className="section dark-kit-section"
-          style={{ paddingTop: "64px", paddingBottom: "64px" }}
+          style={{ paddingTop: "48px", paddingBottom: "64px" }}
         >
           <div className="container">
             <div style={{ maxWidth: "960px", margin: "0 auto" }}>
-              <div style={{ textAlign: "center", marginBottom: "40px" }}>
-                <a
-                  href="#build-kit"
-                  className="btn btn-primary"
-                  style={{ padding: "10px 24px", fontSize: "0.9375rem", borderRadius: "6px" }}
-                >
-                  Build My Kit
-                </a>
-              </div>
               <KitPreviewCards />
             </div>
           </div>

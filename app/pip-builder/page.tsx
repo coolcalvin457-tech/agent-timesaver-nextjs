@@ -101,8 +101,8 @@ export default function PIPBuilderPage({
 
             <a
               href="#build-pip"
-              className="btn btn-primary"
-              style={{ padding: "10px 24px", fontSize: "0.9375rem", borderRadius: "6px" }}
+              className="btn btn-primary btn-zoom"
+              style={{ padding: "10px 28px", fontSize: "0.9375rem", borderRadius: "6px" }}
             >
               Build My PIP
             </a>

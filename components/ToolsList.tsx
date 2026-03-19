@@ -79,6 +79,21 @@ export default function ToolsList({ tools }: { tools: Tool[] }) {
         })}
       </div>
 
+      {/* HR package context — only shown when HR filter is active */}
+      {activeFilter === "Human Resources" && (
+        <p
+          style={{
+            textAlign: "center",
+            fontSize: "0.875rem",
+            color: "var(--text-muted)",
+            marginBottom: "28px",
+            marginTop: "-4px",
+          }}
+        >
+          One $99/year subscription includes all Human Resources tools.
+        </p>
+      )}
+
       {/* Tools grid */}
       <div className="tools-grid">
         {filtered.map((tool) => (

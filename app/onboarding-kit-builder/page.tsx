@@ -117,55 +117,6 @@ export default function OnboardingKitBuilderPage({
           </div>
         </section>
 
-        {/* ── Bundle callout ────────────────────────────────────── */}
-        <section className="section" style={{ paddingTop: "0", paddingBottom: "80px" }}>
-          <div className="container">
-            <div
-              style={{
-                maxWidth: "760px",
-                margin: "0 auto",
-                padding: "24px 28px",
-                background: "rgba(255,255,255,0.04)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                borderRadius: "12px",
-              }}
-            >
-              <p
-                style={{
-                  fontSize: "0.75rem",
-                  fontWeight: 700,
-                  color: "var(--cta)",
-                  margin: "0 0 12px",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.06em",
-                }}
-              >
-                Part of the HR Tools Package
-              </p>
-              <p
-                style={{
-                  fontSize: "0.9375rem",
-                  color: "rgba(255,255,255,0.60)",
-                  margin: "0 0 14px",
-                  lineHeight: 1.7,
-                }}
-              >
-                This tool is part of the HR Tools Package. One purchase includes both Onboarding Kit and AGENT: PIP Builder — structured, defensible Performance Improvement Plans as a ready-to-use .docx file.
-              </p>
-              <a
-                href="/pip-builder"
-                style={{
-                  fontSize: "0.875rem",
-                  fontWeight: 600,
-                  color: "var(--cta)",
-                  textDecoration: "none",
-                }}
-              >
-                See AGENT: PIP Builder →
-              </a>
-            </div>
-          </div>
-        </section>
       </main>
       <Footer />
     </>

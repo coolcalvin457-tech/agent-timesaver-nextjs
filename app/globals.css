@@ -3607,33 +3607,43 @@ input, textarea {
 
 /* ── Kit preview cards — dark section on OKB page ────────────────────── */
 .dark-kit-section {
-  background: rgba(255,255,255,0.02) !important;
+  background: transparent !important;
 }
 
 .dark-kit-section .kit-sample-card {
-  background: var(--dark-surface, #1E1E20);
-  border-color: var(--dark-border, #2A2A2C);
-  box-shadow: 0 1px 6px rgba(0,0,0,0.30), 0 2px 12px rgba(0,0,0,0.20);
+  background: #1C1C1F;
+  border-color: rgba(255,255,255,0.10);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.40), 0 4px 20px rgba(0,0,0,0.30);
+}
+
+/* Thumbnail: bump opacity so it reads as an actual document on dark bg */
+.dark-kit-section .kit-sample-card img[aria-hidden="true"] {
+  opacity: 0.50 !important;
 }
 
 .dark-kit-section .kit-sample-card::after {
-  background: linear-gradient(to bottom, var(--dark-surface, #1E1E20) 0%, transparent 60%);
+  height: 110px;
+  background: linear-gradient(to bottom, #1C1C1F 0%, #1C1C1F 45%, transparent 100%);
 }
 
 .dark-kit-section .kit-sample-card:hover {
-  box-shadow: 0 6px 24px rgba(0,0,0,0.50), 0 2px 8px rgba(0,0,0,0.30);
+  border-color: rgba(30,122,184,0.40);
+  box-shadow: 0 6px 28px rgba(0,0,0,0.50), 0 2px 8px rgba(0,0,0,0.30);
+  transform: translateY(-2px);
 }
 
 .dark-kit-section .kit-sample-card h3 {
-  color: rgba(255,255,255,0.88);
+  color: rgba(255,255,255,0.90);
 }
 
 .dark-kit-section .kit-icon-btn {
   background: rgba(255,255,255,0.07);
-  color: rgba(255,255,255,0.55);
-  border-color: rgba(255,255,255,0.10);
+  color: rgba(255,255,255,0.60);
+  border-radius: 6px;
+  padding: 5px;
 }
 
 .dark-kit-section .kit-icon-btn:hover {
-  opacity: 0.85;
+  background: rgba(255,255,255,0.12);
+  opacity: 1;
 }

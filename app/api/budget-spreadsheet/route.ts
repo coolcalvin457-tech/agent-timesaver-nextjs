@@ -207,6 +207,7 @@ Rules:
 - Standard budget rule: for all other budgets, set hasActualColumn to true.
 - Notes field: write something concrete and specific ("Social campaigns, Q3" is better than "marketing activities"). Leave empty if you cannot write something specific — never write vague filler.
 - Filename: descriptive, hyphens only (e.g. "q3-marketing-budget.xlsx")
+- Year rule: unless the user specifies a year, always use the current year (${new Date().getFullYear()}) for filenames, titles, subtitles, and period labels. Never default to a past year.
 - No em dashes anywhere in any field
 - All "actual" values must be null
 - Currency: 3-letter ISO code appropriate for the described budget (default USD)

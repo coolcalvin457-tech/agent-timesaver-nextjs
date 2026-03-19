@@ -66,7 +66,7 @@ async function sendResultsEmail(
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Your AI Workflows — AGENT: Timesaver</title>
+  <title>Your AI Workflows. AGENT: Timesaver</title>
 </head>
 <body style="margin:0; padding:0; background:#f0f0ee; font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif; -webkit-font-smoothing:antialiased;">
 
@@ -177,7 +177,7 @@ async function sendResultsEmail(
     body: JSON.stringify({
       from,
       to: [email],
-      subject: `Your 5 AI workflows for ${jobTitle} — AGENT: Timesaver`,
+      subject: `Your 5 AI workflows for ${jobTitle}. AGENT: Timesaver`,
       html,
     }),
   });

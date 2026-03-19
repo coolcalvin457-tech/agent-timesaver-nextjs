@@ -86,7 +86,7 @@ async function sendPromptKitEmail(
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Your AI Prompt Kit — AGENT: Prompt Builder</title>
+  <title>Your AI Prompt Kit. AGENT: Prompt Builder</title>
 </head>
 <body style="margin:0; padding:0; background:#f0f0ee; font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif; -webkit-font-smoothing:antialiased;">
 
@@ -190,7 +190,7 @@ async function sendPromptKitEmail(
     body: JSON.stringify({
       from,
       to: [email],
-      subject: `Your AI Prompt Kit for ${jobTitle} — AGENT: Prompt Builder`,
+      subject: `Your AI Prompt Kit for ${jobTitle}. AGENT: Prompt Builder`,
       html,
     }),
   });

@@ -69,7 +69,7 @@ async function sendBudgetEmail(
                 ${budgetTitle}
               </h1>
               <p style="margin:0 0 32px 0; font-size:15px; color:#555553; line-height:1.6;">
-                Open it in Excel, Google Sheets, or Numbers. A second sheet called "How to Use This" walks you through every column and formula so you can start filling in your numbers right away.
+                Open in Excel, Google Sheets, or Numbers. The "How to Use" tab walks you through every formula.
               </p>
 
               <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8f8f6; border:1px solid #e4e4e2; border-radius:12px; margin-bottom:32px;">

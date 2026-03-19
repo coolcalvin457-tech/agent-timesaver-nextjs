@@ -30,7 +30,7 @@ export interface BudgetSpreadsheetData {
 const MOCK_BUDGET: BudgetSpreadsheetData = {
   filename: "Q2-Marketing-Budget.xlsx",
   title: "Q2 Marketing Budget",
-  subtitle: "April – June 2026",
+  subtitle: "April - June 2026",
   period: "Q2 2026",
   currency: "USD",
   hasActualColumn: true,
@@ -71,8 +71,6 @@ const MOCK_BUDGET: BudgetSpreadsheetData = {
 
 // ─── File Parsers ─────────────────────────────────────────────────────────────
 
-// Extract readable text from the content file (data/notes).
-// Supports .xlsx, .csv, .txt
 async function parseContentFile(file: File): Promise<string> {
   const ext = "." + file.name.split(".").pop()?.toLowerCase();
 
@@ -87,19 +85,18 @@ async function parseContentFile(file: File): Promise<string> {
         lines.push(`Sheet: ${sheet.name}`);
         sheet.eachRow((row) => {
           const cells = (row.values as ExcelJS.CellValue[])
-            .slice(1) // ExcelJS row.values is 1-indexed with a null at [0]
+            .slice(1)
             .filter((v) => v !== null && v !== undefined && v !== "")
             .map((v) => String(v));
           if (cells.length) lines.push(cells.join(" | "));
         });
       });
-      return lines.slice(0, 200).join("\n"); // cap at 200 lines
+      return lines.slice(0, 200).join("\n");
     } catch {
-      return ""; // parsing failed — continue without this context
+      return "";
     }
   }
 
-  // .csv or .txt — read as plain text, cap at 8000 chars
   try {
     const text = await file.text();
     return text.slice(0, 8000);
@@ -108,8 +105,6 @@ async function parseContentFile(file: File): Promise<string> {
   }
 }
 
-// Extract structure description from a template .xlsx (style reference).
-// Returns a text summary of the sheet: headers, category names, column layout.
 async function parseTemplateFile(file: File): Promise<string> {
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -124,7 +119,6 @@ async function parseTemplateFile(file: File): Promise<string> {
       lines.push(`Total rows with data: ${sheet.actualRowCount}`);
       lines.push(`Total columns: ${sheet.actualColumnCount}`);
 
-      // First row = likely headers
       const headerRow = sheet.getRow(1);
       const headers: string[] = [];
       headerRow.eachCell((cell) => {
@@ -132,7 +126,6 @@ async function parseTemplateFile(file: File): Promise<string> {
       });
       if (headers.length) lines.push(`Column headers: ${headers.join(" | ")}`);
 
-      // First column values = likely category names / row labels
       const colAValues: string[] = [];
       sheet.getColumn(1).eachCell((cell, rowNum) => {
         if (rowNum > 1 && cell.value && colAValues.length < 30) {
@@ -144,7 +137,7 @@ async function parseTemplateFile(file: File): Promise<string> {
 
     return lines.join("\n");
   } catch {
-    return ""; // parsing failed — continue without template context
+    return "";
   }
 }
 
@@ -165,6 +158,8 @@ You work in two modes:
 2. What-if scenario budget: sections represent different scenarios or variable options side by side, hasActualColumn is false (these are planning models, not trackers)
 
 Read the description carefully. If the user mentions scenarios, variables, headcount options, or phrases like "what if," build sections that represent each scenario or option directly — named after the scenario, not generic categories.
+
+Budget constraint rule: if the user states a total budget amount (for example "$50K total" or "$200,000 budget"), the sum of ALL estimated values across every row in every section must equal that number exactly. Distribute amounts proportionally across categories based on industry norms for the described context. This constraint is non-negotiable — total must match stated budget.
 
 Your output must look meaningfully different for a $10K nonprofit event vs a $500K tech department budget. Scale amounts, category depth, and line item specificity to match the described context. Generic outputs that could apply to any budget are unacceptable.`;
 
@@ -206,7 +201,8 @@ Return a JSON object with this exact structure:
 Rules:
 - Create 3-6 sections. Use more sections and more line items for larger, more complex budgets.
 - Each section: 3-6 realistic line items
-- Dollar amounts must be specific and scale-appropriate. If a total budget is mentioned, distribute it realistically across categories based on industry norms. If no total is mentioned, use amounts typical for that context and scale — not round placeholder numbers.
+- Budget constraint: if a total budget amount is mentioned in the description, the sum of ALL estimated values across ALL rows must equal that amount exactly. Add up every number before returning — if the total does not match the stated budget, adjust line items proportionally until it does.
+- Dollar amounts must be specific and scale-appropriate. If no total is mentioned, use amounts typical for that context and scale — not round placeholder numbers.
 - What-if / scenario rule: if the description mentions scenarios, variables, headcount options, or "what if," name each section after the scenario (e.g. "Scenario A: Add 2 FTEs", "Scenario B: Hire 1 Senior FTE") and set hasActualColumn to false.
 - Standard budget rule: for all other budgets, set hasActualColumn to true.
 - Notes field: write something concrete and specific ("Social campaigns, Q3" is better than "marketing activities"). Leave empty if you cannot write something specific — never write vague filler.
@@ -214,7 +210,7 @@ Rules:
 - No em dashes anywhere in any field
 - All "actual" values must be null
 - Currency: 3-letter ISO code appropriate for the described budget (default USD)
-- Self-check before returning: would this spreadsheet look different for a nonprofit event vs a tech company conference? If not, make it more specific to what was described.
+- Self-check before returning: (1) if a budget total was stated, sum all estimated values and confirm they match — adjust if not. (2) Would this spreadsheet look different for a nonprofit event vs a tech company conference? If not, make it more specific to what was described.
 
 Return ONLY valid JSON. No explanation text.`;
 
@@ -243,32 +239,51 @@ async function buildExcelFile(data: BudgetSpreadsheetData): Promise<Uint8Array<A
     pageSetup: { paperSize: 9, orientation: "portrait" },
   });
 
-  // ── Column definitions ─────────────────────────────────────────
+  // ── Column layout ──────────────────────────────────────────────
+  // With actual:    A=Section | B=Line Item | C=Estimated | D=Actual | E=Variance | F=Notes
+  // Without actual: A=Section | B=Line Item | C=Estimated | D=Notes
+
   const colDefs: Partial<ExcelJS.Column>[] = [
-    { key: "category", width: 26 },
-    { key: "item", width: 32 },
-    { key: "notes", width: 36 },
-    { key: "estimated", width: 18 },
+    { key: "category",  width: 26 },
+    { key: "item",      width: 30 },
+    { key: "estimated", width: 16 },
   ];
 
   if (data.hasActualColumn) {
-    colDefs.push({ key: "actual", width: 18 });
-    colDefs.push({ key: "variance", width: 18 });
+    colDefs.push({ key: "actual",   width: 16 });
+    colDefs.push({ key: "variance", width: 16 });
+    colDefs.push({ key: "notes",    width: 50 });
+  } else {
+    colDefs.push({ key: "notes",    width: 50 });
   }
 
   sheet.columns = colDefs;
 
+  // Column index constants (1-based)
+  const COL_SECTION  = 1;
+  const COL_ITEM     = 2;
+  const COL_EST      = 3;  // C — always Estimated
+  const COL_ACT      = 4;  // D — Actual (hasActual only)
+  const COL_VAR      = 5;  // E — Variance (hasActual only)
+  const COL_NOTES    = data.hasActualColumn ? 6 : 4;  // F or D
+
+  // Excel column letters for formula strings
+  const EST_LETTER  = "C";
+  const ACT_LETTER  = "D";
+  const VAR_LETTER  = "E";
+
+  // Total column count
+  const numCols = data.hasActualColumn ? 6 : 4;
+
   // ── Color palette ──────────────────────────────────────────────
-  const BLUE_DARK = "1E7AB8";   // brand primary
-  const BLUE_MID  = "2E8BC7";
+  const BLUE_DARK  = "1E7AB8";
+  const BLUE_MID   = "2E8BC7";
   const BLUE_LIGHT = "E8F4FC";
-  const GRAY_BG   = "F8F8F6";
-  const GRAY_MID  = "E0E0DC";
-  const WHITE     = "FFFFFF";
-  const TEXT_DARK = "1A1A1A";
-  const TEXT_MID  = "444444";
-  const RED_LIGHT  = "FDE8E8";
-  const GREEN_LIGHT = "E6F4EA";
+  const GRAY_BG    = "F8F8F6";
+  const GRAY_MID   = "E0E0DC";
+  const WHITE      = "FFFFFF";
+  const TEXT_DARK  = "1A1A1A";
+  const TEXT_MID   = "444444";
 
   const currencyFormat =
     data.currency === "USD" ? '"$"#,##0.00'
@@ -276,20 +291,17 @@ async function buildExcelFile(data: BudgetSpreadsheetData): Promise<Uint8Array<A
     : data.currency === "GBP" ? '"£"#,##0.00'
     : '"$"#,##0.00';
 
-  // ── Helper: apply border to a row range ───────────────────────
-  const setBorder = (row: ExcelJS.Row, thin = false) => {
-    const style: ExcelJS.BorderStyle = thin ? "thin" : "medium";
+  // ── Helper: apply light border to all cells in a row ──────────
+  const setBorder = (row: ExcelJS.Row) => {
     row.eachCell({ includeEmpty: true }, (cell) => {
       cell.border = {
-        top: { style: "thin", color: { argb: "FF" + GRAY_MID } },
+        top:    { style: "thin", color: { argb: "FF" + GRAY_MID } },
         bottom: { style: "thin", color: { argb: "FF" + GRAY_MID } },
-        left: { style: "thin", color: { argb: "FF" + GRAY_MID } },
-        right: { style: "thin", color: { argb: "FF" + GRAY_MID } },
+        left:   { style: "thin", color: { argb: "FF" + GRAY_MID } },
+        right:  { style: "thin", color: { argb: "FF" + GRAY_MID } },
       };
     });
   };
-
-  const numCols = data.hasActualColumn ? 6 : 4;
 
   // ── Row 1: Title ───────────────────────────────────────────────
   sheet.mergeCells(1, 1, 1, numCols);
@@ -318,9 +330,11 @@ async function buildExcelFile(data: BudgetSpreadsheetData): Promise<Uint8Array<A
   const headerRow = sheet.getRow(4);
   headerRow.height = 28;
 
-  const headerLabels: string[] = ["Section", "Line Item", "Notes", "Estimated"];
+  const headerLabels: string[] = ["Section", "Line Item", "Estimated"];
   if (data.hasActualColumn) {
-    headerLabels.push("Actual", "Variance");
+    headerLabels.push("Actual", "Variance", "Notes");
+  } else {
+    headerLabels.push("Notes");
   }
 
   headerLabels.forEach((label, i) => {
@@ -328,27 +342,30 @@ async function buildExcelFile(data: BudgetSpreadsheetData): Promise<Uint8Array<A
     cell.value = label;
     cell.font = { name: "Calibri", bold: true, size: 11, color: { argb: "FF" + WHITE } };
     cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF" + TEXT_DARK } };
-    cell.alignment = { vertical: "middle", horizontal: i >= 3 ? "right" : "left", indent: i < 3 ? 1 : 0 };
+    // Right-align number columns: Estimated (i=2), Actual (i=3), Variance (i=4)
+    const isNumberCol = i === 2 || (data.hasActualColumn && (i === 3 || i === 4));
+    cell.alignment = {
+      vertical: "middle",
+      horizontal: isNumberCol ? "right" : "left",
+      indent: isNumberCol ? 0 : 1,
+    };
     cell.border = {
-      top: { style: "thin", color: { argb: "FF" + TEXT_DARK } },
+      top:    { style: "thin",   color: { argb: "FF" + TEXT_DARK } },
       bottom: { style: "medium", color: { argb: "FF" + BLUE_DARK } },
-      left: { style: "thin", color: { argb: "FF333333" } },
-      right: { style: "thin", color: { argb: "FF333333" } },
+      left:   { style: "thin",   color: { argb: "FF333333" } },
+      right:  { style: "thin",   color: { argb: "FF333333" } },
     };
   });
 
-  // Freeze panes at row 5 (below header)
+  // Freeze panes below header
   sheet.views = [{ state: "frozen", xSplit: 0, ySplit: 4, topLeftCell: "A5" }];
 
-  // ── Data rows ─────────────────────────────────────────────────
+  // ── Data rows ──────────────────────────────────────────────────
   let currentRow = 5;
   const grandTotalEstimatedRefs: string[] = [];
   const grandTotalActualRefs: string[] = [];
 
   for (const section of data.sections) {
-    const sectionStartRow = currentRow;
-
-    // Section subtotal row refs
     const sectionEstimatedRefs: string[] = [];
     const sectionActualRefs: string[] = [];
 
@@ -360,130 +377,150 @@ async function buildExcelFile(data: BudgetSpreadsheetData): Promise<Uint8Array<A
       const isEven = i % 2 === 0;
       const rowBg = isEven ? WHITE : GRAY_BG;
 
-      // Col A: Section name (only on first row of section)
-      const cellA = exRow.getCell(1);
+      // Col A: Section name (first row of section only)
+      const cellA = exRow.getCell(COL_SECTION);
       cellA.value = i === 0 ? section.name : "";
       cellA.font = { name: "Calibri", bold: i === 0, size: 10, color: { argb: "FF" + TEXT_DARK } };
       cellA.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF" + (i === 0 ? BLUE_LIGHT : rowBg) } };
       cellA.alignment = { vertical: "middle", indent: 1 };
 
-      // Col B: Item
-      const cellB = exRow.getCell(2);
+      // Col B: Line item
+      const cellB = exRow.getCell(COL_ITEM);
       cellB.value = bRow.item;
       cellB.font = { name: "Calibri", size: 10, color: { argb: "FF" + TEXT_MID } };
       cellB.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF" + rowBg } };
       cellB.alignment = { vertical: "middle", indent: 1 };
 
-      // Col C: Notes
-      const cellC = exRow.getCell(3);
-      cellC.value = bRow.notes || "";
-      cellC.font = { name: "Calibri", size: 10, color: { argb: "FF888888" }, italic: true };
+      // Col C: Estimated
+      const cellC = exRow.getCell(COL_EST);
+      cellC.value = bRow.estimated ?? 0;
+      cellC.numFmt = currencyFormat;
+      cellC.font = { name: "Calibri", size: 10, color: { argb: "FF" + TEXT_DARK } };
       cellC.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF" + rowBg } };
-      cellC.alignment = { vertical: "middle", indent: 1 };
-
-      // Col D: Estimated
-      const cellD = exRow.getCell(4);
-      cellD.value = bRow.estimated ?? 0;
-      cellD.numFmt = currencyFormat;
-      cellD.font = { name: "Calibri", size: 10, color: { argb: "FF" + TEXT_DARK } };
-      cellD.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF" + rowBg } };
-      cellD.alignment = { vertical: "middle", horizontal: "right" };
-      sectionEstimatedRefs.push(`D${currentRow}`);
+      cellC.alignment = { vertical: "middle", horizontal: "right" };
+      sectionEstimatedRefs.push(`${EST_LETTER}${currentRow}`);
 
       if (data.hasActualColumn) {
-        // Col E: Actual (user fills in)
-        const cellE = exRow.getCell(5);
-        cellE.value = null;
-        cellE.numFmt = currencyFormat;
-        cellE.font = { name: "Calibri", size: 10, color: { argb: "FF" + TEXT_DARK } };
-        cellE.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFFAFAF8" } };
-        cellE.alignment = { vertical: "middle", horizontal: "right" };
-        cellE.border = {
-          top: { style: "thin", color: { argb: "FF" + GRAY_MID } },
-          bottom: { style: "thin", color: { argb: "FF" + GRAY_MID } },
-          left: { style: "dashed", color: { argb: "FF" + GRAY_MID } },
-          right: { style: "dashed", color: { argb: "FF" + GRAY_MID } },
-        };
-        sectionActualRefs.push(`E${currentRow}`);
+        // Col D: Actual (user fills in)
+        const cellD = exRow.getCell(COL_ACT);
+        cellD.value = null;
+        cellD.numFmt = currencyFormat;
+        cellD.font = { name: "Calibri", size: 10, color: { argb: "FF" + TEXT_DARK } };
+        cellD.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFFAFAF8" } };
+        cellD.alignment = { vertical: "middle", horizontal: "right" };
+        sectionActualRefs.push(`${ACT_LETTER}${currentRow}`);
 
-        // Col F: Variance (formula: Actual - Estimated, only if actual entered)
-        const cellF = exRow.getCell(6);
-        cellF.value = { formula: `IF(E${currentRow}="","",E${currentRow}-D${currentRow})` };
-        cellF.numFmt = currencyFormat;
-        cellF.font = { name: "Calibri", size: 10 };
+        // Col E: Variance — only shows when Actual is entered
+        const cellE = exRow.getCell(COL_VAR);
+        cellE.value = {
+          formula: `IF(${ACT_LETTER}${currentRow}="","",${ACT_LETTER}${currentRow}-${EST_LETTER}${currentRow})`,
+        };
+        cellE.numFmt = currencyFormat;
+        cellE.font = { name: "Calibri", size: 10 };
+        cellE.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF" + rowBg } };
+        cellE.alignment = { vertical: "middle", horizontal: "right" };
+
+        // Col F: Notes (scroll right to read)
+        const cellF = exRow.getCell(COL_NOTES);
+        cellF.value = bRow.notes || "";
+        cellF.font = { name: "Calibri", size: 10, color: { argb: "FF888888" }, italic: true };
         cellF.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF" + rowBg } };
-        cellF.alignment = { vertical: "middle", horizontal: "right" };
+        cellF.alignment = { vertical: "middle", indent: 1, wrapText: false };
+      } else {
+        // Col D (no actual): Notes
+        const cellD = exRow.getCell(COL_NOTES);
+        cellD.value = bRow.notes || "";
+        cellD.font = { name: "Calibri", size: 10, color: { argb: "FF888888" }, italic: true };
+        cellD.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF" + rowBg } };
+        cellD.alignment = { vertical: "middle", indent: 1 };
       }
 
+      // Apply border to all cells, then override Actual column with dashed style
       setBorder(exRow);
+
+      if (data.hasActualColumn) {
+        exRow.getCell(COL_ACT).border = {
+          top:    { style: "thin",   color: { argb: "FF" + GRAY_MID } },
+          bottom: { style: "thin",   color: { argb: "FF" + GRAY_MID } },
+          left:   { style: "dashed", color: { argb: "FF" + GRAY_MID } },
+          right:  { style: "dashed", color: { argb: "FF" + GRAY_MID } },
+        };
+      }
+
       currentRow++;
     }
 
-    // Section subtotal row
+    // ── Section subtotal row ───────────────────────────────────────
     const subtotalRow = sheet.getRow(currentRow);
     subtotalRow.height = 22;
 
-    const cellA = subtotalRow.getCell(1);
-    cellA.value = `${section.name} Total`;
-    cellA.font = { name: "Calibri", bold: true, size: 10, color: { argb: "FF" + WHITE } };
-    cellA.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF" + BLUE_DARK } };
-    cellA.alignment = { vertical: "middle", indent: 1 };
+    // Merge A-B for the label
+    sheet.mergeCells(currentRow, 1, currentRow, 2);
+    const subtotalLabelCell = subtotalRow.getCell(1);
+    subtotalLabelCell.value = `${section.name} Total`;
+    subtotalLabelCell.font = { name: "Calibri", bold: true, size: 10, color: { argb: "FF" + WHITE } };
+    subtotalLabelCell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF" + BLUE_DARK } };
+    subtotalLabelCell.alignment = { vertical: "middle", indent: 1 };
 
-    // Merge cols B and C for subtotal label area
-    sheet.mergeCells(currentRow, 2, currentRow, 3);
-    const cellBC = subtotalRow.getCell(2);
-    cellBC.value = "";
-    cellBC.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF" + BLUE_DARK } };
-
+    // C: Estimated subtotal
     const estimatedFormula = `SUM(${sectionEstimatedRefs.join(",")})`;
-    const cellD = subtotalRow.getCell(4);
-    cellD.value = { formula: estimatedFormula };
-    cellD.numFmt = currencyFormat;
-    cellD.font = { name: "Calibri", bold: true, size: 10, color: { argb: "FF" + WHITE } };
-    cellD.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF" + BLUE_DARK } };
-    cellD.alignment = { vertical: "middle", horizontal: "right" };
-    grandTotalEstimatedRefs.push(`D${currentRow}`);
+    const subtotalEstCell = subtotalRow.getCell(COL_EST);
+    subtotalEstCell.value = { formula: estimatedFormula };
+    subtotalEstCell.numFmt = currencyFormat;
+    subtotalEstCell.font = { name: "Calibri", bold: true, size: 10, color: { argb: "FF" + WHITE } };
+    subtotalEstCell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF" + BLUE_DARK } };
+    subtotalEstCell.alignment = { vertical: "middle", horizontal: "right" };
+    grandTotalEstimatedRefs.push(`${EST_LETTER}${currentRow}`);
 
     if (data.hasActualColumn) {
+      // D: Actual subtotal — blank when no actuals entered (IF wrapper prevents $0.00)
       const actualFormula = `SUM(${sectionActualRefs.join(",")})`;
-      const cellE = subtotalRow.getCell(5);
-      cellE.value = { formula: actualFormula };
-      cellE.numFmt = currencyFormat;
-      cellE.font = { name: "Calibri", bold: true, size: 10, color: { argb: "FF" + WHITE } };
-      cellE.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF" + BLUE_DARK } };
-      cellE.alignment = { vertical: "middle", horizontal: "right" };
-      grandTotalActualRefs.push(`E${currentRow}`);
+      const subtotalActCell = subtotalRow.getCell(COL_ACT);
+      subtotalActCell.value = { formula: `IF(${actualFormula}=0,"",${actualFormula})` };
+      subtotalActCell.numFmt = currencyFormat;
+      subtotalActCell.font = { name: "Calibri", bold: true, size: 10, color: { argb: "FF" + WHITE } };
+      subtotalActCell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF" + BLUE_DARK } };
+      subtotalActCell.alignment = { vertical: "middle", horizontal: "right" };
+      grandTotalActualRefs.push(`${ACT_LETTER}${currentRow}`);
 
-      const cellF = subtotalRow.getCell(6);
-      cellF.value = { formula: `IF(E${currentRow}=0,"",E${currentRow}-D${currentRow})` };
-      cellF.numFmt = currencyFormat;
-      cellF.font = { name: "Calibri", bold: true, size: 10, color: { argb: "FF" + WHITE } };
-      cellF.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF" + BLUE_DARK } };
-      cellF.alignment = { vertical: "middle", horizontal: "right" };
+      // E: Variance subtotal
+      const subtotalVarCell = subtotalRow.getCell(COL_VAR);
+      subtotalVarCell.value = {
+        formula: `IF(${ACT_LETTER}${currentRow}=0,"",${ACT_LETTER}${currentRow}-${EST_LETTER}${currentRow})`,
+      };
+      subtotalVarCell.numFmt = currencyFormat;
+      subtotalVarCell.font = { name: "Calibri", bold: true, size: 10, color: { argb: "FF" + WHITE } };
+      subtotalVarCell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF" + BLUE_DARK } };
+      subtotalVarCell.alignment = { vertical: "middle", horizontal: "right" };
+
+      // F: Notes column on subtotal row — fill brand color
+      const subtotalNotesCell = subtotalRow.getCell(COL_NOTES);
+      subtotalNotesCell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF" + BLUE_DARK } };
     }
 
     currentRow++;
 
     // Spacer row between sections
-    const spacerRow = sheet.getRow(currentRow);
-    spacerRow.height = 6;
+    sheet.getRow(currentRow).height = 6;
     currentRow++;
   }
 
   // ── Grand Total row ────────────────────────────────────────────
-  currentRow++; // extra space
+  currentRow++; // extra breathing room
   const totalRow = sheet.getRow(currentRow);
   totalRow.height = 28;
 
-  sheet.mergeCells(currentRow, 1, currentRow, 3);
+  // Merge A-B for label
+  sheet.mergeCells(currentRow, 1, currentRow, 2);
   const totalLabelCell = totalRow.getCell(1);
   totalLabelCell.value = "GRAND TOTAL";
   totalLabelCell.font = { name: "Calibri", bold: true, size: 12, color: { argb: "FF" + WHITE } };
   totalLabelCell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF" + TEXT_DARK } };
   totalLabelCell.alignment = { vertical: "middle", horizontal: "left", indent: 2 };
 
+  // C: Grand total estimated
   const grandEstFormula = `SUM(${grandTotalEstimatedRefs.join(",")})`;
-  const totalEstCell = totalRow.getCell(4);
+  const totalEstCell = totalRow.getCell(COL_EST);
   totalEstCell.value = { formula: grandEstFormula };
   totalEstCell.numFmt = currencyFormat;
   totalEstCell.font = { name: "Calibri", bold: true, size: 12, color: { argb: "FF" + WHITE } };
@@ -491,29 +528,37 @@ async function buildExcelFile(data: BudgetSpreadsheetData): Promise<Uint8Array<A
   totalEstCell.alignment = { vertical: "middle", horizontal: "right" };
 
   if (data.hasActualColumn) {
+    // D: Grand total actual — blank when no actuals entered
     const grandActFormula = `SUM(${grandTotalActualRefs.join(",")})`;
-    const totalActCell = totalRow.getCell(5);
-    totalActCell.value = { formula: grandActFormula };
+    const totalActCell = totalRow.getCell(COL_ACT);
+    totalActCell.value = { formula: `IF(${grandActFormula}=0,"",${grandActFormula})` };
     totalActCell.numFmt = currencyFormat;
     totalActCell.font = { name: "Calibri", bold: true, size: 12, color: { argb: "FF" + WHITE } };
     totalActCell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF" + TEXT_DARK } };
     totalActCell.alignment = { vertical: "middle", horizontal: "right" };
 
-    const totalVarCell = totalRow.getCell(6);
-    totalVarCell.value = { formula: `IF(E${currentRow}=0,"",E${currentRow}-D${currentRow})` };
+    // E: Grand total variance
+    const totalVarCell = totalRow.getCell(COL_VAR);
+    totalVarCell.value = {
+      formula: `IF(${ACT_LETTER}${currentRow}=0,"",${ACT_LETTER}${currentRow}-${EST_LETTER}${currentRow})`,
+    };
     totalVarCell.numFmt = currencyFormat;
     totalVarCell.font = { name: "Calibri", bold: true, size: 12, color: { argb: "FF" + WHITE } };
     totalVarCell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF" + TEXT_DARK } };
     totalVarCell.alignment = { vertical: "middle", horizontal: "right" };
+
+    // F: Notes column on grand total — fill dark
+    const totalNotesCell = totalRow.getCell(COL_NOTES);
+    totalNotesCell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF" + TEXT_DARK } };
   }
 
-  // ── Notes row ──────────────────────────────────────────────────
+  // ── Footer note ────────────────────────────────────────────────
   currentRow += 3;
   sheet.mergeCells(currentRow, 1, currentRow, numCols);
-  const notesCell = sheet.getCell(`A${currentRow}`);
-  notesCell.value = `Generated by AGENT: Budget Spreadsheets at promptaiagents.com. Fill in the "Actual" column as expenses occur. Variance = Actual minus Estimated.`;
-  notesCell.font = { name: "Calibri", size: 9, color: { argb: "FF999999" }, italic: true };
-  notesCell.alignment = { horizontal: "left", indent: 1 };
+  const footerCell = sheet.getCell(`A${currentRow}`);
+  footerCell.value = `Generated by AGENT: Budget Spreadsheets at promptaiagents.com. Fill in the "Actual" column as expenses occur. Variance = Actual minus Estimated.`;
+  footerCell.font = { name: "Calibri", size: 9, color: { argb: "FF999999" }, italic: true };
+  footerCell.alignment = { horizontal: "left", indent: 1 };
 
   // ── Sheet 2: "How to Use This" ────────────────────────────────
   const helpSheet = workbook.addWorksheet("How to Use This");
@@ -523,7 +568,6 @@ async function buildExcelFile(data: BudgetSpreadsheetData): Promise<Uint8Array<A
     { key: "howto", width: 64 },
   ];
 
-  // Header row
   const helpHeaderRow = helpSheet.getRow(1);
   helpHeaderRow.height = 28;
   ["Topic", "How to do it"].forEach((label, i) => {
@@ -534,10 +578,12 @@ async function buildExcelFile(data: BudgetSpreadsheetData): Promise<Uint8Array<A
     cell.alignment = { vertical: "middle", horizontal: "left", indent: 1 };
   });
 
+  const TEXT_MID_HELP = TEXT_MID;
+
   const instructions: [string, string][] = [
     [
       "What each column means",
-      "Section: the budget category. Line Item: the specific expense. Notes: a short detail. Estimated: the planned amount. Actual: what you actually spent. Variance: Actual minus Estimated (positive = under budget, negative = over).",
+      "Section: the budget category. Line Item: the specific expense. Estimated: the planned amount. Actual: what you actually spent. Variance: Actual minus Estimated (positive = under budget, negative = over). Notes: extra context about that line item — scroll right to read.",
     ],
     [
       "Fill in the Actual column",
@@ -545,7 +591,7 @@ async function buildExcelFile(data: BudgetSpreadsheetData): Promise<Uint8Array<A
     ],
     [
       "Reading the Variance column",
-      "Positive number = you spent less than planned (good). Negative number = you spent more than planned. The formula only shows a result once you've entered an Actual amount.",
+      "Positive number = you spent less than planned (good). Negative number = you spent more than planned. The column stays blank until you enter an Actual amount.",
     ],
     [
       "Add a new line item",
@@ -588,17 +634,14 @@ async function buildExcelFile(data: BudgetSpreadsheetData): Promise<Uint8Array<A
 
     const howtoCell = row.getCell(2);
     howtoCell.value = howto;
-    howtoCell.font = { name: "Calibri", size: 10, color: { argb: "FF" + TEXT_MID } };
+    howtoCell.font = { name: "Calibri", size: 10, color: { argb: "FF" + TEXT_MID_HELP } };
     howtoCell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: bgColor } };
     howtoCell.alignment = { vertical: "top", horizontal: "left", indent: 1, wrapText: true };
   });
 
-  // Freeze the header row
   helpSheet.views = [{ state: "frozen", xSplit: 0, ySplit: 1, topLeftCell: "A2" }];
 
   // ── Write to buffer ────────────────────────────────────────────
-  // ExcelJS returns Buffer (which extends Uint8Array). We cast through unknown
-  // to satisfy TS5 strict ArrayBuffer vs ArrayBufferLike checks at call site.
   const rawBuffer = await workbook.xlsx.writeBuffer();
   return rawBuffer as unknown as Uint8Array<ArrayBuffer>;
 }
@@ -619,7 +662,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Parse uploaded files in parallel (failures are silent — context just becomes "")
     const [contentContext, templateContext] = await Promise.all([
       contentFile  ? parseContentFile(contentFile)   : Promise.resolve(""),
       templateFile ? parseTemplateFile(templateFile) : Promise.resolve(""),

@@ -60,7 +60,7 @@ export default function OnboardingKitBuilderPage({
                 color: "#ffffff",
               }}
             >
-              Position-specific onboarding kit.<br />Use for every new hire.
+              Position-Specific Onboarding Kit.<br />Use for Every New Hire.
             </h1>
 
             <p
@@ -74,7 +74,7 @@ export default function OnboardingKitBuilderPage({
               <span style={{ fontWeight: 800, color: "var(--cta)", fontSize: "1.125rem" }}>$99</span>
               {" · "}
               <strong style={{ fontWeight: 600, color: "rgba(255,255,255,0.65)" }}>HR Tools Package.</strong>{" "}
-              Annual subscription. Includes all HR tools.
+              Annual subscription.
             </p>
           </div>
         </section>
@@ -87,27 +87,13 @@ export default function OnboardingKitBuilderPage({
           <div className="container">
             <div style={{ maxWidth: "960px", margin: "0 auto" }}>
               <div style={{ textAlign: "center", marginBottom: "40px" }}>
-                <h2
-                  style={{
-                    fontSize: "clamp(1.375rem, 2.5vw, 1.75rem)",
-                    fontWeight: 700,
-                    color: "#ffffff",
-                    margin: "0 0 10px",
-                    lineHeight: 1.3,
-                  }}
+                <a
+                  href="#build-kit"
+                  className="btn btn-primary"
+                  style={{ padding: "10px 24px", fontSize: "0.9375rem", borderRadius: "6px" }}
                 >
-                  What's in the kit.
-                </h2>
-                <p
-                  style={{
-                    fontSize: "0.9375rem",
-                    color: "rgba(255,255,255,0.45)",
-                    margin: 0,
-                    lineHeight: 1.6,
-                  }}
-                >
-                  Preview or download each section. Click any card to open it.
-                </p>
+                  Build My Kit
+                </a>
               </div>
               <KitPreviewCards />
             </div>

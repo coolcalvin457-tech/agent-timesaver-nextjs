@@ -59,7 +59,7 @@ export default function PIPBuilderPage({
                 color: "#ffffff",
               }}
             >
-              A PIP that holds up.<br />Built for the conversation you have to have.
+              A PIP That Holds Up.<br />Built for the Conversation You Have to Have.
             </h1>
 
             <p
@@ -96,7 +96,7 @@ export default function PIPBuilderPage({
               <span style={{ fontWeight: 800, color: "var(--cta)", fontSize: "1.125rem" }}>$99</span>
               {" · "}
               <strong style={{ fontWeight: 600, color: "rgba(255,255,255,0.72)" }}>HR Tools Package.</strong>{" "}
-              <span>Annual subscription. Includes all HR tools.</span>
+              Annual subscription.
             </p>
 
             <a

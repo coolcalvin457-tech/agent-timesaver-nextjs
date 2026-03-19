@@ -158,17 +158,25 @@ async function generateBudgetStructure(
   const Anthropic = (await import("@anthropic-ai/sdk")).default;
   const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
-  const systemPrompt = `You are a financial planning expert who creates professional budget spreadsheets for non-technical professionals. You understand common budget structures across departments, projects, and personal finance. You create organized, realistic, immediately usable spreadsheets.`;
+  const systemPrompt = `You are a financial planning expert who creates professional, immediately usable budget spreadsheets for working professionals. You understand budget structures across every department and industry — from a $5,000 event to a $5 million department.
+
+You work in two modes:
+1. Standard tracking budget: sections reflect real spend categories, hasActualColumn is true, user fills in actuals over time
+2. What-if scenario budget: sections represent different scenarios or variable options side by side, hasActualColumn is false (these are planning models, not trackers)
+
+Read the description carefully. If the user mentions scenarios, variables, headcount options, or phrases like "what if," build sections that represent each scenario or option directly — named after the scenario, not generic categories.
+
+Your output must look meaningfully different for a $10K nonprofit event vs a $500K tech department budget. Scale amounts, category depth, and line item specificity to match the described context. Generic outputs that could apply to any budget are unacceptable.`;
 
   const contentSection = contentContext.trim()
-    ? `\n\nThe user also uploaded a file with their data, notes, or existing budget information. Use this as source material for the line items and amounts — prioritize it over generic defaults:\n\n${contentContext.trim()}`
+    ? `\n\nThe user uploaded a file with their data, notes, or existing numbers. Use this as the primary source for line items and amounts — it takes priority over generic defaults:\n\n${contentContext.trim()}`
     : "";
 
   const templateSection = templateContext.trim()
-    ? `\n\nThe user uploaded a spreadsheet they love as a style reference. Match its structure as closely as possible — use the same categories, column organization, and level of detail shown below:\n\n${templateContext.trim()}`
+    ? `\n\nThe user uploaded a spreadsheet they love as a style reference. Match its structure as closely as possible — use the same categories, column organization, and level of detail:\n\n${templateContext.trim()}`
     : "";
 
-  const userPrompt = `Create a complete, realistic budget spreadsheet structure based on this description:
+  const userPrompt = `Create a complete, realistic budget spreadsheet based on this description:
 
 "${description}"${contentSection}${templateSection}
 
@@ -196,17 +204,17 @@ Return a JSON object with this exact structure:
 }
 
 Rules:
-- Create 3-6 meaningful sections relevant to the budget type
-- Each section should have 3-6 realistic line items
-- Use real, specific dollar amounts that are realistic for the budget type and scale described
-- If the user mentions a total budget or scale, distribute it realistically
-- If no scale is mentioned, use reasonable professional defaults
-- Set "hasActualColumn" to true for tracking budgets (project, department, event) or false for planning-only budgets (personal planning, future projections)
-- The "notes" field should give a brief clarifying detail about what the line item covers — keep it under 8 words, or leave it empty
-- Filename should be descriptive and use hyphens (e.g. "annual-marketing-budget.xlsx")
-- No em dashes anywhere
-- All "actual" values should be null (the user will fill these in)
-- currency should be the 3-letter ISO code most appropriate for the described budget (default USD unless context suggests otherwise)
+- Create 3-6 sections. Use more sections and more line items for larger, more complex budgets.
+- Each section: 3-6 realistic line items
+- Dollar amounts must be specific and scale-appropriate. If a total budget is mentioned, distribute it realistically across categories based on industry norms. If no total is mentioned, use amounts typical for that context and scale — not round placeholder numbers.
+- What-if / scenario rule: if the description mentions scenarios, variables, headcount options, or "what if," name each section after the scenario (e.g. "Scenario A: Add 2 FTEs", "Scenario B: Hire 1 Senior FTE") and set hasActualColumn to false.
+- Standard budget rule: for all other budgets, set hasActualColumn to true.
+- Notes field: write something concrete and specific ("Social campaigns, Q3" is better than "marketing activities"). Leave empty if you cannot write something specific — never write vague filler.
+- Filename: descriptive, hyphens only (e.g. "q3-marketing-budget.xlsx")
+- No em dashes anywhere in any field
+- All "actual" values must be null
+- Currency: 3-letter ISO code appropriate for the described budget (default USD)
+- Self-check before returning: would this spreadsheet look different for a nonprofit event vs a tech company conference? If not, make it more specific to what was described.
 
 Return ONLY valid JSON. No explanation text.`;
 

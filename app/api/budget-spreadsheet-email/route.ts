@@ -41,7 +41,7 @@ async function sendBudgetEmail(
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Your Budget Spreadsheet — AGENT: Budget Spreadsheets</title>
+  <title>Your Budget Spreadsheet. AGENT: Budget Spreadsheets</title>
 </head>
 <body style="margin:0; padding:0; background:#f0f0ee; font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif; -webkit-font-smoothing:antialiased;">
 
@@ -69,7 +69,7 @@ async function sendBudgetEmail(
                 ${budgetTitle}
               </h1>
               <p style="margin:0 0 32px 0; font-size:15px; color:#555553; line-height:1.6;">
-                Your file is attached to this email. Open it in Excel, Google Sheets, or Numbers and start filling in your numbers. A second sheet called "How to Use This" walks you through every column and formula.
+                Open it in Excel, Google Sheets, or Numbers. A second sheet called "How to Use This" walks you through every column and formula so you can start filling in your numbers right away.
               </p>
 
               <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8f8f6; border:1px solid #e4e4e2; border-radius:12px; margin-bottom:32px;">
@@ -87,8 +87,8 @@ async function sendBudgetEmail(
 
               <!-- CTA -->
               <a href="https://promptaiagents.com/budget-spreadsheets"
-                 style="display:inline-block; background:linear-gradient(180deg,#2C97DD 0%,#1562A0 100%); color:#ffffff; font-size:15px; font-weight:600; text-decoration:none; padding:14px 28px; border-radius:10px;">
-                Build another spreadsheet →
+                 style="display:inline-block; background:#161618; color:#ffffff; font-size:15px; font-weight:600; text-decoration:none; padding:14px 28px; border-radius:10px;">
+                Build another spreadsheet
               </a>
             </td>
           </tr>
@@ -121,7 +121,7 @@ async function sendBudgetEmail(
     body: JSON.stringify({
       from,
       to: [email],
-      subject: `Your ${budgetTitle} is ready — AGENT: Budget Spreadsheets`,
+      subject: `Your ${budgetTitle} is ready. AGENT: Budget Spreadsheets`,
       html,
       attachments: [
         {

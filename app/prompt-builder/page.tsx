@@ -30,8 +30,8 @@ export default function PromptBuilderPage() {
                 color: "#ffffff",
               }}
             >
-              <span style={{ display: "block" }}>12 prompts built for</span>
-              <span style={{ display: "block" }}>your exact job.</span>
+              <span style={{ display: "block" }}>12 Prompts Built for</span>
+              <span style={{ display: "block" }}>Your Exact Job.</span>
             </h1>
 
           </div>

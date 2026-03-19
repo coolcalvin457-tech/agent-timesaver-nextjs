@@ -682,14 +682,14 @@ export default function PromptBuilderTool() {
             <p className="pb-system-eyebrow">Step 2</p>
             <h3 className="pb-system-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}>The setup that makes AI remember you.</h3>
             <p className="pb-system-subline">
-              Prompts are step one. This is what makes them work every time — not just today.
+              Prompts are step one. Here&apos;s what makes them work every time.
             </p>
 
             {/* Step 1 — AI Profile */}
             <div className="pb-system-step">
               <p className="pb-system-step-label">1 &nbsp;·&nbsp; Your AI Profile</p>
               <p className="pb-system-step-body">
-                Paste this into AI once. You won&apos;t have to re-introduce yourself or start from scratch ever again.
+                Paste this into AI once. No need to re-introduce yourself or start from scratch ever again.
               </p>
               <div className="pb-prompt-text-wrapper" style={{ marginBottom: "12px", flexDirection: "column", alignItems: "stretch" }}>
                 <p className="pb-prompt-text">{promptKit.aiProfile}</p>
@@ -701,31 +701,25 @@ export default function PromptBuilderTool() {
                   {copiedId === "aiProfile" ? "✓ Copied" : "Copy"}
                 </button>
               </div>
-              <p className="pb-system-step-body" style={{ marginBottom: "10px" }}>
-                <strong>Where to add it:</strong>
+              <p className="pb-system-step-body">
+                <strong>Where to add it:</strong> Settings. Not sure where, just ask AI.
               </p>
-              <ul className="pb-where-list">
-                <li><strong>ChatGPT:</strong> Settings → Personalization → Custom Instructions</li>
-                <li><strong>Claude:</strong> Settings → Profile → What should Claude know about you?</li>
-                <li><strong>Gemini:</strong> Settings → Extensions &amp; Personalization</li>
-                <li><strong>Any tool:</strong> No settings panel? Paste your AI Profile at the top of every new chat. AI will read it before it responds.</li>
-              </ul>
             </div>
 
             {/* Step 2 — Folder structure */}
             <div className="pb-system-step">
               <p className="pb-system-step-label">2 &nbsp;·&nbsp; Set up your AI folder</p>
               <p className="pb-system-step-body">
-                Create this structure wherever you already work — your desktop, Notion, Google Drive. Once it exists, you stop starting over.
+                Create a folder structure on your desktop.
               </p>
               <div className="pb-folder-tree">
-                <p className="pb-folder-tree-item pb-folder-root">📁 My AI System/</p>
+                <p className="pb-folder-tree-item pb-folder-root">📁 [YourName]&apos;s AI Workspace/</p>
                 <p className="pb-folder-tree-item pb-folder-indent">📄 AI Profile.md</p>
                 <p className="pb-folder-tree-item pb-folder-indent">📁 Prompt Library/</p>
                 <p className="pb-folder-tree-item pb-folder-indent">📁 Saved Results/</p>
               </div>
               <p className="pb-system-step-body" style={{ marginTop: "16px" }}>
-                Save AI&apos;s best outputs as <strong>.md files</strong> — plain text files that any AI tool reads instantly. After a great AI response, ask: <em>&ldquo;Format this as a .md file I can save.&rdquo;</em> Drop it in your Saved Results folder. Over time, AI can reference what it already built for you instead of starting from scratch.
+                Ask AI to format any information you&apos;re saving as a .md file.
               </p>
             </div>
           </div>

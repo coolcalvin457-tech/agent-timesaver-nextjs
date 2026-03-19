@@ -33,7 +33,8 @@ async function sendResultsEmail(
   workflows: Workflow[],
   roi: ROI
 ): Promise<void> {
-  const from = process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev";
+  const fromAddress = process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev";
+  const from = `Prompt AI Agents <${fromAddress}>`;
 
   const workflowRows = workflows
     .map(

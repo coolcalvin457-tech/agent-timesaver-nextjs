@@ -69,7 +69,8 @@ async function sendPromptKitEmail(
   jobTitle: string,
   promptKit: PromptKitResponse
 ): Promise<void> {
-  const from = process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev";
+  const fromAddress = process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev";
+  const from = `Prompt AI Agents <${fromAddress}>`;
 
   const categoryRows = promptKit.categories
     .map((cat, i) => buildCategoryHTML(cat, i))

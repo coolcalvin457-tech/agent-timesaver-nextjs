@@ -25,7 +25,6 @@ export default function KitPreviewCards() {
     setPreviewTitle("");
   }, []);
 
-  // ESC key to close
   useEffect(() => {
     if (!previewPdf) return;
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") closePreview(); };
@@ -33,7 +32,6 @@ export default function KitPreviewCards() {
     return () => document.removeEventListener("keydown", onKey);
   }, [previewPdf, closePreview]);
 
-  // Lock body scroll while modal is open
   useEffect(() => {
     document.body.style.overflow = previewPdf ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
@@ -41,96 +39,71 @@ export default function KitPreviewCards() {
 
   return (
     <>
-      {/* ── Cards grid ── */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gap: "24px",
-        }}
-      >
-        {KIT_ITEMS.map((item) => (
+      {/* ── List ── */}
+      <div className="kit-list">
+        {KIT_ITEMS.map((item, index) => (
           <div
             key={item.title}
-            className="kit-sample-card"
-            style={item.featured ? { border: "1.5px solid rgba(30,122,184,0.35)" } : undefined}
+            className={`kit-list-row${item.featured ? " kit-list-row-featured" : ""}`}
             onClick={() => openPreview(item.pdf, item.title)}
             role="button"
             tabIndex={0}
             onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") openPreview(item.pdf, item.title); }}
             aria-label={`Preview ${item.title}`}
+            style={{ borderTop: index === 0 ? "1px solid var(--kit-row-border, rgba(0,0,0,0.08))" : undefined }}
           >
-            {/* Faded thumbnail */}
-            <img
-              src={item.thumb}
-              alt=""
-              aria-hidden="true"
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                objectPosition: "top",
-                opacity: 0.18,
-                pointerEvents: "none",
-              }}
-            />
-
-            {/* Title + action buttons */}
-            <div
-              style={{
-                position: "relative",
-                zIndex: 2,
-                width: "100%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <h3
+            {/* Small thumbnail */}
+            <div className="kit-list-thumb">
+              <img
+                src={item.thumb}
+                alt=""
+                aria-hidden="true"
                 style={{
-                  fontSize: "0.875rem",
-                  fontWeight: 700,
-                  color: "var(--text-primary)",
-                  margin: 0,
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  objectPosition: "top",
+                  display: "block",
                 }}
+              />
+            </div>
+
+            {/* Title */}
+            <span className="kit-list-title">
+              {item.title}
+              {item.featured && (
+                <span className="kit-list-badge">Full Kit</span>
+              )}
+            </span>
+
+            {/* Actions */}
+            <div style={{ display: "flex", gap: "16px", alignItems: "center", flexShrink: 0 }}>
+              <button
+                type="button"
+                onClick={(e) => { e.stopPropagation(); openPreview(item.pdf, item.title); }}
+                className="kit-icon-btn"
+                title="Preview"
+                aria-label={`Preview ${item.title}`}
               >
-                {item.title}
-              </h3>
-
-              <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-                {/* Preview icon — visual cue; card click also opens preview */}
-                <button
-                  type="button"
-                  onClick={() => openPreview(item.pdf, item.title)}
-                  className="kit-icon-btn"
-                  title="Preview"
-                  aria-label={`Preview ${item.title}`}
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="11" cy="11" r="8"/>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                  </svg>
-                </button>
-
-                {/* Download */}
-                <a
-                  href={item.pdf}
-                  download
-                  className="kit-icon-btn"
-                  title="Download"
-                  aria-label={`Download ${item.title}`}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                    <polyline points="7 10 12 15 17 10"/>
-                    <line x1="12" y1="15" x2="12" y2="3"/>
-                  </svg>
-                </a>
-              </div>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="11" cy="11" r="8"/>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+              </button>
+              <a
+                href={item.pdf}
+                download
+                className="kit-icon-btn"
+                title="Download"
+                aria-label={`Download ${item.title}`}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+              </a>
             </div>
           </div>
         ))}
@@ -149,7 +122,6 @@ export default function KitPreviewCards() {
             className="kit-modal-panel"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Modal header */}
             <div className="kit-modal-header">
               <span className="kit-modal-title">{previewTitle}</span>
               <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
@@ -179,8 +151,6 @@ export default function KitPreviewCards() {
                 </button>
               </div>
             </div>
-
-            {/* PDF iframe */}
             <iframe
               src={`${previewPdf}#toolbar=0`}
               className="kit-modal-iframe"

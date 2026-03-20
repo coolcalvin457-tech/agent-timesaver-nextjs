@@ -3606,6 +3606,96 @@ input, textarea {
 /* --bg-alt is already overridden above so idle rows will be rgba(255,255,255,0.04) */
 
 /* ── Kit preview cards — dark section on OKB page ────────────────────── */
+/* ── Kit list (replaces card grid) ─────────────────────── */
+.kit-list {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border, #E4E4E2);
+}
+
+.kit-list-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--kit-row-border, rgba(0,0,0,0.08));
+  cursor: pointer;
+  transition: background 0.15s ease;
+  background: var(--surface, #ffffff);
+}
+
+.kit-list-row:last-child {
+  border-bottom: none;
+}
+
+.kit-list-row:hover {
+  background: var(--bg-alt, #F8F8F6);
+}
+
+.kit-list-row-featured {
+  background: rgba(30,122,184,0.03);
+}
+
+.kit-list-thumb {
+  width: 36px;
+  height: 46px;
+  border-radius: 4px;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1px solid var(--border, #E4E4E2);
+  background: #f5f5f3;
+}
+
+.kit-list-title {
+  flex: 1;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.kit-list-badge {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--cta);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  background: rgba(30,122,184,0.08);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+/* Dark mode overrides */
+.dark-kit-section .kit-list {
+  border-color: rgba(255,255,255,0.10);
+  --kit-row-border: rgba(255,255,255,0.07);
+}
+
+.dark-kit-section .kit-list-row {
+  background: rgba(255,255,255,0.03);
+}
+
+.dark-kit-section .kit-list-row:hover {
+  background: rgba(255,255,255,0.07);
+}
+
+.dark-kit-section .kit-list-row-featured {
+  background: rgba(30,122,184,0.07);
+}
+
+.dark-kit-section .kit-list-thumb {
+  border-color: rgba(255,255,255,0.10);
+  background: #1C1C1F;
+}
+
+.dark-kit-section .kit-list-title {
+  color: rgba(255,255,255,0.90);
+}
+
 /* ── Button zoom hover ──────────────────────────────────── */
 .btn-zoom {
   transition: transform 0.18s ease !important;

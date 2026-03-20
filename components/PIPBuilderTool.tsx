@@ -594,8 +594,7 @@ export default function PIPBuilderTool({
         {/* Employee Role */}
         <div style={fieldGroupStyle}>
           <label style={labelStyle}>
-            Employee role / title <span style={{ color: "#DC2626" }}>*</span>
-          </label>
+            Employee role / title          </label>
           <input
             type="text"
             value={employeeRole}
@@ -608,8 +607,7 @@ export default function PIPBuilderTool({
         {/* Department */}
         <div style={fieldGroupStyle}>
           <label style={labelStyle}>
-            Department <span style={{ color: "#DC2626" }}>*</span>
-          </label>
+            Department          </label>
           <input
             type="text"
             value={department}
@@ -622,8 +620,7 @@ export default function PIPBuilderTool({
         {/* Tenure */}
         <div style={fieldGroupStyle}>
           <label style={labelStyle}>
-            Tenure <span style={{ color: "#DC2626" }}>*</span>
-          </label>
+            Tenure          </label>
           <input
             type="text"
             value={tenure}
@@ -636,8 +633,7 @@ export default function PIPBuilderTool({
         {/* Manager Name */}
         <div style={fieldGroupStyle}>
           <label style={labelStyle}>
-            Manager name <span style={{ color: "#DC2626" }}>*</span>
-          </label>
+            Manager name          </label>
           <input
             type="text"
             value={managerName}
@@ -650,8 +646,7 @@ export default function PIPBuilderTool({
         {/* Issue Type */}
         <div style={fieldGroupStyle}>
           <label style={labelStyle}>
-            Issue type <span style={{ color: "#DC2626" }}>*</span>
-          </label>
+            Issue type          </label>
           <div style={radioGroupStyle}>
             {(["performance", "behavioral"] as IssueType[]).map((type) => (
               <div
@@ -693,8 +688,7 @@ export default function PIPBuilderTool({
         {/* Prior Coaching */}
         <div style={fieldGroupStyle}>
           <label style={labelStyle}>
-            Prior coaching or feedback given? <span style={{ color: "#DC2626" }}>*</span>
-          </label>
+            Prior coaching or feedback given?          </label>
           <div style={{ display: "flex", gap: "10px" }}>
             {([true, false] as const).map((val) => (
               <div
@@ -758,8 +752,7 @@ export default function PIPBuilderTool({
         {/* Specific Deficiencies */}
         <div style={fieldGroupStyle}>
           <label style={labelStyle}>
-            Specific deficiencies <span style={{ color: "#DC2626" }}>*</span>
-          </label>
+            Specific deficiencies          </label>
           <textarea
             value={deficiencies}
             onChange={(e) => setDeficiencies(e.target.value)}
@@ -791,8 +784,7 @@ export default function PIPBuilderTool({
         {/* Improvement Targets */}
         <div style={fieldGroupStyle}>
           <label style={labelStyle}>
-            Improvement targets <span style={{ color: "#DC2626" }}>*</span>
-          </label>
+            Improvement targets          </label>
           <textarea
             value={improvementTargets}
             onChange={(e) => setImprovementTargets(e.target.value)}
@@ -804,8 +796,7 @@ export default function PIPBuilderTool({
         {/* Timeline */}
         <div style={fieldGroupStyle}>
           <label style={labelStyle}>
-            Plan duration <span style={{ color: "#DC2626" }}>*</span>
-          </label>
+            Plan duration          </label>
           <div style={{ display: "flex", gap: "10px" }}>
             {(["30", "60", "90"] as Timeline[]).map((t) => (
               <div
@@ -873,8 +864,7 @@ export default function PIPBuilderTool({
         {/* Check-in Schedule */}
         <div style={fieldGroupStyle}>
           <label style={labelStyle}>
-            Check-in schedule <span style={{ color: "#DC2626" }}>*</span>
-          </label>
+            Check-in schedule          </label>
           <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
             {(["weekly", "biweekly", "custom"] as CheckinSchedule[]).map((opt) => (
               <div
@@ -924,8 +914,7 @@ export default function PIPBuilderTool({
         {/* Consequences */}
         <div style={fieldGroupStyle}>
           <label style={labelStyle}>
-            Consequences if targets are not met <span style={{ color: "#DC2626" }}>*</span>
-          </label>
+            Consequences if targets are not met          </label>
           <textarea
             value={consequences}
             onChange={(e) => setConsequences(e.target.value)}

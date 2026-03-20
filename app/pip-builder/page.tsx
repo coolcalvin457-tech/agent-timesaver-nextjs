@@ -53,7 +53,7 @@ export default function PIPBuilderPage({
             <h1
               className="heading-1"
               style={{
-                margin: "0 auto 24px",
+                margin: "0 auto 28px",
                 fontSize: "clamp(2.25rem, 4vw, 3.5rem)",
                 lineHeight: 1.25,
                 color: "#ffffff",
@@ -65,37 +65,14 @@ export default function PIPBuilderPage({
             <p
               style={{
                 fontSize: "0.9375rem",
-                color: "rgba(255,255,255,0.55)",
-                marginBottom: "12px",
-                lineHeight: 1.6,
-                maxWidth: "560px",
-                margin: "0 auto 16px",
-              }}
-            >
-              Specific. Measurable. Documented. A .docx file ready to review with your legal team before issuing.
-            </p>
-
-            <p
-              style={{
-                fontSize: "0.8125rem",
-                color: "rgba(255,255,255,0.35)",
-                marginBottom: "28px",
-              }}
-            >
-              We don't store your inputs.
-            </p>
-
-            <p
-              style={{
-                fontSize: "0.9375rem",
-                color: "rgba(255,255,255,0.55)",
-                marginBottom: "36px",
+                color: "rgba(255,255,255,0.45)",
+                margin: "0 0 32px",
                 lineHeight: 1.6,
               }}
             >
               <span style={{ fontWeight: 800, color: "var(--cta)", fontSize: "1.125rem" }}>$99</span>
               {" · "}
-              <strong style={{ fontWeight: 600, color: "rgba(255,255,255,0.72)" }}>HR Tools Package.</strong>{" "}
+              <strong style={{ fontWeight: 600, color: "rgba(255,255,255,0.65)" }}>HR Tools Package.</strong>{" "}
               Annual subscription.
             </p>
 
@@ -106,16 +83,6 @@ export default function PIPBuilderPage({
             >
               Build My PIP
             </a>
-
-            <p
-              style={{
-                fontSize: "0.8125rem",
-                color: "rgba(255,255,255,0.30)",
-                marginTop: "16px",
-              }}
-            >
-              Opens in Microsoft Word or Google Docs.
-            </p>
           </div>
         </section>
 

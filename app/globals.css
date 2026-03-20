@@ -3624,27 +3624,14 @@ input, textarea {
   box-shadow: 0 1px 3px rgba(0,0,0,0.40), 0 4px 20px rgba(0,0,0,0.30);
 }
 
-/* Blue gradient accent line at the top of each card */
-.dark-kit-section .kit-sample-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(to right, rgba(30,122,184,0.25), rgba(30,122,184,0.70), rgba(30,122,184,0.25));
-  z-index: 4;
-  pointer-events: none;
-}
-
-/* Thumbnail: bump opacity so it reads as an actual document on dark bg */
+/* Thumbnail: low enough to show as a ghost doc without bleeding into the title zone */
 .dark-kit-section .kit-sample-card img[aria-hidden="true"] {
-  opacity: 0.50 !important;
+  opacity: 0.32 !important;
 }
 
 .dark-kit-section .kit-sample-card::after {
-  height: 120px;
-  background: linear-gradient(to bottom, #1C1C1F 0%, #1C1C1F 55%, transparent 100%);
+  height: 140px;
+  background: linear-gradient(to bottom, #1C1C1F 0%, #1C1C1F 65%, transparent 100%);
 }
 
 .dark-kit-section .kit-sample-card:hover {

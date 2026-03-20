@@ -584,7 +584,7 @@ export default function PIPBuilderTool({
             Tell us about the situation.
           </h2>
           <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", margin: 0, lineHeight: 1.6 }}>
-            We'll build a PIP that's specific, measurable, and defensible — no employee names needed.
+            We'll build a PIP that's specific, measurable, and defensible.<br />No employee names needed.
           </p>
         </div>
 

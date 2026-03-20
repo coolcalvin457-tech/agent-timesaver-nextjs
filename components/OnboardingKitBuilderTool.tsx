@@ -893,7 +893,7 @@ export default function OnboardingKitBuilderTool({
         <BackButton onClick={goBackToS1} />
 
         <div style={{ marginBottom: "28px" }}>
-          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 6px" }}>
+          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 12px" }}>
             Why was {hireName || "they"} hired?
           </h2>
           <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", margin: 0, lineHeight: 1.6 }}>
@@ -967,7 +967,7 @@ export default function OnboardingKitBuilderTool({
         <BackButton onClick={goBackToS2} />
 
         <div style={{ marginBottom: "28px" }}>
-          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 6px" }}>
+          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 12px" }}>
             What does success look like for {hireName || "them"}?
           </h2>
           <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", margin: 0, lineHeight: 1.6 }}>
@@ -1093,7 +1093,7 @@ export default function OnboardingKitBuilderTool({
         )}
 
         <div style={{ marginBottom: "24px" }}>
-          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 6px" }}>
+          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 12px" }}>
             Your kit is ready to build.
           </h2>
           <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", margin: 0, lineHeight: 1.6 }}>

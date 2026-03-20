@@ -65,7 +65,7 @@ export default function PIPBuilderPage({
 
             <a
               href="#build-pip"
-              className="btn btn-primary btn-zoom"
+              className="btn btn-dark-cta btn-zoom"
               style={{ padding: "10px 28px", fontSize: "0.9rem", fontWeight: 500, letterSpacing: "0.04em" }}
             >
               Build My PIP

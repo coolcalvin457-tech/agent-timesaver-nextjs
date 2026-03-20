@@ -3610,9 +3610,7 @@ input, textarea {
 .kit-list {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  border-radius: 10px;
-  overflow: hidden;
-  border: 1px solid var(--border, #E4E4E2);
+  gap: 6px;
 }
 
 .kit-list-row {
@@ -3620,21 +3618,11 @@ input, textarea {
   align-items: center;
   gap: 16px;
   padding: 14px 20px;
-  border-bottom: 1px solid var(--kit-row-border, rgba(0,0,0,0.08));
-  border-right: 1px solid var(--kit-row-border, rgba(0,0,0,0.08));
+  border: 1px solid var(--kit-row-border, rgba(0,0,0,0.10));
+  border-radius: 8px;
   cursor: pointer;
   transition: background 0.15s ease;
   background: var(--surface, #ffffff);
-}
-
-/* Right column items get no right border */
-.kit-list-row:nth-child(even) {
-  border-right: none;
-}
-
-/* Last two items get no bottom border */
-.kit-list-row:nth-last-child(-n+2) {
-  border-bottom: none;
 }
 
 .kit-list-row:hover {
@@ -3678,8 +3666,7 @@ input, textarea {
 
 /* Dark mode overrides */
 .dark-kit-section .kit-list {
-  border-color: rgba(255,255,255,0.10);
-  --kit-row-border: rgba(255,255,255,0.07);
+  --kit-row-border: rgba(255,255,255,0.09);
 }
 
 .dark-kit-section .kit-list-row {
@@ -3709,6 +3696,20 @@ input, textarea {
 }
 .btn-zoom:hover {
   transform: scale(1.05) !important;
+}
+
+/* ── Ghost button for dark hero pages (HR tools) ─────────── */
+/* Matches the "Show Me" blue-border style inside .hero-tool-dark */
+.btn-dark-cta {
+  background: transparent;
+  color: #ffffff;
+  border: 1.5px solid rgba(77,163,224,0.45);
+  box-shadow: none;
+}
+.btn-dark-cta:hover {
+  background: rgba(77,163,224,0.08);
+  border-color: rgba(77,163,224,0.65);
+  box-shadow: none;
 }
 
 .dark-kit-section {

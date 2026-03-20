@@ -59,7 +59,7 @@ export default function PIPBuilderPage({
                 color: "#ffffff",
               }}
             >
-              A PIP That Holds Up.<br />Built for the Conversation You Have to Have.
+              A PIP That Holds Up.<br />Use for Difficult Conversations.
             </h1>
 
             <p

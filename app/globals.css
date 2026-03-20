@@ -3609,15 +3609,15 @@ input, textarea {
 /* ── Kit list (replaces card grid) ─────────────────────── */
 .kit-list {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 6px;
 }
 
 .kit-list-row {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 14px 20px;
+  gap: 12px;
+  padding: 12px 14px;
   border: 1px solid var(--kit-row-border, rgba(0,0,0,0.10));
   border-radius: 8px;
   cursor: pointer;
@@ -3645,8 +3645,8 @@ input, textarea {
 
 .kit-list-title {
   flex: 1;
-  font-size: 0.9375rem;
-  font-weight: 600;
+  font-size: 0.875rem;
+  font-weight: 500;
   color: var(--text-primary);
   display: flex;
   align-items: center;
@@ -3687,7 +3687,7 @@ input, textarea {
 }
 
 .dark-kit-section .kit-list-title {
-  color: rgba(255,255,255,0.90);
+  color: rgba(255,255,255,0.70);
 }
 
 /* ── Button zoom hover ──────────────────────────────────── */

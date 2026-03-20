@@ -50,7 +50,7 @@ export default function KitPreviewCards() {
             tabIndex={0}
             onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") openPreview(item.pdf, item.title); }}
             aria-label={`Preview ${item.title}`}
-            style={{ borderTop: index === 0 ? "1px solid var(--kit-row-border, rgba(0,0,0,0.08))" : undefined }}
+            style={{}}
           >
             {/* Small thumbnail */}
             <div className="kit-list-thumb">
@@ -77,7 +77,7 @@ export default function KitPreviewCards() {
             </span>
 
             {/* Actions */}
-            <div style={{ display: "flex", gap: "16px", alignItems: "center", flexShrink: 0 }}>
+            <div style={{ display: "flex", gap: "12px", alignItems: "center", flexShrink: 0 }}>
               <button
                 type="button"
                 onClick={(e) => { e.stopPropagation(); openPreview(item.pdf, item.title); }}

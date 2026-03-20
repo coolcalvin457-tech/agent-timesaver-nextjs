@@ -34,7 +34,7 @@ export default function PIPBuilderPage({
         {/* ── Hero section ─────────────────────────────────────── */}
         <section
           className="section"
-          style={{ paddingTop: "140px", paddingBottom: "40px" }}
+          style={{ paddingTop: "140px", paddingBottom: "20px" }}
         >
           <div className="container" style={{ textAlign: "center" }}>
             <p
@@ -87,7 +87,7 @@ export default function PIPBuilderPage({
         </section>
 
         {/* ── Tool section ─────────────────────────────────────── */}
-        <section id="build-pip" className="section" style={{ paddingTop: "48px", paddingBottom: "96px" }}>
+        <section id="build-pip" className="section" style={{ paddingTop: "32px", paddingBottom: "96px" }}>
           <div className="container">
             <div style={{ maxWidth: "760px", margin: "0 auto" }}>
               <div className="pb-frame hero-tool-dark" style={{ maxWidth: "760px" }}>

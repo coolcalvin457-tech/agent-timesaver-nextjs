@@ -2,14 +2,13 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 
-const KIT_ITEMS: { title: string; pdf: string; thumb: string; featured?: boolean; display?: React.ReactNode }[] = [
+const KIT_ITEMS: { title: string; pdf: string; thumb: string; featured?: boolean; display?: React.ReactNode; hideTitle?: boolean }[] = [
   { title: "Welcome Letter",    pdf: "/kit-samples/warm-welcome-letter.pdf",     thumb: "/kit-thumbnails/warm-welcome-letter.png" },
   { title: "First-Week Schedule", pdf: "/kit-samples/first-week-schedule.pdf",   thumb: "/kit-thumbnails/first-week-schedule.png" },
   { title: "Key Contacts",      pdf: "/kit-samples/key-contacts.pdf",            thumb: "/kit-thumbnails/key-contacts.png" },
-  { title: "30-60-90 Day Plan", pdf: "/kit-samples/30-60-90-day-plan.pdf",       thumb: "/kit-thumbnails/30-60-90-day-plan.png",
-    display: <>30-60-90<br />Day Plan</> },
+  { title: "30-60-90 Plan",     pdf: "/kit-samples/30-60-90-day-plan.pdf",       thumb: "/kit-thumbnails/30-60-90-day-plan.png" },
   { title: "New Hire Checklist",pdf: "/kit-samples/new-hire-checklist.pdf",      thumb: "/kit-thumbnails/new-hire-checklist.png" },
-  { title: "Complete Kit",      pdf: "/kit-samples/onboarding-kit-sample.pdf",   thumb: "/kit-thumbnails/onboarding-kit-sample.png", featured: true },
+  { title: "Complete Kit",      pdf: "/kit-samples/onboarding-kit-sample.pdf",   thumb: "/kit-thumbnails/onboarding-kit-sample.png", featured: true, hideTitle: true },
 ];
 
 export default function KitPreviewCards() {
@@ -71,7 +70,9 @@ export default function KitPreviewCards() {
 
             {/* Title + badge */}
             <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "4px" }}>
-              <span className="kit-list-title">{item.display ?? item.title}</span>
+              {!item.hideTitle && (
+                <span className="kit-list-title">{item.display ?? item.title}</span>
+              )}
               {item.featured && (
                 <span className="kit-list-badge">Full Kit</span>
               )}

@@ -87,8 +87,8 @@ export default function OnboardingKitBuilderPage({
                 letterSpacing: "0.1em",
                 textTransform: "uppercase",
                 color: "rgba(255,255,255,0.30)",
-                marginBottom: "12px",
-                textAlign: "center",
+                marginBottom: "20px",
+                textAlign: "left",
               }}>
                 What's included
               </p>

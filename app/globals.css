@@ -3608,8 +3608,8 @@ input, textarea {
 /* ── Kit preview cards — dark section on OKB page ────────────────────── */
 /* ── Kit list (replaces card grid) ─────────────────────── */
 .kit-list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   border-radius: 10px;
   overflow: hidden;
   border: 1px solid var(--border, #E4E4E2);
@@ -3621,12 +3621,19 @@ input, textarea {
   gap: 16px;
   padding: 14px 20px;
   border-bottom: 1px solid var(--kit-row-border, rgba(0,0,0,0.08));
+  border-right: 1px solid var(--kit-row-border, rgba(0,0,0,0.08));
   cursor: pointer;
   transition: background 0.15s ease;
   background: var(--surface, #ffffff);
 }
 
-.kit-list-row:last-child {
+/* Right column items get no right border */
+.kit-list-row:nth-child(even) {
+  border-right: none;
+}
+
+/* Last two items get no bottom border */
+.kit-list-row:nth-last-child(-n+2) {
   border-bottom: none;
 }
 

@@ -37,19 +37,6 @@ export default function PIPBuilderPage({
           style={{ paddingTop: "140px", paddingBottom: "20px" }}
         >
           <div className="container" style={{ textAlign: "center" }}>
-            <p
-              style={{
-                fontSize: "0.6875rem",
-                fontWeight: 600,
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "var(--cta)",
-                marginBottom: "20px",
-              }}
-            >
-              HR Tools
-            </p>
-
             <h1
               className="heading-1"
               style={{
@@ -79,7 +66,7 @@ export default function PIPBuilderPage({
             <a
               href="#build-pip"
               className="btn btn-primary btn-zoom"
-              style={{ padding: "10px 28px", fontSize: "0.9375rem", borderRadius: "6px" }}
+              style={{ padding: "10px 28px", fontSize: "0.9rem", fontWeight: 500, letterSpacing: "0.04em" }}
             >
               Build My PIP
             </a>

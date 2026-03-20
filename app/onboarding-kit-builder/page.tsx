@@ -53,15 +53,15 @@ export default function OnboardingKitBuilderPage({
             <p
               style={{
                 fontSize: "0.9375rem",
-                color: "rgba(255,255,255,0.45)",
+                color: "rgba(255,255,255,0.40)",
                 margin: "0 0 32px",
                 lineHeight: 1.6,
+                fontWeight: 400,
               }}
             >
-              <span style={{ fontWeight: 800, color: "var(--cta)", fontSize: "1.125rem" }}>$99</span>
+              <span style={{ fontWeight: 700, color: "var(--cta)", fontSize: "1.0625rem" }}>$99</span>
               {" · "}
-              <strong style={{ fontWeight: 600, color: "rgba(255,255,255,0.65)" }}>HR Tools Package.</strong>{" "}
-              Annual subscription.
+              HR Tools Package. Annual subscription.
             </p>
 
             <a

@@ -77,7 +77,7 @@ export default function OnboardingKitBuilderPage({
         {/* ── What's in the kit ─────────────────────────────────── */}
         <section
           className="section dark-kit-section"
-          style={{ paddingTop: "16px", paddingBottom: "40px" }}
+          style={{ paddingTop: "32px", paddingBottom: "40px" }}
         >
           <div className="container">
             <div style={{ maxWidth: "760px", margin: "0 auto" }}>

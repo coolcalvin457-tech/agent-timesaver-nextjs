@@ -580,12 +580,9 @@ export default function PIPBuilderTool({
     return (
       <div className="okb-tool">
         <div style={{ marginBottom: "28px" }}>
-          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 6px" }}>
+          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 12px" }}>
             Tell us about the situation.
           </h2>
-          <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", margin: 0, lineHeight: 1.6 }}>
-            We'll build a PIP that's specific, measurable, and defensible.<br />No employee names needed.
-          </p>
         </div>
 
         {/* Employee Role */}
@@ -729,7 +726,7 @@ export default function PIPBuilderTool({
         </button>
 
         <div style={{ marginBottom: "28px" }}>
-          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 6px" }}>
+          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 12px" }}>
             What specifically isn't meeting expectations?
           </h2>
           <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", margin: 0, lineHeight: 1.6 }}>
@@ -838,7 +835,7 @@ export default function PIPBuilderTool({
         </button>
 
         <div style={{ marginBottom: "28px" }}>
-          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 6px" }}>
+          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 12px" }}>
             How will you support and monitor improvement?
           </h2>
           <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", margin: 0, lineHeight: 1.6 }}>
@@ -973,7 +970,7 @@ export default function PIPBuilderTool({
         )}
 
         <div style={{ marginBottom: "24px" }}>
-          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 6px" }}>
+          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 12px" }}>
             Your PIP is ready to build.
           </h2>
           <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", margin: 0, lineHeight: 1.6 }}>
@@ -1147,7 +1144,7 @@ export default function PIPBuilderTool({
     return (
       <div className="okb-tool">
         <div style={{ textAlign: "center", padding: "8px 0 28px" }}>
-          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 6px" }}>
+          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 12px" }}>
             Building your PIP.
           </h2>
           <p className="loading-subline" style={{ fontSize: "0.875rem", color: "var(--text-muted)", margin: 0 }}>
@@ -1203,7 +1200,7 @@ export default function PIPBuilderTool({
     return (
       <div className="okb-tool">
         <div style={{ marginBottom: "24px" }}>
-          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 6px" }}>
+          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 12px" }}>
             Your PIP document is ready.
           </h2>
         </div>

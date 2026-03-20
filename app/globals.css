@@ -3634,9 +3634,9 @@ input, textarea {
 }
 
 .kit-list-thumb {
-  width: 36px;
-  height: 46px;
-  border-radius: 4px;
+  width: 26px;
+  height: 34px;
+  border-radius: 3px;
   overflow: hidden;
   flex-shrink: 0;
   border: 1px solid var(--border, #E4E4E2);
@@ -3644,13 +3644,14 @@ input, textarea {
 }
 
 .kit-list-title {
-  flex: 1;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   font-weight: 500;
   color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.35;
 }
 
 .kit-list-badge {

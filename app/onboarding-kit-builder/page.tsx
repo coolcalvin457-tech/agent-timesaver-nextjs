@@ -35,7 +35,7 @@ export default function OnboardingKitBuilderPage({
         {/* ── Hero section ─────────────────────────────────────── */}
         <section
           className="section"
-          style={{ paddingTop: "140px", paddingBottom: "40px" }}
+          style={{ paddingTop: "140px", paddingBottom: "20px" }}
         >
           <div className="container" style={{ textAlign: "center" }}>
             <h1
@@ -77,10 +77,20 @@ export default function OnboardingKitBuilderPage({
         {/* ── What's in the kit ─────────────────────────────────── */}
         <section
           className="section dark-kit-section"
-          style={{ paddingTop: "40px", paddingBottom: "40px" }}
+          style={{ paddingTop: "16px", paddingBottom: "40px" }}
         >
           <div className="container">
             <div style={{ maxWidth: "760px", margin: "0 auto" }}>
+              <p style={{
+                fontSize: "0.7rem",
+                fontWeight: 600,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                color: "rgba(255,255,255,0.30)",
+                marginBottom: "12px",
+              }}>
+                What's included
+              </p>
               <KitPreviewCards />
             </div>
           </div>

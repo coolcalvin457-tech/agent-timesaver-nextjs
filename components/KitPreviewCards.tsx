@@ -1,14 +1,15 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
-const KIT_ITEMS = [
-  { title: "Warm Welcome Letter",  pdf: "/kit-samples/warm-welcome-letter.pdf",     thumb: "/kit-thumbnails/warm-welcome-letter.png" },
-  { title: "First-Week Schedule",  pdf: "/kit-samples/first-week-schedule.pdf",     thumb: "/kit-thumbnails/first-week-schedule.png" },
-  { title: "Key Contacts",         pdf: "/kit-samples/key-contacts.pdf",            thumb: "/kit-thumbnails/key-contacts.png" },
-  { title: "30-60-90 Day Plan",    pdf: "/kit-samples/30-60-90-day-plan.pdf",       thumb: "/kit-thumbnails/30-60-90-day-plan.png" },
-  { title: "New Hire Checklist",   pdf: "/kit-samples/new-hire-checklist.pdf",      thumb: "/kit-thumbnails/new-hire-checklist.png" },
-  { title: "Complete Kit",         pdf: "/kit-samples/onboarding-kit-sample.pdf",   thumb: "/kit-thumbnails/onboarding-kit-sample.png", featured: true },
+const KIT_ITEMS: { title: string; pdf: string; thumb: string; featured?: boolean; display?: React.ReactNode }[] = [
+  { title: "Welcome Letter",    pdf: "/kit-samples/warm-welcome-letter.pdf",     thumb: "/kit-thumbnails/warm-welcome-letter.png" },
+  { title: "First-Week Schedule", pdf: "/kit-samples/first-week-schedule.pdf",   thumb: "/kit-thumbnails/first-week-schedule.png" },
+  { title: "Key Contacts",      pdf: "/kit-samples/key-contacts.pdf",            thumb: "/kit-thumbnails/key-contacts.png" },
+  { title: "30-60-90 Day Plan", pdf: "/kit-samples/30-60-90-day-plan.pdf",       thumb: "/kit-thumbnails/30-60-90-day-plan.png",
+    display: <>30-60-90<br />Day Plan</> },
+  { title: "New Hire Checklist",pdf: "/kit-samples/new-hire-checklist.pdf",      thumb: "/kit-thumbnails/new-hire-checklist.png" },
+  { title: "Complete Kit",      pdf: "/kit-samples/onboarding-kit-sample.pdf",   thumb: "/kit-thumbnails/onboarding-kit-sample.png", featured: true },
 ];
 
 export default function KitPreviewCards() {
@@ -70,7 +71,7 @@ export default function KitPreviewCards() {
 
             {/* Title + badge */}
             <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
-              <span className="kit-list-title">{item.title}</span>
+              <span className="kit-list-title">{item.display ?? item.title}</span>
               {item.featured && (
                 <span className="kit-list-badge">Full Kit</span>
               )}
@@ -85,7 +86,7 @@ export default function KitPreviewCards() {
                 title="Preview"
                 aria-label={`Preview ${item.title}`}
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="11" cy="11" r="8"/>
                   <line x1="21" y1="21" x2="16.65" y2="16.65"/>
                 </svg>
@@ -98,7 +99,7 @@ export default function KitPreviewCards() {
                 aria-label={`Download ${item.title}`}
                 onClick={(e) => e.stopPropagation()}
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                   <polyline points="7 10 12 15 17 10"/>
                   <line x1="12" y1="15" x2="12" y2="3"/>

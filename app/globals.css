@@ -3748,13 +3748,15 @@ input, textarea {
 }
 
 .dark-kit-section .kit-icon-btn {
-  background: rgba(255,255,255,0.07);
-  color: rgba(255,255,255,0.60);
-  border-radius: 6px;
-  padding: 5px;
+  background: none;
+  border-radius: 0;
+  padding: 0;
+  color: rgba(255,255,255,0.25);
+  transition: color 0.15s ease;
 }
 
 .dark-kit-section .kit-icon-btn:hover {
-  background: rgba(255,255,255,0.12);
+  background: none;
+  color: rgba(255,255,255,0.65);
   opacity: 1;
 }

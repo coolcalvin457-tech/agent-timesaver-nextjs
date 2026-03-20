@@ -677,9 +677,6 @@ export default function PIPBuilderTool({
               </div>
             ))}
           </div>
-          <p style={helperStyle}>
-            Performance issues are measurable. Behavioral issues are observable. When in doubt, choose based on what you can document.
-          </p>
         </div>
 
         {/* Prior Coaching */}
@@ -703,9 +700,6 @@ export default function PIPBuilderTool({
               </div>
             ))}
           </div>
-          <p style={helperStyle}>
-            PIPs are most defensible when prior feedback is documented. We'll frame the document accordingly.
-          </p>
         </div>
 
         {s1Error && <p style={errorStyle}>{s1Error}</p>}
@@ -716,7 +710,7 @@ export default function PIPBuilderTool({
           onClick={goToS2}
           style={{ marginTop: "8px" }}
         >
-          Continue →
+          Continue
         </button>
       </div>
     );
@@ -825,7 +819,7 @@ export default function PIPBuilderTool({
           onClick={goToS3}
           style={{ marginTop: "8px" }}
         >
-          Continue →
+          Continue
         </button>
       </div>
     );

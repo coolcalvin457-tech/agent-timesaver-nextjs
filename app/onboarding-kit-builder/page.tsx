@@ -53,10 +53,11 @@ export default function OnboardingKitBuilderPage({
             <p
               style={{
                 fontSize: "0.9375rem",
-                color: "rgba(255,255,255,0.40)",
+                color: "rgba(255,255,255,0.52)",
                 margin: "0 0 32px",
                 lineHeight: 1.6,
                 fontWeight: 400,
+                letterSpacing: "0.02em",
               }}
             >
               <span style={{ fontWeight: 700, color: "var(--cta)", fontSize: "1.0625rem" }}>$99</span>

@@ -775,7 +775,7 @@ export default function OnboardingKitBuilderTool({
     return (
       <div className="okb-tool">
         <div style={{ marginBottom: "28px" }}>
-          <h2 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--text-primary)", margin: 0 }}>
+          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: 0 }}>
             Tell us about your new hire.
           </h2>
         </div>
@@ -893,7 +893,7 @@ export default function OnboardingKitBuilderTool({
         <BackButton onClick={goBackToS1} />
 
         <div style={{ marginBottom: "28px" }}>
-          <h2 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--text-primary)", margin: "0 0 6px" }}>
+          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 6px" }}>
             Why was {hireName || "they"} hired?
           </h2>
           <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", margin: 0, lineHeight: 1.6 }}>
@@ -967,7 +967,7 @@ export default function OnboardingKitBuilderTool({
         <BackButton onClick={goBackToS2} />
 
         <div style={{ marginBottom: "28px" }}>
-          <h2 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--text-primary)", margin: "0 0 6px" }}>
+          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 6px" }}>
             What does success look like for {hireName || "them"}?
           </h2>
           <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", margin: 0, lineHeight: 1.6 }}>
@@ -1093,7 +1093,7 @@ export default function OnboardingKitBuilderTool({
         )}
 
         <div style={{ marginBottom: "24px" }}>
-          <h2 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--text-primary)", margin: "0 0 6px" }}>
+          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 6px" }}>
             Your kit is ready to build.
           </h2>
           <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", margin: 0, lineHeight: 1.6 }}>
@@ -1400,7 +1400,7 @@ export default function OnboardingKitBuilderTool({
               <path d="M18 28.5L24.5 35L38 21" stroke="#1E7AB8" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
-          <h2 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--text-primary)", margin: "0 0 4px" }}>
+          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 4px" }}>
             {hireName ? `${hireName}'s` : "The"} onboarding kit is ready.
           </h2>
           {hireTitle && (
@@ -1504,7 +1504,7 @@ export default function OnboardingKitBuilderTool({
               <path d="M16 28l7 7L40 20" stroke="#1A7A4A" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
-          <h2 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--text-primary)", margin: "0 0 8px" }}>
+          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 8px" }}>
             Emailed and downloaded.
           </h2>
           <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", margin: "0 0 32px", lineHeight: 1.6 }}>

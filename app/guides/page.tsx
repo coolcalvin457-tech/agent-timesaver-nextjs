@@ -34,37 +34,58 @@ export default function GuidesPage() {
         </div>
 
         <div className="container-narrow">
-          {/* Coming soon card */}
-          <div
-            style={{
-              background: "var(--surface)",
-              border: "1px solid var(--border)",
-              borderRadius: "var(--radius-card)",
-              padding: "32px",
-              marginBottom: "32px",
-              textAlign: "center",
-            }}
-          >
-            <div
-              style={{
-                fontSize: "0.75rem",
-                fontWeight: 700,
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
-                color: "var(--brand)",
-              }}
+          {/* Guide card */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "20px", marginBottom: "48px" }}>
+            <a
+              href="/guides/cafe-framework-guide.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="blog-card"
             >
-              Coming Soon
-            </div>
-          </div>
-
-          {/* CTA */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-            <a href="/#timesaver" className="btn btn-primary btn-full">
-              Try AGENT: Timesaver
-            </a>
-            <a href="/" className="btn btn-outline btn-full">
-              Back to homepage
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "12px",
+                  marginBottom: "16px",
+                  flexWrap: "wrap",
+                }}
+              >
+                <span className="blog-tag">Free Guide</span>
+                <span className="caption" style={{ color: "var(--text-muted)" }}>
+                  March 2026
+                </span>
+                <span className="caption" style={{ color: "var(--text-muted)" }}>
+                  · 2 pages
+                </span>
+              </div>
+              <h2
+                className="heading-2"
+                style={{ marginBottom: "12px", color: "var(--text-primary)" }}
+              >
+                The CAFE Framework
+              </h2>
+              <p
+                className="body"
+                style={{
+                  color: "var(--text-secondary)",
+                  marginBottom: "20px",
+                  lineHeight: 1.7,
+                }}
+              >
+                A four-part structure for writing prompts that get real answers.
+                <br />
+                Context. Ask. Format. Effect.
+              </p>
+              <span
+                style={{
+                  fontSize: "0.9375rem",
+                  fontWeight: 600,
+                  color: "var(--cta)",
+                }}
+              >
+                Download PDF →
+              </span>
             </a>
           </div>
         </div>

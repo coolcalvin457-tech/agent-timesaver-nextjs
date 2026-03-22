@@ -4,14 +4,14 @@ import Footer from "@/components/Footer";
 import ToolsList from "@/components/ToolsList";
 
 export const metadata: Metadata = {
-  title: "Tools | Prompt AI Agents",
+  title: "Agents | Prompt AI Agents",
   description:
-    "Free and paid AI tools built for real jobs. Start with your job title. Get workflows, prompts, and systems that actually fit your role.",
+    "Free and paid AI agents built for real jobs. Start with your job title. Get workflows, prompts, and systems that actually fit your role.",
   openGraph: {
-    title: "Tools | Prompt AI Agents",
+    title: "Agents | Prompt AI Agents",
     description:
-      "Free and paid AI tools built for real jobs. Start with your job title. Get workflows, prompts, and systems that actually fit your role.",
-    url: "https://promptaiagents.com/tools",
+      "Free and paid AI agents built for real jobs. Start with your job title. Get workflows, prompts, and systems that actually fit your role.",
+    url: "https://promptaiagents.com/agents",
     siteName: "Prompt AI Agents",
     type: "website",
   },
@@ -93,7 +93,7 @@ const tools = [
   },
 ];
 
-export default function ToolsPage() {
+export default function AgentsPage() {
   return (
     <>
       <NavClient />
@@ -108,7 +108,7 @@ export default function ToolsPage() {
         <div className="container">
           <div style={{ paddingTop: "80px", marginBottom: "40px", textAlign: "center" }}>
             <h1 className="heading-1" style={{ marginBottom: "14px", fontSize: "clamp(2.75rem, 6vw, 4.5rem)", lineHeight: 1.05 }}>
-              Tools
+              Agents
             </h1>
             <p
               className="hero-subheadline"

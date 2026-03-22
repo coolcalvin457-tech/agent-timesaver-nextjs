@@ -10,9 +10,9 @@ export default function Footer() {
             <div className="footer-tagline">Built for real jobs. Not demos.</div>
           </div>
 
-          {/* Tools */}
+          {/* Agents */}
           <div>
-            <div className="footer-col-label">Tools</div>
+            <div className="footer-col-label">Agents</div>
             <ul className="footer-col-links">
               <li><a href="/#timesaver">AGENT: Timesaver</a></li>
               <li><a href="/prompt-builder">AGENT: Prompt Builder</a></li>

@@ -78,6 +78,7 @@ const tools = [
     description:
       "Answer questions about the performance gap, improvement targets, and support offered. Get a structured, defensible PIP document as a ready-to-use .docx file.",
     cta: "Build My PIP",
+    image: "/tool-previews/pip-builder-preview.jpg",
   },
   {
     slug: "performance-review-builder",

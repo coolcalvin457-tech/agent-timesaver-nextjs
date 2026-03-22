@@ -20,6 +20,7 @@ type Timeline = "30" | "60" | "90";
 type CheckinSchedule = "weekly" | "biweekly" | "custom";
 
 interface SavedFormData {
+  employeeName: string;
   employeeRole: string;
   department: string;
   tenure: string;
@@ -30,6 +31,7 @@ interface SavedFormData {
   performanceStandard: string;
   improvementTargets: string;
   timeline: Timeline | "";
+  startDate: string;
   checkinSchedule: CheckinSchedule | "";
   checkinCustom: string;
   supportOffered: string;
@@ -158,6 +160,7 @@ export default function PIPBuilderTool({
   const [screen, setScreen] = useState<Screen>("s1");
 
   // ── Screen 1: The Situation ───────────────────────────────
+  const [employeeName, setEmployeeName] = useState("");
   const [employeeRole, setEmployeeRole] = useState("");
   const [department, setDepartment] = useState("");
   const [tenure, setTenure] = useState("");
@@ -167,6 +170,7 @@ export default function PIPBuilderTool({
 
   // ── Screen 2: The Performance Gap ────────────────────────
   const [deficiencies, setDeficiencies] = useState("");
+  const [startDate, setStartDate] = useState("");
   const [performanceStandard, setPerformanceStandard] = useState("");
   const [improvementTargets, setImprovementTargets] = useState("");
   const [timeline, setTimeline] = useState<Timeline | "">("");
@@ -274,14 +278,16 @@ export default function PIPBuilderTool({
 
   function getCurrentFormData(): SavedFormData {
     return {
+      employeeName,
       employeeRole, department, tenure, managerName,
       issueType, priorCoaching,
-      deficiencies, performanceStandard, improvementTargets, timeline,
+      deficiencies, performanceStandard, improvementTargets, timeline, startDate,
       checkinSchedule, checkinCustom, supportOffered, consequences, includeEAP,
     };
   }
 
   function restoreFromSaved(saved: SavedFormData): void {
+    setEmployeeName(saved.employeeName ?? "");
     setEmployeeRole(saved.employeeRole ?? "");
     setDepartment(saved.department ?? "");
     setTenure(saved.tenure ?? "");
@@ -292,6 +298,7 @@ export default function PIPBuilderTool({
     setPerformanceStandard(saved.performanceStandard ?? "");
     setImprovementTargets(saved.improvementTargets ?? "");
     setTimeline(saved.timeline ?? "");
+    setStartDate(saved.startDate ?? "");
     setCheckinSchedule(saved.checkinSchedule ?? "");
     setCheckinCustom(saved.checkinCustom ?? "");
     setSupportOffered(saved.supportOffered ?? "");
@@ -396,6 +403,7 @@ export default function PIPBuilderTool({
 
     try {
       const payload = {
+        employeeName: data.employeeName.trim(),
         employeeRole: data.employeeRole.trim(),
         department: data.department.trim(),
         tenure: data.tenure.trim(),
@@ -406,6 +414,7 @@ export default function PIPBuilderTool({
         performanceStandard: data.performanceStandard.trim(),
         improvementTargets: data.improvementTargets.trim(),
         timeline: data.timeline || "30",
+        startDate: data.startDate.trim(),
         checkinSchedule: data.checkinSchedule || "weekly",
         checkinCustom: data.checkinCustom.trim(),
         supportOffered: data.supportOffered.trim(),
@@ -585,6 +594,21 @@ export default function PIPBuilderTool({
           </h2>
         </div>
 
+        {/* Employee Name */}
+        <div style={fieldGroupStyle}>
+          <label style={labelStyle}>
+            Employee name <span style={{ fontWeight: 400, color: "var(--text-muted)" }}>(optional)</span>
+          </label>
+          <input
+            type="text"
+            value={employeeName}
+            onChange={(e) => setEmployeeName(e.target.value)}
+            placeholder="e.g. Jordan Smith"
+            style={inputStyle}
+          />
+          <p style={helperStyle}>Used in the document header. Fill in now or add manually before issuing.</p>
+        </div>
+
         {/* Employee Role */}
         <div style={fieldGroupStyle}>
           <label style={labelStyle}>
@@ -691,7 +715,7 @@ export default function PIPBuilderTool({
                 }}
                 onClick={() => setPriorCoaching(val)}
               >
-                <span style={{ fontSize: "0.875rem", fontWeight: 600, color: "var(--text-primary)" }}>
+                <span style={{ fontSize: "0.875rem", fontWeight: 600, color: priorCoaching === val ? "var(--cta, #1E7AB8)" : "var(--text-primary)" }}>
                   {val ? "Yes" : "No"}
                 </span>
               </div>
@@ -806,6 +830,20 @@ export default function PIPBuilderTool({
           <p style={helperStyle}>
             30 days is standard for clear performance issues. 60–90 days for more complex behavioral situations.
           </p>
+        </div>
+
+        {/* Plan Start Date */}
+        <div style={fieldGroupStyle}>
+          <label style={labelStyle}>
+            Plan start date <span style={{ fontWeight: 400, color: "var(--text-muted)" }}>(optional)</span>
+          </label>
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            style={inputStyle}
+          />
+          <p style={helperStyle}>If provided, the plan end date will be calculated automatically.</p>
         </div>
 
         {s2Error && <p style={errorStyle}>{s2Error}</p>}

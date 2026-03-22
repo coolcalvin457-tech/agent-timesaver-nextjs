@@ -21,6 +21,7 @@ interface PIPSection {
 
 interface PIPData {
   employeeInfo: {
+    name?: string;
     role: string;
     department: string;
     tenure: string;
@@ -51,6 +52,7 @@ interface PIPData {
 // ─── Input type ───────────────────────────────────────────────────────────────
 
 interface PIPInput {
+  employeeName?: string;
   employeeRole: string;
   department: string;
   tenure: string;
@@ -61,11 +63,27 @@ interface PIPInput {
   performanceStandard?: string;
   improvementTargets: string;
   timeline: "30" | "60" | "90";
+  startDate?: string;
   checkinSchedule: "weekly" | "biweekly" | "custom";
   checkinCustom?: string;
   supportOffered?: string;
   consequences: string;
   includeEAP: boolean;
+}
+
+// ─── Date helpers ─────────────────────────────────────────────────────────────
+
+function formatDateStr(dateStr: string): string {
+  // dateStr is YYYY-MM-DD from the date input
+  const [year, month, day] = dateStr.split("-").map(Number);
+  const d = new Date(year, month - 1, day);
+  return d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+}
+
+function addDaysToDate(dateStr: string, days: number): string {
+  const [year, month, day] = dateStr.split("-").map(Number);
+  const d = new Date(year, month - 1, day + days);
+  return d.toISOString().split("T")[0];
 }
 
 // ─── Claude API Call ──────────────────────────────────────────────────────────
@@ -301,18 +319,21 @@ function buildInfoTable(info: PIPData["employeeInfo"]): Table {
     });
   }
 
+  const rows = [
+    ...(info.name ? [infoRow("Employee Name", info.name, { type: ShadingType.CLEAR, fill: "F8F8F6" })] : []),
+    infoRow("Role / Title", info.role),
+    infoRow("Department", info.department, { type: ShadingType.CLEAR, fill: "F8F8F6" }),
+    infoRow("Tenure", info.tenure),
+    infoRow("Manager", info.managerName, { type: ShadingType.CLEAR, fill: "F8F8F6" }),
+    infoRow("Plan Duration", info.planDuration),
+    infoRow("Plan Start Date", info.startDatePlaceholder, { type: ShadingType.CLEAR, fill: "F8F8F6" }),
+    infoRow("Plan End Date", info.endDatePlaceholder),
+  ];
+
   return new Table({
     width: { size: 9360, type: WidthType.DXA },
     columnWidths: [3000, 6360],
-    rows: [
-      infoRow("Role / Title", info.role),
-      infoRow("Department", info.department, { type: ShadingType.CLEAR, fill: "F8F8F6" }),
-      infoRow("Tenure", info.tenure),
-      infoRow("Manager", info.managerName, { type: ShadingType.CLEAR, fill: "F8F8F6" }),
-      infoRow("Plan Duration", info.planDuration),
-      infoRow("Plan Start Date", info.startDatePlaceholder, { type: ShadingType.CLEAR, fill: "F8F8F6" }),
-      infoRow("Plan End Date", info.endDatePlaceholder),
-    ],
+    rows,
   });
 }
 
@@ -583,6 +604,19 @@ export async function POST(req: NextRequest) {
           throw err;
         }
       }
+    }
+
+    // ── Overlay factual fields from user input ────────────────
+    // Employee name and start/end dates are factual inputs — override whatever
+    // the AI or mock path generated with the exact values the user provided.
+    if (input.employeeName?.trim()) {
+      pipData.employeeInfo.name = input.employeeName.trim();
+    }
+    if (input.startDate?.trim()) {
+      pipData.employeeInfo.startDatePlaceholder = formatDateStr(input.startDate);
+      pipData.employeeInfo.endDatePlaceholder = formatDateStr(
+        addDaysToDate(input.startDate, parseInt(input.timeline))
+      );
     }
 
     const docxBuffer = await buildDocxFile(pipData);

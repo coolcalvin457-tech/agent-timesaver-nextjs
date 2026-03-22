@@ -1,4 +1,5 @@
 import PIPBuilderTool from "@/components/PIPBuilderTool";
+import PIPSectionCards from "@/components/PIPSectionCards";
 import NavClient from "@/components/NavClient";
 import Footer from "@/components/Footer";
 import type { Metadata } from "next";
@@ -70,24 +71,29 @@ export default function PIPBuilderPage({
             >
               Build My PIP
             </a>
+          </div>
+        </section>
 
-            <p style={{ marginTop: "16px" }}>
-              <a
-                href="/samples/pip-sample-output.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  fontSize: "0.8125rem",
-                  color: "rgba(255,255,255,0.38)",
-                  textDecoration: "none",
-                  borderBottom: "1px solid rgba(255,255,255,0.18)",
-                  paddingBottom: "1px",
-                  letterSpacing: "0.01em",
-                }}
-              >
-                See a sample output
-              </a>
-            </p>
+        {/* ── What's in your PIP ───────────────────────────────── */}
+        <section
+          className="section dark-kit-section"
+          style={{ paddingTop: "32px", paddingBottom: "40px" }}
+        >
+          <div className="container">
+            <div style={{ maxWidth: "760px", margin: "0 auto" }}>
+              <p style={{
+                fontSize: "0.7rem",
+                fontWeight: 600,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                color: "rgba(255,255,255,0.30)",
+                marginBottom: "20px",
+                textAlign: "left",
+              }}>
+                What's in your PIP
+              </p>
+              <PIPSectionCards />
+            </div>
           </div>
         </section>
 

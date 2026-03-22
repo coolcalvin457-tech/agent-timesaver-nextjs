@@ -63,7 +63,7 @@ export default function Home() {
                 <h2
                   className="heading-1"
                   style={{
-                    fontSize: "clamp(2.25rem, 3.5vw, 3.5rem)",
+                    fontSize: "clamp(2.5rem, 4vw, 4rem)",
                     lineHeight: 1.1,
                     marginBottom: 0,
                   }}

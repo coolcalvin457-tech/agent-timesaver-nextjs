@@ -1301,6 +1301,34 @@ input, textarea {
   }
 }
 
+/* ── Manifesto Split (Section 3) ─────────────────────────── */
+.manifesto-split {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 96px;
+  align-items: center;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.manifesto-split-right {
+  border-left: 2px solid var(--cta);
+  padding-left: 48px;
+}
+
+@media (max-width: 768px) {
+  .manifesto-split {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .manifesto-split-right {
+    border-left: none;
+    padding-left: 0;
+    border-top: 2px solid var(--cta);
+    padding-top: 32px;
+  }
+}
+
 /* ── Section heading breathing room ──────────────────────── */
 .section .heading-1,
 .section h2.heading-1 {

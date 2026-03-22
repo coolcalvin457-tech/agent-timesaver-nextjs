@@ -56,23 +56,29 @@ export default function Home() {
         {/* ── Section 3: Manifesto ─────────────────────────────────────── */}
         <section className="section" id="why" style={{ paddingTop: "100px", paddingBottom: "100px" }}>
           <div className="container">
-            <div style={{ maxWidth: "720px", margin: "0 auto", textAlign: "center" }}>
-              <div className="eyebrow" style={{ marginBottom: "20px" }}>The real barrier</div>
-              <h2
-                className="heading-1"
-                style={{
-                  marginBottom: "28px",
-                  fontSize: "clamp(2rem, 4vw, 3rem)",
-                  lineHeight: 1.1,
-                }}
-              >
-                The hard part isn&apos;t getting started.
-              </h2>
-              <p className="body-lg" style={{ color: "var(--text-secondary)", maxWidth: "560px", margin: "0 auto" }}>
-                Anyone with internet today can use AI. Getting started is free. What keeps most
-                people stuck isn&apos;t cost. It&apos;s that no one told them how to use it. One
-                good prompt changes that. That&apos;s where your AI agent begins.
-              </p>
+            <div className="manifesto-split">
+              {/* Left: eyebrow + headline */}
+              <div>
+                <div className="eyebrow" style={{ marginBottom: "20px" }}>The real barrier</div>
+                <h2
+                  className="heading-1"
+                  style={{
+                    fontSize: "clamp(2rem, 4vw, 3rem)",
+                    lineHeight: 1.1,
+                    marginBottom: 0,
+                  }}
+                >
+                  The hard part isn&apos;t getting started.
+                </h2>
+              </div>
+              {/* Right: body paragraph */}
+              <div className="manifesto-split-right">
+                <p className="body-lg" style={{ color: "var(--text-secondary)" }}>
+                  Anyone with internet today can use AI. Getting started is free. What keeps most
+                  people stuck isn&apos;t cost. It&apos;s that no one told them how to use it. One
+                  good prompt changes that. That&apos;s where your AI agent begins.
+                </p>
+              </div>
             </div>
           </div>
         </section>

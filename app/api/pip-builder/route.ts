@@ -410,7 +410,7 @@ async function buildDocxFile(pip: PIPData): Promise<Buffer> {
   const children: (Paragraph | Table)[] = [];
 
   // ── Document Title ────────────────────────────────────────────
-  children.push(sectionLabel("HR Tools Package"));
+  children.push(sectionLabel("HR Agents Package"));
   children.push(h1("Performance Improvement Plan"));
   children.push(divider());
 

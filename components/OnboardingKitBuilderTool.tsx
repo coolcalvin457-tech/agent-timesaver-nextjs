@@ -1142,7 +1142,7 @@ export default function OnboardingKitBuilderTool({
           {/* Header row */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px", flexWrap: "wrap", gap: "8px" }}>
             <span style={{ fontSize: "0.9375rem", fontWeight: 700, color: "#FFFFFF" }}>
-              HR Tools Package
+              HR Agents Package
             </span>
             <span
               style={{
@@ -1169,7 +1169,7 @@ export default function OnboardingKitBuilderTool({
 
           {/* Description */}
           <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.6, margin: "0 0 20px" }}>
-            Includes Onboarding Kit, PIP Builder, and every HR tool added to the package. One purchase, all tools.
+            Includes Onboarding Kit, PIP Builder, and every HR agent added to the package. One subscription, all agents.
           </p>
 
           {/* CTA */}
@@ -1522,7 +1522,7 @@ export default function OnboardingKitBuilderTool({
         {/* Bundle callout */}
         <div style={{ marginTop: "32px", padding: "20px 22px", background: "var(--bg-alt, #F8F8F6)", border: "1px solid var(--border, #E4E4E2)", borderRadius: "10px" }}>
           <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--cta)", margin: "0 0 10px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-            Part of the HR Tools Package
+            Part of the HR Agents Package
           </p>
           <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", margin: "0 0 12px", lineHeight: 1.6 }}>
             Your subscription also includes AGENT: PIP Builder. Structured, defensible Performance Improvement Plans as a ready-to-use .docx file.

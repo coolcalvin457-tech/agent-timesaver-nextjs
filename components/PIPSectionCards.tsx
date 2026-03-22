@@ -42,8 +42,24 @@ export default function PIPSectionCards() {
           <div
             key={section.title}
             className="kit-list-row"
-            style={{ cursor: "default", minHeight: "58px", paddingLeft: "14px" }}
+            style={{ cursor: "default", minHeight: "58px" }}
           >
+            {/* Dot anchor — sits in same position as thumbnail, aligns text with Example row */}
+            <div style={{
+              width: "26px",
+              height: "34px",
+              flexShrink: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}>
+              <div style={{
+                width: "7px",
+                height: "7px",
+                borderRadius: "50%",
+                background: "rgba(30,122,184,0.35)",
+              }} />
+            </div>
             <span className="kit-list-title">
               {section.title}
             </span>

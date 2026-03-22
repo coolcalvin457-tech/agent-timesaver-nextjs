@@ -69,7 +69,7 @@ export default function PIPBuilderPage({
               className="btn btn-dark-cta btn-zoom"
               style={{ padding: "10px 28px", fontSize: "0.9rem", fontWeight: 500, letterSpacing: "0.04em" }}
             >
-              Build My PIP
+              Build PIP
             </a>
           </div>
         </section>
@@ -90,7 +90,7 @@ export default function PIPBuilderPage({
                 marginBottom: "20px",
                 textAlign: "left",
               }}>
-                What's in your PIP
+                What's Included
               </p>
               <PIPSectionCards />
             </div>

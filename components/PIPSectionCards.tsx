@@ -37,16 +37,12 @@ export default function PIPSectionCards() {
   return (
     <>
       <div className="kit-list">
-        {/* Document section rows */}
+        {/* Document section rows — title only, no interaction */}
         {PIP_SECTIONS.map((section) => (
           <div
             key={section.title}
             className="kit-list-row"
-            onClick={openPreview}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") openPreview(); }}
-            aria-label={`Preview ${section.title} in sample output`}
+            style={{ cursor: "default" }}
           >
             {/* Doc icon thumbnail */}
             <div className="kit-list-thumb">
@@ -63,40 +59,10 @@ export default function PIPSectionCards() {
             <div style={{ flex: 1, minWidth: 0 }}>
               <span className="kit-list-title">{section.title}</span>
             </div>
-
-            {/* Icons */}
-            <div style={{ display: "flex", gap: "12px", alignItems: "center", flexShrink: 0 }}>
-              <button
-                type="button"
-                onClick={(e) => { e.stopPropagation(); openPreview(); }}
-                className="kit-icon-btn"
-                title="Preview"
-                aria-label={`Preview ${section.title}`}
-              >
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="11" cy="11" r="8" />
-                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                </svg>
-              </button>
-              <a
-                href={SAMPLE_PDF}
-                download
-                className="kit-icon-btn"
-                title="Download sample"
-                aria-label={`Download sample PIP`}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                  <polyline points="7 10 12 15 17 10" />
-                  <line x1="12" y1="15" x2="12" y2="3" />
-                </svg>
-              </a>
-            </div>
           </div>
         ))}
 
-        {/* Featured: Sample Output row */}
+        {/* Featured: Example row — mirrors Onboarding Kit "Full Kit" row */}
         <div
           className="kit-list-row kit-list-row-featured"
           onClick={openPreview}
@@ -105,8 +71,24 @@ export default function PIPSectionCards() {
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") openPreview();
           }}
-          aria-label="Preview sample PIP output"
+          aria-label="Preview example PIP output"
         >
+          {/* Real document thumbnail */}
+          <div className="kit-list-thumb">
+            <img
+              src="/tool-previews/pip-builder-preview.jpg"
+              alt=""
+              aria-hidden="true"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                objectPosition: "top left",
+                display: "block",
+              }}
+            />
+          </div>
+
           <div
             style={{
               flex: 1,
@@ -116,7 +98,7 @@ export default function PIPSectionCards() {
               gap: "2px",
             }}
           >
-            <span className="kit-list-badge">Sample Output</span>
+            <span className="kit-list-badge">Example</span>
           </div>
 
           {/* Preview + Download */}
@@ -186,14 +168,14 @@ export default function PIPSectionCards() {
           onClick={closePreview}
           role="dialog"
           aria-modal="true"
-          aria-label="Preview: Sample PIP Output"
+          aria-label="Preview: Example PIP Output"
         >
           <div
             className="kit-modal-panel"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="kit-modal-header">
-              <span className="kit-modal-title">Sample PIP Output</span>
+              <span className="kit-modal-title">Example PIP Output</span>
               <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
                 <a
                   href={SAMPLE_PDF}
@@ -242,7 +224,7 @@ export default function PIPSectionCards() {
             <iframe
               src={`${SAMPLE_PDF}#toolbar=0`}
               className="kit-modal-iframe"
-              title="Sample PIP Output"
+              title="Example PIP Output"
             />
           </div>
         </div>

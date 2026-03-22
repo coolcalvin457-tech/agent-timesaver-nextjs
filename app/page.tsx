@@ -53,11 +53,11 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── Section 3: Why This Exists (Manifesto) ──────────────────── */}
+        {/* ── Section 3: Manifesto ─────────────────────────────────────── */}
         <section className="section" id="why" style={{ paddingTop: "100px", paddingBottom: "100px" }}>
           <div className="container">
             <div style={{ maxWidth: "720px", margin: "0 auto", textAlign: "center" }}>
-              <div className="eyebrow" style={{ marginBottom: "20px" }}>Why This Exists</div>
+              <div className="eyebrow" style={{ marginBottom: "20px" }}>The real barrier</div>
               <h2
                 className="heading-1"
                 style={{
@@ -66,11 +66,12 @@ export default function Home() {
                   lineHeight: 1.1,
                 }}
               >
-                The access problem is solved.
+                The hard part isn&apos;t getting started.
               </h2>
               <p className="body-lg" style={{ color: "var(--text-secondary)", maxWidth: "560px", margin: "0 auto" }}>
-                Anyone with a browser can use AI today. The tools are free. The apps are everywhere.
-                The barrier was never cost or access. It&apos;s always been knowing what to ask.
+                Anyone with internet today can use AI. Getting started is free. What keeps most
+                people stuck isn&apos;t cost. It&apos;s that no one told them how to use it. One
+                good prompt changes that. That&apos;s where your AI agent begins.
               </p>
             </div>
           </div>

@@ -70,6 +70,24 @@ export default function PIPBuilderPage({
             >
               Build My PIP
             </a>
+
+            <p style={{ marginTop: "16px" }}>
+              <a
+                href="/samples/pip-sample-output.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  fontSize: "0.8125rem",
+                  color: "rgba(255,255,255,0.38)",
+                  textDecoration: "none",
+                  borderBottom: "1px solid rgba(255,255,255,0.18)",
+                  paddingBottom: "1px",
+                  letterSpacing: "0.01em",
+                }}
+              >
+                See a sample output
+              </a>
+            </p>
           </div>
         </section>
 

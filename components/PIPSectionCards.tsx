@@ -53,12 +53,6 @@ export default function PIPSectionCards() {
               alignItems: "center",
               justifyContent: "center",
             }}>
-              <div style={{
-                width: "7px",
-                height: "7px",
-                borderRadius: "50%",
-                background: "rgba(30,122,184,0.35)",
-              }} />
             </div>
             <span className="kit-list-title">
               {section.title}

@@ -42,19 +42,9 @@ export default function PIPSectionCards() {
           <div
             key={section.title}
             className="kit-list-row"
-            style={{ cursor: "default", minHeight: "58px" }}
+            style={{ cursor: "default", minHeight: "58px", justifyContent: "center" }}
           >
-            {/* Dot anchor — sits in same position as thumbnail, aligns text with Example row */}
-            <div style={{
-              width: "26px",
-              height: "34px",
-              flexShrink: 0,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}>
-            </div>
-            <span className="kit-list-title">
+            <span className="kit-list-title" style={{ textAlign: "center" }}>
               {section.title}
             </span>
           </div>
@@ -87,7 +77,9 @@ export default function PIPSectionCards() {
             />
           </div>
 
-          <span className="kit-list-badge">Example</span>
+          <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
+            <span className="kit-list-badge">Example</span>
+          </div>
 
           {/* Preview + Download */}
           <div
@@ -96,7 +88,6 @@ export default function PIPSectionCards() {
               gap: "12px",
               alignItems: "center",
               flexShrink: 0,
-              marginLeft: "auto",
             }}
           >
             <button

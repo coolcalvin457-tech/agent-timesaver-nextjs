@@ -53,6 +53,29 @@ export default function Home() {
           </div>
         </section>
 
+        {/* ── Section 3: Why This Exists (Manifesto) ──────────────────── */}
+        <section className="section" id="why" style={{ paddingTop: "100px", paddingBottom: "100px" }}>
+          <div className="container">
+            <div style={{ maxWidth: "720px", margin: "0 auto", textAlign: "center" }}>
+              <div className="eyebrow" style={{ marginBottom: "20px" }}>Why This Exists</div>
+              <h2
+                className="heading-1"
+                style={{
+                  marginBottom: "28px",
+                  fontSize: "clamp(2rem, 4vw, 3rem)",
+                  lineHeight: 1.1,
+                }}
+              >
+                The access problem is solved.
+              </h2>
+              <p className="body-lg" style={{ color: "var(--text-secondary)", maxWidth: "560px", margin: "0 auto" }}>
+                Anyone with a browser can use AI today. The tools are free. The apps are everywhere.
+                The barrier was never cost or access. It&apos;s always been knowing what to ask.
+              </p>
+            </div>
+          </div>
+        </section>
+
         {/* ── Section 4: AGENT: Prompt Builder ────────────────────────── */}
         <section className="section" id="prompt-builder" style={{ paddingTop: "112px", paddingBottom: "64px" }}>
           <div className="container">
@@ -102,32 +125,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── Section 5: The Guide ─────────────────────────────────────── */}
-        <section className="section" id="about" style={{ paddingTop: "100px", paddingBottom: "80px" }}>
-          <div className="container">
-            <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center" }}>
-              <div className="eyebrow" style={{ marginBottom: "20px" }}>Your guide</div>
-              <p className="guide-intro">Hi, I&apos;m Calvin.</p>
-              <h2 className="guide-headline" style={{ marginBottom: "52px", marginTop: "28px" }}>
-                <span style={{ display: "block" }}>I figured this out the hard way,</span>
-                <span style={{ display: "block" }}>so you don&apos;t have to.</span>
-              </h2>
-              <p className="guide-body">
-                I used to teach history and coach basketball.<br />
-                No technical background. Nothing to do with software.<br />
-                I spent 6 months learning how AI agents actually work.
-              </p>
-              <p className="guide-body">
-                Now I&apos;m helping others apply AI to their specific jobs.<br />
-                No starting from scratch.
-              </p>
-              <p className="guide-kicker" style={{ marginTop: "52px" }}>
-                If a basketball coach can figure this out, so can you.
-              </p>
-            </div>
-          </div>
-        </section>
-
         {/* ── Section 5: The Transformation ───────────────────────────── */}
         <section className="section section-alt" id="transformation">
           <div className="container">
@@ -168,101 +165,33 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── Section 6: How It Works ──────────────────────────────────── */}
-        <section className="section" id="how-it-works">
+        {/* ── Section 6: The Guide ─────────────────────────────────────── */}
+        <section className="section" id="about" style={{ paddingTop: "100px", paddingBottom: "80px" }}>
           <div className="container">
-            <div className="eyebrow">How it works</div>
-            <h2
-              className="heading-1"
-              style={{ marginBottom: "48px" }}
-            >
-              Three steps. No fluff.
-            </h2>
-
-            <div className="steps-grid">
-              <div className="step-card">
-                <div className="step-number">01 · Learn</div>
-                <div className="step-headline">Start with the fundamentals.</div>
-                <p className="step-body">
-                  Clear guides and short videos that make AI make sense for your
-                  specific world, not a developer&apos;s. No jargon. No wasted
-                  time.
-                </p>
-              </div>
-              <div className="step-card">
-                <div className="step-number">02 · Apply</div>
-                <div className="step-headline">Use the tools.</div>
-                <p className="step-body">
-                  AGENT: Timesaver shows you exactly what AI workflows fit your
-                  job. Every resource here is built for action, not passive
-                  learning.
-                </p>
-              </div>
-              <div className="step-card">
-                <div className="step-number">03 · Transform</div>
-                <div className="step-headline">Watch the hours add up.</div>
-                <p className="step-body">
-                  Each workflow you adopt gives you back time you can reinvest.
-                  That&apos;s how busy people build momentum. One hour at a time.
-                </p>
-              </div>
+            <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center" }}>
+              <div className="eyebrow" style={{ marginBottom: "20px" }}>Your guide</div>
+              <p className="guide-intro">Hi, I&apos;m Calvin.</p>
+              <h2 className="guide-headline" style={{ marginBottom: "52px", marginTop: "28px" }}>
+                <span style={{ display: "block" }}>I figured this out the hard way,</span>
+                <span style={{ display: "block" }}>so you don&apos;t have to.</span>
+              </h2>
+              <p className="guide-body">
+                I used to teach history and coach basketball.<br />
+                No technical background. Nothing to do with software.<br />
+                I spent 6 months learning how AI agents actually work.
+              </p>
+              <p className="guide-body">
+                Now I&apos;m helping others apply AI to their specific jobs.<br />
+                No starting from scratch.
+              </p>
+              <p className="guide-kicker" style={{ marginTop: "52px" }}>
+                If a basketball coach can figure this out, so can you.
+              </p>
             </div>
           </div>
         </section>
 
-        {/* ── Section 8: Content Preview ───────────────────────────────── */}
-        <section className="section section-dark" id="content">
-          <div className="container">
-            <div className="eyebrow eyebrow-light">What&apos;s inside</div>
-            <h2
-              className="heading-1"
-              style={{ color: "#fff", marginBottom: "12px" }}
-            >
-              This is just the beginning.
-            </h2>
-            <p
-              className="body-lg"
-              style={{
-                color: "rgba(255,255,255,0.6)",
-                marginBottom: "48px",
-                maxWidth: "540px",
-              }}
-            >
-              Free resources, more tools on the way, and a community of people learning
-              alongside you. Everything is built around one idea: real AI skills
-              for real jobs.
-            </p>
-
-            <div className="content-grid">
-              <div className="content-card">
-                <div className="content-label">Written Guides</div>
-                <p className="content-body">
-                  Step-by-step breakdowns for every workflow. Free, searchable,
-                  updated regularly.
-                </p>
-              </div>
-              <div className="content-card">
-                <div className="content-label">More AGENT Tools</div>
-                <p className="content-body">
-                  New tools built for specific workflows are in progress. Same
-                  approach: start with your job, get something you can actually
-                  use.
-                </p>
-                <span className="coming-soon">Coming soon</span>
-              </div>
-              <div className="content-card">
-                <div className="content-label">Community</div>
-                <p className="content-body">
-                  Ask questions. Share wins. Stay sharp. A place to learn with
-                  people who are figuring this out alongside you.
-                </p>
-                <span className="coming-soon">Coming soon</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── Section 9: Final CTA ─────────────────────────────────────── */}
+        {/* ── Section 7: Final CTA ─────────────────────────────────────── */}
         <section className="section" id="final-cta">
           <div className="container final-cta">
             <h2

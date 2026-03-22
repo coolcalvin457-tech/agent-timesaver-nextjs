@@ -79,8 +79,8 @@ export default function ToolsList({ tools }: { tools: Tool[] }) {
         })}
       </div>
 
-      {/* HR package context — only shown when HR filter is active */}
-      {activeFilter === "Human Resources" && (
+      {/* HR package context — shown when HR tools are visible */}
+      {(activeFilter === "All" || activeFilter === "Human Resources") && (
         <p
           style={{
             textAlign: "center",
@@ -90,7 +90,7 @@ export default function ToolsList({ tools }: { tools: Tool[] }) {
             marginTop: "-4px",
           }}
         >
-          One $99/year subscription includes all Human Resources agents.
+          HR Agents Package: one $99/year subscription includes Onboarding Kit, PIP Builder, and more agents coming.
         </p>
       )}
 

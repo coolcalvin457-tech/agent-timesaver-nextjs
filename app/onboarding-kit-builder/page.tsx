@@ -62,7 +62,19 @@ export default function OnboardingKitBuilderPage({
             >
               <span style={{ fontWeight: 700, color: "var(--cta)", fontSize: "1.0625rem" }}>$99</span>
               {" · "}
-              HR Tools Package. Annual subscription.
+              HR Agents Package. Annual subscription.
+            </p>
+
+            <p
+              style={{
+                fontSize: "0.8rem",
+                color: "rgba(255,255,255,0.28)",
+                margin: "-16px 0 28px",
+                lineHeight: 1.6,
+                letterSpacing: "0.01em",
+              }}
+            >
+              Package includes: AGENT: Onboarding Kit · <a href="/pip-builder" style={{ color: "rgba(255,255,255,0.42)", textDecoration: "none", borderBottom: "1px solid rgba(255,255,255,0.18)" }}>AGENT: PIP Builder</a> · more coming
             </p>
 
             <a

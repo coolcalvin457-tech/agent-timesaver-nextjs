@@ -90,7 +90,7 @@ export default function ToolsList({ tools }: { tools: Tool[] }) {
             marginTop: "-4px",
           }}
         >
-          One $99/year subscription includes all Human Resources tools.
+          One $99/year subscription includes all Human Resources agents.
         </p>
       )}
 

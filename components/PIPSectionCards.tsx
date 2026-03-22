@@ -42,7 +42,7 @@ export default function PIPSectionCards() {
           <div
             key={section.title}
             className="kit-list-row"
-            style={{ cursor: "default", justifyContent: "center" }}
+            style={{ cursor: "default", justifyContent: "center", minHeight: "58px" }}
           >
             <span className="kit-list-title" style={{ textAlign: "center" }}>
               {section.title}

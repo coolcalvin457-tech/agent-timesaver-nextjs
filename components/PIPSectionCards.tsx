@@ -37,28 +37,16 @@ export default function PIPSectionCards() {
   return (
     <>
       <div className="kit-list">
-        {/* Document section rows — title only, no interaction */}
+        {/* Document section rows — centered title, no icons */}
         {PIP_SECTIONS.map((section) => (
           <div
             key={section.title}
             className="kit-list-row"
-            style={{ cursor: "default" }}
+            style={{ cursor: "default", justifyContent: "center" }}
           >
-            {/* Doc icon thumbnail */}
-            <div className="kit-list-thumb">
-              <svg width="100%" height="100%" viewBox="0 0 40 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="40" height="48" rx="3" fill="rgba(255,255,255,0.06)" />
-                <line x1="8" y1="14" x2="32" y2="14" stroke="rgba(255,255,255,0.18)" strokeWidth="2" strokeLinecap="round" />
-                <line x1="8" y1="20" x2="32" y2="20" stroke="rgba(255,255,255,0.18)" strokeWidth="2" strokeLinecap="round" />
-                <line x1="8" y1="26" x2="32" y2="26" stroke="rgba(255,255,255,0.18)" strokeWidth="2" strokeLinecap="round" />
-                <line x1="8" y1="32" x2="22" y2="32" stroke="rgba(255,255,255,0.18)" strokeWidth="2" strokeLinecap="round" />
-              </svg>
-            </div>
-
-            {/* Title */}
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <span className="kit-list-title">{section.title}</span>
-            </div>
+            <span className="kit-list-title" style={{ textAlign: "center" }}>
+              {section.title}
+            </span>
           </div>
         ))}
 
@@ -89,17 +77,7 @@ export default function PIPSectionCards() {
             />
           </div>
 
-          <div
-            style={{
-              flex: 1,
-              minWidth: 0,
-              display: "flex",
-              flexDirection: "column",
-              gap: "2px",
-            }}
-          >
-            <span className="kit-list-badge">Example</span>
-          </div>
+          <span className="kit-list-badge">Example</span>
 
           {/* Preview + Download */}
           <div
@@ -108,6 +86,7 @@ export default function PIPSectionCards() {
               gap: "12px",
               alignItems: "center",
               flexShrink: 0,
+              marginLeft: "auto",
             }}
           >
             <button

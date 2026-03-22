@@ -69,9 +69,9 @@ export default function KitPreviewCards() {
             </div>
 
             {/* Title + badge */}
-            <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "4px" }}>
+            <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
               {!item.hideTitle && (
-                <span className="kit-list-title">{item.display ?? item.title}</span>
+                <span className="kit-list-title" style={{ textAlign: "center" }}>{item.display ?? item.title}</span>
               )}
               {item.featured && (
                 <span className="kit-list-badge">Full Kit</span>

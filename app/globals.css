@@ -1304,8 +1304,8 @@ input, textarea {
 /* ── Manifesto Split (Section 3) ─────────────────────────── */
 .manifesto-split {
   display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: 96px;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px;
   align-items: center;
   max-width: 1100px;
   margin: 0 auto;
@@ -1314,6 +1314,14 @@ input, textarea {
 .manifesto-split-right {
   border-left: 2px solid var(--cta);
   padding-left: 48px;
+}
+
+.manifesto-body {
+  font-size: clamp(1.0625rem, 2vw, 1.25rem);
+  font-weight: 300;
+  letter-spacing: 0.01em;
+  color: #767674;
+  line-height: 1.9;
 }
 
 @media (max-width: 768px) {

@@ -73,7 +73,7 @@ export default function Home() {
               </div>
               {/* Right: body paragraph */}
               <div className="manifesto-split-right">
-                <p className="body-lg" style={{ color: "var(--text-secondary)" }}>
+                <p className="manifesto-body">
                   Anyone with internet today can use AI. Getting started is free. What keeps most
                   people stuck isn&apos;t cost. It&apos;s that no one told them how to use it. One
                   good prompt changes that. That&apos;s where your AI agent begins.

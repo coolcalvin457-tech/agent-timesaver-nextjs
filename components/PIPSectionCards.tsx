@@ -3,31 +3,11 @@
 import React, { useState, useEffect, useCallback } from "react";
 
 const PIP_SECTIONS = [
-  {
-    number: "01",
-    title: "Opening Statement",
-    description: "Formal documentation of the performance situation and the purpose of the plan.",
-  },
-  {
-    number: "02",
-    title: "Performance Deficiencies",
-    description: "Specific, measurable gaps with dates, examples, and documented business impact.",
-  },
-  {
-    number: "03",
-    title: "Improvement Targets",
-    description: "Clear benchmarks the employee must meet, with timelines and success criteria.",
-  },
-  {
-    number: "04",
-    title: "Support & Resources",
-    description: "What the company will provide: check-ins, training, and documented manager access.",
-  },
-  {
-    number: "05",
-    title: "Accountability Plan",
-    description: "Review schedule, progress tracking, and outcomes if targets are met or missed.",
-  },
+  { number: "01", title: "Opening Statement" },
+  { number: "02", title: "Performance Deficiencies" },
+  { number: "03", title: "Improvement Targets" },
+  { number: "04", title: "Support & Resources" },
+  { number: "05", title: "Accountability Plan" },
 ];
 
 const SAMPLE_PDF = "/samples/pip-sample-output.pdf";
@@ -89,19 +69,9 @@ export default function PIPSectionCards() {
               </span>
             </div>
 
-            {/* Title + description */}
+            {/* Title */}
             <div style={{ flex: 1, minWidth: 0 }}>
               <span className="kit-list-title">{section.title}</span>
-              <p
-                style={{
-                  fontSize: "0.75rem",
-                  color: "rgba(255,255,255,0.35)",
-                  margin: "3px 0 0",
-                  lineHeight: 1.45,
-                }}
-              >
-                {section.description}
-              </p>
             </div>
           </div>
         ))}

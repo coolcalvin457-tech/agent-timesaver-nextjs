@@ -64,9 +64,10 @@ function BackButton({ onClick }: { onClick: () => void }) {
 // ─── Component ────────────────────────────────────────────────────────────────
 interface PromptBuilderToolProps {
   initialJobTitle?: string;
+  onQ1Complete?: (jobTitle: string) => void;
 }
 
-export default function PromptBuilderTool({ initialJobTitle }: PromptBuilderToolProps) {
+export default function PromptBuilderTool({ initialJobTitle, onQ1Complete }: PromptBuilderToolProps) {
   const [screen, setScreen] = useState<Screen>("q1");
   const [jobTitle, setJobTitle] = useState(initialJobTitle?.trim() || "");
   const [workType, setWorkType] = useState("");
@@ -327,7 +328,14 @@ export default function PromptBuilderTool({ initialJobTitle }: PromptBuilderTool
           <button
             className="btn btn-primary btn-full"
             style={{ marginTop: "20px" }}
-            onClick={() => { track("q1_completed", { jobTitle }); go("q2"); }}
+            onClick={() => {
+              track("q1_completed", { jobTitle });
+              if (onQ1Complete) {
+                onQ1Complete(jobTitle);
+              } else {
+                go("q2");
+              }
+            }}
             disabled={!jobTitle.trim()}
           >
             Continue

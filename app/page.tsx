@@ -2,7 +2,7 @@ import HeroToolWrap from "@/components/HeroToolWrap";
 import HeroButton from "@/components/HeroButton";
 import NavClient from "@/components/NavClient";
 import Footer from "@/components/Footer";
-import PromptBuilderEmbed from "@/components/PromptBuilderEmbed";
+import PromptBuilderHomepageWrap from "@/components/PromptBuilderHomepageWrap";
 
 export default function Home() {
   return (
@@ -120,8 +120,8 @@ export default function Home() {
 
             </div>
 
-            {/* Embedded prompt builder — job title input → navigates to full tool */}
-            <PromptBuilderEmbed />
+            {/* Full Q1 screen embedded — on Continue, navigates to /prompt-builder at Q2 */}
+            <PromptBuilderHomepageWrap />
 
           </div>
         </section>

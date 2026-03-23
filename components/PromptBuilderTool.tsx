@@ -92,6 +92,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
 
   const topRef = useRef<HTMLDivElement>(null);
   const isFirstRender = useRef(true);
+  const skipNextScroll = useRef(false);
 
   // ── Track tool start on mount ──────────────────────────────────
   useEffect(() => {
@@ -101,6 +102,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
   // ── Auto-advance to Q2 if job title pre-filled from homepage embed ──
   useEffect(() => {
     if (initialJobTitle?.trim()) {
+      skipNextScroll.current = true; // Don't scroll on auto-advance — let page load at top
       track("q1_completed", { jobTitle: initialJobTitle.trim() });
       go("q2");
     }
@@ -123,6 +125,10 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
+      return;
+    }
+    if (skipNextScroll.current) {
+      skipNextScroll.current = false;
       return;
     }
     topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });

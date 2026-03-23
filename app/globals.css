@@ -1312,7 +1312,7 @@ input, textarea {
 }
 
 .manifesto-split-right {
-  padding-top: 46px;
+  padding-top: 34px;
 }
 
 .manifesto-body {
@@ -1323,6 +1323,8 @@ input, textarea {
   line-height: 1.9;
   border-left: 2px solid var(--cta);
   padding-left: 20px;
+  padding-top: 12px;
+  padding-bottom: 12px;
 }
 
 @media (max-width: 768px) {

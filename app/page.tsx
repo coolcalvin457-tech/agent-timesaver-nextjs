@@ -74,9 +74,10 @@ export default function Home() {
               {/* Right: body paragraph */}
               <div className="manifesto-split-right">
                 <p className="manifesto-body">
-                  Anyone with internet today can use AI. Getting started is free. What keeps most
-                  people stuck isn&apos;t cost. It&apos;s that no one told them how to use it. One
-                  good prompt changes that. That&apos;s where your AI agent begins.
+                  Anyone with internet today can use AI. Getting started is free.<br />
+                  What keeps most people stuck isn&apos;t cost. It&apos;s that no one<br />
+                  told them how to use it. One good prompt changes that.<br />
+                  That&apos;s where your AI agent begins.
                 </p>
               </div>
             </div>

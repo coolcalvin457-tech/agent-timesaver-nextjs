@@ -1649,6 +1649,7 @@ input, textarea {
   padding-top: 28px;
   padding-left: 44px;
   padding-right: 44px;
+  padding-bottom: 32px;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -1946,9 +1947,9 @@ input, textarea {
   color: rgba(77,163,224,0.9);
 }
 
-/* Top/sides 52px — bottom reduced to visually balance the absolute-positioned label at the top */
+/* Top/sides 52px — bottom slightly reduced to visually balance the absolute-positioned label at the top */
 .pb-frame-body {
-  padding: 52px 52px 32px;
+  padding: 52px 52px 44px;
 }
 
 /* Choose File button hover */

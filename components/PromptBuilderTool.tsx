@@ -271,7 +271,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
                 go("q2");
               }
             }}
-            autoFocus
+            autoFocus={!hideFileUpload}
           />
 
           {/* Optional file upload — hidden when embedded on homepage */}

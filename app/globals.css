@@ -1320,7 +1320,7 @@ input, textarea {
   align-items: start;
   max-width: 1200px;
   margin: 0 auto;
-  padding-left: 32px;
+  transform: translateX(32px);
 }
 
 .manifesto-split-right {
@@ -1343,7 +1343,7 @@ input, textarea {
   .manifesto-split {
     grid-template-columns: 1fr;
     gap: 40px;
-    padding-left: 0;
+    transform: none;
   }
   .manifesto-split-right {
     padding-top: 0;

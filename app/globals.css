@@ -1336,8 +1336,8 @@ input, textarea {
   line-height: var(--section-body-lh);
   border-left: 2px solid var(--cta);
   padding-left: 26px;
-  padding-top: 12px;
-  padding-bottom: 12px;
+  padding-top: 16px;
+  padding-bottom: 16px;
 }
 
 @media (max-width: 768px) {

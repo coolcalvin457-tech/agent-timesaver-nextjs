@@ -63,12 +63,12 @@ export default function Home() {
                 <h2
                   className="heading-1"
                   style={{
-                    fontSize: "clamp(2.5rem, 4vw, 4rem)",
+                    fontSize: "clamp(2rem, 3.5vw, 3rem)",
                     lineHeight: 1.1,
                     marginBottom: 0,
                   }}
                 >
-                  The hard part isn&apos;t<br />getting started.
+                  The hard part isn&apos;t getting started.
                 </h2>
               </div>
               {/* Right: body paragraph */}

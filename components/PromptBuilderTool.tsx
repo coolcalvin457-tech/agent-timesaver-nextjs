@@ -62,9 +62,13 @@ function BackButton({ onClick }: { onClick: () => void }) {
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
-export default function PromptBuilderTool() {
+interface PromptBuilderToolProps {
+  initialJobTitle?: string;
+}
+
+export default function PromptBuilderTool({ initialJobTitle }: PromptBuilderToolProps) {
   const [screen, setScreen] = useState<Screen>("q1");
-  const [jobTitle, setJobTitle] = useState("");
+  const [jobTitle, setJobTitle] = useState(initialJobTitle?.trim() || "");
   const [workType, setWorkType] = useState("");
   const [aiUsage, setAiUsage] = useState("");
   const [challenge, setChallenge] = useState("");
@@ -89,6 +93,15 @@ export default function PromptBuilderTool() {
   // ── Track tool start on mount ──────────────────────────────────
   useEffect(() => {
     track("tool_started");
+  }, []);
+
+  // ── Auto-advance to Q2 if job title pre-filled from homepage embed ──
+  useEffect(() => {
+    if (initialJobTitle?.trim()) {
+      track("q1_completed", { jobTitle: initialJobTitle.trim() });
+      go("q2");
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // ── Screen transition helpers ───────────────────────────────────

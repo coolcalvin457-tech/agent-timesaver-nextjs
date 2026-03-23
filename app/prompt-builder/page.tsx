@@ -8,7 +8,11 @@ export const metadata = {
     "Get 12 ready-to-copy AI prompts personalized to your exact job. Built for non-technical professionals who want real results from AI.",
 };
 
-export default function PromptBuilderPage() {
+export default function PromptBuilderPage({
+  searchParams,
+}: {
+  searchParams: { jobTitle?: string };
+}) {
   return (
     <>
       <NavClient />
@@ -44,7 +48,7 @@ export default function PromptBuilderPage() {
               <div className="pb-frame hero-tool-dark">
                 <span className="pb-frame-label">AGENT: Prompt Builder</span>
                 <div className="pb-frame-body">
-                  <PromptBuilderTool />
+                  <PromptBuilderTool initialJobTitle={searchParams.jobTitle} />
                 </div>
               </div>
             </div>

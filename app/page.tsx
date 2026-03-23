@@ -2,6 +2,7 @@ import HeroToolWrap from "@/components/HeroToolWrap";
 import HeroButton from "@/components/HeroButton";
 import NavClient from "@/components/NavClient";
 import Footer from "@/components/Footer";
+import PromptBuilderEmbed from "@/components/PromptBuilderEmbed";
 
 export default function Home() {
   return (
@@ -95,14 +96,14 @@ export default function Home() {
               <div className="eyebrow" style={{ marginBottom: "16px" }}>AGENT: Prompt Builder</div>
               <h2
                 className="heading-1"
-                style={{ marginBottom: "48px", fontSize: "var(--section-headline-size)", lineHeight: "var(--section-headline-lh)", letterSpacing: "var(--section-headline-ls)" }}
+                style={{ marginBottom: "var(--section-head-gap)", fontSize: "var(--section-headline-size)", lineHeight: "var(--section-headline-lh)", letterSpacing: "var(--section-headline-ls)" }}
               >
                 <span style={{ display: "block" }}>12 prompts built for</span>
                 <span style={{ display: "block" }}>your exact job.</span>
               </h2>
 
               {/* Compact horizontal kit items */}
-              <div className="prompt-builder-kit-row" style={{ marginBottom: "32px" }}>
+              <div className="prompt-builder-kit-row" style={{ marginBottom: "40px" }}>
                 <div className="prompt-builder-kit-pill">
                   <span className="kit-item-check" style={{ fontSize: "0.75rem" }}>✓</span>
                   <span>Personalized Prompts</span>
@@ -117,20 +118,10 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* CTA — above screenshot */}
-              <a href="/prompt-builder" className="prompt-builder-cta-link">
-                Build Prompts →
-              </a>
             </div>
 
-            {/* Large screenshot */}
-            <a href="/prompt-builder" className="prompt-builder-screenshot-wrap">
-              <img
-                src="/tool-previews/prompt-builder-preview.png"
-                alt="AGENT: Prompt Builder results — 12 AI prompts built for Project Manager"
-                style={{ width: "100%", display: "block" }}
-              />
-            </a>
+            {/* Embedded prompt builder — job title input → navigates to full tool */}
+            <PromptBuilderEmbed />
 
           </div>
         </section>

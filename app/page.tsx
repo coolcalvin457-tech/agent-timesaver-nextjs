@@ -47,14 +47,14 @@ export default function Home() {
               <p className="dream-body">
                 Setting up personalized AI workflows is now within reach.<br />
                 Reports, meeting preps, follow-ups, you name it.<br />
-                Here&apos;s how to begin with a few prompts.
+                In fact, you&apos;re closer than you think.
               </p>
             </div>
           </div>
         </section>
 
         {/* ── Section 3: Manifesto ─────────────────────────────────────── */}
-        <section className="section" id="why">
+        <section className="section" id="why" style={{ paddingBottom: "72px" }}>
           <div className="container">
             <div className="manifesto-split">
               {/* Left: eyebrow + headline */}
@@ -87,7 +87,7 @@ export default function Home() {
         </section>
 
         {/* ── Section 4: AGENT: Prompt Builder ────────────────────────── */}
-        <section className="section" id="prompt-builder" style={{ paddingBottom: "64px" }}>
+        <section className="section" id="prompt-builder" style={{ paddingTop: "80px", paddingBottom: "64px" }}>
           <div className="container">
 
             {/* Centered header */}

@@ -68,7 +68,7 @@ export default function Home() {
                     marginBottom: 0,
                   }}
                 >
-                  The hard part isn&apos;t getting started.
+                  The hard part isn&apos;t<br />getting started.
                 </h2>
               </div>
               {/* Right: body paragraph */}

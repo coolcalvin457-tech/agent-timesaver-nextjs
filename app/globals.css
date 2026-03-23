@@ -1314,7 +1314,7 @@ input, textarea {
 .manifesto-split-right {
   border-left: 2px solid var(--cta);
   padding-left: 20px;
-  padding-top: 56px;
+  padding-top: 46px;
 }
 
 .manifesto-body {

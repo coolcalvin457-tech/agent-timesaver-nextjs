@@ -96,28 +96,11 @@ export default function Home() {
               <div className="eyebrow" style={{ marginBottom: "16px" }}>AGENT: Prompt Builder</div>
               <h2
                 className="heading-1"
-                style={{ marginBottom: "var(--section-head-gap)", fontSize: "var(--section-headline-size)", lineHeight: "var(--section-headline-lh)", letterSpacing: "var(--section-headline-ls)" }}
+                style={{ marginBottom: 0, fontSize: "var(--section-headline-size)", lineHeight: "var(--section-headline-lh)", letterSpacing: "var(--section-headline-ls)" }}
               >
                 <span style={{ display: "block" }}>12 prompts built for</span>
                 <span style={{ display: "block" }}>your exact job.</span>
               </h2>
-
-              {/* Compact horizontal kit items */}
-              <div className="prompt-builder-kit-row" style={{ marginBottom: "40px" }}>
-                <div className="prompt-builder-kit-pill">
-                  <span className="kit-item-check" style={{ fontSize: "0.75rem" }}>✓</span>
-                  <span>Personalized Prompts</span>
-                </div>
-                <div className="prompt-builder-kit-pill">
-                  <span className="kit-item-check" style={{ fontSize: "0.75rem" }}>✓</span>
-                  <span>AI Profile</span>
-                </div>
-                <div className="prompt-builder-kit-pill">
-                  <span className="kit-item-check" style={{ fontSize: "0.75rem" }}>✓</span>
-                  <span>AI Systems Guide</span>
-                </div>
-              </div>
-
             </div>
 
             {/* Full Q1 screen embedded — on Continue, navigates to /prompt-builder at Q2 */}

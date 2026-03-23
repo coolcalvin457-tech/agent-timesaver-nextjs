@@ -15,7 +15,7 @@ export default function PromptBuilderHomepageWrap() {
       <div className="pb-frame hero-tool-dark">
         <span className="pb-frame-label">AGENT: Prompt Builder</span>
         <div className="pb-frame-body">
-          <PromptBuilderTool onQ1Complete={handleQ1Complete} hideFileUpload />
+          <PromptBuilderTool onQ1Complete={handleQ1Complete} hideFileUpload showDeliverables />
         </div>
       </div>
     </div>

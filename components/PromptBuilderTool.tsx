@@ -66,9 +66,10 @@ interface PromptBuilderToolProps {
   initialJobTitle?: string;
   onQ1Complete?: (jobTitle: string) => void;
   hideFileUpload?: boolean;
+  showDeliverables?: boolean;
 }
 
-export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideFileUpload }: PromptBuilderToolProps) {
+export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideFileUpload, showDeliverables }: PromptBuilderToolProps) {
   const [screen, setScreen] = useState<Screen>("q1");
   const [jobTitle, setJobTitle] = useState(initialJobTitle?.trim() || "");
   const [workType, setWorkType] = useState("");
@@ -326,9 +327,26 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
             )}
           </div>}
 
+          {/* Deliverables preview — shown when embedded on homepage */}
+          {showDeliverables && (
+            <div style={{ marginTop: "28px", paddingTop: "20px", borderTop: "1px solid rgba(255,255,255,0.07)" }}>
+              <p style={{ fontSize: "0.6875rem", fontFamily: "var(--font-mono)", letterSpacing: "0.08em", color: "rgba(255,255,255,0.3)", textTransform: "uppercase", marginBottom: "14px" }}>
+                What&apos;s included
+              </p>
+              <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                {["Personalized Prompts", "AI Profile", "AI Systems Guide"].map((item) => (
+                  <div key={item} className="prompt-builder-kit-pill">
+                    <span className="kit-item-check" style={{ fontSize: "0.75rem" }}>✓</span>
+                    <span>{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           <button
             className="btn btn-primary btn-full"
-            style={{ marginTop: "20px" }}
+            style={{ marginTop: "24px" }}
             onClick={() => {
               track("q1_completed", { jobTitle });
               if (onQ1Complete) {

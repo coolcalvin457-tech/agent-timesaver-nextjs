@@ -65,9 +65,10 @@ function BackButton({ onClick }: { onClick: () => void }) {
 interface PromptBuilderToolProps {
   initialJobTitle?: string;
   onQ1Complete?: (jobTitle: string) => void;
+  hideFileUpload?: boolean;
 }
 
-export default function PromptBuilderTool({ initialJobTitle, onQ1Complete }: PromptBuilderToolProps) {
+export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideFileUpload }: PromptBuilderToolProps) {
   const [screen, setScreen] = useState<Screen>("q1");
   const [jobTitle, setJobTitle] = useState(initialJobTitle?.trim() || "");
   const [workType, setWorkType] = useState("");
@@ -273,8 +274,8 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete }: Pro
             autoFocus
           />
 
-          {/* Optional file upload */}
-          <div style={{ marginTop: "36px" }}>
+          {/* Optional file upload — hidden when embedded on homepage */}
+          {!hideFileUpload && <div style={{ marginTop: "36px" }}>
             <p
               style={{
                 fontSize: "0.8125rem",
@@ -323,7 +324,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete }: Pro
                 Remove
               </button>
             )}
-          </div>
+          </div>}
 
           <button
             className="btn btn-primary btn-full"

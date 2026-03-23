@@ -1946,9 +1946,9 @@ input, textarea {
   color: rgba(77,163,224,0.9);
 }
 
-/* Uniform 52px on all four sides — matches the top label gap */
+/* Top/sides 52px — bottom reduced to visually balance the absolute-positioned label at the top */
 .pb-frame-body {
-  padding: 52px;
+  padding: 52px 52px 32px;
 }
 
 /* Choose File button hover */

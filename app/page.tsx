@@ -38,10 +38,10 @@ export default function Home() {
         </section>
 
         {/* ── Section 2: Dream / Aspiration ───────────────────────────── */}
-        <section className="section section-dark" id="dream" style={{ paddingTop: "140px", paddingBottom: "140px" }}>
+        <section className="section section-dark" id="dream">
           <div className="container">
             <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center" }}>
-              <h2 className="heading-1" style={{ color: "#fff", marginBottom: "52px", lineHeight: 1.2, fontSize: "clamp(2.25rem, 4.5vw, 3.25rem)" }}>
+              <h2 className="heading-1" style={{ color: "#fff", marginBottom: "var(--section-head-gap)", lineHeight: "var(--section-headline-lh)", fontSize: "var(--section-headline-size)", letterSpacing: "var(--section-headline-ls)" }}>
                 Imagine getting 5-10 hours back<br />every week.
               </h2>
               <p className="dream-body">
@@ -54,7 +54,7 @@ export default function Home() {
         </section>
 
         {/* ── Section 3: Manifesto ─────────────────────────────────────── */}
-        <section className="section" id="why" style={{ paddingTop: "100px", paddingBottom: "100px" }}>
+        <section className="section" id="why">
           <div className="container">
             <div className="manifesto-split">
               {/* Left: eyebrow + headline */}
@@ -63,8 +63,9 @@ export default function Home() {
                 <h2
                   className="heading-1"
                   style={{
-                    fontSize: "clamp(2.25rem, 3.5vw, 3.5rem)",
-                    lineHeight: 1.1,
+                    fontSize: "var(--section-headline-size)",
+                    lineHeight: "var(--section-headline-lh)",
+                    letterSpacing: "var(--section-headline-ls)",
                     marginBottom: 0,
                   }}
                 >
@@ -86,7 +87,7 @@ export default function Home() {
         </section>
 
         {/* ── Section 4: AGENT: Prompt Builder ────────────────────────── */}
-        <section className="section" id="prompt-builder" style={{ paddingTop: "112px", paddingBottom: "64px" }}>
+        <section className="section" id="prompt-builder" style={{ paddingBottom: "64px" }}>
           <div className="container">
 
             {/* Centered header */}
@@ -94,7 +95,7 @@ export default function Home() {
               <div className="eyebrow" style={{ marginBottom: "16px" }}>AGENT: Prompt Builder</div>
               <h2
                 className="heading-1"
-                style={{ marginBottom: "48px", fontSize: "clamp(2.25rem, 4.5vw, 3.25rem)", lineHeight: 1.08 }}
+                style={{ marginBottom: "48px", fontSize: "var(--section-headline-size)", lineHeight: "var(--section-headline-lh)", letterSpacing: "var(--section-headline-ls)" }}
               >
                 <span style={{ display: "block" }}>12 prompts built for</span>
                 <span style={{ display: "block" }}>your exact job.</span>
@@ -175,7 +176,7 @@ export default function Home() {
         </section>
 
         {/* ── Section 6: The Guide ─────────────────────────────────────── */}
-        <section className="section" id="about" style={{ paddingTop: "100px", paddingBottom: "80px" }}>
+        <section className="section" id="about" style={{ paddingBottom: "80px" }}>
           <div className="container">
             <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center" }}>
               <div className="eyebrow" style={{ marginBottom: "20px" }}>Your guide</div>

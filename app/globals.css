@@ -50,6 +50,15 @@
   --font-display: 'DM Serif Display', Georgia, serif;
   --font-sans:    'Inter', system-ui, -apple-system, sans-serif;
   --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Section Rhythm — apply to all non-hero sections */
+  --section-padding:        112px;
+  --section-headline-size:  clamp(2.25rem, 4.5vw, 3.25rem);
+  --section-headline-lh:    1.1;
+  --section-headline-ls:    -0.02em;
+  --section-body-size:      clamp(1.0625rem, 1.5vw, 1.1875rem);
+  --section-body-lh:        1.9;
+  --section-head-gap:       28px;
 }
 
 /* ── Reset & Base ─────────────────────────────────────────── */
@@ -1195,7 +1204,7 @@ input, textarea {
 
 /* ── Landing Page Sections ────────────────────────────────── */
 .section {
-  padding: 128px 0;
+  padding: var(--section-padding) 0;
 }
 
 .section-sm {
@@ -1316,11 +1325,11 @@ input, textarea {
 }
 
 .manifesto-body {
-  font-size: clamp(1.0625rem, 1.5vw, 1.1875rem);
+  font-size: var(--section-body-size);
   font-weight: 300;
   letter-spacing: 0.01em;
   color: #767674;
-  line-height: 1.9;
+  line-height: var(--section-body-lh);
   border-left: 2px solid var(--cta);
   padding-left: 20px;
   padding-top: 12px;
@@ -1351,9 +1360,9 @@ input, textarea {
 
 /* ── Dream Section ────────────────────────────────────────── */
 .dream-body {
-  font-size: clamp(1rem, 2vw, 1.125rem);
+  font-size: var(--section-body-size);
   color: rgba(255,255,255,0.7);
-  line-height: 1.9;
+  line-height: var(--section-body-lh);
   max-width: 640px;
   margin: 0 auto;
 }

@@ -1312,8 +1312,6 @@ input, textarea {
 }
 
 .manifesto-split-right {
-  border-left: 2px solid var(--cta);
-  padding-left: 20px;
   padding-top: 46px;
 }
 
@@ -1323,6 +1321,8 @@ input, textarea {
   letter-spacing: 0.01em;
   color: #767674;
   line-height: 1.9;
+  border-left: 2px solid var(--cta);
+  padding-left: 20px;
 }
 
 @media (max-width: 768px) {
@@ -1331,6 +1331,9 @@ input, textarea {
     gap: 40px;
   }
   .manifesto-split-right {
+    padding-top: 0;
+  }
+  .manifesto-body {
     border-left: none;
     padding-left: 0;
     border-top: 2px solid var(--cta);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
@@ -44,13 +44,13 @@ interface SavedFormData {
 const PIP_STORAGE_KEY = "pip_form_data";
 
 const LOADING_STEPS = [
-  "Opening statement",
-  "Performance deficiencies",
-  "Improvement targets",
-  "Support and resources",
-  "Check-in schedule",
+  "Opening Statement",
+  "Performance Deficiencies",
+  "Improvement Targets",
+  "Support and Resources",
+  "Check-in Schedule",
   "Consequences",
-  "Signature block",
+  "Signature Block",
 ];
 
 // ─── Storage helpers ────────────────────────────────────────────────────────────
@@ -145,6 +145,27 @@ const radioOptionStyle = (selected: boolean): React.CSSProperties => ({
   transition: "border-color 0.15s ease, background 0.15s ease",
 });
 
+// ─── Step progress indicator ───────────────────────────────────────────────────
+
+function StepIndicator({ current, total }: { current: number; total: number }) {
+  return (
+    <div style={{ display: "flex", gap: "5px", marginBottom: "28px" }}>
+      {Array.from({ length: total }).map((_, i) => (
+        <div
+          key={i}
+          style={{
+            flex: 1,
+            height: "3px",
+            borderRadius: "2px",
+            background: i < current ? "var(--cta, #1E7AB8)" : "var(--border, #E4E4E2)",
+            transition: "background 0.2s ease",
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
 // ─── Component ─────────────────────────────────────────────────────────────────
 
 interface PIPBuilderToolProps {
@@ -156,6 +177,9 @@ export default function PIPBuilderTool({
   initialPaymentStatus,
   initialSessionId,
 }: PIPBuilderToolProps) {
+  // ── Tool container ref (for scroll-to-tool on screen changes) ─
+  const toolContainerRef = useRef<HTMLDivElement>(null);
+
   // ── Screen state ──────────────────────────────────────────
   const [screen, setScreen] = useState<Screen>("s1");
 
@@ -191,9 +215,10 @@ export default function PIPBuilderTool({
   // ── Paywall / checkout state ──────────────────────────────
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState("");
+  const [paywallEmail, setPaywallEmail] = useState("");
   const [paymentCancelled, setPaymentCancelled] = useState(false);
 
-  // ── Returning purchaser state ─────────────────────────────
+  // ── Returning purchaser state (kept for legacy Stripe return flow) ────────
   const [showReturningCheck, setShowReturningCheck] = useState(false);
   const [returningEmail, setReturningEmail] = useState("");
   const [returningCheckLoading, setReturningCheckLoading] = useState(false);
@@ -223,6 +248,11 @@ export default function PIPBuilderTool({
     return () => timers.forEach(clearTimeout);
   }, [screen]);
 
+  // ── Scroll to tool container on every screen change ───────
+  useEffect(() => {
+    toolContainerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [screen]);
+
   // ── Payment detection on mount ────────────────────────────
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
@@ -235,7 +265,6 @@ export default function PIPBuilderTool({
       clearStorage();
       setPaymentCancelled(true);
       setScreen("paywall");
-      window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
 
@@ -250,7 +279,6 @@ export default function PIPBuilderTool({
 
       restoreFromSaved(saved);
       setScreen("verifying");
-      window.scrollTo({ top: 0, behavior: "smooth" });
 
       fetch(`/api/verify-payment?session_id=${initialSessionId}`)
         .then((r) => r.json())
@@ -364,25 +392,21 @@ export default function PIPBuilderTool({
   function goToS2() {
     if (!validateS1()) return;
     setScreen("s2");
-    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function goToS3() {
     if (!validateS2()) return;
     setScreen("s3");
-    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function goBackToS1() {
     setS1Error("");
     setScreen("s1");
-    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function goBackToS2() {
     setS2Error("");
     setScreen("s2");
-    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function goToPaywall() {
@@ -390,7 +414,6 @@ export default function PIPBuilderTool({
     setPaymentCancelled(false);
     setCheckoutError("");
     setScreen("paywall");
-    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   // ── Core build logic ──────────────────────────────────────
@@ -444,7 +467,6 @@ export default function PIPBuilderTool({
       setFilename(rawFilename ? decodeURIComponent(rawFilename) : "pip-document.docx");
       if (rawTimeline) setResultTimeline(rawTimeline);
       setScreen("email-gate");
-      window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err) {
       setErrorMsg(
         err instanceof Error
@@ -464,12 +486,36 @@ export default function PIPBuilderTool({
     await buildFromData(getCurrentFormData());
   }
 
-  // ── Checkout ──────────────────────────────────────────────
+  // ── Get Access: check subscription first, then Stripe if needed ──────────
 
-  async function handleCheckout() {
+  async function handleGetAccess() {
+    if (!paywallEmail.trim()) {
+      setCheckoutError("Enter your email to continue.");
+      return;
+    }
     setCheckoutLoading(true);
     setCheckoutError("");
 
+    // First: check if they already have an active subscription
+    try {
+      const subRes = await fetch("/api/verify-subscription", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: paywallEmail.trim() }),
+      });
+      const { verified } = await subRes.json() as { verified: boolean };
+
+      if (verified) {
+        // Active subscription confirmed — pre-populate email gate and build
+        setEmail(paywallEmail.trim());
+        await buildFromData(getCurrentFormData());
+        return;
+      }
+    } catch {
+      // If subscription check fails, proceed to Stripe anyway
+    }
+
+    // No active subscription — save form data and redirect to Stripe
     saveToStorage(getCurrentFormData());
 
     try {
@@ -479,6 +525,7 @@ export default function PIPBuilderTool({
         body: JSON.stringify({
           successPath: "pip-builder",
           cancelPath: "pip-builder",
+          customerEmail: paywallEmail.trim(),
         }),
       });
       if (!res.ok) throw new Error("Failed to create checkout session.");
@@ -493,7 +540,7 @@ export default function PIPBuilderTool({
     }
   }
 
-  // ── Returning purchaser check ─────────────────────────────
+  // ── Legacy returning purchaser check ─────────────────────
 
   async function handleReturningEmailCheck() {
     if (!returningEmail.trim()) return;
@@ -509,6 +556,7 @@ export default function PIPBuilderTool({
       const { verified } = await res.json() as { verified: boolean };
 
       if (verified) {
+        setEmail(returningEmail.trim());
         await buildFromData(getCurrentFormData());
       } else {
         setReturningCheckError("No active subscription found for that email. Purchase below.");
@@ -559,7 +607,6 @@ export default function PIPBuilderTool({
       };
 
       setScreen("sent");
-      window.scrollTo({ top: 0, behavior: "smooth" });
     } catch {
       setEmailError("Something went wrong. Try downloading again.");
       setEmailSubmitting(false);
@@ -568,16 +615,15 @@ export default function PIPBuilderTool({
 
   function handleReset() {
     setScreen("s1");
-    setEmployeeRole(""); setDepartment(""); setTenure(""); setManagerName("");
+    setEmployeeName(""); setEmployeeRole(""); setDepartment(""); setTenure(""); setManagerName("");
     setIssueType(""); setPriorCoaching(null);
     setDeficiencies(""); setPerformanceStandard(""); setImprovementTargets(""); setTimeline("");
     setCheckinSchedule(""); setCheckinCustom(""); setSupportOffered(""); setConsequences(""); setIncludeEAP(false);
     setEmail(""); setFileBlob(null); setFilename("pip-document.docx");
     setS1Error(""); setS2Error(""); setS3Error(""); setErrorMsg("");
-    setCheckoutError(""); setPaymentCancelled(false);
+    setCheckoutError(""); setPaywallEmail(""); setPaymentCancelled(false);
     setShowReturningCheck(false); setReturningEmail(""); setReturningCheckError("");
     clearStorage();
-    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   // ──────────────────────────────────────────────────────────
@@ -587,9 +633,10 @@ export default function PIPBuilderTool({
   // ── Screen 1: The Situation ───────────────────────────────
   if (screen === "s1") {
     return (
-      <div className="okb-tool">
+      <div ref={toolContainerRef} className="okb-tool">
+        <StepIndicator current={1} total={4} />
         <div style={{ marginBottom: "28px" }}>
-          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 12px" }}>
+          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: 0 }}>
             Tell us about the situation.
           </h2>
         </div>
@@ -740,7 +787,7 @@ export default function PIPBuilderTool({
   // ── Screen 2: The Performance Gap ────────────────────────
   if (screen === "s2") {
     return (
-      <div className="okb-tool">
+      <div ref={toolContainerRef} className="okb-tool">
         <button
           type="button"
           onClick={goBackToS1}
@@ -748,14 +795,12 @@ export default function PIPBuilderTool({
         >
           ← Back
         </button>
+        <StepIndicator current={2} total={4} />
 
         <div style={{ marginBottom: "28px" }}>
-          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 12px" }}>
-            What specifically isn't meeting expectations?
+          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: 0 }}>
+            What specifically isn&apos;t meeting expectations?
           </h2>
-          <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", margin: 0, lineHeight: 1.6 }}>
-            Specific language is what makes a PIP defensible. Describe what happened, when, and what standard it fell short of.
-          </p>
         </div>
 
         {/* Specific Deficiencies */}
@@ -863,7 +908,7 @@ export default function PIPBuilderTool({
   // ── Screen 3: Support and Monitoring ─────────────────────
   if (screen === "s3") {
     return (
-      <div className="okb-tool">
+      <div ref={toolContainerRef} className="okb-tool">
         <button
           type="button"
           onClick={goBackToS2}
@@ -871,14 +916,12 @@ export default function PIPBuilderTool({
         >
           ← Back
         </button>
+        <StepIndicator current={3} total={4} />
 
         <div style={{ marginBottom: "28px" }}>
-          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 12px" }}>
+          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: 0 }}>
             How will you support and monitor improvement?
           </h2>
-          <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", margin: 0, lineHeight: 1.6 }}>
-            This section protects both the employee and the company.
-          </p>
         </div>
 
         {/* Check-in Schedule */}
@@ -986,7 +1029,7 @@ export default function PIPBuilderTool({
           onClick={goToPaywall}
           style={{ marginTop: "8px" }}
         >
-          Build My PIP →
+          Build My PIP
         </button>
       </div>
     );
@@ -995,7 +1038,16 @@ export default function PIPBuilderTool({
   // ── Paywall screen ───────────────────────────────────────
   if (screen === "paywall") {
     return (
-      <div className="okb-tool">
+      <div ref={toolContainerRef} className="okb-tool">
+        <button
+          type="button"
+          onClick={() => { setS3Error(""); setScreen("s3"); }}
+          style={{ background: "none", border: "none", color: "var(--text-muted, #888886)", fontSize: "0.8125rem", cursor: "pointer", padding: "0", marginBottom: "24px", display: "flex", alignItems: "center", gap: "4px", opacity: 0.7 }}
+        >
+          ← Back
+        </button>
+        <StepIndicator current={4} total={4} />
+
         {/* Payment cancelled banner */}
         {paymentCancelled && (
           <div style={{
@@ -1003,17 +1055,14 @@ export default function PIPBuilderTool({
             borderRadius: "8px", padding: "12px 16px", marginBottom: "24px",
             fontSize: "0.875rem", color: "var(--text-secondary)",
           }}>
-            Payment wasn't completed. Your progress is saved. Try again below.
+            Payment wasn&apos;t completed. Your progress is saved. Try again below.
           </div>
         )}
 
         <div style={{ marginBottom: "24px" }}>
-          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 12px" }}>
-            Your PIP is ready to build.
+          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: 0 }}>
+            {employeeName ? `${employeeName}'s` : "Your"} PIP is almost ready.
           </h2>
-          <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", margin: 0, lineHeight: 1.6 }}>
-            Get access below to generate the document.
-          </p>
         </div>
 
         {/* Document sections preview */}
@@ -1034,8 +1083,11 @@ export default function PIPBuilderTool({
               "Consequences",
               "Signature Block",
             ].map((item) => (
-              <div key={item} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                <span style={{ color: "var(--cta, #1E7AB8)", fontSize: "0.875rem", fontWeight: 700 }}>·</span>
+              <div key={item} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0, color: "var(--cta, #1E7AB8)" }}>
+                  <path d="M2.5 1.5h6l3 3v8h-9v-11z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" fill="none"/>
+                  <path d="M8.5 1.5v3h3" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/>
+                </svg>
                 <span style={{ fontSize: "0.875rem", color: "var(--text-secondary)", fontWeight: 500 }}>{item}</span>
               </div>
             ))}
@@ -1066,14 +1118,30 @@ export default function PIPBuilderTool({
           </div>
 
           {/* Description */}
-          <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.6, margin: "0 0 20px" }}>
+          <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.6, margin: "0 0 16px" }}>
             Includes Onboarding Kit, PIP Builder, and every HR agent added to the package. One subscription, all agents.
           </p>
+
+          {/* Email input */}
+          <input
+            type="email"
+            value={paywallEmail}
+            onChange={(e) => setPaywallEmail(e.target.value)}
+            onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleGetAccess(); } }}
+            placeholder="your@email.com"
+            style={{
+              width: "100%", padding: "11px 14px", fontSize: "0.9375rem",
+              border: "1px solid rgba(255,255,255,0.15)", borderRadius: "8px",
+              background: "rgba(255,255,255,0.08)", color: "#FFFFFF",
+              outline: "none", boxSizing: "border-box" as const, marginBottom: "10px",
+              fontFamily: "inherit",
+            }}
+          />
 
           {/* CTA */}
           <button
             type="button"
-            onClick={handleCheckout}
+            onClick={handleGetAccess}
             disabled={checkoutLoading}
             style={{
               width: "100%", padding: "13px 20px", fontSize: "0.9375rem", fontWeight: 700,
@@ -1083,7 +1151,7 @@ export default function PIPBuilderTool({
               transition: "background 0.15s ease", marginBottom: "12px",
             }}
           >
-            {checkoutLoading ? "Preparing checkout..." : "Get Access · $99/year →"}
+            {checkoutLoading ? "Checking..." : "Get Access · $99/year"}
           </button>
 
           {checkoutError && (
@@ -1097,7 +1165,7 @@ export default function PIPBuilderTool({
           </p>
         </div>
 
-        {/* Returning purchaser */}
+        {/* Legacy returning purchaser (fallback) */}
         <div style={{ textAlign: "center", marginBottom: "16px" }}>
           {!showReturningCheck ? (
             <button
@@ -1105,7 +1173,7 @@ export default function PIPBuilderTool({
               onClick={() => setShowReturningCheck(true)}
               style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "0.8125rem", cursor: "pointer", padding: 0, textDecoration: "underline" }}
             >
-              Already have access? Enter your email.
+              Problems with access? Check here.
             </button>
           ) : (
             <div style={{ background: "var(--bg-alt, #F8F8F6)", border: "1px solid var(--border, #E4E4E2)", borderRadius: "8px", padding: "14px 16px", textAlign: "left" }}>
@@ -1147,7 +1215,7 @@ export default function PIPBuilderTool({
         {/* Edit inputs link */}
         <button
           type="button"
-          onClick={() => { setS3Error(""); setScreen("s3"); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+          onClick={() => { setS3Error(""); setScreen("s3"); }}
           style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "0.875rem", cursor: "pointer", padding: 0, opacity: 0.7 }}
         >
           ← Edit my inputs
@@ -1159,7 +1227,7 @@ export default function PIPBuilderTool({
   // ── Verifying payment screen ──────────────────────────────
   if (screen === "verifying") {
     return (
-      <div className="okb-tool">
+      <div ref={toolContainerRef} className="okb-tool">
         <div style={{ textAlign: "center", padding: "40px 0" }}>
           <div style={{
             display: "inline-block", width: "32px", height: "32px",
@@ -1180,13 +1248,13 @@ export default function PIPBuilderTool({
   // ── Loading screen ────────────────────────────────────────
   if (screen === "loading") {
     return (
-      <div className="okb-tool">
+      <div ref={toolContainerRef} className="okb-tool">
         <div style={{ textAlign: "center", padding: "8px 0 28px" }}>
           <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 12px" }}>
-            Building your PIP.
+            Building {employeeName ? `${employeeName}'s` : "the"} PIP.
           </h2>
           <p className="loading-subline" style={{ fontSize: "0.875rem", color: "var(--text-muted)", margin: 0 }}>
-            About 20 seconds.
+            About 1 minute.
           </p>
         </div>
 
@@ -1234,49 +1302,24 @@ export default function PIPBuilderTool({
 
   // ── Email gate screen ─────────────────────────────────────
   if (screen === "email-gate") {
-    const displayTimeline = resultTimeline || "30";
     return (
-      <div className="okb-tool">
-        <div style={{ marginBottom: "24px" }}>
-          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 12px" }}>
-            Your PIP document is ready.
-          </h2>
-        </div>
-
-        {/* Document preview */}
-        <div style={{
-          background: "var(--bg-alt, #F8F8F6)", border: "1px solid var(--border, #E4E4E2)",
-          borderRadius: "10px", padding: "18px 20px", marginBottom: "20px",
-        }}>
-          <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", margin: "0 0 12px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-            Your document includes
-          </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-            {[
-              { label: "Opening Statement", detail: "Purpose of the plan and the context for issuing it." },
-              { label: "Performance Deficiencies", detail: "Specific gaps documented in observable, measurable language." },
-              { label: `Improvement Targets`, detail: `Clear expectations for the ${displayTimeline}-day plan period.` },
-              { label: "Support and Resources", detail: "What the company is offering to support improvement." },
-              { label: "Check-in Schedule", detail: "Scheduled touchpoints to review progress." },
-              { label: "Consequences", detail: "What happens if improvement targets are not met." },
-              { label: "Signature Block", detail: "Acknowledgment of receipt. Not agreement." },
-            ].map((item) => (
-              <div key={item.label} style={{ paddingBottom: "8px", borderBottom: "1px solid var(--border, #E4E4E2)" }}>
-                <p style={{ margin: 0, fontSize: "0.875rem", fontWeight: 600, color: "var(--text-primary)" }}>
-                  <span style={{ color: "var(--cta, #1E7AB8)", marginRight: "6px" }}>·</span>{item.label}
-                </p>
-                <p style={{ margin: "2px 0 0 14px", fontSize: "0.8125rem", color: "var(--text-muted)" }}>
-                  {item.detail}
-                </p>
-              </div>
-            ))}
+      <div ref={toolContainerRef} className="okb-tool">
+        <div style={{ textAlign: "center", marginBottom: "32px" }}>
+          <div style={{ display: "inline-block", marginBottom: "16px" }}>
+            <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+              <rect width="56" height="56" rx="12" fill="#1E7AB8" fillOpacity="0.1" />
+              <path d="M18 28.5L24.5 35L38 21" stroke="#1E7AB8" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
           </div>
+          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 4px" }}>
+            {employeeName ? `${employeeName}'s` : "Your"} PIP is ready.
+          </h2>
+          {employeeRole && (
+            <p style={{ fontSize: "0.875rem", color: "var(--text-muted)", margin: 0 }}>
+              {employeeRole}
+            </p>
+          )}
         </div>
-
-        {/* Trust line */}
-        <p style={{ fontSize: "0.8125rem", color: "var(--text-muted)", margin: "0 0 20px", textAlign: "center" }}>
-          We don't store your inputs.
-        </p>
 
         {/* Email form */}
         <form onSubmit={handleEmailSubmit}>
@@ -1304,11 +1347,6 @@ export default function PIPBuilderTool({
 
         {emailError && <p style={{ ...errorStyle, marginBottom: "8px" }}>{emailError}</p>}
 
-        {/* Tip line */}
-        <p style={{ fontSize: "0.8125rem", color: "var(--text-muted)", lineHeight: 1.5, margin: "12px 0 0", padding: "12px 14px", background: "rgba(30,122,184,0.05)", borderRadius: "8px", borderLeft: "3px solid rgba(30,122,184,0.3)" }}>
-          Review with your manager and legal team before issuing.
-        </p>
-
         <button
           type="button"
           onClick={handleReset}
@@ -1323,7 +1361,7 @@ export default function PIPBuilderTool({
   // ── Sent screen ───────────────────────────────────────────
   if (screen === "sent") {
     return (
-      <div className="okb-tool">
+      <div ref={toolContainerRef} className="okb-tool">
         <div style={{ textAlign: "center", padding: "8px 0" }}>
           <div style={{ display: "inline-block", marginBottom: "20px" }}>
             <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
@@ -1331,12 +1369,9 @@ export default function PIPBuilderTool({
               <path d="M16 28l7 7L40 20" stroke="#1A7A4A" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
-          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 8px" }}>
-            Emailed and downloaded.
+          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 32px" }}>
+            {employeeName ? `${employeeName}'s` : "Your"} PIP is in your inbox.
           </h2>
-          <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", margin: "0 0 32px", lineHeight: 1.6 }}>
-            Check your downloads folder. Open the .docx in Word or Google Docs, review with your legal team, and fill in the employee name before issuing.
-          </p>
           <button
             type="button"
             className="btn btn-primary btn-lg btn-full"
@@ -1349,7 +1384,7 @@ export default function PIPBuilderTool({
         {/* Bundle callout */}
         <div style={{ marginTop: "32px", padding: "20px 22px", background: "var(--bg-alt, #F8F8F6)", border: "1px solid var(--border, #E4E4E2)", borderRadius: "10px" }}>
           <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--cta)", margin: "0 0 10px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-            Part of the HR Agents Package
+            HR Agents Package
           </p>
           <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", margin: "0 0 12px", lineHeight: 1.6 }}>
             Your subscription also includes AGENT: Onboarding Kit. Position-specific onboarding kits for every new hire, delivered as a ready-to-use .docx.
@@ -1358,7 +1393,7 @@ export default function PIPBuilderTool({
             href="/onboarding-kit-builder"
             style={{ fontSize: "0.875rem", fontWeight: 600, color: "var(--cta)", textDecoration: "none" }}
           >
-            Try Onboarding Kit →
+            Try Onboarding Kit
           </a>
         </div>
       </div>
@@ -1367,7 +1402,7 @@ export default function PIPBuilderTool({
 
   // ── Error screen ──────────────────────────────────────────
   return (
-    <div className="okb-tool">
+    <div ref={toolContainerRef} className="okb-tool">
       <div style={{ padding: "8px 0" }}>
         <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", marginBottom: "20px", lineHeight: 1.6 }}>
           {errorMsg || "Something went wrong building the document. Your inputs are saved. Try again and it should work."}

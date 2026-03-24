@@ -20,6 +20,7 @@ type RoleType = "individual_contributor" | "manager";
 interface Contact {
   name: string;
   title: string;
+  email: string;
 }
 
 interface SavedFormData {
@@ -45,11 +46,11 @@ const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 const ACCEPTED_EXTS = [".txt", ".pdf", ".docx", ".md"];
 const OKB_STORAGE_KEY = "okb_form_data";
 const LOADING_STEPS = [
-  "Welcome letter",
-  "First-week schedule",
-  "Key contacts",
-  "Role expectations (30/60/90)",
-  "New hire checklist",
+  "Welcome Letter",
+  "First-Week Schedule",
+  "Key Contacts",
+  "30-60-90 Day Plan",
+  "New Hire Checklist",
 ];
 
 // ─── Storage helpers ────────────────────────────────────────────────────────────
@@ -151,6 +152,26 @@ function QualitySignal({ value }: { value: string }) {
     );
   }
   return null;
+}
+
+// Step progress indicator
+function StepIndicator({ current, total }: { current: number; total: number }) {
+  return (
+    <div style={{ display: "flex", gap: "5px", marginBottom: "28px" }}>
+      {Array.from({ length: total }).map((_, i) => (
+        <div
+          key={i}
+          style={{
+            flex: 1,
+            height: "3px",
+            borderRadius: "2px",
+            background: i < current ? "var(--cta, #1E7AB8)" : "var(--border, #E4E4E2)",
+            transition: "background 0.2s ease",
+          }}
+        />
+      ))}
+    </div>
+  );
 }
 
 // Simple file upload zone (single file, context doc)
@@ -293,6 +314,9 @@ export default function OnboardingKitBuilderTool({
   initialPaymentStatus?: string;
   initialSessionId?: string;
 }) {
+  // ── Tool container ref (for scroll-to-tool on screen changes) ─
+  const toolContainerRef = useRef<HTMLDivElement>(null);
+
   // ── Screen ──────────────────────────────────────────────────
   const [screen, setScreen] = useState<Screen>("s1");
 
@@ -315,9 +339,9 @@ export default function OnboardingKitBuilderTool({
   const [howTeamWorks, setHowTeamWorks] = useState("");
   const [thirtyToNinety, setThirtyToNinety] = useState("");
   const [contacts, setContacts] = useState<Contact[]>([
-    { name: "", title: "" },
-    { name: "", title: "" },
-    { name: "", title: "" },
+    { name: "", title: "", email: "" },
+    { name: "", title: "", email: "" },
+    { name: "", title: "", email: "" },
   ]);
   const [teamNotes, setTeamNotes] = useState("");
   const [feedbackCadence, setFeedbackCadence] = useState("");
@@ -335,13 +359,14 @@ export default function OnboardingKitBuilderTool({
   // ── Paywall / checkout state ──────────────────────────────
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState("");
+  const [paywallEmail, setPaywallEmail] = useState("");
+  const [paymentCancelled, setPaymentCancelled] = useState(false);
 
-  // ── Returning purchaser state ─────────────────────────────
+  // ── Returning purchaser state (kept for legacy Stripe return flow) ────────
   const [showReturningCheck, setShowReturningCheck] = useState(false);
   const [returningEmail, setReturningEmail] = useState("");
   const [returningCheckLoading, setReturningCheckLoading] = useState(false);
   const [returningCheckError, setReturningCheckError] = useState("");
-  const [paymentCancelled, setPaymentCancelled] = useState(false);
 
   // ── Error / validation state ──────────────────────────────
   const [errorMsg, setErrorMsg] = useState("");
@@ -365,7 +390,7 @@ export default function OnboardingKitBuilderTool({
     setContacts(
       saved.contacts?.length
         ? saved.contacts
-        : [{ name: "", title: "" }, { name: "", title: "" }, { name: "", title: "" }]
+        : [{ name: "", title: "", email: "" }, { name: "", title: "", email: "" }, { name: "", title: "", email: "" }]
     );
     setTeamNotes(saved.teamNotes ?? "");
     setFeedbackCadence(saved.feedbackCadence ?? "");
@@ -381,6 +406,11 @@ export default function OnboardingKitBuilderTool({
     return () => timers.forEach(clearTimeout);
   }, [screen]);
 
+  // ── Scroll to tool container on every screen change ───────
+  useEffect(() => {
+    toolContainerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [screen]);
+
   // ── Payment detection on mount ────────────────────────────
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
@@ -394,7 +424,6 @@ export default function OnboardingKitBuilderTool({
       clearStorage();
       setPaymentCancelled(true);
       setScreen("paywall");
-      window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
 
@@ -411,7 +440,6 @@ export default function OnboardingKitBuilderTool({
 
       restoreFromSaved(saved);
       setScreen("verifying");
-      window.scrollTo({ top: 0, behavior: "smooth" });
 
       // Verify with Stripe, then build
       fetch(`/api/verify-payment?session_id=${initialSessionId}`)
@@ -478,25 +506,21 @@ export default function OnboardingKitBuilderTool({
   function goToS2() {
     if (!validateS1()) return;
     setScreen("s2");
-    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function goToS3() {
     if (!validateS2()) return;
     setScreen("s3");
-    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function goBackToS1() {
     setS1Error("");
     setScreen("s1");
-    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function goBackToS2() {
     setS2Error("");
     setScreen("s2");
-    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function goToPaywall() {
@@ -504,12 +528,11 @@ export default function OnboardingKitBuilderTool({
     setPaymentCancelled(false);
     setCheckoutError("");
     setScreen("paywall");
-    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   // ── Update a contact row ──────────────────────────────────
 
-  function updateContact(index: number, field: "name" | "title", value: string) {
+  function updateContact(index: number, field: "name" | "title" | "email", value: string) {
     setContacts((prev) => prev.map((c, i) => (i === index ? { ...c, [field]: value } : c)));
   }
 
@@ -558,7 +581,6 @@ export default function OnboardingKitBuilderTool({
       setFileBlob(blob);
       setFilename(rawFilename ? decodeURIComponent(rawFilename) : "onboarding-kit.docx");
       setScreen("email-gate");
-      window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err) {
       setErrorMsg(
         err instanceof Error
@@ -583,13 +605,40 @@ export default function OnboardingKitBuilderTool({
     );
   }
 
-  // ── Checkout: save inputs, redirect to Stripe ─────────────
+  // ── Get Access: check subscription first, then Stripe if needed ──────────
 
-  async function handleCheckout() {
+  async function handleGetAccess() {
+    if (!paywallEmail.trim()) {
+      setCheckoutError("Enter your email to continue.");
+      return;
+    }
     setCheckoutLoading(true);
     setCheckoutError("");
 
-    // Persist form data so it survives the Stripe redirect
+    // First: check if they already have an active subscription
+    try {
+      const subRes = await fetch("/api/verify-subscription", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: paywallEmail.trim() }),
+      });
+      const { verified } = await subRes.json() as { verified: boolean };
+
+      if (verified) {
+        // Active subscription confirmed — pre-populate email gate and build
+        setEmail(paywallEmail.trim());
+        await buildFromData({
+          hireName, hireTitle, department, startDate, managerName, roleType,
+          whyHired, weekOnePriorities, keyTools, howTeamWorks, thirtyToNinety,
+          contacts, teamNotes, feedbackCadence,
+        }, contextFile);
+        return;
+      }
+    } catch {
+      // If subscription check fails, proceed to Stripe anyway
+    }
+
+    // No active subscription — save form data and redirect to Stripe
     saveToStorage({
       hireName, hireTitle, department, startDate, managerName, roleType,
       whyHired, weekOnePriorities, keyTools, howTeamWorks, thirtyToNinety,
@@ -603,6 +652,7 @@ export default function OnboardingKitBuilderTool({
         body: JSON.stringify({
           successPath: "onboarding-kit-builder",
           cancelPath: "onboarding-kit-builder",
+          customerEmail: paywallEmail.trim(),
         }),
       });
       if (!res.ok) throw new Error("Failed to create checkout session.");
@@ -617,7 +667,7 @@ export default function OnboardingKitBuilderTool({
     }
   }
 
-  // ── Returning purchaser check ─────────────────────────────
+  // ── Legacy returning purchaser check (kept for returning users who click old link) ──
 
   async function handleReturningEmailCheck() {
     if (!returningEmail.trim()) return;
@@ -633,7 +683,7 @@ export default function OnboardingKitBuilderTool({
       const { verified } = await res.json() as { verified: boolean };
 
       if (verified) {
-        // Active subscription confirmed — skip Stripe, build directly
+        setEmail(returningEmail.trim());
         const saved = loadFromStorage();
         await buildFromData(
           saved ?? {
@@ -685,7 +735,6 @@ export default function OnboardingKitBuilderTool({
       }
 
       setScreen("sent");
-      window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err) {
       // Download already fired — show soft error, don't block user
       setEmailError(
@@ -707,13 +756,13 @@ export default function OnboardingKitBuilderTool({
     setWhyHired(""); setWeekOnePriorities(""); setKeyTools("");
     setContextFile(null); setContextFileError("");
     setHowTeamWorks(""); setThirtyToNinety("");
-    setContacts([{ name: "", title: "" }, { name: "", title: "" }, { name: "", title: "" }]);
+    setContacts([{ name: "", title: "", email: "" }, { name: "", title: "", email: "" }, { name: "", title: "", email: "" }]);
     setTeamNotes(""); setFeedbackCadence("");
     setFileBlob(null); setFilename("onboarding-kit.docx");
     setEmail(""); setEmailError(""); setEmailSubmitting(false);
     setErrorMsg(""); setS1Error(""); setS2Error(""); setS3Error("");
-    setCheckoutLoading(false); setCheckoutError(""); setPaymentCancelled(false);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    setCheckoutLoading(false); setCheckoutError(""); setPaywallEmail(""); setPaymentCancelled(false);
+    setShowReturningCheck(false); setReturningEmail(""); setReturningCheckError("");
   }
 
   // ── Retry (from error screen) ──────────────────────────────
@@ -773,7 +822,8 @@ export default function OnboardingKitBuilderTool({
   // ── Screen 1: The Hire ──────────────────────────────────────
   if (screen === "s1") {
     return (
-      <div className="okb-tool">
+      <div ref={toolContainerRef} className="okb-tool">
+        <StepIndicator current={1} total={4} />
         <div style={{ marginBottom: "28px" }}>
           <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: 0 }}>
             Tell us about your new hire.
@@ -889,16 +939,14 @@ export default function OnboardingKitBuilderTool({
   // ── Screen 2: The Role ──────────────────────────────────────
   if (screen === "s2") {
     return (
-      <div className="okb-tool">
+      <div ref={toolContainerRef} className="okb-tool">
         <BackButton onClick={goBackToS1} />
+        <StepIndicator current={2} total={4} />
 
         <div style={{ marginBottom: "28px" }}>
-          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 12px" }}>
+          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: 0 }}>
             Why was {hireName || "they"} hired?
           </h2>
-          <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", margin: 0, lineHeight: 1.6 }}>
-            These are the questions most onboarding programs skip. Your answers go directly into their kit.
-          </p>
         </div>
 
         {/* Why this hire */}
@@ -963,16 +1011,14 @@ export default function OnboardingKitBuilderTool({
   // ── Screen 3: Team & First 90 Days ─────────────────────────
   if (screen === "s3") {
     return (
-      <div className="okb-tool">
+      <div ref={toolContainerRef} className="okb-tool">
         <BackButton onClick={goBackToS2} />
+        <StepIndicator current={3} total={4} />
 
         <div style={{ marginBottom: "28px" }}>
-          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 12px" }}>
+          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: 0 }}>
             What does success look like for {hireName || "them"}?
           </h2>
-          <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", margin: 0, lineHeight: 1.6 }}>
-            And how does your team actually work? Not the org chart version. The real one.
-          </p>
         </div>
 
         {/* How the team works */}
@@ -1010,7 +1056,7 @@ export default function OnboardingKitBuilderTool({
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "12px" }}>
             {contacts.map((contact, i) => (
-              <div key={i} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+              <div key={i} style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "10px" }}>
                 <input
                   type="text"
                   style={{ ...inputStyle, fontSize: "0.875rem" }}
@@ -1024,6 +1070,13 @@ export default function OnboardingKitBuilderTool({
                   value={contact.title}
                   onChange={(e) => updateContact(i, "title", e.target.value)}
                   placeholder="Title / Role"
+                />
+                <input
+                  type="email"
+                  style={{ ...inputStyle, fontSize: "0.875rem" }}
+                  value={contact.email}
+                  onChange={(e) => updateContact(i, "email", e.target.value)}
+                  placeholder="Email"
                 />
               </div>
             ))}
@@ -1073,7 +1126,9 @@ export default function OnboardingKitBuilderTool({
   // ── Paywall screen ───────────────────────────────────────────
   if (screen === "paywall") {
     return (
-      <div className="okb-tool">
+      <div ref={toolContainerRef} className="okb-tool">
+        <BackButton onClick={() => { setS3Error(""); setScreen("s3"); }} />
+        <StepIndicator current={4} total={4} />
 
         {/* Payment cancelled banner */}
         {paymentCancelled && (
@@ -1088,17 +1143,14 @@ export default function OnboardingKitBuilderTool({
               color: "var(--text-secondary)",
             }}
           >
-            Payment wasn't completed. Your progress is saved. Try again below.
+            Payment wasn&apos;t completed. Your progress is saved. Try again below.
           </div>
         )}
 
         <div style={{ marginBottom: "24px" }}>
-          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 12px" }}>
-            Your kit is ready to build.
+          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: 0 }}>
+            {hireName ? `${hireName}'s` : "Your"} onboarding kit is almost ready.
           </h2>
-          <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", margin: 0, lineHeight: 1.6 }}>
-            Get access below to generate {hireName ? `${hireName}'s` : "the"} onboarding kit.
-          </p>
         </div>
 
         {/* Kit contents preview */}
@@ -1116,14 +1168,17 @@ export default function OnboardingKitBuilderTool({
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             {[
-              "Warm Welcome Letter",
+              "Welcome Letter",
               "First-Week Schedule",
               "Key Contacts",
               "30-60-90 Day Plan",
               "New Hire Checklist",
             ].map((item) => (
-              <div key={item} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                <span style={{ color: "var(--cta, #1E7AB8)", fontSize: "0.875rem", fontWeight: 700 }}>·</span>
+              <div key={item} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0, color: "var(--cta, #1E7AB8)" }}>
+                  <path d="M2.5 1.5h6l3 3v8h-9v-11z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" fill="none"/>
+                  <path d="M8.5 1.5v3h3" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/>
+                </svg>
                 <span style={{ fontSize: "0.875rem", color: "var(--text-secondary)", fontWeight: 500 }}>{item}</span>
               </div>
             ))}
@@ -1168,14 +1223,30 @@ export default function OnboardingKitBuilderTool({
           </div>
 
           {/* Description */}
-          <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.6, margin: "0 0 20px" }}>
+          <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.6, margin: "0 0 16px" }}>
             Includes Onboarding Kit, PIP Builder, and every HR agent added to the package. One subscription, all agents.
           </p>
+
+          {/* Email input */}
+          <input
+            type="email"
+            value={paywallEmail}
+            onChange={(e) => setPaywallEmail(e.target.value)}
+            onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleGetAccess(); } }}
+            placeholder="your@email.com"
+            style={{
+              width: "100%", padding: "11px 14px", fontSize: "0.9375rem",
+              border: "1px solid rgba(255,255,255,0.15)", borderRadius: "8px",
+              background: "rgba(255,255,255,0.08)", color: "#FFFFFF",
+              outline: "none", boxSizing: "border-box", marginBottom: "10px",
+              fontFamily: "inherit",
+            }}
+          />
 
           {/* CTA */}
           <button
             type="button"
-            onClick={handleCheckout}
+            onClick={handleGetAccess}
             disabled={checkoutLoading}
             style={{
               width: "100%",
@@ -1191,7 +1262,7 @@ export default function OnboardingKitBuilderTool({
               marginBottom: "12px",
             }}
           >
-            {checkoutLoading ? "Preparing checkout..." : "Get Access · $99/year →"}
+            {checkoutLoading ? "Checking..." : "Get Access · $99/year"}
           </button>
 
           {checkoutError && (
@@ -1205,7 +1276,7 @@ export default function OnboardingKitBuilderTool({
           </p>
         </div>
 
-        {/* Returning purchaser */}
+        {/* Legacy returning purchaser (fallback) */}
         <div style={{ textAlign: "center", marginBottom: "16px" }}>
           {!showReturningCheck ? (
             <button
@@ -1213,7 +1284,7 @@ export default function OnboardingKitBuilderTool({
               onClick={() => setShowReturningCheck(true)}
               style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "0.8125rem", cursor: "pointer", padding: 0, textDecoration: "underline" }}
             >
-              Already have access? Enter your email.
+              Problems with access? Check here.
             </button>
           ) : (
             <div style={{ background: "var(--bg-alt, #F8F8F6)", border: "1px solid var(--border, #E4E4E2)", borderRadius: "8px", padding: "14px 16px", textAlign: "left" }}>
@@ -1264,7 +1335,7 @@ export default function OnboardingKitBuilderTool({
         {/* Edit inputs link */}
         <button
           type="button"
-          onClick={() => { setS3Error(""); setScreen("s3"); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+          onClick={() => { setS3Error(""); setScreen("s3"); }}
           style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "0.875rem", cursor: "pointer", padding: 0, opacity: 0.7 }}
         >
           ← Edit my inputs
@@ -1276,7 +1347,7 @@ export default function OnboardingKitBuilderTool({
   // ── Verifying payment screen ─────────────────────────────────
   if (screen === "verifying") {
     return (
-      <div className="okb-tool">
+      <div ref={toolContainerRef} className="okb-tool">
         <div style={{ textAlign: "center", padding: "40px 0" }}>
           <div
             style={{
@@ -1305,7 +1376,7 @@ export default function OnboardingKitBuilderTool({
   // ── Loading screen ──────────────────────────────────────────
   if (screen === "loading") {
     return (
-      <div className="okb-tool">
+      <div ref={toolContainerRef} className="okb-tool">
         <div style={{ textAlign: "center", padding: "16px 0 24px" }}>
           {/* Animated icon */}
           <div style={{ marginBottom: "24px" }}>
@@ -1322,7 +1393,7 @@ export default function OnboardingKitBuilderTool({
             Building {hireName ? `${hireName}'s` : "the"} onboarding kit.
           </h2>
           <p className="loading-subline" style={{ marginTop: "8px", marginBottom: "32px" }}>
-            About 25 seconds.
+            About 1 minute.
           </p>
 
           {/* Step-by-step progress */}
@@ -1391,9 +1462,8 @@ export default function OnboardingKitBuilderTool({
   // ── Email gate ──────────────────────────────────────────────
   if (screen === "email-gate") {
     return (
-      <div className="okb-tool">
-        {/* Success icon */}
-        <div style={{ textAlign: "center", marginBottom: "24px" }}>
+      <div ref={toolContainerRef} className="okb-tool">
+        <div style={{ textAlign: "center", marginBottom: "32px" }}>
           <div style={{ display: "inline-block", marginBottom: "16px" }}>
             <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
               <rect width="56" height="56" rx="12" fill="#1E7AB8" fillOpacity="0.1" />
@@ -1408,42 +1478,6 @@ export default function OnboardingKitBuilderTool({
               {hireTitle}
             </p>
           )}
-        </div>
-
-        {/* Kit contents preview */}
-        <div
-          style={{
-            background: "var(--bg-alt, #F8F8F6)",
-            border: "1px solid var(--border, #E4E4E2)",
-            borderRadius: "10px",
-            padding: "20px 22px",
-            marginBottom: "24px",
-          }}
-        >
-          <p style={{ fontSize: "0.8125rem", fontWeight: 700, color: "var(--text-secondary)", margin: "0 0 14px", textTransform: "uppercase", letterSpacing: "0.04em" }}>
-            Your kit includes
-          </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-            {[
-              { title: "Warm Welcome Letter", desc: `A personalized note from ${managerName || "the hiring manager"} to ${hireName || "the new hire"}.` },
-              { title: "First-Week Schedule", desc: `Day-by-day outline for ${hireName ? `${hireName}'s` : "their"} first five days.` },
-              { title: "Key Contacts", desc: `The people ${hireName || "they"} need to know and why.` },
-              { title: "30-60-90 Day Plan", desc: `What success looks like at 30, 60, and 90 days.` },
-              { title: "New Hire Checklist", desc: `Pre-start through Month 1.` },
-            ].map((item) => (
-              <div key={item.title} style={{ display: "flex", gap: "10px" }}>
-                <span style={{ color: "var(--cta, #1E7AB8)", fontWeight: 600, flexShrink: 0, marginTop: "1px" }}>·</span>
-                <div>
-                  <p style={{ fontSize: "0.875rem", fontWeight: 600, color: "var(--text-primary)", margin: "0 0 2px" }}>
-                    {item.title}
-                  </p>
-                  <p style={{ fontSize: "0.8125rem", color: "var(--text-muted)", margin: 0 }}>
-                    {item.desc}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
 
         {/* Email form */}
@@ -1477,11 +1511,6 @@ export default function OnboardingKitBuilderTool({
           {emailError && <p style={{ ...errorStyle, marginBottom: "8px" }}>{emailError}</p>}
         </form>
 
-        {/* Tip line */}
-        <p style={{ fontSize: "0.8125rem", color: "var(--text-muted)", lineHeight: 1.5, margin: "12px 0 0", padding: "12px 14px", background: "rgba(30,122,184,0.05)", borderRadius: "8px", borderLeft: "3px solid rgba(30,122,184,0.3)" }}>
-          <strong style={{ color: "var(--text-secondary)" }}>Tip:</strong> Personalize the welcome letter signature before sharing. It takes 30 seconds and makes it feel like it came from the hiring manager directly.
-        </p>
-
         <button
           type="button"
           onClick={handleReset}
@@ -1496,7 +1525,7 @@ export default function OnboardingKitBuilderTool({
   // ── Sent screen ─────────────────────────────────────────────
   if (screen === "sent") {
     return (
-      <div className="okb-tool">
+      <div ref={toolContainerRef} className="okb-tool">
         <div style={{ textAlign: "center", padding: "8px 0" }}>
           <div style={{ display: "inline-block", marginBottom: "20px" }}>
             <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
@@ -1504,12 +1533,9 @@ export default function OnboardingKitBuilderTool({
               <path d="M16 28l7 7L40 20" stroke="#1A7A4A" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
-          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 8px" }}>
-            Emailed and downloaded.
+          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 32px" }}>
+            {hireName ? `${hireName}'s` : "Your"} kit is in your inbox.
           </h2>
-          <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", margin: "0 0 32px", lineHeight: 1.6 }}>
-            Check your downloads folder. Open the .docx, make any edits you want, and it's ready to share before Day 1.
-          </p>
           <button
             type="button"
             className="btn btn-primary btn-lg btn-full"
@@ -1522,7 +1548,7 @@ export default function OnboardingKitBuilderTool({
         {/* Bundle callout */}
         <div style={{ marginTop: "32px", padding: "20px 22px", background: "var(--bg-alt, #F8F8F6)", border: "1px solid var(--border, #E4E4E2)", borderRadius: "10px" }}>
           <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--cta)", margin: "0 0 10px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-            Part of the HR Agents Package
+            HR Agents Package
           </p>
           <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", margin: "0 0 12px", lineHeight: 1.6 }}>
             Your subscription also includes AGENT: PIP Builder. Structured, defensible Performance Improvement Plans as a ready-to-use .docx file.
@@ -1531,7 +1557,7 @@ export default function OnboardingKitBuilderTool({
             href="/pip-builder"
             style={{ fontSize: "0.875rem", fontWeight: 600, color: "var(--cta)", textDecoration: "none" }}
           >
-            Try PIP Builder →
+            Try PIP Builder
           </a>
         </div>
       </div>
@@ -1540,7 +1566,7 @@ export default function OnboardingKitBuilderTool({
 
   // ── Error screen ─────────────────────────────────────────────
   return (
-    <div className="okb-tool">
+    <div ref={toolContainerRef} className="okb-tool">
       <div style={{ padding: "8px 0" }}>
         <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", marginBottom: "20px", lineHeight: 1.6 }}>
           {errorMsg || "Something went wrong while building the kit. Your inputs are still here. Try again and it should work."}

@@ -888,16 +888,16 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
             </p>
             <div className="pb-folder-tree">
               <p className="pb-folder-tree-item pb-folder-root">🗂️ [YourName]&apos;s AI Workspace</p>
-              <p className="pb-folder-tree-item pb-folder-indent pb-folder-root">📄 AI Profile.md</p>
+              <p className="pb-folder-tree-item pb-folder-indent" style={{ color: "#fff" }}>📄 AI Profile.md</p>
               <p className="pb-folder-tree-item pb-folder-indent">🗂️ Prompt Library</p>
               <p className="pb-folder-tree-item pb-folder-indent">🗂️ Saved Results</p>
               <p className="pb-folder-tree-item pb-folder-indent">🗂️ Reference Files</p>
             </div>
             <p className="pb-system-step-body" style={{ marginTop: "16px" }}>
-              AI Profile.md is what your AI will reference. Update when needed.
+              AI Profile.md is what your AI will reference. Update as you go.
             </p>
             <p className="pb-system-step-body" style={{ marginTop: "12px" }}>
-              When AI gives you something worth keeping, ask it to save as an .md file. Best way for AI to reference it later.
+              When AI gives you something worth keeping, ask it to save as an .md file. This is how AI remembers your info between chats.
             </p>
           </div>
 

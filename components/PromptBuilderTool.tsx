@@ -725,11 +725,11 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
           {/* Email form */}
           <label
             htmlFor="pb-email"
-            style={{ display: "block", fontSize: "0.9375rem", fontWeight: 600, color: "#FFFFFF", marginBottom: "10px" }}
+            style={{ display: "block", fontSize: "0.9375rem", fontWeight: 600, color: "#FFFFFF", marginBottom: "12px", textAlign: "center" }}
           >
             Where should we send it?
           </label>
-          <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
+          <div style={{ display: "flex", gap: "10px" }}>
             <input
               id="pb-email"
               type="email"
@@ -752,14 +752,6 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
               {emailLoading ? "Sending..." : "Send My Kit"}
             </button>
           </div>
-
-          <button
-            type="button"
-            onClick={handleReset}
-            style={{ background: "none", border: "none", color: "rgba(255,255,255,0.4)", fontSize: "0.875rem", cursor: "pointer", marginTop: "20px", padding: 0, textDecoration: "underline" }}
-          >
-            Start over
-          </button>
         </div>
       </div>
     );

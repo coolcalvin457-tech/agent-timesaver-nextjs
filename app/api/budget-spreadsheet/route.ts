@@ -226,7 +226,35 @@ Return ONLY valid JSON. No explanation text.`;
   const jsonMatch = text.match(/\{[\s\S]*\}/);
   if (!jsonMatch) throw new Error("No JSON found in Claude response");
 
-  return JSON.parse(jsonMatch[0]) as BudgetSpreadsheetData;
+  const parsed = JSON.parse(jsonMatch[0]) as BudgetSpreadsheetData;
+  return sanitizeBudgetData(parsed);
+}
+
+// ─── Em Dash Sanitizer ────────────────────────────────────────────────────────
+// Server-side defensive strip: the system prompt instructs Claude to avoid em
+// dashes, but this catches any that slip through before they are written into
+// Excel cells (where there is no browser-side opportunity to fix them).
+function stripEmDashes(s: string): string {
+  return s.replace(/[—–]/g, " - ").replace(/ {2,}/g, " ").trim();
+}
+
+function sanitizeBudgetData(data: BudgetSpreadsheetData): BudgetSpreadsheetData {
+  return {
+    ...data,
+    filename: stripEmDashes(data.filename),
+    title: stripEmDashes(data.title),
+    subtitle: stripEmDashes(data.subtitle),
+    period: stripEmDashes(data.period),
+    sections: data.sections.map((section) => ({
+      ...section,
+      name: stripEmDashes(section.name),
+      rows: section.rows.map((row) => ({
+        ...row,
+        item: stripEmDashes(row.item),
+        notes: row.notes ? stripEmDashes(row.notes) : row.notes,
+      })),
+    })),
+  };
 }
 
 // ─── Excel File Builder ───────────────────────────────────────────────────────

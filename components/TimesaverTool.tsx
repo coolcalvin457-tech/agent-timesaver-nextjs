@@ -33,6 +33,29 @@ interface AppState {
   roi: ROI | null;
 }
 
+// ─── Em Dash Sanitizer ────────────────────────────────────────────────────────
+// Defensive strip: API prompts instruct Claude to avoid em dashes, but this
+// catches any that slip through before they are rendered in the browser.
+function stripEmDashes(s: string): string {
+  return s.replace(/[—–]/g, " - ").replace(/ {2,}/g, " ").trim();
+}
+
+function sanitizeWorkflowData(workflows: Workflow[], roi: ROI): { workflows: Workflow[]; roi: ROI } {
+  return {
+    workflows: workflows.map((wf) => ({
+      ...wf,
+      title: stripEmDashes(wf.title),
+      description: stripEmDashes(wf.description),
+      tool: stripEmDashes(wf.tool),
+    })),
+    roi: {
+      ...roi,
+      valueAtSalary: stripEmDashes(roi.valueAtSalary),
+      industry: stripEmDashes(roi.industry),
+    },
+  };
+}
+
 // ─── Component ─────────────────────────────────────────────────────────────────
 export default function TimesaverTool() {
   const [state, setState] = useState<AppState>({
@@ -137,12 +160,13 @@ export default function TimesaverTool() {
 
         if (!res.ok) throw new Error("Failed to fetch workflows");
         const data = await res.json() as { workflows: Workflow[]; roi: ROI };
+        const sanitized = sanitizeWorkflowData(data.workflows, data.roi);
 
         track("results_viewed", { jobTitle, path: path ?? "none" });
         setState((s) => ({
           ...s,
-          workflows: data.workflows,
-          roi: data.roi,
+          workflows: sanitized.workflows,
+          roi: sanitized.roi,
           screen: "gate",
         }));
       } catch {

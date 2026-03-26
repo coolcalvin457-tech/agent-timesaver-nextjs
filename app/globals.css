@@ -2196,7 +2196,7 @@ input, textarea {
 
 /* ── Prompt Builder — AI System Section ──────────────────── */
 .pb-system-section {
-  margin-top: 40px;
+  margin-top: 24px;
   padding-top: 32px;
   border-top: 2px solid var(--border);
 }

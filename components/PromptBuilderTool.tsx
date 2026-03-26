@@ -910,11 +910,14 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
           </div>
 
           {/* Cross-sell — AGENT: Workflow Builder */}
-          <div style={{ marginTop: "40px", paddingTop: "32px", borderTop: "1px solid rgba(255,255,255,0.08)", textAlign: "center" }}>
-            <p style={{ fontSize: "0.7rem", letterSpacing: "0.1em", color: "rgba(255,255,255,0.35)", textTransform: "uppercase", marginBottom: "12px" }}>Your Next Step</p>
-            <h4 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "1.25rem", color: "rgba(255,255,255,0.9)", marginBottom: "10px" }}>AGENT: Workflow Builder</h4>
-            <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.45)", marginBottom: "20px", maxWidth: "360px", margin: "0 auto 20px auto" }}>Turn your prompts into repeatable AI workflows. Built for your job title.</p>
-            <a href="/agents" style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.35)", textDecoration: "none", letterSpacing: "0.05em", borderBottom: "1px solid rgba(255,255,255,0.12)", paddingBottom: "2px" }}>Coming soon · See all agents</a>
+          <div style={{ marginTop: "24px", paddingTop: "32px", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+            <p className="pb-system-eyebrow">Your Next Step</p>
+            <h4 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "1.625rem", color: "rgba(255,255,255,0.92)", margin: "0 0 20px", lineHeight: 1.2 }}>AGENT: Workflow Builder</h4>
+            <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.55)", lineHeight: 1.6, margin: "0 0 4px" }}>Turn your prompts into repeatable AI workflows.</p>
+            <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.55)", lineHeight: 1.6, margin: "0 0 28px" }}>Built for real jobs. Not demos.</p>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <a href="/agents" style={{ display: "inline-block", background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.22)", color: "#FFFFFF", borderRadius: "8px", padding: "12px 36px", fontSize: "0.9rem", fontWeight: 500, textDecoration: "none", letterSpacing: "0.01em" }}>See all agents</a>
+            </div>
           </div>
 
         </div>

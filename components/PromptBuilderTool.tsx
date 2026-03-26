@@ -640,7 +640,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
             </svg>
           </div>
 
-          <h2 style={{ fontSize: "1.125rem", fontWeight: 700, color: "var(--text-primary)", margin: "0 0 6px" }}>
+          <h2 style={{ fontSize: "1.125rem", fontWeight: 700, color: "#FFFFFF", margin: "0 0 6px" }}>
             Building your prompt kit.
           </h2>
           <p className="loading-subline" style={{ marginTop: "8px", marginBottom: "32px" }}>
@@ -677,8 +677,8 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
                       width: "20px",
                       height: "20px",
                       borderRadius: "50%",
-                      border: `1.5px solid ${isDone ? "var(--success, #1A7A4A)" : isActive ? "var(--cta, #1E7AB8)" : "var(--border, #E4E4E2)"}`,
-                      background: isDone ? "var(--success, #1A7A4A)" : "transparent",
+                      border: `1.5px solid ${isDone ? "#1A7A4A" : isActive ? "#1E7AB8" : "rgba(255,255,255,0.2)"}`,
+                      background: isDone ? "#1A7A4A" : "transparent",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -689,13 +689,13 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
                     }}
                   >
                     {isDone ? "✓" : isActive ? (
-                      <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "var(--cta, #1E7AB8)", display: "block" }} />
+                      <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#1E7AB8", display: "block" }} />
                     ) : null}
                   </span>
                   <span
                     style={{
                       fontSize: "0.875rem",
-                      color: isDone ? "var(--text-secondary)" : isActive ? "var(--text-primary)" : "var(--text-muted)",
+                      color: isDone ? "rgba(255,255,255,0.5)" : isActive ? "#FFFFFF" : "rgba(255,255,255,0.75)",
                       fontWeight: isActive ? 600 : 400,
                     }}
                   >

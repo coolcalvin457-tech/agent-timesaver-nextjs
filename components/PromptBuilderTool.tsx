@@ -27,6 +27,15 @@ const CHALLENGES = [
   "I don't know how to give AI enough context",
 ];
 
+// Shown when the user selected "No, I haven't started yet" on q3.
+// Options and question heading are reframed to not assume past experience.
+const NOT_STARTED_BARRIERS = [
+  "I'm not sure what to use it for in my job",
+  "I'm not sure how to get useful results",
+  "It feels too technical or time-consuming to learn",
+  "I haven't made time to try it yet",
+];
+
 const LOADING_STEPS = [
   "Job Role Analysis",
   "Prompt Library",
@@ -530,6 +539,15 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
 
   // ── Screen: Q4 — Biggest Challenge ────────────────────────────
   if (screen === "q4") {
+    const notStarted = aiUsage === "No, I haven't started yet";
+    const q4Heading = notStarted
+      ? "What\u2019s made it hard to get started with AI?"
+      : "What\u2019s been most challenging about using AI?";
+    const q4Options = notStarted ? NOT_STARTED_BARRIERS : CHALLENGES;
+    const q4Placeholder = notStarted
+      ? "Describe what\u2019s been holding you back..."
+      : "Describe your biggest challenge with AI...";
+
     const canAdvanceQ4 = showWriteIn ? writeInValue.trim().length > 0 : challenge !== "";
     const advanceQ4 = (value: string) => {
       setChallenge(value);
@@ -544,7 +562,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
           <BackButton onClick={() => goBack("q4")} />
           <ProgressBar />
           <p className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25 }}>
-            What&apos;s been most challenging about using AI?
+            {q4Heading}
           </p>
           {error && (
             <div
@@ -562,7 +580,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
             </div>
           )}
           <div className="choices">
-            {CHALLENGES.map((option) => (
+            {q4Options.map((option) => (
               <button
                 key={option}
                 className={`choice ${challenge === option && !showWriteIn ? "selected" : ""}`}
@@ -583,7 +601,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
                 className="input"
                 rows={4}
                 style={{ marginBottom: "12px", resize: "vertical" }}
-                placeholder="Describe your biggest challenge with AI..."
+                placeholder={q4Placeholder}
                 value={writeInValue}
                 onChange={(e) => setWriteInValue(e.target.value)}
                 autoFocus

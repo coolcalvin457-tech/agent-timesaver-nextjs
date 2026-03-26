@@ -91,6 +91,9 @@ async function sendPromptKitEmail(
 </head>
 <body style="margin:0; padding:0; background:#f0f0ee; font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif; -webkit-font-smoothing:antialiased;">
 
+  <!-- Pre-header: controls inbox preview text -->
+  <span style="display:none; max-height:0; overflow:hidden; mso-hide:all;">${totalPrompts} prompts built for ${jobTitle}. Your AI Profile is inside.</span>
+
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f0ee; padding: 48px 24px;">
     <tr>
       <td align="center">
@@ -191,7 +194,7 @@ async function sendPromptKitEmail(
     body: JSON.stringify({
       from,
       to: [email],
-      subject: `Your AI Prompt Kit for ${jobTitle}. AGENT: Prompt Builder`,
+      subject: `Your AI Prompt Kit for ${jobTitle}.`,
       html,
     }),
   });

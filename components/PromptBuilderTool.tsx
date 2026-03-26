@@ -723,11 +723,11 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
                 <path d="M18 28.5L24.5 35L38 21" stroke="#1E7AB8" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>
-            <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 4px" }}>
+            <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "#FFFFFF", margin: "0 0 4px" }}>
               Your prompt kit is ready.
             </h2>
             {jobTitle && (
-              <p style={{ fontSize: "0.875rem", color: "var(--text-muted)", margin: 0 }}>
+              <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.5)", margin: 0 }}>
                 {jobTitle}
               </p>
             )}
@@ -736,7 +736,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
           {/* Email form */}
           <label
             htmlFor="pb-email"
-            style={{ display: "block", fontSize: "0.9375rem", fontWeight: 600, color: "var(--text-primary)", marginBottom: "10px" }}
+            style={{ display: "block", fontSize: "0.9375rem", fontWeight: 600, color: "#FFFFFF", marginBottom: "10px" }}
           >
             Where should we send it?
           </label>
@@ -767,7 +767,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
           <button
             type="button"
             onClick={handleReset}
-            style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "0.875rem", cursor: "pointer", marginTop: "20px", padding: 0, textDecoration: "underline" }}
+            style={{ background: "none", border: "none", color: "rgba(255,255,255,0.4)", fontSize: "0.875rem", cursor: "pointer", marginTop: "20px", padding: 0, textDecoration: "underline" }}
           >
             Start over
           </button>

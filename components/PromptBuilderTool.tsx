@@ -628,18 +628,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
   if (screen === "loading") {
     return (
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
-        <div style={{ textAlign: "center", padding: "16px 0 24px" }}>
-          {/* Animated icon */}
-          <div style={{ marginBottom: "24px" }}>
-            <svg width="56" height="56" viewBox="0 0 56 56" fill="none" style={{ display: "inline-block" }}>
-              <rect width="56" height="56" rx="12" fill="#1E7AB8" fillOpacity="0.1" />
-              <rect x="12" y="17" width="32" height="3" rx="1.5" fill="#1E7AB8" fillOpacity="0.6" />
-              <rect x="12" y="24" width="24" height="3" rx="1.5" fill="#1E7AB8" fillOpacity="0.45" />
-              <rect x="12" y="31" width="28" height="3" rx="1.5" fill="#1E7AB8" fillOpacity="0.3" />
-              <rect x="12" y="38" width="18" height="3" rx="1.5" fill="#1E7AB8" fillOpacity="0.2" />
-            </svg>
-          </div>
-
+        <div style={{ textAlign: "center", padding: "48px 0 24px" }}>
           <h2 style={{ fontSize: "1.125rem", fontWeight: 700, color: "#FFFFFF", margin: "0 0 6px" }}>
             Building your prompt kit.
           </h2>

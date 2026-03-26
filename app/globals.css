@@ -1748,6 +1748,16 @@ input, textarea {
   background: rgba(30,122,184,0.08);
 }
 
+/* Override Chrome/Safari autofill background — browsers force white otherwise */
+.hero-tool-dark .input:-webkit-autofill,
+.hero-tool-dark .input:-webkit-autofill:hover,
+.hero-tool-dark .input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #1E1E20 inset;
+  -webkit-text-fill-color: rgba(255,255,255,0.9);
+  transition: background-color 5000s ease-in-out 0s;
+  border-color: var(--dark-border);
+}
+
 /* Textarea — darker than single-line inputs so it sits flush in the dark frame */
 /* Covers both .input (Budget Spreadsheets, Prompt Builder) and .textarea (Timesaver) */
 .hero-tool-dark textarea.input,

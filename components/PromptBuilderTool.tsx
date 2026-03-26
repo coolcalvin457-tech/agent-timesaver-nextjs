@@ -10,22 +10,51 @@ const WORK_TYPES = [
   "Analysis & Research",
   "Planning & Managing Projects",
   "Customer or Client-Facing Work",
-  "Teaching or Training Others",
+  "Managing or Leading a Team",
 ];
 
 const AI_USAGE_OPTIONS = [
-  "I haven't started using AI tools yet",
-  "I try it sometimes, but results feel hit or miss",
-  "I use it a few times a week",
-  "I use it daily but want better results",
+  "No, I haven't started yet",
+  "I've tried it, but results feel hit or miss",
+  "Yes, I use it a few times a week",
+  "Yes, I use it daily, but want better results",
 ];
 
 const CHALLENGES = [
   "I don't know what to ask it",
   "The results feel too generic for my job",
   "Too much back-and-forth to get what I need",
-  "I'm not sure which AI tool to use for what",
+  "I don't know how to give AI enough context",
 ];
+
+const LOADING_STEPS = [
+  "Job Role Analysis",
+  "Prompt Library",
+  "AI Profile",
+  "AI Workspace",
+];
+
+// ─── Em Dash Sanitizer ────────────────────────────────────────────────────────
+// Defensive strip: the API prompt instructs Claude to avoid em dashes, but this
+// client-side pass catches any that slip through and replaces them with a hyphen.
+function stripEmDashes(s: string): string {
+  return s.replace(/[—–]/g, " - ").replace(/ {2,}/g, " ").trim();
+}
+
+function sanitizePromptKit(data: PromptKitResponse): PromptKitResponse {
+  return {
+    ...data,
+    aiProfile: stripEmDashes(data.aiProfile),
+    categories: data.categories.map((cat) => ({
+      ...cat,
+      prompts: cat.prompts.map((p) => ({
+        title: stripEmDashes(p.title),
+        prompt: stripEmDashes(p.prompt),
+        why: stripEmDashes(p.why),
+      })),
+    })),
+  };
+}
 
 type Screen = "q1" | "q2" | "q3" | "q4" | "loading" | "email-gate" | "results";
 const QUESTION_SCREENS: Screen[] = ["q1", "q2", "q3", "q4"];
@@ -83,7 +112,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
   const [showWriteIn, setShowWriteIn] = useState(false);
   const [writeInValue, setWriteInValue] = useState("");
   const [flipStage, setFlipStage] = useState<"idle" | "in">("idle");
-  const [loadingMsgIndex, setLoadingMsgIndex] = useState(0);
+  const [loadingStep, setLoadingStep] = useState(0);
   const [expandedWhys, setExpandedWhys] = useState<Set<string>>(new Set());
 
   // File upload state
@@ -134,16 +163,14 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
     topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [screen]);
 
-  // ── Cycling loading messages ────────────────────────────────────
+  // ── Loading step advancement ─────────────────────────────────────
   useEffect(() => {
-    if (screen !== "loading") {
-      setLoadingMsgIndex(0);
-      return;
-    }
-    const interval = setInterval(() => {
-      setLoadingMsgIndex((prev) => (prev + 1) % 5);
-    }, 6000);
-    return () => clearInterval(interval);
+    if (screen !== "loading") return;
+    setLoadingStep(0);
+    const timers = LOADING_STEPS.map((_, i) =>
+      setTimeout(() => setLoadingStep(i), i * 14000)
+    );
+    return () => timers.forEach(clearTimeout);
   }, [screen]);
 
   const flipClass = flipStage === "in" ? "screen-flip-in" : "";
@@ -167,6 +194,20 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
       resetWriteIn();
       go(prev);
     }
+  };
+
+  const handleReset = () => {
+    setJobTitle("");
+    setWorkType("");
+    setAiUsage("");
+    setChallenge("");
+    setPromptKit(null);
+    setEmail("");
+    setError("");
+    setJobDescFile(null);
+    setJobDescText("");
+    resetWriteIn();
+    go("q1");
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -197,7 +238,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
       });
       if (!res.ok) throw new Error("API error");
       const data: PromptKitResponse = await res.json();
-      setPromptKit(data);
+      setPromptKit(sanitizePromptKit(data));
       track("results_viewed", { jobTitle });
       go("email-gate");
     } catch {
@@ -282,16 +323,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
           />
 
           {/* Optional file upload — hidden when embedded on homepage */}
-          {!hideFileUpload && <div style={{ marginTop: "36px" }}>
-            <p
-              style={{
-                fontSize: "0.8125rem",
-                color: "rgba(255,255,255,0.4)",
-                marginBottom: "12px",
-              }}
-            >
-              Optional: upload a job description for more specific prompts.
-            </p>
+          {!hideFileUpload && <div style={{ marginTop: "28px" }}>
             <label
               className="choose-file-btn"
               style={{
@@ -313,7 +345,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
                 style={{ display: "none" }}
                 onChange={handleFileChange}
               />
-              {jobDescFile ? `✓ ${jobDescFile.name}` : "Choose file"}
+              {jobDescFile ? `✓ ${jobDescFile.name}` : "Upload job description (optional)"}
             </label>
             {jobDescFile && (
               <button
@@ -340,7 +372,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
                 What&apos;s included
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                {["Personalized Prompts", "AI Profile", "AI Systems Guide"].map((item) => (
+                {["Personalized Prompts", "AI Profile", "AI Workspace"].map((item) => (
                   <div key={item} className="prompt-builder-kit-pill">
                     <span className="kit-item-check" style={{ fontSize: "0.75rem" }}>✓</span>
                     <span>{item}</span>
@@ -449,7 +481,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
           <BackButton onClick={() => goBack("q3")} />
           <ProgressBar />
           <p className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25 }}>
-            How do you currently use AI tools like ChatGPT, Claude, or Gemini?
+            Have you used ChatGPT, Claude, or Gemini?
           </p>
           <div className="choices">
             {AI_USAGE_OPTIONS.map((option) => (
@@ -512,7 +544,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
           <BackButton onClick={() => goBack("q4")} />
           <ProgressBar />
           <p className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25 }}>
-            Is there anything you&apos;ve found challenging about using AI?
+            What&apos;s been most challenging about using AI?
           </p>
           {error && (
             <div
@@ -576,24 +608,85 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
 
   // ── Screen: Loading ────────────────────────────────────────────
   if (screen === "loading") {
-    const loadingMessages = [
-      `Personalizing prompts for ${jobTitle || "your role"}...`,
-      "Grounding in your job role...",
-      "Writing job-specific prompts...",
-      "Running quality checks...",
-      "Almost ready...",
-    ];
     return (
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
-        <div className="loading-screen" style={{ minHeight: "320px" }}>
-          <div className="spinner" />
-          <p className="loading-headline">Building your Prompt Kit...</p>
-          <p key={loadingMsgIndex} className="loading-subline">
-            {loadingMessages[loadingMsgIndex]}
+        <div style={{ textAlign: "center", padding: "16px 0 24px" }}>
+          {/* Animated icon */}
+          <div style={{ marginBottom: "24px" }}>
+            <svg width="56" height="56" viewBox="0 0 56 56" fill="none" style={{ display: "inline-block" }}>
+              <rect width="56" height="56" rx="12" fill="#1E7AB8" fillOpacity="0.1" />
+              <rect x="12" y="17" width="32" height="3" rx="1.5" fill="#1E7AB8" fillOpacity="0.6" />
+              <rect x="12" y="24" width="24" height="3" rx="1.5" fill="#1E7AB8" fillOpacity="0.45" />
+              <rect x="12" y="31" width="28" height="3" rx="1.5" fill="#1E7AB8" fillOpacity="0.3" />
+              <rect x="12" y="38" width="18" height="3" rx="1.5" fill="#1E7AB8" fillOpacity="0.2" />
+            </svg>
+          </div>
+
+          <h2 style={{ fontSize: "1.125rem", fontWeight: 700, color: "var(--text-primary)", margin: "0 0 6px" }}>
+            Building your prompt kit.
+          </h2>
+          <p className="loading-subline" style={{ marginTop: "8px", marginBottom: "32px" }}>
+            About 1 minute.
           </p>
-          <p className="loading-subline" style={{ marginTop: "8px" }}>
-            About a minute.
-          </p>
+
+          {/* Step-by-step progress */}
+          <div
+            style={{
+              textAlign: "left",
+              maxWidth: "300px",
+              margin: "0 auto",
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px",
+            }}
+          >
+            {LOADING_STEPS.map((step, i) => {
+              const isDone = i < loadingStep;
+              const isActive = i === loadingStep;
+              return (
+                <div
+                  key={step}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    opacity: isDone || isActive ? 1 : 0.35,
+                    transition: "opacity 0.4s ease",
+                  }}
+                >
+                  <span
+                    style={{
+                      width: "20px",
+                      height: "20px",
+                      borderRadius: "50%",
+                      border: `1.5px solid ${isDone ? "var(--success, #1A7A4A)" : isActive ? "var(--cta, #1E7AB8)" : "var(--border, #E4E4E2)"}`,
+                      background: isDone ? "var(--success, #1A7A4A)" : "transparent",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexShrink: 0,
+                      fontSize: "0.6875rem",
+                      color: "#FFFFFF",
+                      transition: "all 0.4s ease",
+                    }}
+                  >
+                    {isDone ? "✓" : isActive ? (
+                      <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "var(--cta, #1E7AB8)", display: "block" }} />
+                    ) : null}
+                  </span>
+                  <span
+                    style={{
+                      fontSize: "0.875rem",
+                      color: isDone ? "var(--text-secondary)" : isActive ? "var(--text-primary)" : "var(--text-muted)",
+                      fontWeight: isActive ? 600 : 400,
+                    }}
+                  >
+                    {step}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     );
@@ -604,36 +697,62 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
     return (
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
-          <p className="results-tag" style={{ marginBottom: "6px" }}>Congrats! Your Prompt Kit is ready.</p>
-          <h2 className="results-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, marginBottom: "10px" }}>
-            12 Prompts Built for {jobTitle}.
-          </h2>
-          <p className="screen-subheadline" style={{ marginTop: 0, marginBottom: "24px" }}>
-            Enter your email to see your results. A copy goes to your inbox.
-          </p>
-
-          <div className="save-card">
-            <div className="email-row">
-              <input
-                type="email"
-                className="input"
-                placeholder="your@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                onKeyDown={(e) =>
-                  e.key === "Enter" && !emailLoading && email.trim() && handleEmailSubmit()
-                }
-                autoFocus
-              />
-              <button
-                className="btn btn-primary"
-                onClick={handleEmailSubmit}
-                disabled={emailLoading || !email.trim()}
-              >
-                {emailLoading ? "Loading..." : "See My Results"}
-              </button>
+          {/* Checkmark icon */}
+          <div style={{ textAlign: "center", marginBottom: "32px" }}>
+            <div style={{ display: "inline-block", marginBottom: "16px" }}>
+              <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+                <rect width="56" height="56" rx="12" fill="#1E7AB8" fillOpacity="0.1" />
+                <path d="M18 28.5L24.5 35L38 21" stroke="#1E7AB8" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
             </div>
+            <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 4px" }}>
+              Your prompt kit is ready.
+            </h2>
+            {jobTitle && (
+              <p style={{ fontSize: "0.875rem", color: "var(--text-muted)", margin: 0 }}>
+                {jobTitle}
+              </p>
+            )}
           </div>
+
+          {/* Email form */}
+          <label
+            htmlFor="pb-email"
+            style={{ display: "block", fontSize: "0.9375rem", fontWeight: 600, color: "var(--text-primary)", marginBottom: "10px" }}
+          >
+            Where should we send it?
+          </label>
+          <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
+            <input
+              id="pb-email"
+              type="email"
+              className="input"
+              placeholder="your@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onKeyDown={(e) =>
+                e.key === "Enter" && !emailLoading && email.trim() && handleEmailSubmit()
+              }
+              autoFocus
+              autoComplete="email"
+              style={{ flex: 1 }}
+            />
+            <button
+              className="btn btn-primary btn-lg"
+              onClick={handleEmailSubmit}
+              disabled={emailLoading || !email.trim()}
+            >
+              {emailLoading ? "Sending..." : "Send My Kit"}
+            </button>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleReset}
+            style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "0.875rem", cursor: "pointer", marginTop: "20px", padding: 0, textDecoration: "underline" }}
+          >
+            Start over
+          </button>
         </div>
       </div>
     );
@@ -661,12 +780,12 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
           </div>
 
           {/* Header */}
-          <p className="results-tag" style={{ marginBottom: "8px" }}>Your Prompt Kit is ready.</p>
-          <h2 className="results-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, marginBottom: "14px" }}>
-            12 Prompts Built for Your Exact Job.
+          <p className="pb-system-eyebrow" style={{ marginBottom: "8px" }}>Step 1</p>
+          <h2 className="results-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, marginBottom: "6px" }}>
+            12 prompts built for {jobTitle}.
           </h2>
           <p className="screen-subheadline" style={{ marginBottom: "36px" }}>
-            Copy any prompt below and paste into ChatGPT or Claude.
+            Copy and paste into ChatGPT, Claude, or Gemini.
           </p>
 
           {/* Prompt categories */}
@@ -723,61 +842,72 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
             </div>
           ))}
 
-          {/* ── The setup that makes AI remember you ─────────── */}
+          {/* ── Step 2: AI Profile ─────────── */}
           <div className="pb-system-section">
             <p className="pb-system-eyebrow">Step 2</p>
-            <h3 className="pb-system-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}>The setup that makes AI remember you.</h3>
-            <p className="pb-system-subline">
-              Prompts are step one. Here&apos;s what makes them work every time.
+            <h3 className="pb-system-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}>Your AI Profile.</h3>
+            <p className="pb-system-step-body">
+              Paste this into AI once. No need to re-introduce yourself or start from scratch ever again.
             </p>
-
-            {/* Step 1 — AI Profile */}
-            <div className="pb-system-step">
-              <p className="pb-system-step-label">1 &nbsp;·&nbsp; Your AI Profile</p>
-              <p className="pb-system-step-body">
-                Paste this into AI once. No need to re-introduce yourself or start from scratch ever again.
-              </p>
-              <div className="pb-prompt-text-wrapper" style={{ marginBottom: "12px", flexDirection: "column", alignItems: "stretch" }}>
-                <p className="pb-prompt-text">{promptKit.aiProfile}</p>
-                <button
-                  className={`pb-copy-btn ${copiedId === "aiProfile" ? "copied" : ""}`}
-                  onClick={() => handleCopy("aiProfile", promptKit.aiProfile)}
-                  style={{ alignSelf: "flex-end", marginTop: "10px" }}
-                >
-                  {copiedId === "aiProfile" ? "✓ Copied" : "Copy"}
-                </button>
-              </div>
-              <p className="pb-system-step-body">
-                <strong>Where to add it:</strong> Settings. Not sure where, just ask AI.
-              </p>
+            <div className="pb-prompt-text-wrapper" style={{ marginBottom: "12px", flexDirection: "column", alignItems: "stretch" }}>
+              <p className="pb-prompt-text">{promptKit.aiProfile}</p>
+              <button
+                className={`pb-copy-btn ${copiedId === "aiProfile" ? "copied" : ""}`}
+                onClick={() => handleCopy("aiProfile", promptKit.aiProfile)}
+                style={{ alignSelf: "flex-end", marginTop: "10px" }}
+              >
+                {copiedId === "aiProfile" ? "✓ Copied" : "Copy"}
+              </button>
             </div>
-
-            {/* Step 2 — Folder structure */}
-            <div className="pb-system-step">
-              <p className="pb-system-step-label">2 &nbsp;·&nbsp; Set up your AI folder</p>
-              <p className="pb-system-step-body">
-                Create a folder structure on your desktop.
-              </p>
-              <div className="pb-folder-tree">
-                <p className="pb-folder-tree-item pb-folder-root">📁 [YourName]&apos;s AI Workspace/</p>
-                <p className="pb-folder-tree-item pb-folder-indent">📄 AI Profile.md</p>
-                <p className="pb-folder-tree-item pb-folder-indent">📁 Prompt Library/</p>
-                <p className="pb-folder-tree-item pb-folder-indent">📁 Saved Results/</p>
-              </div>
-              <p className="pb-system-step-body" style={{ marginTop: "16px" }}>
-                Ask AI to format any information you&apos;re saving as a .md file.
-              </p>
-            </div>
+            <p className="pb-system-step-body">
+              Tell AI to save its response as <strong>AI Profile.md</strong>
+            </p>
           </div>
 
-          {/* Cross-sell CTAs */}
-          <div style={{ marginTop: "32px", paddingTop: "24px", borderTop: "1px solid rgba(255,255,255,0.08)", display: "flex", flexDirection: "row", justifyContent: "center", gap: "40px" }}>
-            <a href="/" style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.4)", textDecoration: "none", letterSpacing: "0.01em" }}>
-              AGENT: Timesaver
-            </a>
-            <a href="/budget-spreadsheets" style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.4)", textDecoration: "none", letterSpacing: "0.01em" }}>
-              AGENT: Budget Spreadsheets
-            </a>
+          {/* ── Step 3: AI Workspace ─────────── */}
+          <div className="pb-system-section">
+            <p className="pb-system-eyebrow">Step 3</p>
+            <h3 className="pb-system-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}>Your AI Workspace.</h3>
+            <p className="pb-system-step-body">
+              Set this up once. AI will know who you are every time.
+            </p>
+            <p className="pb-system-step-body" style={{ marginTop: "16px" }}>
+              Paste this into your AI tool to get everything set up:
+            </p>
+            <div className="pb-prompt-text-wrapper" style={{ marginTop: "12px", flexDirection: "column", alignItems: "stretch" }}>
+              <p className="pb-prompt-text">{`I just created my AI Profile and I want to set up my workspace properly. Help me with two things: (1) Tell me exactly where and how to save my AI Profile as custom instructions in this tool, so you always know who I am without me having to re-explain myself. (2) Walk me through setting up a folder on my desktop to save my AI work going forward. Here's my profile:\n\n${promptKit.aiProfile}`}</p>
+              <button
+                className={`pb-copy-btn ${copiedId === "starterPrompt" ? "copied" : ""}`}
+                onClick={() => handleCopy("starterPrompt", `I just created my AI Profile and I want to set up my workspace properly. Help me with two things: (1) Tell me exactly where and how to save my AI Profile as custom instructions in this tool, so you always know who I am without me having to re-explain myself. (2) Walk me through setting up a folder on my desktop to save my AI work going forward. Here's my profile:\n\n${promptKit.aiProfile}`)}
+                style={{ alignSelf: "flex-end", marginTop: "10px" }}
+              >
+                {copiedId === "starterPrompt" ? "✓ Copied" : "Copy"}
+              </button>
+            </div>
+            <p className="pb-system-step-body" style={{ marginTop: "24px" }}>
+              Then build your folder structure on your desktop:
+            </p>
+            <div className="pb-folder-tree">
+              <p className="pb-folder-tree-item pb-folder-root">🗂️ [YourName]&apos;s AI Workspace</p>
+              <p className="pb-folder-tree-item pb-folder-indent">📄 AI Profile.md</p>
+              <p className="pb-folder-tree-item pb-folder-indent">🗂️ Prompt Library</p>
+              <p className="pb-folder-tree-item pb-folder-indent">🗂️ Saved Results</p>
+              <p className="pb-folder-tree-item pb-folder-indent">🗂️ Reference Files</p>
+            </div>
+            <p className="pb-system-step-body" style={{ marginTop: "16px" }}>
+              AI Profile.md is your reference copy. Update it as your role changes.
+            </p>
+            <p className="pb-system-step-body" style={{ marginTop: "12px" }}>
+              When AI gives you something worth keeping, ask it to format as .md and save it before you close the tab.
+            </p>
+          </div>
+
+          {/* Cross-sell — AGENT: Workflow Builder */}
+          <div style={{ marginTop: "40px", paddingTop: "32px", borderTop: "1px solid rgba(255,255,255,0.08)", textAlign: "center" }}>
+            <p style={{ fontSize: "0.7rem", letterSpacing: "0.1em", color: "rgba(255,255,255,0.35)", textTransform: "uppercase", marginBottom: "12px" }}>Your Next Step</p>
+            <h4 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "1.25rem", color: "rgba(255,255,255,0.9)", marginBottom: "10px" }}>AGENT: Workflow Builder</h4>
+            <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.45)", marginBottom: "20px", maxWidth: "360px", margin: "0 auto 20px auto" }}>Turn your prompts into repeatable AI workflows. Built for your job title.</p>
+            <a href="/agents" style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.35)", textDecoration: "none", letterSpacing: "0.05em", borderBottom: "1px solid rgba(255,255,255,0.12)", paddingBottom: "2px" }}>Coming soon · See all agents</a>
           </div>
 
         </div>

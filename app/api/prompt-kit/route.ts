@@ -176,7 +176,7 @@ Self-check rule: Before outputting your JSON, test each prompt against this ques
 
 Also write an AI Profile paragraph for this person. This is a 3-4 sentence paragraph they will paste into their AI tool's Custom Instructions so AI always knows who they are before they say a word. Write it in first person ("I am a..."). It must deliberately synthesize all four of their answers — not just the job title:
 - Job title: "${jobTitle}" — state it directly in the opening sentence
-- Main work type: "${workType}" — describe how they spend most of their working time using this as the frame
+- Main work type: "${workType}" — incorporate this into the second sentence using phrasing like "I spend most of my working time on [workType]." or "Most of my work involves [workType]." Do not use a percentage. Do not write "who spends X of my working time."
 - AI experience: "${aiUsage}" — reflect honestly where they are in their AI journey, in plain language
 - Their challenge: "${challenge}" — close with one specific behavioral instruction for AI based on this: what should AI always do, or always avoid, to help this person get better results?
 The person reading this profile should immediately recognize themselves in every sentence. It should feel like it was written by someone who interviewed them, not generated from a form. No em dashes.

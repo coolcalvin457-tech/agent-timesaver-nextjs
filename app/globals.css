@@ -2105,6 +2105,10 @@ input, textarea {
   margin-bottom: 32px;
 }
 
+.pb-category:last-of-type {
+  margin-bottom: 0;
+}
+
 .pb-category-label {
   display: flex;
   align-items: center;

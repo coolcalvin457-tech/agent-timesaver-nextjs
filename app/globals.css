@@ -2201,6 +2201,10 @@ input, textarea {
   border-top: 2px solid var(--border);
 }
 
+.pb-system-section > *:last-child {
+  margin-bottom: 0;
+}
+
 .pb-system-eyebrow {
   font-family: var(--font-mono);
   font-size: 0.75rem;

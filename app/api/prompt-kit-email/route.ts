@@ -118,7 +118,7 @@ async function sendPromptKitEmail(
                 ${totalPrompts} AI prompts built for ${jobTitle}.
               </h1>
               <p style="margin:0 0 32px 0; font-size:15px; color:#555553; line-height:1.6;">
-                Copy any prompt below and paste it directly into ChatGPT or Claude. Each one is ready to use — just fill in the brackets and go.
+                Copy any prompt below and paste it directly into ChatGPT or Claude. Each one is ready to use. Just fill in the brackets and go.
               </p>
 
               <!-- AI Profile -->

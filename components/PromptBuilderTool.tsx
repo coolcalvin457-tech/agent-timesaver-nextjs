@@ -708,8 +708,8 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
           <div style={{ textAlign: "center", marginBottom: "32px" }}>
             <div style={{ display: "inline-block", marginBottom: "16px" }}>
               <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
-                <rect width="56" height="56" rx="12" fill="#1E7AB8" fillOpacity="0.1" />
-                <path d="M18 28.5L24.5 35L38 21" stroke="#1E7AB8" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                <rect width="56" height="56" rx="12" fill="#22C55E" fillOpacity="0.12" />
+                <path d="M18 28.5L24.5 35L38 21" stroke="#22C55E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>
             <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "#FFFFFF", margin: "0 0 4px" }}>

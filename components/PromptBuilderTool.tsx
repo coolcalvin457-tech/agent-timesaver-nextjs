@@ -871,10 +871,10 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
             </p>
           </div>
 
-          {/* ── Step 3: AI Workspace ─────────── */}
+          {/* ── Step 3: AI Workspace Setup ─────────── */}
           <div className="pb-system-section">
             <p className="pb-system-eyebrow">Step 3</p>
-            <h3 className="pb-system-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}>Your AI Workspace.</h3>
+            <h3 className="pb-system-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}>Your AI Workspace Setup.</h3>
             <p className="pb-system-step-body">
               Set this up once. AI will know who you are every time.
             </p>

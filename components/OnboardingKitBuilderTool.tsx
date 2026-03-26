@@ -1377,8 +1377,8 @@ export default function OnboardingKitBuilderTool({
   if (screen === "loading") {
     return (
       <div ref={toolContainerRef} className="okb-tool">
-        <div style={{ textAlign: "center", padding: "48px 0 24px" }}>
-          <h2 style={{ fontSize: "1.125rem", fontWeight: 700, color: "var(--text-primary)", margin: "0 0 6px" }}>
+        <div style={{ textAlign: "center", padding: "40px 0 24px" }}>
+          <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 6px" }}>
             Building {hireName ? `${hireName}'s` : "the"} onboarding kit.
           </h2>
           <p className="loading-subline" style={{ marginTop: "8px", marginBottom: "32px" }}>

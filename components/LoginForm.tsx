@@ -33,10 +33,8 @@ export default function LoginForm({ redirectTo }: LoginFormProps) {
       setErrorMsg("Email is required.");
       return;
     }
-    if (!firstName.trim()) {
-      setErrorMsg("First name is required.");
-      return;
-    }
+    // No client-side check for firstName — returning users only need email.
+    // Server returns an error for new users who skip the name field.
 
     setLoading(true);
 

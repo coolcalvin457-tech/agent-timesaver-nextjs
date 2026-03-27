@@ -4,6 +4,7 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { track } from "@vercel/analytics";
 import ToolEmailGate from "@/components/shared/ToolEmailGate";
 import ToolLoadingScreen from "@/components/shared/ToolLoadingScreen";
+import { useAuth } from "@/components/AuthProvider";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -222,6 +223,7 @@ function UploadZone({
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 export default function BudgetSpreadsheetTool() {
+  const { user } = useAuth();
   const [screen, setScreen] = useState<Screen>("q1");
   const [description, setDescription] = useState("");
   const [contentFile, setContentFile] = useState<File | null>(null);
@@ -241,6 +243,7 @@ export default function BudgetSpreadsheetTool() {
 
   const topRef = useRef<HTMLDivElement>(null);
   const isFirstRender = useRef(true);
+  const authSkipFired = useRef(false);
 
   // ── Track tool start ───────────────────────────────────────────
   useEffect(() => {
@@ -279,6 +282,29 @@ export default function BudgetSpreadsheetTool() {
     }, 4000);
     return () => clearInterval(interval);
   }, [screen]);
+
+  // ── Auth: skip email gate if logged in ─────────────────────────
+  useEffect(() => {
+    if (screen === "ready" && user && !authSkipFired.current) {
+      authSkipFired.current = true;
+      setEmail(user.email);
+      // Auto-submit: trigger download + email delivery, then go to sent
+      (async () => {
+        if (!fileBlob) return;
+        triggerDownload(fileBlob, filename);
+        try {
+          const fileData = await blobToBase64(fileBlob);
+          await fetch("/api/budget-spreadsheet-email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: user.email, filename, budgetTitle, fileData }),
+          });
+        } catch { /* Email failure never blocks the user */ }
+        track("email_submitted");
+        go("sent");
+      })();
+    }
+  }, [screen, user, fileBlob, filename, budgetTitle, go]);
 
   const flipClass = flipStage === "in" ? "screen-flip-in" : "";
 

@@ -6,6 +6,7 @@ import { track } from "@vercel/analytics";
 import type { Question } from "@/app/api/questions/route";
 import type { Workflow, ROI } from "@/app/api/workflows/route";
 import ToolLoadingScreen from "@/components/shared/ToolLoadingScreen";
+import { useAuth } from "@/components/AuthProvider";
 
 // ─── State Types ───────────────────────────────────────────────────────────────
 type Screen =
@@ -59,6 +60,7 @@ function sanitizeWorkflowData(workflows: Workflow[], roi: ROI): { workflows: Wor
 
 // ─── Component ─────────────────────────────────────────────────────────────────
 export default function TimesaverTool() {
+  const { user } = useAuth();
   const [state, setState] = useState<AppState>({
     screen: "intro",
     path: null,
@@ -86,6 +88,7 @@ export default function TimesaverTool() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const topRef = useRef<HTMLDivElement>(null);
+  const authSkipFired = useRef(false);
 
   const [flipStage, setFlipStage] = useState<"idle" | "in">("idle");
 
@@ -101,6 +104,27 @@ export default function TimesaverTool() {
       return () => clearTimeout(t);
     }
   }, [flipStage]);
+
+  // ── Auth: skip email gate if logged in ─────────────────────────
+  useEffect(() => {
+    if (state.screen === "gate" && user && !authSkipFired.current) {
+      authSkipFired.current = true;
+      setEmailGateInput(user.email);
+      // Fire email in background, show results immediately
+      fetch("/api/email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: user.email,
+          jobTitle: state.jobTitle,
+          workflows: state.workflows,
+          roi: state.roi,
+        }),
+      }).catch(() => {});
+      track("email_submitted", { jobTitle: state.jobTitle });
+      go("results");
+    }
+  }, [state.screen, user, state.jobTitle, state.workflows, state.roi, go]);
 
   // ── API Call 1: Generate questions ─────────────────────────────────────────
   const loadQuestions = useCallback(

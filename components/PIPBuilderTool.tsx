@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import ToolEmailGate from "@/components/shared/ToolEmailGate";
 import ToolLoadingScreen from "@/components/shared/ToolLoadingScreen";
+import { useAuth } from "@/components/AuthProvider";
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
@@ -179,6 +180,7 @@ export default function PIPBuilderTool({
   initialPaymentStatus,
   initialSessionId,
 }: PIPBuilderToolProps) {
+  const { user } = useAuth();
   // ── Tool container ref (for scroll-to-tool on screen changes) ─
   const toolContainerRef = useRef<HTMLDivElement>(null);
 
@@ -249,6 +251,14 @@ export default function PIPBuilderTool({
     );
     return () => timers.forEach(clearTimeout);
   }, [screen]);
+
+  // ── Auth: pre-fill email fields when logged in ──────────
+  useEffect(() => {
+    if (user) {
+      setEmail(user.email);
+      setPaywallEmail(user.email);
+    }
+  }, [user]);
 
   // ── Scroll to tool container on every screen change ───────
   useEffect(() => {

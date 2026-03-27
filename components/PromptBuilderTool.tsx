@@ -6,6 +6,7 @@ import type { PromptKitResponse } from "@/app/api/prompt-kit/route";
 import ToolEmailGate from "@/components/shared/ToolEmailGate";
 import ToolLoadingScreen from "@/components/shared/ToolLoadingScreen";
 import CrossSellBlock from "@/components/shared/CrossSellBlock";
+import { useAuth } from "@/components/AuthProvider";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const WORK_TYPES = [
@@ -111,6 +112,7 @@ interface PromptBuilderToolProps {
 }
 
 export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideFileUpload, showDeliverables }: PromptBuilderToolProps) {
+  const { user } = useAuth();
   const [screen, setScreen] = useState<Screen>("q1");
   const [jobTitle, setJobTitle] = useState(initialJobTitle?.trim() || "");
   const [workType, setWorkType] = useState("");
@@ -134,10 +136,17 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
   const topRef = useRef<HTMLDivElement>(null);
   const isFirstRender = useRef(true);
   const skipNextScroll = useRef(false);
+  const authSkipFired = useRef(false);
 
   // ── Track tool start on mount ──────────────────────────────────
   useEffect(() => {
     track("tool_started");
+  }, []);
+
+  // ── Screen transition helpers ───────────────────────────────────
+  const go = useCallback((s: Screen) => {
+    setScreen(s);
+    setFlipStage("in");
   }, []);
 
   // ── Auto-advance to Q2 if job title pre-filled from homepage embed ──
@@ -150,18 +159,28 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // ── Screen transition helpers ───────────────────────────────────
-  const go = useCallback((s: Screen) => {
-    setScreen(s);
-    setFlipStage("in");
-  }, []);
-
   useEffect(() => {
     if (flipStage === "in") {
       const t = setTimeout(() => setFlipStage("idle"), 220);
       return () => clearTimeout(t);
     }
   }, [flipStage]);
+
+  // ── Auth: skip email gate if logged in ─────────────────────────
+  useEffect(() => {
+    if (screen === "email-gate" && user && promptKit && !authSkipFired.current) {
+      authSkipFired.current = true;
+      setEmail(user.email);
+      // Fire email in background, show results immediately
+      fetch("/api/prompt-kit-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: user.email, jobTitle, promptKit }),
+      }).catch(() => {});
+      track("email_submitted", { jobTitle });
+      go("results");
+    }
+  }, [screen, user, promptKit, jobTitle, go]);
 
   useEffect(() => {
     if (isFirstRender.current) {

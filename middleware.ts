@@ -1,27 +1,88 @@
-// ─── Next.js Middleware ───────────────────────────────────────────────────────
+// ─── Next.js Middleware — Sliding Window Session ─────────────────────────────
 //
-// Reads the paa_session cookie on every request. Does NOT block any pages.
-// In v1, no pages require login. This middleware simply makes the cookie
-// available to server components and enables future protected route checks.
+// Runs on every page request (not API routes or static files).
+// Reads the paa_session JWT cookie and checks when it was issued.
+// If the token is valid but was issued more than 24 hours ago, re-signs it
+// with a fresh 30-day expiry. Both paa_session and paa_name cookies are
+// refreshed together so they never drift out of sync.
 //
-// The auth state is read client-side via AuthProvider (/api/auth/me).
-// This middleware exists for:
-//   1. Future protected routes (redirect to /login if needed)
-//   2. Lightweight cookie presence check without DB hits
+// Result: the session only expires if the user is inactive for 30 consecutive
+// days. Every visit within the window resets the clock.
 
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { jwtVerify, SignJWT } from "jose";
 
-export function middleware(request: NextRequest) {
-  // For now, just pass through. The cookie is automatically sent with
-  // every request and read by /api/auth/me when needed.
-  //
-  // Future: add redirect logic here for protected routes, e.g.:
-  // if (request.nextUrl.pathname.startsWith('/dashboard') && !request.cookies.get('paa_session')) {
-  //   return NextResponse.redirect(new URL(`/login?redirect=${request.nextUrl.pathname}`, request.url));
-  // }
+const COOKIE_NAME = "paa_session";
+const NAME_COOKIE = "paa_name";
+const SESSION_DAYS = 30;
+const REFRESH_AFTER_HOURS = 24;
 
-  return NextResponse.next();
+function getSecret(): Uint8Array {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) throw new Error("JWT_SECRET env var is not set");
+  return new TextEncoder().encode(secret);
+}
+
+export async function middleware(request: NextRequest) {
+  const cookie = request.cookies.get(COOKIE_NAME);
+  if (!cookie?.value) return NextResponse.next();
+
+  try {
+    const secret = getSecret();
+    const { payload } = await jwtVerify(cookie.value, secret);
+
+    // Only refresh if issued more than 24 hours ago
+    const iat = payload.iat;
+    if (!iat) return NextResponse.next();
+
+    const ageMs = Date.now() - iat * 1000;
+    const thresholdMs = REFRESH_AFTER_HOURS * 60 * 60 * 1000;
+
+    if (ageMs < thresholdMs) return NextResponse.next();
+
+    // Re-sign JWT with fresh 30-day expiry
+    const newToken = await new SignJWT({
+      sub: payload.sub,
+      email: payload.email,
+      firstName: payload.firstName,
+      jobTitle: payload.jobTitle,
+    })
+      .setProtectedHeader({ alg: "HS256" })
+      .setIssuedAt()
+      .setExpirationTime(`${SESSION_DAYS}d`)
+      .sign(secret);
+
+    const maxAge = SESSION_DAYS * 24 * 60 * 60;
+    const isProduction = process.env.NODE_ENV === "production";
+    const response = NextResponse.next();
+
+    // Refresh the HTTP-only session cookie
+    response.cookies.set(COOKIE_NAME, newToken, {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: "lax",
+      path: "/",
+      maxAge,
+    });
+
+    // Refresh the client-readable name cookie (prevents nav blink)
+    const firstName = payload.firstName as string;
+    if (firstName) {
+      response.cookies.set(NAME_COOKIE, firstName, {
+        httpOnly: false,
+        secure: isProduction,
+        sameSite: "lax",
+        path: "/",
+        maxAge,
+      });
+    }
+
+    return response;
+  } catch {
+    // Token invalid or expired — pass through, AuthProvider handles the rest
+    return NextResponse.next();
+  }
 }
 
 export const config = {

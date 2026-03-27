@@ -365,6 +365,8 @@ export default function OnboardingKitBuilderTool({
   const [checkoutError, setCheckoutError] = useState("");
   const [paywallEmail, setPaywallEmail] = useState("");
   const [paymentCancelled, setPaymentCancelled] = useState(false);
+  const [subscriptionVerified, setSubscriptionVerified] = useState(false);
+  const [subCheckLoading, setSubCheckLoading] = useState(false);
 
   // ── Returning purchaser state (kept for legacy Stripe return flow) ────────
   const [showReturningCheck, setShowReturningCheck] = useState(false);
@@ -417,6 +419,25 @@ export default function OnboardingKitBuilderTool({
       setPaywallEmail(user.email);
     }
   }, [user]);
+
+  // ── Auto-check subscription when logged-in user hits paywall ──
+  useEffect(() => {
+    if (screen !== "paywall" || !user?.email) return;
+    let cancelled = false;
+    setSubCheckLoading(true);
+    fetch("/api/verify-subscription", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: user.email }),
+    })
+      .then((res) => res.json())
+      .then((data: { verified: boolean }) => {
+        if (!cancelled) setSubscriptionVerified(data.verified);
+      })
+      .catch(() => {})
+      .finally(() => { if (!cancelled) setSubCheckLoading(false); });
+    return () => { cancelled = true; };
+  }, [screen, user?.email]);
 
   // ── Scroll to tool container on every screen change ───────
   useEffect(() => {
@@ -1196,152 +1217,218 @@ export default function OnboardingKitBuilderTool({
           </div>
         </div>
 
-        {/* Bundle offer */}
-        <div
-          style={{
-            background: "var(--dark, #161618)",
-            borderRadius: "12px",
-            padding: "24px 26px",
-            marginBottom: "16px",
-          }}
-        >
-          {/* Header row */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px", flexWrap: "wrap", gap: "8px" }}>
-            <span style={{ fontSize: "0.9375rem", fontWeight: 700, color: "#FFFFFF" }}>
-              HR Agents Package
-            </span>
-            <span
-              style={{
-                fontSize: "0.6875rem",
-                fontWeight: 700,
-                letterSpacing: "0.06em",
-                textTransform: "uppercase",
-                padding: "3px 10px",
-                borderRadius: "20px",
-                background: "rgba(30,122,184,0.25)",
-                color: "#60B4F0",
-                border: "1px solid rgba(30,122,184,0.35)",
-              }}
-            >
-              Annual Subscription
-            </span>
-          </div>
-
-          {/* Price */}
-          <div style={{ display: "flex", alignItems: "baseline", gap: "8px", marginBottom: "12px" }}>
-            <span style={{ fontSize: "2rem", fontWeight: 800, color: "#FFFFFF", lineHeight: 1 }}>$99</span>
-            <span style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.5)" }}>/year</span>
-          </div>
-
-          {/* Description */}
-          <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.6, margin: "0 0 16px" }}>
-            Includes Onboarding Kit, PIP Builder, and every HR agent added to the package. One subscription, all agents.
-          </p>
-
-          {/* Email input */}
-          <input
-            type="email"
-            value={paywallEmail}
-            onChange={(e) => setPaywallEmail(e.target.value)}
-            onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleGetAccess(); } }}
-            placeholder="your@email.com"
+        {/* ── Subscription active: skip payment, show Build button ── */}
+        {subscriptionVerified ? (
+          <div
             style={{
-              width: "100%", padding: "11px 14px", fontSize: "0.9375rem",
-              border: "1px solid rgba(255,255,255,0.15)", borderRadius: "8px",
-              background: "rgba(255,255,255,0.08)", color: "#FFFFFF",
-              outline: "none", boxSizing: "border-box", marginBottom: "10px",
-              fontFamily: "inherit",
-            }}
-          />
-
-          {/* CTA */}
-          <button
-            type="button"
-            onClick={handleGetAccess}
-            disabled={checkoutLoading}
-            style={{
-              width: "100%",
-              padding: "13px 20px",
-              fontSize: "0.9375rem",
-              fontWeight: 700,
-              background: checkoutLoading ? "rgba(30,122,184,0.5)" : "#1E7AB8",
-              color: "#FFFFFF",
-              border: "none",
-              borderRadius: "8px",
-              cursor: checkoutLoading ? "not-allowed" : "pointer",
-              transition: "background 0.15s ease",
-              marginBottom: "12px",
+              background: "var(--dark, #161618)",
+              borderRadius: "12px",
+              padding: "24px 26px",
+              marginBottom: "16px",
             }}
           >
-            {checkoutLoading ? "Checking..." : "Get Access · $99/year"}
-          </button>
+            {/* Header row */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px", flexWrap: "wrap", gap: "8px" }}>
+              <span style={{ fontSize: "0.9375rem", fontWeight: 700, color: "#FFFFFF" }}>
+                HR Agents Package
+              </span>
+              <span
+                style={{
+                  fontSize: "0.6875rem",
+                  fontWeight: 700,
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                  padding: "3px 10px",
+                  borderRadius: "20px",
+                  background: "rgba(34,197,94,0.2)",
+                  color: "#4ADE80",
+                  border: "1px solid rgba(34,197,94,0.35)",
+                }}
+              >
+                Active
+              </span>
+            </div>
 
-          {checkoutError && (
-            <p style={{ fontSize: "0.8125rem", color: "#F87171", margin: "0 0 8px" }}>
-              {checkoutError}
+            <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.6, margin: "0 0 16px" }}>
+              Your subscription is active. Build as many kits as you need.
             </p>
-          )}
 
-          <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.4)", margin: 0, textAlign: "center" }}>
-            Annual subscription. Cancel anytime.
-          </p>
-        </div>
-
-        {/* Legacy returning purchaser (fallback) */}
-        <div style={{ textAlign: "center", marginBottom: "16px" }}>
-          {!showReturningCheck ? (
             <button
               type="button"
-              onClick={() => setShowReturningCheck(true)}
-              style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "0.8125rem", cursor: "pointer", padding: 0, textDecoration: "underline" }}
+              onClick={() => {
+                setEmail(paywallEmail.trim());
+                buildFromData({
+                  hireName, hireTitle, department, startDate, managerName, roleType,
+                  whyHired, weekOnePriorities, keyTools, howTeamWorks, thirtyToNinety,
+                  contacts, teamNotes, feedbackCadence,
+                }, contextFile);
+              }}
+              style={{
+                width: "100%",
+                padding: "13px 20px",
+                fontSize: "0.9375rem",
+                fontWeight: 700,
+                background: "var(--dark, #161618)",
+                color: "#FFFFFF",
+                border: "1px solid rgba(255,255,255,0.2)",
+                borderRadius: "8px",
+                cursor: "pointer",
+                transition: "background 0.15s ease",
+              }}
             >
-              Problems with access? Check here.
+              Build My Kit
             </button>
-          ) : (
-            <div style={{ background: "var(--bg-alt, #F8F8F6)", border: "1px solid var(--border, #E4E4E2)", borderRadius: "8px", padding: "14px 16px", textAlign: "left" }}>
-              <p style={{ margin: "0 0 10px", fontSize: "0.875rem", fontWeight: 600, color: "var(--text-primary)" }}>
-                Enter the email you purchased with:
-              </p>
-              <div style={{ display: "flex", gap: "8px" }}>
-                <input
-                  type="email"
-                  value={returningEmail}
-                  onChange={(e) => setReturningEmail(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      handleReturningEmailCheck();
-                    }
-                  }}
-                  placeholder="your@email.com"
+          </div>
+        ) : (
+          <>
+            {/* ── Bundle offer (non-subscriber) ── */}
+            <div
+              style={{
+                background: "var(--dark, #161618)",
+                borderRadius: "12px",
+                padding: "24px 26px",
+                marginBottom: "16px",
+              }}
+            >
+              {/* Header row */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px", flexWrap: "wrap", gap: "8px" }}>
+                <span style={{ fontSize: "0.9375rem", fontWeight: 700, color: "#FFFFFF" }}>
+                  HR Agents Package
+                </span>
+                <span
                   style={{
-                    flex: 1, padding: "10px 12px", fontSize: "0.9375rem",
-                    border: "1px solid var(--border, #E4E4E2)", borderRadius: "6px",
-                    background: "var(--surface, #FFFFFF)", color: "var(--text-primary)", outline: "none", boxSizing: "border-box" as const,
-                  }}
-                />
-                <button
-                  type="button"
-                  onClick={handleReturningEmailCheck}
-                  disabled={returningCheckLoading || !returningEmail.trim()}
-                  style={{
-                    padding: "10px 16px", fontSize: "0.875rem", fontWeight: 600,
-                    background: "var(--dark, #161618)", color: "#FFFFFF",
-                    border: "none", borderRadius: "6px",
-                    cursor: returningCheckLoading || !returningEmail.trim() ? "not-allowed" : "pointer",
-                    opacity: returningCheckLoading || !returningEmail.trim() ? 0.5 : 1,
-                    flexShrink: 0, whiteSpace: "nowrap" as const,
+                    fontSize: "0.6875rem",
+                    fontWeight: 700,
+                    letterSpacing: "0.06em",
+                    textTransform: "uppercase",
+                    padding: "3px 10px",
+                    borderRadius: "20px",
+                    background: "rgba(30,122,184,0.25)",
+                    color: "#60B4F0",
+                    border: "1px solid rgba(30,122,184,0.35)",
                   }}
                 >
-                  {returningCheckLoading ? "Checking..." : "Check access"}
-                </button>
+                  Annual Subscription
+                </span>
               </div>
-              {returningCheckError && (
-                <p style={{ fontSize: "0.8125rem", color: "#DC2626", marginTop: "8px" }}>{returningCheckError}</p>
+
+              {/* Price */}
+              <div style={{ display: "flex", alignItems: "baseline", gap: "8px", marginBottom: "12px" }}>
+                <span style={{ fontSize: "2rem", fontWeight: 800, color: "#FFFFFF", lineHeight: 1 }}>$99</span>
+                <span style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.5)" }}>/year</span>
+              </div>
+
+              {/* Description */}
+              <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.6, margin: "0 0 16px" }}>
+                Includes Onboarding Kit, PIP Builder, and every HR agent added to the package. One subscription, all agents.
+              </p>
+
+              {/* Email input */}
+              <input
+                type="email"
+                value={paywallEmail}
+                onChange={(e) => setPaywallEmail(e.target.value)}
+                onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleGetAccess(); } }}
+                placeholder="your@email.com"
+                style={{
+                  width: "100%", padding: "11px 14px", fontSize: "0.9375rem",
+                  border: "1px solid rgba(255,255,255,0.15)", borderRadius: "8px",
+                  background: "rgba(255,255,255,0.08)", color: "#FFFFFF",
+                  outline: "none", boxSizing: "border-box", marginBottom: "10px",
+                  fontFamily: "inherit",
+                }}
+              />
+
+              {/* CTA */}
+              <button
+                type="button"
+                onClick={handleGetAccess}
+                disabled={checkoutLoading || subCheckLoading}
+                style={{
+                  width: "100%",
+                  padding: "13px 20px",
+                  fontSize: "0.9375rem",
+                  fontWeight: 700,
+                  background: (checkoutLoading || subCheckLoading) ? "rgba(30,122,184,0.5)" : "#1E7AB8",
+                  color: "#FFFFFF",
+                  border: "none",
+                  borderRadius: "8px",
+                  cursor: (checkoutLoading || subCheckLoading) ? "not-allowed" : "pointer",
+                  transition: "background 0.15s ease",
+                  marginBottom: "12px",
+                }}
+              >
+                {subCheckLoading ? "Checking subscription..." : checkoutLoading ? "Checking..." : "Get Access · $99/year"}
+              </button>
+
+              {checkoutError && (
+                <p style={{ fontSize: "0.8125rem", color: "#F87171", margin: "0 0 8px" }}>
+                  {checkoutError}
+                </p>
+              )}
+
+              <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.4)", margin: 0, textAlign: "center" }}>
+                Annual subscription. Cancel anytime.
+              </p>
+            </div>
+
+            {/* Legacy returning purchaser (fallback) */}
+            <div style={{ textAlign: "center", marginBottom: "16px" }}>
+              {!showReturningCheck ? (
+                <button
+                  type="button"
+                  onClick={() => setShowReturningCheck(true)}
+                  style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "0.8125rem", cursor: "pointer", padding: 0, textDecoration: "underline" }}
+                >
+                  Problems with access? Check here.
+                </button>
+              ) : (
+                <div style={{ background: "var(--bg-alt, #F8F8F6)", border: "1px solid var(--border, #E4E4E2)", borderRadius: "8px", padding: "14px 16px", textAlign: "left" }}>
+                  <p style={{ margin: "0 0 10px", fontSize: "0.875rem", fontWeight: 600, color: "var(--text-primary)" }}>
+                    Enter the email you purchased with:
+                  </p>
+                  <div style={{ display: "flex", gap: "8px" }}>
+                    <input
+                      type="email"
+                      value={returningEmail}
+                      onChange={(e) => setReturningEmail(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          handleReturningEmailCheck();
+                        }
+                      }}
+                      placeholder="your@email.com"
+                      style={{
+                        flex: 1, padding: "10px 12px", fontSize: "0.9375rem",
+                        border: "1px solid var(--border, #E4E4E2)", borderRadius: "6px",
+                        background: "var(--surface, #FFFFFF)", color: "var(--text-primary)", outline: "none", boxSizing: "border-box" as const,
+                      }}
+                    />
+                    <button
+                      type="button"
+                      onClick={handleReturningEmailCheck}
+                      disabled={returningCheckLoading || !returningEmail.trim()}
+                      style={{
+                        padding: "10px 16px", fontSize: "0.875rem", fontWeight: 600,
+                        background: "var(--dark, #161618)", color: "#FFFFFF",
+                        border: "none", borderRadius: "6px",
+                        cursor: returningCheckLoading || !returningEmail.trim() ? "not-allowed" : "pointer",
+                        opacity: returningCheckLoading || !returningEmail.trim() ? 0.5 : 1,
+                        flexShrink: 0, whiteSpace: "nowrap" as const,
+                      }}
+                    >
+                      {returningCheckLoading ? "Checking..." : "Check access"}
+                    </button>
+                  </div>
+                  {returningCheckError && (
+                    <p style={{ fontSize: "0.8125rem", color: "#DC2626", marginTop: "8px" }}>{returningCheckError}</p>
+                  )}
+                </div>
               )}
             </div>
-          )}
-        </div>
+          </>
+        )}
 
         {/* Edit inputs link */}
         <button

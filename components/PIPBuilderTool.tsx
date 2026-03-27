@@ -1156,8 +1156,8 @@ export default function PIPBuilderTool({
               }}
               style={{
                 width: "100%", padding: "13px 20px", fontSize: "0.9375rem", fontWeight: 700,
-                background: "var(--dark, #161618)", color: "#FFFFFF",
-                border: "1px solid rgba(255,255,255,0.2)", borderRadius: "8px",
+                background: "#1E7AB8", color: "#FFFFFF",
+                border: "none", borderRadius: "8px",
                 cursor: "pointer", transition: "background 0.15s ease",
               }}
             >

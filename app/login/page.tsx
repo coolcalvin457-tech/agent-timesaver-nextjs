@@ -4,7 +4,7 @@
 // Reads ?redirect= param to pass through to magic link for post-login redirect.
 
 import LoginForm from "@/components/LoginForm";
-import NavClient from "@/components/NavClient";
+import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
 interface LoginPageProps {
@@ -22,7 +22,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
 
   return (
     <>
-      <NavClient />
+      <Nav />
       <main className="login-page">
         <LoginForm redirectTo={redirectTo} />
       </main>

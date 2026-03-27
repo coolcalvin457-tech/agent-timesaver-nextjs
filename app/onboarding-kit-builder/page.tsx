@@ -1,6 +1,6 @@
 import OnboardingKitBuilderTool from "@/components/OnboardingKitBuilderTool";
 import KitPreviewCards from "@/components/KitPreviewCards";
-import NavClient from "@/components/NavClient";
+import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import type { Metadata } from "next";
 
@@ -25,7 +25,7 @@ export default function OnboardingKitBuilderPage({
 }) {
   return (
     <>
-      <NavClient />
+      <Nav />
       <main
         style={{
           background: "linear-gradient(180deg, #1A1B22 0%, #0E0E10 100%)",

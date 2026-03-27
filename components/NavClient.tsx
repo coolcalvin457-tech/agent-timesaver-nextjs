@@ -3,11 +3,20 @@
 import { useEffect, useState, useRef } from "react";
 import { useAuth } from "@/components/AuthProvider";
 
-export default function NavClient() {
+interface NavClientProps {
+  /** Server-read paa_name cookie value. Prevents auth button blink. */
+  initialName?: string | null;
+}
+
+export default function NavClient({ initialName }: NavClientProps) {
   const [scrolled, setScrolled] = useState(false);
   const { user, loading, logout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Use initialName from server cookie for instant render.
+  // Once AuthProvider resolves, `user` takes over.
+  const displayName = user?.firstName ?? (loading ? initialName ?? null : null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -47,19 +56,14 @@ export default function NavClient() {
             <li><a href="/community">Community</a></li>
           </ul>
           <div className="nav-actions">
-            {loading ? (
-              /* Fixed-size placeholder to prevent layout shift — no visible content */
-              <span className="nav-cta" style={{ opacity: 0, pointerEvents: "none" }}>
-                Sign In
-              </span>
-            ) : user ? (
-              /* Logged in: show first name + dropdown */
+            {displayName ? (
+              /* Logged in (or server cookie says logged in): show name + dropdown */
               <div className="nav-user-wrap" ref={dropdownRef}>
                 <button
                   className="nav-user-btn"
                   onClick={() => setDropdownOpen((prev) => !prev)}
                 >
-                  {user.firstName}
+                  {displayName}
                   <svg
                     width="12"
                     height="12"
@@ -87,7 +91,7 @@ export default function NavClient() {
                 )}
               </div>
             ) : (
-              /* Not logged in: Sign In button */
+              /* Not logged in */
               <a href="/login" className="nav-cta">
                 Sign In
               </a>

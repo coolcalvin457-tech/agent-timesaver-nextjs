@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import NavClient from "@/components/NavClient";
+import Nav from "@/components/Nav";
 import BlogList from "@/components/BlogList";
 import Footer from "@/components/Footer";
 
@@ -79,7 +79,7 @@ const posts = [
 export default function BlogPage() {
   return (
     <>
-      <NavClient />
+      <Nav />
       <main
         style={{
           minHeight: "100vh",

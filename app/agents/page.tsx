@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import NavClient from "@/components/NavClient";
+import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import ToolsList from "@/components/ToolsList";
 
@@ -97,7 +97,7 @@ const tools = [
 export default function AgentsPage() {
   return (
     <>
-      <NavClient />
+      <Nav />
       <main
         style={{
           minHeight: "100vh",

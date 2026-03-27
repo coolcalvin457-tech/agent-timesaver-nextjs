@@ -1,6 +1,6 @@
 import HeroToolWrap from "@/components/HeroToolWrap";
 import HeroButton from "@/components/HeroButton";
-import NavClient from "@/components/NavClient";
+import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import PromptBuilderHomepageWrap from "@/components/PromptBuilderHomepageWrap";
 
@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <>
       {/* ── Navigation ──────────────────────────────────────────────────── */}
-      <NavClient />
+      <Nav />
 
       <main>
         {/* ── Section 1: Hero ─────────────────────────────────────────── */}

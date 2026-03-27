@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import NavClient from "@/components/NavClient";
+import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 export default function PostPage() {
   return (
     <>
-      <NavClient />
+      <Nav />
       <main
         style={{
           minHeight: "100vh",

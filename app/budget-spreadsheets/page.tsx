@@ -1,5 +1,5 @@
 import BudgetSpreadsheetTool from "@/components/BudgetSpreadsheetTool";
-import NavClient from "@/components/NavClient";
+import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
 export const metadata = {
@@ -11,7 +11,7 @@ export const metadata = {
 export default function BudgetSpreadsheetsPage() {
   return (
     <>
-      <NavClient />
+      <Nav />
       <main
         style={{
           background: "linear-gradient(180deg, #1A1B22 0%, #0E0E10 100%)",

@@ -3646,6 +3646,7 @@ input, textarea {
   border: 1px solid var(--border);
   border-radius: var(--radius-card);
   padding: 40px;
+  scroll-margin-top: 136px;
 }
 
 @media (max-width: 640px) {

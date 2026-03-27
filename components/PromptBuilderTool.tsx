@@ -3,6 +3,7 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { track } from "@vercel/analytics";
 import type { PromptKitResponse } from "@/app/api/prompt-kit/route";
+import ToolEmailGate from "@/components/shared/ToolEmailGate";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const WORK_TYPES = [
@@ -704,54 +705,16 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
     return (
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
-          {/* Checkmark icon */}
-          <div style={{ textAlign: "center", marginBottom: "32px" }}>
-            <div style={{ display: "inline-block", marginBottom: "16px" }}>
-              <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
-                <rect width="56" height="56" rx="12" fill="#22C55E" fillOpacity="0.12" />
-                <path d="M18 28.5L24.5 35L38 21" stroke="#22C55E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
-            <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "#FFFFFF", margin: "0 0 4px" }}>
-              Your prompt kit is ready.
-            </h2>
-            {jobTitle && (
-              <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.5)", margin: 0 }}>
-                {jobTitle}
-              </p>
-            )}
-          </div>
-
-          {/* Email form */}
-          <label
-            htmlFor="pb-email"
-            style={{ display: "block", fontSize: "0.9375rem", fontWeight: 600, color: "#FFFFFF", marginBottom: "12px", textAlign: "center" }}
-          >
-            Where should we send it?
-          </label>
-          <div style={{ display: "flex", gap: "10px" }}>
-            <input
-              id="pb-email"
-              type="email"
-              className="input"
-              placeholder="your@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              onKeyDown={(e) =>
-                e.key === "Enter" && !emailLoading && email.trim() && handleEmailSubmit()
-              }
-              autoFocus
-              autoComplete="email"
-              style={{ flex: 1 }}
-            />
-            <button
-              className="btn btn-primary btn-lg"
-              onClick={handleEmailSubmit}
-              disabled={emailLoading || !email.trim()}
-            >
-              {emailLoading ? "Sending..." : "Send My Kit"}
-            </button>
-          </div>
+          <ToolEmailGate
+            headline="Your prompt kit is ready."
+            subtitle={jobTitle || undefined}
+            email={email}
+            onEmailChange={setEmail}
+            onSubmit={handleEmailSubmit}
+            loading={emailLoading}
+            buttonLabel="Send My Kit"
+            inputId="pb-email"
+          />
         </div>
       </div>
     );

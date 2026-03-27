@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from "react";
 import { track } from "@vercel/analytics";
+import ToolEmailGate from "@/components/shared/ToolEmailGate";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -370,8 +371,7 @@ export default function BudgetSpreadsheetTool() {
   }
 
   // ── Email submit ───────────────────────────────────────────────
-  async function handleEmailSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  async function handleEmailSubmit() {
     if (!canSendEmail || !fileBlob || emailSubmitting) return;
 
     setEmailSubmitting(true);
@@ -614,133 +614,74 @@ export default function BudgetSpreadsheetTool() {
         ref={topRef}
       >
         <div className="screen">
-          <p className="results-tag" style={{ marginBottom: "6px" }}>
-            Your spreadsheet is ready.
-          </p>
-          <h2
-            className="results-headline"
-            style={{
-              fontFamily: "var(--font-display)",
-              fontWeight: 400,
-              marginBottom: "16px",
-            }}
+          <ToolEmailGate
+            headline="Your spreadsheet is ready."
+            subtitle={budgetTitle || undefined}
+            email={email}
+            onEmailChange={setEmail}
+            onSubmit={handleEmailSubmit}
+            loading={emailSubmitting}
+            buttonLabel="Send My Spreadsheet"
+            errorMessage={emailError || undefined}
+            inputId="budget-email"
           >
-            {budgetTitle}
-          </h2>
-
-          {budgetSections.length > 0 && (
-            <div
-              style={{
-                background: "rgba(255,255,255,0.04)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                borderRadius: "10px",
-                padding: "16px 20px",
-                marginBottom: "24px",
-              }}
-            >
-              <p
-                style={{
-                  margin: "0 0 12px 0",
-                  fontSize: "0.8125rem",
-                  color: "rgba(255,255,255,0.4)",
-                }}
-              >
-                {budgetSections.length} section
-                {budgetSections.length !== 1 ? "s" : ""} · {totalItems} line
-                item{totalItems !== 1 ? "s" : ""}
-              </p>
+            {budgetSections.length > 0 && (
               <div
-                style={{ display: "flex", flexDirection: "column", gap: "8px" }}
-              >
-                {budgetSections.map((s) => (
-                  <div
-                    key={s.name}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      gap: "12px",
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontSize: "0.875rem",
-                        color: "rgba(255,255,255,0.7)",
-                      }}
-                    >
-                      {s.name}
-                    </span>
-                    <span
-                      style={{
-                        fontSize: "0.8125rem",
-                        color: "rgba(255,255,255,0.3)",
-                        flexShrink: 0,
-                      }}
-                    >
-                      {s.rowCount} item{s.rowCount !== 1 ? "s" : ""}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          <p
-            className="screen-subheadline"
-            style={{ marginTop: 0, marginBottom: "20px" }}
-          >
-            Enter your email to download. A copy goes to your inbox.
-          </p>
-
-          <form className="save-card" onSubmit={handleEmailSubmit} noValidate>
-            <div className="email-row">
-              <input
-                id="budget-email"
-                type="email"
-                className="input"
-                placeholder="your@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                autoComplete="email"
-                disabled={emailSubmitting}
-                autoFocus
-              />
-              <button
-                type="submit"
-                className="btn btn-primary"
-                disabled={!canSendEmail || emailSubmitting}
-              >
-                {emailSubmitting ? "Sending..." : "Send My Spreadsheet"}
-              </button>
-            </div>
-            {emailError && (
-              <p
                 style={{
-                  marginTop: "8px",
-                  fontSize: "0.8125rem",
-                  color: "#e05555",
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  borderRadius: "10px",
+                  padding: "16px 20px",
+                  marginBottom: "24px",
                 }}
               >
-                {emailError}
-              </p>
+                <p
+                  style={{
+                    margin: "0 0 12px 0",
+                    fontSize: "0.8125rem",
+                    color: "rgba(255,255,255,0.4)",
+                  }}
+                >
+                  {budgetSections.length} section
+                  {budgetSections.length !== 1 ? "s" : ""} · {totalItems} line
+                  item{totalItems !== 1 ? "s" : ""}
+                </p>
+                <div
+                  style={{ display: "flex", flexDirection: "column", gap: "8px" }}
+                >
+                  {budgetSections.map((s) => (
+                    <div
+                      key={s.name}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        gap: "12px",
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontSize: "0.875rem",
+                          color: "rgba(255,255,255,0.7)",
+                        }}
+                      >
+                        {s.name}
+                      </span>
+                      <span
+                        style={{
+                          fontSize: "0.8125rem",
+                          color: "rgba(255,255,255,0.3)",
+                          flexShrink: 0,
+                        }}
+                      >
+                        {s.rowCount} item{s.rowCount !== 1 ? "s" : ""}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             )}
-          </form>
-
-          <button
-            style={{
-              background: "none",
-              border: "none",
-              color: "rgba(255,255,255,0.25)",
-              fontSize: "0.8125rem",
-              cursor: "pointer",
-              marginTop: "16px",
-              padding: "0",
-            }}
-            onClick={handleReset}
-            type="button"
-          >
-            Start over
-          </button>
+          </ToolEmailGate>
         </div>
       </div>
     );

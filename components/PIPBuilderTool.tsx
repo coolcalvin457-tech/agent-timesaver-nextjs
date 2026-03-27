@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import ToolEmailGate from "@/components/shared/ToolEmailGate";
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
@@ -570,8 +571,7 @@ export default function PIPBuilderTool({
 
   // ── Email submit ──────────────────────────────────────────
 
-  async function handleEmailSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  async function handleEmailSubmit() {
     if (!email.trim() || !fileBlob) return;
 
     setEmailSubmitting(true);
@@ -1304,56 +1304,17 @@ export default function PIPBuilderTool({
   if (screen === "email-gate") {
     return (
       <div ref={toolContainerRef} className="okb-tool">
-        <div style={{ textAlign: "center", marginBottom: "32px" }}>
-          <div style={{ display: "inline-block", marginBottom: "16px" }}>
-            <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
-              <rect width="56" height="56" rx="12" fill="#22C55E" fillOpacity="0.12" />
-              <path d="M18 28.5L24.5 35L38 21" stroke="#22C55E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
-          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 4px" }}>
-            {employeeName ? `${employeeName}'s` : "Your"} PIP is ready.
-          </h2>
-          {employeeRole && (
-            <p style={{ fontSize: "0.875rem", color: "var(--text-muted)", margin: 0 }}>
-              {employeeRole}
-            </p>
-          )}
-        </div>
-
-        {/* Email form */}
-        <form onSubmit={handleEmailSubmit}>
-          <div style={fieldGroupStyle}>
-            <label style={labelStyle}>Where should we send it?</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="your@email.com"
-              required
-              style={inputStyle}
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="btn btn-primary btn-lg btn-full"
-            disabled={emailSubmitting || !email.trim()}
-            style={{ marginBottom: "12px", opacity: emailSubmitting ? 0.7 : 1 }}
-          >
-            {emailSubmitting ? "Sending..." : "Send My PIP"}
-          </button>
-        </form>
-
-        {emailError && <p style={{ ...errorStyle, marginBottom: "8px" }}>{emailError}</p>}
-
-        <button
-          type="button"
-          onClick={handleReset}
-          style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "0.875rem", cursor: "pointer", marginTop: "20px", padding: 0, textDecoration: "underline" }}
-        >
-          Start over
-        </button>
+        <ToolEmailGate
+          headline={`${employeeName ? `${employeeName}'s` : "Your"} PIP is ready.`}
+          subtitle={employeeRole || undefined}
+          email={email}
+          onEmailChange={setEmail}
+          onSubmit={handleEmailSubmit}
+          loading={emailSubmitting}
+          buttonLabel="Send My PIP"
+          errorMessage={emailError || undefined}
+          inputId="pip-email"
+        />
       </div>
     );
   }

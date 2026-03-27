@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import ToolEmailGate from "@/components/shared/ToolEmailGate";
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
@@ -704,8 +705,7 @@ export default function OnboardingKitBuilderTool({
 
   // ── Email submit: download + send simultaneously ──────────
 
-  async function handleEmailSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  async function handleEmailSubmit() {
     if (!email.trim() || !email.includes("@") || !fileBlob || emailSubmitting) return;
 
     setEmailSubmitting(true);
@@ -1452,61 +1452,17 @@ export default function OnboardingKitBuilderTool({
   if (screen === "email-gate") {
     return (
       <div ref={toolContainerRef} className="okb-tool">
-        <div style={{ textAlign: "center", marginBottom: "32px" }}>
-          <div style={{ display: "inline-block", marginBottom: "16px" }}>
-            <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
-              <rect width="56" height="56" rx="12" fill="#22C55E" fillOpacity="0.12" />
-              <path d="M18 28.5L24.5 35L38 21" stroke="#22C55E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
-          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 4px" }}>
-            {hireName ? `${hireName}'s` : "The"} onboarding kit is ready.
-          </h2>
-          {hireTitle && (
-            <p style={{ fontSize: "0.875rem", color: "var(--text-muted)", margin: 0 }}>
-              {hireTitle}
-            </p>
-          )}
-        </div>
-
-        {/* Email form */}
-        <form onSubmit={handleEmailSubmit} noValidate>
-          <label
-            htmlFor="okb-email"
-            style={{ display: "block", fontSize: "0.9375rem", fontWeight: 600, color: "var(--text-primary)", marginBottom: "10px" }}
-          >
-            Where should we send it?
-          </label>
-          <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
-            <input
-              id="okb-email"
-              type="email"
-              className="input"
-              placeholder="your@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              autoComplete="email"
-              disabled={emailSubmitting}
-              style={{ flex: 1 }}
-            />
-            <button
-              type="submit"
-              className="btn btn-primary btn-lg"
-              disabled={!email.trim() || !email.includes("@") || emailSubmitting}
-            >
-              {emailSubmitting ? "Sending..." : "Send My Kit"}
-            </button>
-          </div>
-          {emailError && <p style={{ ...errorStyle, marginBottom: "8px" }}>{emailError}</p>}
-        </form>
-
-        <button
-          type="button"
-          onClick={handleReset}
-          style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "0.875rem", cursor: "pointer", marginTop: "20px", padding: 0, textDecoration: "underline" }}
-        >
-          Start over
-        </button>
+        <ToolEmailGate
+          headline={`${hireName ? `${hireName}'s` : "The"} onboarding kit is ready.`}
+          subtitle={hireTitle || undefined}
+          email={email}
+          onEmailChange={setEmail}
+          onSubmit={handleEmailSubmit}
+          loading={emailSubmitting}
+          buttonLabel="Send My Kit"
+          errorMessage={emailError || undefined}
+          inputId="okb-email"
+        />
       </div>
     );
   }

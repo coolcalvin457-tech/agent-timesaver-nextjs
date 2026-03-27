@@ -2,14 +2,16 @@
 
 // ─── LoginForm ───────────────────────────────────────────────────────────────
 //
-// Single form for both signup and login (Option A from plan).
-// Always shows: First Name, Email, Job Title (optional).
-// If email already exists, server ignores name/job title and sends the link.
-// After submit: "Check your email" screen.
+// Email-first login flow:
+//   1. User enters email → submit
+//   2. If existing user: server sends magic link → "Check your email"
+//   3. If new user: server returns needsSignup → show name fields → resubmit
+//
+// After submit: "Check your email" screen with resend.
 
 import { useState } from "react";
 
-type Screen = "form" | "check-email" | "error";
+type Screen = "email" | "signup" | "check-email";
 
 interface LoginFormProps {
   /** Optional redirect path after login (passed to magic link). */
@@ -17,7 +19,7 @@ interface LoginFormProps {
 }
 
 export default function LoginForm({ redirectTo }: LoginFormProps) {
-  const [screen, setScreen] = useState<Screen>("form");
+  const [screen, setScreen] = useState<Screen>("email");
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
   const [jobTitle, setJobTitle] = useState("");
@@ -25,7 +27,24 @@ export default function LoginForm({ redirectTo }: LoginFormProps) {
   const [errorMsg, setErrorMsg] = useState("");
   const [resendCooldown, setResendCooldown] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const submitLogin = async () => {
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: email.trim(),
+        firstName: firstName.trim() || undefined,
+        jobTitle: jobTitle.trim() || undefined,
+      }),
+    });
+
+    const data = await res.json();
+    return { ok: res.ok, status: res.status, data };
+  };
+
+  // ── Email-only submit (step 1) ───────────────────────────────────────────
+
+  const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg("");
 
@@ -33,31 +52,21 @@ export default function LoginForm({ redirectTo }: LoginFormProps) {
       setErrorMsg("Email is required.");
       return;
     }
-    // No client-side check for firstName — returning users only need email.
-    // Server returns an error for new users who skip the name field.
 
     setLoading(true);
 
     try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: email.trim(),
-          firstName: firstName.trim(),
-          jobTitle: jobTitle.trim() || undefined,
-        }),
-      });
+      const { ok, data } = await submitLogin();
 
-      const data = await res.json();
-
-      if (!res.ok) {
+      if (ok) {
+        // Existing user: link sent
+        setScreen("check-email");
+      } else if (data.error?.includes("First name is required")) {
+        // New user: show signup fields
+        setScreen("signup");
+      } else {
         setErrorMsg(data.error || "Something went wrong. Please try again.");
-        setLoading(false);
-        return;
       }
-
-      setScreen("check-email");
     } catch {
       setErrorMsg("Something went wrong. Please try again.");
     } finally {
@@ -65,24 +74,44 @@ export default function LoginForm({ redirectTo }: LoginFormProps) {
     }
   };
 
+  // ── Signup submit (step 2 for new users) ─────────────────────────────────
+
+  const handleSignupSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMsg("");
+
+    if (!firstName.trim()) {
+      setErrorMsg("First name is required.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const { ok, data } = await submitLogin();
+
+      if (ok) {
+        setScreen("check-email");
+      } else {
+        setErrorMsg(data.error || "Something went wrong. Please try again.");
+      }
+    } catch {
+      setErrorMsg("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ── Resend handler ───────────────────────────────────────────────────────
+
   const handleResend = async () => {
     if (resendCooldown) return;
     setResendCooldown(true);
     setErrorMsg("");
 
     try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: email.trim(),
-          firstName: firstName.trim(),
-          jobTitle: jobTitle.trim() || undefined,
-        }),
-      });
-
-      const data = await res.json();
-      if (!res.ok) {
+      const { ok, data } = await submitLogin();
+      if (!ok) {
         setErrorMsg(data.error || "Could not resend. Please try again.");
       }
     } catch {
@@ -93,7 +122,7 @@ export default function LoginForm({ redirectTo }: LoginFormProps) {
     setTimeout(() => setResendCooldown(false), 60_000);
   };
 
-  // ── Check your email screen ──────────────────────────────────────────────
+  // ── Check your email screen ────────────────────────────────────────────
 
   if (screen === "check-email") {
     return (
@@ -132,32 +161,90 @@ export default function LoginForm({ redirectTo }: LoginFormProps) {
     );
   }
 
-  // ── Sign in form ─────────────────────────────────────────────────────────
+  // ── Signup form (new users only) ───────────────────────────────────────
+
+  if (screen === "signup") {
+    return (
+      <div className="login-card">
+        <h1 className="login-headline">Create your account</h1>
+        <p className="login-subtext">
+          Looks like you&apos;re new here. Tell us your name and we&apos;ll send
+          a sign-in link to <strong>{email}</strong>.
+        </p>
+
+        <form onSubmit={handleSignupSubmit} className="login-form">
+          <div className="login-field">
+            <label htmlFor="login-firstName" className="login-label">
+              First name
+            </label>
+            <input
+              id="login-firstName"
+              type="text"
+              className="input"
+              placeholder="Sarah"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              autoComplete="given-name"
+              autoFocus
+            />
+          </div>
+
+          <div className="login-field">
+            <label htmlFor="login-jobTitle" className="login-label">
+              Job title{" "}
+              <span style={{ color: "var(--text-muted, #888886)", fontWeight: 400 }}>
+                (optional)
+              </span>
+            </label>
+            <input
+              id="login-jobTitle"
+              type="text"
+              className="input"
+              placeholder="HR Manager"
+              value={jobTitle}
+              onChange={(e) => setJobTitle(e.target.value)}
+              autoComplete="organization-title"
+            />
+          </div>
+
+          {errorMsg && <p className="login-error">{errorMsg}</p>}
+
+          <button
+            type="submit"
+            className="btn btn-dark-cta btn-full"
+            disabled={loading}
+            style={{ marginTop: "8px" }}
+          >
+            {loading ? "Sending..." : "Send me a sign-in link"}
+          </button>
+
+          <button
+            type="button"
+            className="login-resend-btn"
+            onClick={() => {
+              setScreen("email");
+              setErrorMsg("");
+            }}
+            style={{ marginTop: "8px" }}
+          >
+            Use a different email
+          </button>
+        </form>
+      </div>
+    );
+  }
+
+  // ── Email-first form (default) ─────────────────────────────────────────
 
   return (
     <div className="login-card">
       <h1 className="login-headline">Sign in to Prompt AI Agents</h1>
       <p className="login-subtext">
-        Enter your info and we&apos;ll email you a sign-in link. No password
-        needed.
+        Enter your email and we&apos;ll send you a sign-in link.
+        No password needed.
       </p>
 
-      <form onSubmit={handleSubmit} className="login-form">
-        <div className="login-field">
-          <label htmlFor="login-firstName" className="login-label">
-            First name
-          </label>
-          <input
-            id="login-firstName"
-            type="text"
-            className="input"
-            placeholder="Sarah"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            autoComplete="given-name"
-          />
-        </div>
-
+      <form onSubmit={handleEmailSubmit} className="login-form">
         <div className="login-field">
           <label htmlFor="login-email" className="login-label">
             Email
@@ -170,24 +257,7 @@ export default function LoginForm({ redirectTo }: LoginFormProps) {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             autoComplete="email"
-          />
-        </div>
-
-        <div className="login-field">
-          <label htmlFor="login-jobTitle" className="login-label">
-            Job title{" "}
-            <span style={{ color: "var(--text-muted, #888886)", fontWeight: 400 }}>
-              (optional)
-            </span>
-          </label>
-          <input
-            id="login-jobTitle"
-            type="text"
-            className="input"
-            placeholder="HR Manager"
-            value={jobTitle}
-            onChange={(e) => setJobTitle(e.target.value)}
-            autoComplete="organization-title"
+            autoFocus
           />
         </div>
 
@@ -199,7 +269,7 @@ export default function LoginForm({ redirectTo }: LoginFormProps) {
           disabled={loading}
           style={{ marginTop: "8px" }}
         >
-          {loading ? "Sending..." : "Send me a sign-in link"}
+          {loading ? "Sending..." : "Continue"}
         </button>
       </form>
     </div>

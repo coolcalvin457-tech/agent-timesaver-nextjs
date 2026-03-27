@@ -92,7 +92,7 @@ async function sendPromptKitEmail(
 <body style="margin:0; padding:0; background:#f0f0ee; font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif; -webkit-font-smoothing:antialiased;">
 
   <!-- Pre-header: controls inbox preview text -->
-  <span style="display:none; max-height:0; overflow:hidden; mso-hide:all;">${totalPrompts} prompts built for ${jobTitle}. Your AI Profile is inside.</span>
+  <span style="display:none; max-height:0; overflow:hidden; mso-hide:all;">${totalPrompts} prompts built for ${jobTitle}. Your AI Profile is inside.&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;</span>
 
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f0ee; padding: 48px 24px;">
     <tr>

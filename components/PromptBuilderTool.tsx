@@ -4,6 +4,7 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { track } from "@vercel/analytics";
 import type { PromptKitResponse } from "@/app/api/prompt-kit/route";
 import ToolEmailGate from "@/components/shared/ToolEmailGate";
+import ToolLoadingScreen from "@/components/shared/ToolLoadingScreen";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const WORK_TYPES = [
@@ -629,73 +630,12 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
   if (screen === "loading") {
     return (
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
-        <div style={{ textAlign: "center", padding: "40px 0 24px" }}>
-          <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, lineHeight: 1.25, color: "#FFFFFF", margin: "0 0 6px" }}>
-            Building your prompt kit.
-          </h2>
-          <p className="loading-subline" style={{ marginTop: "8px", marginBottom: "32px" }}>
-            About 1 minute.
-          </p>
-
-          {/* Step-by-step progress */}
-          <div
-            style={{
-              textAlign: "left",
-              maxWidth: "300px",
-              margin: "0 auto",
-              display: "flex",
-              flexDirection: "column",
-              gap: "10px",
-            }}
-          >
-            {LOADING_STEPS.map((step, i) => {
-              const isDone = i < loadingStep;
-              const isActive = i === loadingStep;
-              return (
-                <div
-                  key={step}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "10px",
-                    opacity: isDone || isActive ? 1 : 0.35,
-                    transition: "opacity 0.4s ease",
-                  }}
-                >
-                  <span
-                    style={{
-                      width: "20px",
-                      height: "20px",
-                      borderRadius: "50%",
-                      border: `1.5px solid ${isDone ? "#1A7A4A" : isActive ? "#1E7AB8" : "rgba(255,255,255,0.2)"}`,
-                      background: isDone ? "#1A7A4A" : "transparent",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                      fontSize: "0.6875rem",
-                      color: "#FFFFFF",
-                      transition: "all 0.4s ease",
-                    }}
-                  >
-                    {isDone ? "✓" : isActive ? (
-                      <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#1E7AB8", display: "block" }} />
-                    ) : null}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: "0.875rem",
-                      color: isDone ? "rgba(255,255,255,0.5)" : isActive ? "#FFFFFF" : "rgba(255,255,255,0.75)",
-                      fontWeight: isActive ? 600 : 400,
-                    }}
-                  >
-                    {step}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+        <ToolLoadingScreen
+          headingText="Building your prompt kit."
+          timeEstimate="About 1 minute."
+          steps={LOADING_STEPS}
+          activeStep={loadingStep}
+        />
       </div>
     );
   }

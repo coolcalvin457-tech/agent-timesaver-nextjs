@@ -5,6 +5,7 @@ import { track } from "@vercel/analytics";
 
 import type { Question } from "@/app/api/questions/route";
 import type { Workflow, ROI } from "@/app/api/workflows/route";
+import ToolLoadingScreen from "@/components/shared/ToolLoadingScreen";
 
 // ─── State Types ───────────────────────────────────────────────────────────────
 type Screen =
@@ -506,19 +507,11 @@ export default function TimesaverTool() {
       {state.screen === "loading" && (
         <div className="loading-screen" style={{ minHeight: "320px" }}>
           <div className="tool-tag" style={{ textAlign: "center" }}>AGENT: Timesaver</div>
-          <div className="spinner" />
-          {loadingType === "questions" ? (
-            <>
-              <div className="loading-headline">Personalizing your questions...</div>
-              <div className="loading-subline" style={{ marginTop: "8px" }}>About 5 seconds.</div>
-            </>
-          ) : (
-            <>
-              <div className="loading-headline">Building your workflows...</div>
-              <div className="loading-subline">Calculating hours saved...</div>
-              <div className="loading-subline" style={{ marginTop: "8px" }}>About 15 seconds.</div>
-            </>
-          )}
+          <ToolLoadingScreen
+            headingText={loadingType === "questions" ? "Personalizing your questions..." : "Building your workflows..."}
+            timeEstimate={loadingType === "questions" ? "About 5 seconds." : "About 15 seconds."}
+            subLine={loadingType === "workflows" ? "Calculating hours saved..." : undefined}
+          />
         </div>
       )}
 

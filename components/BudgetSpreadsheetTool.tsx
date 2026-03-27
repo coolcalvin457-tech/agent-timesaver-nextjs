@@ -3,6 +3,7 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { track } from "@vercel/analytics";
 import ToolEmailGate from "@/components/shared/ToolEmailGate";
+import ToolLoadingScreen from "@/components/shared/ToolLoadingScreen";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -591,14 +592,12 @@ export default function BudgetSpreadsheetTool() {
         ref={topRef}
       >
         <div className="loading-screen" style={{ minHeight: "320px" }}>
-          <div className="spinner" />
-          <p className="loading-headline">Building your spreadsheet...</p>
-          <p key={loadingMsgIndex} className="loading-subline">
-            {loadingMessages[loadingMsgIndex]}
-          </p>
-          <p className="loading-subline" style={{ marginTop: "8px" }}>
-            About 20 seconds.
-          </p>
+          <ToolLoadingScreen
+            headingText="Building your spreadsheet..."
+            timeEstimate="About 20 seconds."
+            subLine={loadingMessages[loadingMsgIndex]}
+            subLineKey={loadingMsgIndex}
+          />
         </div>
       </div>
     );

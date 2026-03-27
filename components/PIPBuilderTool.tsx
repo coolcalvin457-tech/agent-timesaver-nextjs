@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import ToolEmailGate from "@/components/shared/ToolEmailGate";
+import ToolLoadingScreen from "@/components/shared/ToolLoadingScreen";
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
@@ -1249,53 +1250,12 @@ export default function PIPBuilderTool({
   if (screen === "loading") {
     return (
       <div ref={toolContainerRef} className="okb-tool">
-        <div style={{ textAlign: "center", padding: "8px 0 28px" }}>
-          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 12px" }}>
-            Building {employeeName ? `${employeeName}'s` : "the"} PIP.
-          </h2>
-          <p className="loading-subline" style={{ fontSize: "0.875rem", color: "var(--text-muted)", margin: 0 }}>
-            About 1 minute.
-          </p>
-        </div>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-          {LOADING_STEPS.map((step, i) => {
-            const isDone = i < loadingStep;
-            const isActive = i === loadingStep;
-            return (
-              <div key={step} style={{
-                display: "flex", alignItems: "center", gap: "12px",
-                padding: "10px 14px",
-                background: isDone ? "rgba(26,122,74,0.06)" : isActive ? "rgba(30,122,184,0.06)" : "var(--bg-alt, #F8F8F6)",
-                border: `1px solid ${isDone ? "rgba(26,122,74,0.2)" : isActive ? "rgba(30,122,184,0.2)" : "var(--border, #E4E4E2)"}`,
-                borderRadius: "8px",
-                transition: "all 0.3s ease",
-              }}>
-                <div style={{ width: "20px", height: "20px", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  {isDone ? (
-                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                      <circle cx="9" cy="9" r="9" fill="#1A7A4A" fillOpacity="0.15" />
-                      <path d="M5 9l2.8 2.8L13 6.5" stroke="#1A7A4A" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  ) : isActive ? (
-                    <div style={{
-                      width: "10px", height: "10px", borderRadius: "50%", background: "#1E7AB8",
-                      animation: "pulse 1.2s ease-in-out infinite",
-                    }} />
-                  ) : (
-                    <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: "var(--border, #E4E4E2)" }} />
-                  )}
-                </div>
-                <span style={{
-                  fontSize: "0.875rem", fontWeight: isActive ? 600 : isDone ? 500 : 400,
-                  color: isDone ? "#1A7A4A" : isActive ? "var(--text-primary)" : "var(--text-muted)",
-                }}>
-                  {step}
-                </span>
-              </div>
-            );
-          })}
-        </div>
+        <ToolLoadingScreen
+          headingText={`Building ${employeeName ? `${employeeName}'s` : "the"} PIP.`}
+          timeEstimate="About 1 minute."
+          steps={LOADING_STEPS}
+          activeStep={loadingStep}
+        />
       </div>
     );
   }

@@ -72,6 +72,15 @@ export async function GET(req: NextRequest) {
       maxAge: SESSION_DAYS * 24 * 60 * 60,
     });
 
+    // Client-readable cookie with first name (prevents nav blink on page load)
+    response.cookies.set("paa_name", user.first_name, {
+      httpOnly: false,
+      secure: true,
+      sameSite: "lax",
+      path: "/",
+      maxAge: SESSION_DAYS * 24 * 60 * 60,
+    });
+
     return response;
   } catch (error) {
     console.error("Auth verify error:", error);

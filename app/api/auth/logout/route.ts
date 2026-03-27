@@ -8,7 +8,18 @@ import { clearSessionCookie } from "@/lib/auth";
 export async function POST() {
   try {
     await clearSessionCookie();
-    return NextResponse.json({ success: true });
+
+    // Also clear the client-readable name cookie
+    const response = NextResponse.json({ success: true });
+    response.cookies.set("paa_name", "", {
+      httpOnly: false,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 0,
+    });
+
+    return response;
   } catch (error) {
     console.error("Auth logout error:", error);
     return NextResponse.json(

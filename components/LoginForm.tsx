@@ -241,7 +241,6 @@ export default function LoginForm({ redirectTo }: LoginFormProps) {
       <h1 className="login-headline">Sign in to Prompt AI Agents</h1>
       <p className="login-subtext">
         Enter your email and we&apos;ll send you a sign-in link.
-        No password needed.
       </p>
 
       <form onSubmit={handleEmailSubmit} className="login-form">

@@ -48,8 +48,8 @@ export default function NavClient() {
           </ul>
           <div className="nav-actions">
             {loading ? (
-              /* Invisible placeholder to prevent layout shift */
-              <span className="nav-cta" style={{ visibility: "hidden" }}>
+              /* Fixed-size placeholder to prevent layout shift — no visible content */
+              <span className="nav-cta" style={{ opacity: 0, pointerEvents: "none" }}>
                 Sign In
               </span>
             ) : user ? (

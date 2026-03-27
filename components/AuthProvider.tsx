@@ -48,23 +48,9 @@ export function useAuth() {
 
 // ─── Provider ────────────────────────────────────────────────────────────────
 
-/** Read the paa_name cookie synchronously (client-only, non-httpOnly). */
-function getNameFromCookie(): string | null {
-  if (typeof document === "undefined") return null;
-  const match = document.cookie.match(/(?:^|;\s*)paa_name=([^;]*)/);
-  return match ? decodeURIComponent(match[1]) : null;
-}
-
 export default function AuthProvider({ children }: { children: ReactNode }) {
-  // Seed initial state from the client-readable cookie to prevent nav blink.
-  // The full user object (id, email, jobTitle) loads async from /api/auth/me.
-  const cachedName = getNameFromCookie();
-  const [user, setUser] = useState<AuthUser | null>(
-    cachedName
-      ? { id: "", email: "", firstName: cachedName }
-      : null
-  );
-  const [loading, setLoading] = useState(!cachedName);
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const fetchUser = useCallback(async () => {
     try {

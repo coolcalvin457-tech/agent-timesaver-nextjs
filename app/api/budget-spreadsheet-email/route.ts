@@ -69,7 +69,7 @@ async function sendBudgetEmail(
     body: JSON.stringify({
       from: getFromAddress(),
       to: [email],
-      subject: `Your ${budgetTitle} is ready. AGENT: Budget Spreadsheets`,
+      subject: `Your ${budgetTitle} is ready`,
       html,
       attachments: [{ filename, content: fileData }],
     }),

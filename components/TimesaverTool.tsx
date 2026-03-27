@@ -706,7 +706,7 @@ export default function TimesaverTool() {
                 <input
                   className="input"
                   type="email"
-                  placeholder="Your email address..."
+                  placeholder="your@email.com"
                   value={emailGateInput}
                   onChange={(e) => setEmailGateInput(e.target.value)}
                   required

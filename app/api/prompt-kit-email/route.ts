@@ -194,7 +194,7 @@ async function sendPromptKitEmail(
     body: JSON.stringify({
       from,
       to: [email],
-      subject: `Your AI Prompt Kit for ${jobTitle}.`,
+      subject: `Your AI Prompt Kit for ${jobTitle}`,
       html,
     }),
   });

@@ -5,6 +5,7 @@ import { track } from "@vercel/analytics";
 import type { PromptKitResponse } from "@/app/api/prompt-kit/route";
 import ToolEmailGate from "@/components/shared/ToolEmailGate";
 import ToolLoadingScreen from "@/components/shared/ToolLoadingScreen";
+import CrossSellBlock from "@/components/shared/CrossSellBlock";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const WORK_TYPES = [
@@ -805,15 +806,14 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
           </div>
 
           {/* Cross-sell — AGENT: Workflow Builder */}
-          <div style={{ marginTop: "24px", paddingTop: "32px", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
-            <p className="pb-system-eyebrow">Your Next Step</p>
-            <h4 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "1.625rem", color: "rgba(255,255,255,0.92)", margin: "0 0 20px", lineHeight: 1.2 }}>AGENT: Workflow Builder</h4>
-            <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.55)", lineHeight: 1.6, margin: "0 0 4px" }}>Turn your prompts into repeatable AI workflows.</p>
-            <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.55)", lineHeight: 1.6, margin: "0 0 28px" }}>Built for real jobs. Not demos.</p>
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              <button className="btn btn-dark-cta" style={{ padding: "10px 28px", fontSize: "0.9rem", fontWeight: 500, letterSpacing: "0.04em", cursor: "default" }}>Try Now</button>
-            </div>
-          </div>
+          <CrossSellBlock
+            productName="AGENT: Workflow Builder"
+            descriptionLines={[
+              "Turn your prompts into repeatable AI workflows.",
+              "Built for real jobs. Not demos.",
+            ]}
+            buttonLabel="Try Now"
+          />
 
         </div>
       </div>

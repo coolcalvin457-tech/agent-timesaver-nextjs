@@ -117,14 +117,10 @@ export default function LoginForm({ redirectTo }: LoginFormProps) {
         </div>
         <h1 className="login-headline">Check your email</h1>
         <p className="login-subtext">
-          We sent a sign-in link to <strong>{email}</strong>. It expires in 15
-          minutes.
+          We sent a sign-in link to <strong>{email}</strong>.
         </p>
-        <p
-          className="login-subtext"
-          style={{ color: "var(--text-muted, #888886)", fontSize: "14px" }}
-        >
-          Don&apos;t see it? Check your spam folder.
+        <p className="login-subtext" style={{ marginTop: "4px" }}>
+          It expires in 15 minutes.
         </p>
         <button
           className="login-resend-btn"

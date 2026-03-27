@@ -83,7 +83,7 @@ export async function POST(req: Request) {
       (process.env.VERCEL_URL
         ? `https://${process.env.VERCEL_URL}`
         : "http://localhost:3000");
-    const verifyUrl = `${baseUrl}/auth/verify?token=${rawToken}`;
+    const verifyUrl = `${baseUrl}/api/auth/verify?token=${rawToken}`;
 
     // Send magic link email
     await sendMagicLinkEmail(email, user.first_name, verifyUrl);

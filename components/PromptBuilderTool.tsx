@@ -908,7 +908,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
             <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.55)", lineHeight: 1.6, margin: "0 0 4px" }}>Turn your prompts into repeatable AI workflows.</p>
             <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.55)", lineHeight: 1.6, margin: "0 0 28px" }}>Built for real jobs. Not demos.</p>
             <div style={{ display: "flex", justifyContent: "center" }}>
-              <a href="/agents" style={{ display: "inline-block", background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.22)", color: "#FFFFFF", borderRadius: "8px", padding: "12px 36px", fontSize: "0.9rem", fontWeight: 500, textDecoration: "none", letterSpacing: "0.01em" }}>See all agents</a>
+              <button style={{ display: "inline-block", background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.22)", color: "#FFFFFF", borderRadius: "8px", padding: "12px 36px", fontSize: "0.9rem", fontWeight: 500, cursor: "default", letterSpacing: "0.01em" }}>Try Now</button>
             </div>
           </div>
 

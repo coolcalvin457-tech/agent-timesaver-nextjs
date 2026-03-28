@@ -2196,6 +2196,10 @@ input, textarea {
   transition: border-color 0.15s;
 }
 
+.pb-prompt-card:last-child {
+  margin-bottom: 0;
+}
+
 .pb-prompt-card:hover {
   border-color: rgba(30, 122, 184, 0.25);
 }

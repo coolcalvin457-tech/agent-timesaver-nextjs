@@ -43,8 +43,8 @@ function buildCategoryHTML(category: PromptCategory, catIndex: number): string {
   return `
     <tr>
       <td style="padding: 0 0 8px 0;">
-        <p style="margin:0; padding-left:8px; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#888886;">
-          ${String(catIndex + 1).padStart(2, "0")} &nbsp;/&nbsp; ${category.name}
+        <p style="margin:0; padding-left:8px; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase;">
+          <span style="color:#aaaaaa;">${String(catIndex + 1).padStart(2, "0")}</span> <span style="color:#1e7ab8;">${category.name}</span>
         </p>
       </td>
     </tr>
@@ -79,7 +79,7 @@ async function sendPromptKitEmail(
     </p>
 
     <!-- Step 1: Prompts by category -->
-    <p style="margin:0 0 16px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#888886;">
+    <p style="margin:0 0 16px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
       STEP 1 &nbsp;/&nbsp; YOUR ${totalPrompts} PROMPTS
     </p>
     <table width="100%" cellpadding="0" cellspacing="0">
@@ -90,7 +90,7 @@ async function sendPromptKitEmail(
     <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:24px; margin-bottom:32px;">
       <tr>
         <td style="background:#f0f7fc; border:1px solid #bdd9ee; border-radius:12px; padding:24px;">
-          <p style="margin:0 0 4px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#888886;">
+          <p style="margin:0 0 4px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
             STEP 2 &nbsp;/&nbsp; SET UP YOUR AI PROFILE
           </p>
           <p style="margin:0 0 14px 0; font-size:13px; color:#555553; line-height:1.6;">
@@ -112,7 +112,7 @@ async function sendPromptKitEmail(
     <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
       <tr>
         <td style="background:#f8f8f6; border:1px solid #e4e4e2; border-radius:12px; padding:24px;">
-          <p style="margin:0 0 4px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#888886;">
+          <p style="margin:0 0 4px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
             STEP 3 &nbsp;/&nbsp; YOUR AI WORKSPACE SETUP
           </p>
           <p style="margin:0 0 14px 0; font-size:13px; color:#555553; line-height:1.6;">

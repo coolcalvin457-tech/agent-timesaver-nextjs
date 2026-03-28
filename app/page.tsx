@@ -39,7 +39,7 @@ export default function Home() {
         </section>
 
         {/* ── Section 2: Dream / Aspiration ───────────────────────────── */}
-        <section className="section section-dark" id="dream">
+        <section className="section section-dark" id="dream" style={{ paddingTop: "112px", paddingBottom: "112px" }}>
           <div className="container">
             <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center" }}>
               <h2 className="heading-1" style={{ color: "#fff", marginBottom: "var(--section-head-gap)", lineHeight: "var(--section-headline-lh)", fontSize: "var(--section-headline-size)", letterSpacing: "var(--section-headline-ls)" }}>

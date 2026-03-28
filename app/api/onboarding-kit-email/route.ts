@@ -33,38 +33,32 @@ async function sendOnboardingKitEmail(
       ${hireName} · ${hireTitle}
     </h1>
     <p style="margin:0 0 32px 0; font-size:15px; color:#555553; line-height:1.6;">
-      Here's the onboarding kit for ${hireName}, built for the ${hireTitle} role. It includes a welcome letter, first-week schedule, key contacts, 30/60/90 day expectations, and a new hire checklist.
+      Here's your onboarding kit for ${hireName}, built for the ${hireTitle} role. It's attached below and ready to open.
     </p>
 
-    <!-- Kit contents card -->
-    <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8f8f6; border:1px solid #e4e4e2; border-radius:12px; margin-bottom:24px;">
+    <!-- Next steps -->
+    <p style="margin:0 0 16px 0; font-size:15px; color:#555553; line-height:1.6;">
+      Before you share this with ${hireName}, three quick steps:
+    </p>
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
       <tr>
-        <td style="padding:20px 24px;">
-          <p style="margin:0 0 12px 0; font-size:13px; font-weight:700; color:#161618; letter-spacing:-0.01em;">
-            Your kit includes
+        <td style="padding:0 0 12px 0;">
+          <p style="margin:0; font-size:14px; color:#555553; line-height:1.6;">
+            <strong style="color:#161618;">1.</strong> Have the hiring manager review and sign the Welcome Letter. It's written in their voice and should have their sign-off before it reaches ${hireName}.
           </p>
-          <table width="100%" cellpadding="0" cellspacing="0">
-            ${["Warm Welcome Letter", "First-Week Schedule", "Key Contacts", "30-60-90 Day Plan", "New Hire Checklist"].map(
-              (item) => `
-            <tr>
-              <td style="padding: 4px 0;">
-                <p style="margin:0; font-size:13px; color:#555553;">
-                  <span style="color:#1e7ab8; font-weight:600; margin-right:8px;">·</span>${item}
-                </p>
-              </td>
-            </tr>`
-            ).join("")}
-          </table>
         </td>
       </tr>
-    </table>
-
-    <!-- Tip line -->
-    <table width="100%" cellpadding="0" cellspacing="0" style="background:#EBF5FF; border:1px solid #c8dff0; border-radius:10px; margin-bottom:32px;">
       <tr>
-        <td style="padding:14px 18px;">
-          <p style="margin:0; font-size:13px; color:#1E5A8A; line-height:1.5;">
-            <strong>Tip:</strong> Personalize the welcome letter signature before sharing. It takes 30 seconds and makes it feel like it came from the hiring manager directly.
+        <td style="padding:0 0 12px 0;">
+          <p style="margin:0; font-size:14px; color:#555553; line-height:1.6;">
+            <strong style="color:#161618;">2.</strong> Fill in any specifics the AI couldn't know: calendar invite links, meeting room details, IT setup.
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:0;">
+          <p style="margin:0; font-size:14px; color:#555553; line-height:1.6;">
+            <strong style="color:#161618;">3.</strong> Add your company logo or letterhead to remain on brand.
           </p>
         </td>
       </tr>
@@ -87,13 +81,13 @@ async function sendOnboardingKitEmail(
     <!-- CTA -->
     <a href="https://promptaiagents.com/onboarding-kit-builder"
        style="display:inline-block; background:#161618; color:#ffffff; font-size:14px; font-weight:600; text-decoration:none; padding:13px 26px; border-radius:8px; letter-spacing:-0.01em;">
-      Build another kit &rarr;
+      Build another kit
     </a>
   `;
 
   const html = buildBaseEmailHTML({
-    preHeaderText: `${hireName}'s onboarding kit is attached — ${hireTitle}`,
-    eyebrowLabel: "AGENT: Onboarding Kit Builder",
+    preHeaderText: `${hireName}'s onboarding kit is attached: ${hireTitle}`,
+    eyebrowLabel: "AGENT: Onboarding Kit",
     heroContent,
   });
 
@@ -106,7 +100,7 @@ async function sendOnboardingKitEmail(
     body: JSON.stringify({
       from: getFromAddress(),
       to: [email],
-      subject: `Your onboarding kit for ${hireName} — ${hireTitle}`,
+      subject: `Your onboarding kit for ${hireName}: ${hireTitle}`,
       html,
       attachments: [{ filename, content: fileData }],
     }),

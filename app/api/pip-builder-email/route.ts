@@ -101,7 +101,7 @@ async function sendPIPEmail(
     <!-- CTA -->
     <a href="https://promptaiagents.com/pip-builder"
        style="display:inline-block; background:#161618; color:#ffffff; font-size:14px; font-weight:600; text-decoration:none; padding:13px 26px; border-radius:8px; letter-spacing:-0.01em;">
-      Build another PIP &rarr;
+      Build another PIP
     </a>
   `;
 

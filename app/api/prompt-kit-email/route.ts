@@ -117,7 +117,7 @@ async function sendPromptKitEmail(
         <td>
           <a href="https://promptaiagents.com"
              style="display:inline-block; background:#161618; color:#ffffff; font-size:15px; font-weight:600; text-decoration:none; padding:14px 28px; border-radius:10px;">
-            Your prompts are ready. Now build the workflows. &rarr;
+            Your prompts are ready. Now build the workflows.
           </a>
         </td>
       </tr>

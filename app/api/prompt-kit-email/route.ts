@@ -96,13 +96,8 @@ async function sendPromptKitEmail(
           <p style="margin:0 0 14px 0; font-size:13px; color:#555553; line-height:1.6;">
             Paste this into your AI once. Every output after will gradually get better over time, as AI learns who you are.
           </p>
-          <p style="margin:0 0 14px 0; font-size:13px; color:#333331; line-height:1.7; font-family:monospace; background:#ffffff; border:1px solid #d0e8f5; border-radius:8px; padding:14px 16px;">
+          <p style="margin:0; font-size:13px; color:#333331; line-height:1.7; font-family:monospace; background:#ffffff; border:1px solid #d0e8f5; border-radius:8px; padding:14px 16px;">
             ${promptKit.aiProfile}
-          </p>
-          <p style="margin:0; font-size:12px; color:#888886; line-height:1.6;">
-            <strong>ChatGPT:</strong> Settings &rarr; Personalization &rarr; Custom Instructions &nbsp;&nbsp;
-            <strong>Claude:</strong> Settings &rarr; Profile &nbsp;&nbsp;
-            <strong>Gemini:</strong> Settings &rarr; Extensions &amp; Personalization
           </p>
         </td>
       </tr>

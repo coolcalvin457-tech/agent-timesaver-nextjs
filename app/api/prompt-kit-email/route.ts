@@ -68,19 +68,15 @@ async function sendPromptKitEmail(
   );
 
   const heroContent = `
-    <p style="margin:0 0 8px 0; font-size:13px; font-weight:600; color:#555553; letter-spacing:-0.01em;">
-      Your Prompt Kit is ready
+    <!-- Step 1: Prompts by category -->
+    <p style="margin:0 0 6px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
+      STEP 1
     </p>
     <h1 style="margin:0 0 8px 0; font-size:26px; font-weight:800; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
       ${totalPrompts} AI prompts built for ${jobTitle}.
     </h1>
-    <p style="margin:0 0 32px 0; font-size:15px; color:#555553; line-height:1.6;">
+    <p style="margin:0 0 24px 0; font-size:15px; color:#555553; line-height:1.6;">
       Copy any prompt below and paste it directly into your AI tool of choice.
-    </p>
-
-    <!-- Step 1: Prompts by category -->
-    <p style="margin:0 0 16px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
-      STEP 1 &nbsp;/&nbsp; YOUR ${totalPrompts} PROMPTS
     </p>
     <table width="100%" cellpadding="0" cellspacing="0">
       ${categoryRows}
@@ -90,8 +86,11 @@ async function sendPromptKitEmail(
     <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:24px; margin-bottom:32px;">
       <tr>
         <td style="background:#f0f7fc; border:1px solid #bdd9ee; border-radius:12px; padding:24px;">
-          <p style="margin:0 0 4px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
-            STEP 2 &nbsp;/&nbsp; SET UP YOUR AI PROFILE
+          <p style="margin:0 0 6px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
+            STEP 2
+          </p>
+          <p style="margin:0 0 8px 0; font-size:20px; font-weight:800; color:#161618; line-height:1.2; letter-spacing:-0.02em;">
+            Your AI Profile.
           </p>
           <p style="margin:0 0 14px 0; font-size:13px; color:#555553; line-height:1.6;">
             Paste this into your AI once. Every output after will gradually get better over time, as AI learns who you are.
@@ -107,8 +106,11 @@ async function sendPromptKitEmail(
     <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
       <tr>
         <td style="background:#f8f8f6; border:1px solid #e4e4e2; border-radius:12px; padding:24px;">
-          <p style="margin:0 0 4px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
-            STEP 3 &nbsp;/&nbsp; YOUR AI WORKSPACE SETUP
+          <p style="margin:0 0 6px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
+            STEP 3
+          </p>
+          <p style="margin:0 0 8px 0; font-size:20px; font-weight:800; color:#161618; line-height:1.2; letter-spacing:-0.02em;">
+            Your AI Workspace Setup.
           </p>
           <p style="margin:0 0 14px 0; font-size:13px; color:#555553; line-height:1.6;">
             Set this up once. AI will know who you are every time.

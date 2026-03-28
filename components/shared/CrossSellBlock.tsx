@@ -83,7 +83,7 @@ export default function CrossSellBlock({
           <button
             type="button"
             className="btn btn-cta"
-            style={{ padding: "10px 28px", fontSize: "0.9rem", fontWeight: 500, letterSpacing: "0.04em", cursor: "default", opacity: 0.85 }}
+            style={{ padding: "10px 28px", fontSize: "0.9rem", fontWeight: 500, letterSpacing: "0.04em", cursor: "pointer", opacity: 0.85 }}
             disabled
           >
             {buttonLabel}

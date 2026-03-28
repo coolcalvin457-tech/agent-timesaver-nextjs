@@ -328,6 +328,9 @@ export default function OnboardingKitBuilderTool({
   }, [screen]);
 
   // ── Auth: pre-fill email fields when logged in ──────────
+  // INTENTIONAL: paid tools pre-fill but do NOT auto-skip the email gate.
+  // Paid tools produce file downloads that need explicit user action.
+  // Free tools auto-skip instead. See paid-tools-copy-spec.md "Auth Skip Behavior".
   useEffect(() => {
     if (user) {
       setEmail(user.email);
@@ -1462,6 +1465,9 @@ export default function OnboardingKitBuilderTool({
   }
 
   // ── Error screen ─────────────────────────────────────────────
+  // "Start over" is INTENTIONAL here. Error screens are different from email gates.
+  // The user's build failed and they may want to restart with different inputs.
+  // See paid-tools-copy-spec.md "Error Screens: Start Over Is Allowed".
   return (
     <div ref={toolContainerRef} className="okb-tool">
       <div style={{ padding: "8px 0" }}>

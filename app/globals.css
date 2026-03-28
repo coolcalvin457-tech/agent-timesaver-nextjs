@@ -2267,6 +2267,12 @@ input, textarea {
   border-top: 2px solid var(--border);
 }
 
+/* When a system section follows a category, reduce margin to compensate
+   for the category's 32px margin-bottom (32 + 8 + 40 = 80px = same as Step 2→3) */
+.pb-category + .pb-system-section {
+  margin-top: 8px;
+}
+
 .pb-system-section > *:last-child {
   margin-bottom: 0;
 }

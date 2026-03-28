@@ -92,13 +92,13 @@ export default function TimesaverTool() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const topRef = useRef<HTMLDivElement>(null);
   const authSkipFired = useRef(false);
+  const isFirstRender = useRef(true);
 
   const [flipStage, setFlipStage] = useState<"idle" | "in">("idle");
 
   const go = useCallback((screen: Screen) => {
     setState((s) => ({ ...s, screen }));
     setFlipStage("in");
-    topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, []);
 
   useEffect(() => {
@@ -107,6 +107,15 @@ export default function TimesaverTool() {
       return () => clearTimeout(t);
     }
   }, [flipStage]);
+
+  // ── Scroll to top on screen change (skip initial render) ────────
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [state.screen]);
 
   // ── Auth: skip email gate if logged in ─────────────────────────
   useEffect(() => {

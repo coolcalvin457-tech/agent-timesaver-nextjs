@@ -43,7 +43,7 @@ function buildCategoryHTML(category: PromptCategory, catIndex: number): string {
   return `
     <tr>
       <td style="padding: 0 0 8px 0;">
-        <p style="margin:0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
+        <p style="margin:0; padding-left:8px; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#888886;">
           ${String(catIndex + 1).padStart(2, "0")} &nbsp;/&nbsp; ${category.name}
         </p>
       </td>
@@ -68,18 +68,18 @@ async function sendPromptKitEmail(
   );
 
   const heroContent = `
-    <p style="margin:0 0 8px 0; font-size:13px; font-weight:600; color:#1e7ab8; letter-spacing:-0.01em;">
+    <p style="margin:0 0 8px 0; font-size:13px; font-weight:600; color:#555553; letter-spacing:-0.01em;">
       Your Prompt Kit is ready
     </p>
     <h1 style="margin:0 0 8px 0; font-size:26px; font-weight:800; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
       ${totalPrompts} AI prompts built for ${jobTitle}.
     </h1>
     <p style="margin:0 0 32px 0; font-size:15px; color:#555553; line-height:1.6;">
-      Copy any prompt below and paste it directly into your AI tool of choice. Each one is ready to use. Just fill in the brackets and go.
+      Copy any prompt below and paste it directly into your AI tool of choice.
     </p>
 
     <!-- Step 1: Prompts by category -->
-    <p style="margin:0 0 16px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
+    <p style="margin:0 0 16px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#888886;">
       STEP 1 &nbsp;/&nbsp; YOUR ${totalPrompts} PROMPTS
     </p>
     <table width="100%" cellpadding="0" cellspacing="0">
@@ -90,7 +90,7 @@ async function sendPromptKitEmail(
     <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:24px; margin-bottom:32px;">
       <tr>
         <td style="background:#f0f7fc; border:1px solid #bdd9ee; border-radius:12px; padding:24px;">
-          <p style="margin:0 0 4px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
+          <p style="margin:0 0 4px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#888886;">
             STEP 2 &nbsp;/&nbsp; SET UP YOUR AI PROFILE
           </p>
           <p style="margin:0 0 14px 0; font-size:13px; color:#555553; line-height:1.6;">
@@ -112,7 +112,7 @@ async function sendPromptKitEmail(
     <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
       <tr>
         <td style="background:#f8f8f6; border:1px solid #e4e4e2; border-radius:12px; padding:24px;">
-          <p style="margin:0 0 4px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
+          <p style="margin:0 0 4px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#888886;">
             STEP 3 &nbsp;/&nbsp; YOUR AI WORKSPACE SETUP
           </p>
           <p style="margin:0 0 14px 0; font-size:13px; color:#555553; line-height:1.6;">
@@ -140,7 +140,7 @@ async function sendPromptKitEmail(
     <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:8px; border-top:1px solid #e4e4e2; padding-top:32px;">
       <tr>
         <td>
-          <p style="margin:0 0 4px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
+          <p style="margin:0 0 4px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#888886;">
             YOUR NEXT STEP
           </p>
           <p style="margin:0 0 16px 0; font-size:22px; font-weight:800; color:#161618; line-height:1.2; letter-spacing:-0.02em;">

@@ -379,7 +379,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
                 What&apos;s included
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                {["Personalized Prompts", "AI Profile", "AI Workspace Setup"].map((item) => (
+                {["12 Personalized Prompts", "AI Profile", "AI Workspace Setup"].map((item) => (
                   <div key={item} className="prompt-builder-kit-pill">
                     <span className="kit-item-check" style={{ fontSize: "0.75rem" }}>✓</span>
                     <span>{item}</span>

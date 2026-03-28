@@ -65,8 +65,8 @@ export default function Home() {
                 className="heading-1"
                 style={{ marginBottom: 0, fontSize: "var(--section-headline-size)", lineHeight: "var(--section-headline-lh)", letterSpacing: "var(--section-headline-ls)" }}
               >
-                <span style={{ display: "block" }}>12 prompts. Your first step</span>
-                <span style={{ display: "block" }}>toward your own AI agent.</span>
+                <span style={{ display: "block" }}>Your first step toward creating</span>
+                <span style={{ display: "block" }}>your own AI agent.</span>
               </h2>
             </div>
 
@@ -77,7 +77,7 @@ export default function Home() {
         </section>
 
         {/* ── Section 4: Manifesto (moved down from S62) ─────────────── */}
-        <section className="section" id="why" style={{ paddingBottom: "72px" }}>
+        <section className="section section-alt" id="why" style={{ paddingBottom: "72px" }}>
           <div className="container">
             <div className="manifesto-split">
               {/* Left: eyebrow + headline */}

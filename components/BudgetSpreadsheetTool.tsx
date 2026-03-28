@@ -5,6 +5,7 @@ import { track } from "@vercel/analytics";
 import ToolEmailGate from "@/components/shared/ToolEmailGate";
 import ToolLoadingScreen from "@/components/shared/ToolLoadingScreen";
 import BackButton from "@/components/shared/BackButton";
+import CrossSellBlock from "@/components/shared/CrossSellBlock";
 import { blobToBase64, triggerDownload } from "@/components/shared/fileUtils";
 import { useAuth } from "@/components/AuthProvider";
 
@@ -711,40 +712,15 @@ export default function BudgetSpreadsheetTool() {
             Build Another Spreadsheet
           </button>
 
-          <div
-            style={{
-              marginTop: "32px",
-              paddingTop: "24px",
-              borderTop: "1px solid rgba(255,255,255,0.08)",
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "center",
-              gap: "40px",
-            }}
-          >
-            <a
-              href="/"
-              style={{
-                fontSize: "0.875rem",
-                color: "rgba(255,255,255,0.4)",
-                textDecoration: "none",
-                letterSpacing: "0.01em",
-              }}
-            >
-              AGENT: Timesaver
-            </a>
-            <a
-              href="/prompt-builder"
-              style={{
-                fontSize: "0.875rem",
-                color: "rgba(255,255,255,0.4)",
-                textDecoration: "none",
-                letterSpacing: "0.01em",
-              }}
-            >
-              AGENT: Prompt Builder
-            </a>
-          </div>
+          <CrossSellBlock
+            productName="AGENT: Prompt Builder"
+            descriptionLines={[
+              "Answer four questions about your role. Get 12 prompts built for your actual job.",
+              "Built for real jobs. Not demos.",
+            ]}
+            buttonLabel="Try It Free"
+            href="/prompt-builder"
+          />
         </div>
       </div>
     );

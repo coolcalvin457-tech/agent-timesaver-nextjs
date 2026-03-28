@@ -6,6 +6,7 @@ import ToolLoadingScreen from "@/components/shared/ToolLoadingScreen";
 import BackButton from "@/components/shared/BackButton";
 import StepIndicator from "@/components/shared/StepIndicator";
 import QualitySignal from "@/components/shared/QualitySignal";
+import CrossSellBlock from "@/components/shared/CrossSellBlock";
 import { blobToBase64, triggerDownload } from "@/components/shared/fileUtils";
 import { useAuth } from "@/components/AuthProvider";
 
@@ -1378,21 +1379,15 @@ export default function PIPBuilderTool({
           </button>
         </div>
 
-        {/* Bundle callout */}
-        <div style={{ marginTop: "32px", padding: "20px 22px", background: "var(--bg-alt, #F8F8F6)", border: "1px solid var(--border, #E4E4E2)", borderRadius: "10px" }}>
-          <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--cta)", margin: "0 0 10px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-            HR Agents Package
-          </p>
-          <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", margin: "0 0 12px", lineHeight: 1.6 }}>
-            Your subscription also includes AGENT: Onboarding Kit. Position-specific onboarding kits for every new hire, delivered as a ready-to-use .docx.
-          </p>
-          <a
-            href="/onboarding-kit-builder"
-            style={{ fontSize: "0.875rem", fontWeight: 600, color: "var(--cta)", textDecoration: "none" }}
-          >
-            Try Onboarding Kit
-          </a>
-        </div>
+        <CrossSellBlock
+          productName="AGENT: Onboarding Kit"
+          descriptionLines={[
+            "Position-specific onboarding kits for every new hire, delivered as a ready-to-use .docx.",
+            "Included in your HR Agents Package.",
+          ]}
+          buttonLabel="Try Onboarding Kit"
+          href="/onboarding-kit-builder"
+        />
       </div>
     );
   }

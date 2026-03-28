@@ -5,6 +5,7 @@ import {
   addContactToAudience,
   buildBaseEmailHTML,
 } from "@/app/api/_shared/emailBase";
+import { stripEmDashes } from "@/app/api/_shared/sanitize";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -27,8 +28,8 @@ async function sendBudgetEmail(
     <p style="margin:0 0 8px 0; font-size:13px; font-weight:600; color:#1e7ab8; letter-spacing:-0.01em;">
       Your spreadsheet is attached
     </p>
-    <h1 style="margin:0 0 16px 0; font-size:26px; font-weight:800; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
-      ${budgetTitle}
+    <h1 style="margin:0 0 16px 0; font-family:Georgia,serif; font-size:28px; font-weight:400; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
+      ${stripEmDashes(budgetTitle)}
     </h1>
     <p style="margin:0 0 32px 0; font-size:15px; color:#555553; line-height:1.6;">
       Open in Excel, Google Sheets, or Numbers. The "How to Use" tab walks you through every formula.
@@ -52,6 +53,27 @@ async function sendBudgetEmail(
        style="display:inline-block; background:#161618; color:#ffffff; font-size:15px; font-weight:600; text-decoration:none; padding:14px 28px; border-radius:10px;">
       Build another spreadsheet
     </a>
+
+    <!-- Cross-sell separator -->
+    <tr><td style="padding:32px 0 0 0;border-top:1px solid #e4e4e2;">
+      <p style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.06em;color:#888886;text-transform:uppercase;margin:0 0 12px;">
+        YOUR NEXT STEP
+      </p>
+      <h3 style="font-family:Georgia,serif;font-size:24px;font-weight:400;color:#161618;margin:0 0 12px;line-height:1.2;">
+        AGENT: Prompt Builder
+      </h3>
+      <p style="font-size:14px;color:#555553;line-height:1.6;margin:0 0 4px;">
+        Answer four questions about your role. Get 12 prompts built for your actual job.
+      </p>
+      <p style="font-size:14px;color:#555553;line-height:1.6;margin:0 0 28px;">
+        Built for real jobs. Not demos.
+      </p>
+      <div style="text-align:center;">
+        <a href="https://promptaiagents.com/prompt-builder" style="display:inline-block;background:#1e7ab8;color:#ffffff;font-size:15px;font-weight:600;padding:14px 28px;border-radius:10px;text-decoration:none;">
+          Try Prompt Builder
+        </a>
+      </div>
+    </td></tr>
   `;
 
   const html = buildBaseEmailHTML({

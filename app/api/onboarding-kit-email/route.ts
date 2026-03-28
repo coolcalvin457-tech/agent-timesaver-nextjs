@@ -5,6 +5,7 @@ import {
   addContactToAudience,
   buildBaseEmailHTML,
 } from "@/app/api/_shared/emailBase";
+import { stripEmDashes } from "@/app/api/_shared/sanitize";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -27,24 +28,24 @@ async function sendOnboardingKitEmail(
 ): Promise<void> {
   const heroContent = `
     <p style="margin:0 0 8px 0; font-size:13px; font-weight:600; color:#1e7ab8; letter-spacing:-0.01em;">
-      ${hireName}'s onboarding kit is attached
+      ${stripEmDashes(hireName)}'s onboarding kit is attached
     </p>
-    <h1 style="margin:0 0 16px 0; font-size:26px; font-weight:800; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
-      ${hireName} · ${hireTitle}
+    <h1 style="margin:0 0 16px 0; font-family:Georgia,serif; font-size:28px; font-weight:400; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
+      ${stripEmDashes(hireName)} · ${stripEmDashes(hireTitle)}
     </h1>
     <p style="margin:0 0 32px 0; font-size:15px; color:#555553; line-height:1.6;">
-      Here's your onboarding kit for ${hireName}, built for the ${hireTitle} role. It's attached below and ready to open.
+      Here's your onboarding kit for ${stripEmDashes(hireName)}, built for the ${stripEmDashes(hireTitle)} role. It's attached below and ready to open.
     </p>
 
     <!-- Next steps -->
     <p style="margin:0 0 16px 0; font-size:15px; color:#555553; line-height:1.6;">
-      Before you share this with ${hireName}, three quick steps:
+      Before you share this with ${stripEmDashes(hireName)}, three quick steps:
     </p>
     <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
       <tr>
         <td style="padding:0 0 12px 0;">
           <p style="margin:0; font-size:14px; color:#555553; line-height:1.6;">
-            <strong style="color:#161618;">1.</strong> Have the hiring manager review and sign the Welcome Letter. It's written in their voice and should have their sign-off before it reaches ${hireName}.
+            <strong style="color:#161618;">1.</strong> Have the hiring manager review and sign the Welcome Letter. It's written in their voice and should have their sign-off before it reaches ${stripEmDashes(hireName)}.
           </p>
         </td>
       </tr>
@@ -80,9 +81,30 @@ async function sendOnboardingKitEmail(
 
     <!-- CTA -->
     <a href="https://promptaiagents.com/onboarding-kit-builder"
-       style="display:inline-block; background:#161618; color:#ffffff; font-size:14px; font-weight:600; text-decoration:none; padding:13px 26px; border-radius:8px; letter-spacing:-0.01em;">
+       style="display:inline-block; background:#161618; color:#ffffff; font-size:15px; font-weight:600; text-decoration:none; padding:14px 28px; border-radius:10px;">
       Build another kit
     </a>
+
+    <!-- Cross-sell separator -->
+    <tr><td style="padding:32px 0 0 0;border-top:1px solid #e4e4e2;">
+      <p style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.06em;color:#888886;text-transform:uppercase;margin:0 0 12px;">
+        YOUR NEXT STEP
+      </p>
+      <h3 style="font-family:Georgia,serif;font-size:24px;font-weight:400;color:#161618;margin:0 0 12px;line-height:1.2;">
+        AGENT: PIP Builder
+      </h3>
+      <p style="font-size:14px;color:#555553;line-height:1.6;margin:0 0 4px;">
+        Structured, defensible Performance Improvement Plans as a ready-to-use .docx file.
+      </p>
+      <p style="font-size:14px;color:#555553;line-height:1.6;margin:0 0 28px;">
+        Included in your HR Agents Package.
+      </p>
+      <div style="text-align:center;">
+        <a href="https://promptaiagents.com/pip-builder" style="display:inline-block;background:#1e7ab8;color:#ffffff;font-size:15px;font-weight:600;padding:14px 28px;border-radius:10px;text-decoration:none;">
+          Try PIP Builder
+        </a>
+      </div>
+    </td></tr>
   `;
 
   const html = buildBaseEmailHTML({

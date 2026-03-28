@@ -6,6 +6,9 @@ import { track } from "@vercel/analytics";
 import type { Question } from "@/app/api/questions/route";
 import type { Workflow, ROI } from "@/app/api/workflows/route";
 import ToolLoadingScreen from "@/components/shared/ToolLoadingScreen";
+import ToolEmailGate from "@/components/shared/ToolEmailGate";
+import BackButton from "@/components/shared/BackButton";
+import CrossSellBlock from "@/components/shared/CrossSellBlock";
 import { useAuth } from "@/components/AuthProvider";
 
 // ─── State Types ───────────────────────────────────────────────────────────────
@@ -295,31 +298,24 @@ export default function TimesaverTool() {
     }
   };
 
-  const handleGateEmail = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleEmailSubmit = async () => {
     if (!emailGateInput.trim() || gateSending) return;
-
     setGateSending(true);
 
-    try {
-      await fetch("/api/email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: emailGateInput.trim(),
-          jobTitle: state.jobTitle,
-          workflows: state.workflows,
-          roi: state.roi,
-        }),
-      });
-    } catch {
-      // Silently continue — gate submission shouldn't block the user
-    } finally {
-      setGateSending(false);
-    }
+    fetch("/api/email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: emailGateInput.trim(),
+        jobTitle: state.jobTitle,
+        workflows: state.workflows,
+        roi: state.roi,
+      }),
+    }).catch(() => {});
 
     track("email_submitted", { jobTitle: state.jobTitle });
     go("results");
+    setGateSending(false);
   };
 
   const totalQuestions = state.questions.length;
@@ -459,13 +455,7 @@ export default function TimesaverTool() {
       {state.screen === "jdUpload" && (
         <div className="screen">
           <div className="tool-tag">AGENT: Timesaver</div>
-          <button
-            type="button"
-            onClick={() => go("jobTitle")}
-            style={{ background: "none", border: "none", color: "var(--text-secondary)", fontSize: "0.875rem", cursor: "pointer", padding: "0 0 16px", display: "block", textAlign: "left" }}
-          >
-            ← Back
-          </button>
+          <BackButton onClick={() => go("jobTitle")} />
 
           <h1 className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25, whiteSpace: "nowrap", marginBottom: "28px" }}>Upload or copy &amp; paste.</h1>
 
@@ -544,13 +534,7 @@ export default function TimesaverTool() {
         <div className="screen">
           <div className="tool-tag">AGENT: Timesaver</div>
 
-          <button
-            type="button"
-            onClick={() => go("jobTitle")}
-            style={{ background: "none", border: "none", color: "var(--text-secondary)", fontSize: "0.875rem", cursor: "pointer", padding: "0 0 16px", display: "block", textAlign: "left" }}
-          >
-            ← Back
-          </button>
+          <BackButton onClick={() => go("jobTitle")} />
 
           {/* Progress pips */}
           <div className="progress-bar" style={{ marginBottom: "24px" }}>
@@ -703,45 +687,31 @@ export default function TimesaverTool() {
             </div>
           </div>
 
-          <div style={{ marginTop: "32px", paddingTop: "24px", borderTop: "1px solid rgba(255,255,255,0.12)", display: "flex", flexDirection: "row", justifyContent: "center", gap: "40px" }}>
-            <a href="/prompt-builder" style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.4)", textDecoration: "none", letterSpacing: "0.01em" }}>
-              AGENT: Prompt Builder
-            </a>
-            <a href="/budget-spreadsheets" style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.4)", textDecoration: "none", letterSpacing: "0.01em" }}>
-              AGENT: Budget Spreadsheets
-            </a>
-          </div>
+          <CrossSellBlock
+            productName="AGENT: Prompt Builder"
+            descriptionLines={[
+              "Answer four questions about your role. Get 12 prompts built for your actual job.",
+              "Built for real jobs. Not demos.",
+            ]}
+            buttonLabel="Try It Free"
+            href="/prompt-builder"
+          />
         </div>
       )}
 
       {/* ── Screen 07: Gate ───────────────────────────────────────────────── */}
       {state.screen === "gate" && (
         <div className="screen">
-          <div className="tool-tag">AGENT: Timesaver</div>
-
-          <div className="gate-card">
-            <div className="gate-headline">Your results are ready.</div>
-            <div className="gate-subline">
-              Enter your email to view your workflows. A copy goes to your inbox.
-            </div>
-
-            <form onSubmit={handleGateEmail}>
-              <div className="email-row" style={{ marginBottom: "8px" }}>
-                <input
-                  className="input"
-                  type="email"
-                  placeholder="your@email.com"
-                  value={emailGateInput}
-                  onChange={(e) => setEmailGateInput(e.target.value)}
-                  required
-                  disabled={gateSending}
-                />
-                <button className="btn btn-primary" type="submit" disabled={gateSending}>
-                  {gateSending ? "Sending..." : "See My Results"}
-                </button>
-              </div>
-            </form>
-          </div>
+          <ToolEmailGate
+            headline="Your results are ready."
+            subtitle={state.jobTitle || undefined}
+            email={emailGateInput}
+            onEmailChange={setEmailGateInput}
+            onSubmit={handleEmailSubmit}
+            loading={gateSending}
+            buttonLabel="See My Results"
+            inputId="ts-email"
+          />
         </div>
       )}
 

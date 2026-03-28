@@ -5,6 +5,7 @@ import {
   addContactToAudience,
   buildBaseEmailHTML,
 } from "@/app/api/_shared/emailBase";
+import { stripEmDashes } from "@/app/api/_shared/sanitize";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -39,11 +40,11 @@ async function sendPIPEmail(
     <p style="margin:0 0 8px 0; font-size:13px; font-weight:600; color:#1e7ab8; letter-spacing:-0.01em;">
       Your PIP document is attached
     </p>
-    <h1 style="margin:0 0 16px 0; font-size:26px; font-weight:800; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
-      ${employeeRole} · ${timeline}-day plan
+    <h1 style="margin:0 0 16px 0; font-family:Georgia,serif; font-size:28px; font-weight:400; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
+      ${stripEmDashes(employeeRole)} · ${timeline}-day plan
     </h1>
     <p style="margin:0 0 32px 0; font-size:15px; color:#555553; line-height:1.6;">
-      Here's the Performance Improvement Plan for the ${employeeRole} you described, built as a ${timeline}-day plan.
+      Here's the Performance Improvement Plan for the ${stripEmDashes(employeeRole)} you described, built as a ${timeline}-day plan.
     </p>
     <p style="margin:0 0 32px 0; font-size:15px; color:#555553; line-height:1.6;">
       Open in Microsoft Word or Google Docs, review with your manager and legal team, and customize before issuing. The [Employee Name] placeholder appears throughout. Fill that in before sharing.
@@ -61,10 +62,10 @@ async function sendPIPEmail(
             <tr>
               <td style="padding: 6px 0; border-bottom: 1px solid #e4e4e2;">
                 <p style="margin:0; font-size:13px; color:#161618; font-weight:600;">
-                  <span style="color:#1e7ab8; font-weight:700; margin-right:8px;">·</span>${s.label}
+                  <span style="color:#1e7ab8; font-weight:700; margin-right:8px;">·</span>${stripEmDashes(s.label)}
                 </p>
                 <p style="margin:2px 0 0 18px; font-size:12px; color:#888886;">
-                  ${s.detail}
+                  ${stripEmDashes(s.detail)}
                 </p>
               </td>
             </tr>`).join("")}
@@ -100,9 +101,30 @@ async function sendPIPEmail(
 
     <!-- CTA -->
     <a href="https://promptaiagents.com/pip-builder"
-       style="display:inline-block; background:#161618; color:#ffffff; font-size:14px; font-weight:600; text-decoration:none; padding:13px 26px; border-radius:8px; letter-spacing:-0.01em;">
+       style="display:inline-block; background:#161618; color:#ffffff; font-size:15px; font-weight:600; text-decoration:none; padding:14px 28px; border-radius:10px;">
       Build another PIP
     </a>
+
+    <!-- Cross-sell separator -->
+    <tr><td style="padding:32px 0 0 0;border-top:1px solid #e4e4e2;">
+      <p style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.06em;color:#888886;text-transform:uppercase;margin:0 0 12px;">
+        YOUR NEXT STEP
+      </p>
+      <h3 style="font-family:Georgia,serif;font-size:24px;font-weight:400;color:#161618;margin:0 0 12px;line-height:1.2;">
+        AGENT: Onboarding Kit
+      </h3>
+      <p style="font-size:14px;color:#555553;line-height:1.6;margin:0 0 4px;">
+        Position-specific onboarding kits for every new hire, delivered as a ready-to-use .docx.
+      </p>
+      <p style="font-size:14px;color:#555553;line-height:1.6;margin:0 0 28px;">
+        Included in your HR Agents Package.
+      </p>
+      <div style="text-align:center;">
+        <a href="https://promptaiagents.com/onboarding-kit-builder" style="display:inline-block;background:#1e7ab8;color:#ffffff;font-size:15px;font-weight:600;padding:14px 28px;border-radius:10px;text-decoration:none;">
+          Try Onboarding Kit
+        </a>
+      </div>
+    </td></tr>
   `;
 
   const html = buildBaseEmailHTML({

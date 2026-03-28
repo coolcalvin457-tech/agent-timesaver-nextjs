@@ -6,6 +6,7 @@ import {
   addContactToAudience,
   buildBaseEmailHTML,
 } from "@/app/api/_shared/emailBase";
+import { stripEmDashes } from "@/app/api/_shared/sanitize";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface EmailRequestBody {
@@ -32,13 +33,13 @@ async function sendResultsEmail(
             <tr>
               <td style="padding: 20px 24px;">
                 <p style="margin:0 0 4px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#888886;">
-                  Workflow 0${i + 1} &nbsp;·&nbsp; Saves ~${wf.timeSavedPerWeek}h/week &nbsp;·&nbsp; ${wf.tool}
+                  Workflow 0${i + 1} &nbsp;·&nbsp; Saves ~${wf.timeSavedPerWeek}h/week &nbsp;·&nbsp; ${stripEmDashes(wf.tool)}
                 </p>
                 <p style="margin:4px 0 8px 0; font-size:15px; font-weight:700; color:#161618; line-height:1.3;">
-                  ${wf.title}
+                  ${stripEmDashes(wf.title)}
                 </p>
                 <p style="margin:0; font-size:14px; color:#555553; line-height:1.6;">
-                  ${wf.description}
+                  ${stripEmDashes(wf.description)}
                 </p>
               </td>
             </tr>
@@ -52,8 +53,8 @@ async function sendResultsEmail(
     <p style="margin:0 0 8px 0; font-size:13px; font-weight:600; color:#1e7ab8; letter-spacing:-0.01em;">
       Here are your results
     </p>
-    <h1 style="margin:0 0 8px 0; font-size:28px; font-weight:800; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
-      5 AI workflows built for ${jobTitle}.
+    <h1 style="margin:0 0 8px 0; font-family:Georgia,serif; font-size:28px; font-weight:400; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
+      5 AI workflows built for ${stripEmDashes(jobTitle)}.
     </h1>
     <p style="margin:0 0 32px 0; font-size:15px; color:#555553; line-height:1.6;">
       Based on your answers, here are the workflows that fit your role best — and a real estimate of the time you could get back every week.
@@ -81,10 +82,10 @@ async function sendResultsEmail(
             <tr><td style="height:1px; background:rgba(255,255,255,0.1);"></td></tr>
           </table>
           <p style="margin:16px 0 4px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.5);">
-            Value at average ${roi.industry} salary
+            Value at average ${stripEmDashes(roi.industry)} salary
           </p>
           <p style="margin:0 0 2px 0; font-size:26px; font-weight:800; color:#ffffff; letter-spacing:-0.025em;">
-            ${roi.valueAtSalary} / year
+            ${stripEmDashes(roi.valueAtSalary)} / year
           </p>
           <p style="margin:0; font-size:13px; color:rgba(255,255,255,0.5);">
             Based on publicly available industry data
@@ -93,20 +94,26 @@ async function sendResultsEmail(
       </tr>
     </table>
 
-    <!-- CTA -->
-    <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:32px;">
-      <tr>
-        <td>
-          <p style="margin:0 0 16px 0; font-size:15px; color:#555553; line-height:1.6;">
-            Your workflows are ready. Now build the prompts to run them.
-          </p>
-          <a href="https://promptaiagents.com/prompt-builder"
-             style="display:inline-block; background:#161618; color:#ffffff; font-size:15px; font-weight:600; text-decoration:none; padding:14px 28px; border-radius:10px;">
-            Try AGENT: Prompt Builder
-          </a>
-        </td>
-      </tr>
-    </table>
+    <!-- Cross-sell separator -->
+    <tr><td style="padding:32px 0 0 0;border-top:1px solid #e4e4e2;">
+      <p style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.06em;color:#888886;text-transform:uppercase;margin:0 0 12px;">
+        YOUR NEXT STEP
+      </p>
+      <h3 style="font-family:Georgia,serif;font-size:24px;font-weight:400;color:#161618;margin:0 0 12px;line-height:1.2;">
+        AGENT: Prompt Builder
+      </h3>
+      <p style="font-size:14px;color:#555553;line-height:1.6;margin:0 0 4px;">
+        Answer four questions about your role. Get 12 prompts built for your actual job.
+      </p>
+      <p style="font-size:14px;color:#555553;line-height:1.6;margin:0 0 28px;">
+        Built for real jobs. Not demos.
+      </p>
+      <div style="text-align:center;">
+        <a href="https://promptaiagents.com/prompt-builder" style="display:inline-block;background:#1e7ab8;color:#ffffff;font-size:15px;font-weight:600;padding:14px 28px;border-radius:10px;text-decoration:none;">
+          Try Prompt Builder
+        </a>
+      </div>
+    </td></tr>
   `;
 
   const html = buildBaseEmailHTML({

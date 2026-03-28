@@ -6,6 +6,7 @@ import {
   addContactToAudience,
   buildBaseEmailHTML,
 } from "@/app/api/_shared/emailBase";
+import { stripEmDashes } from "@/app/api/_shared/sanitize";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -27,10 +28,10 @@ function buildCategoryHTML(category: PromptCategory, catIndex: number): string {
             <tr>
               <td style="padding: 20px 24px;">
                 <p style="margin:0 0 6px 0; font-size:14px; font-weight:700; color:#161618;">
-                  ${p.title}
+                  ${stripEmDashes(p.title)}
                 </p>
                 <p style="margin:0; font-size:13px; color:#555553; line-height:1.65; font-family:monospace; background:#eeeeed; border-radius:6px; padding:10px 12px;">
-                  ${p.prompt}
+                  ${stripEmDashes(p.prompt)}
                 </p>
               </td>
             </tr>
@@ -44,7 +45,7 @@ function buildCategoryHTML(category: PromptCategory, catIndex: number): string {
     <tr>
       <td style="padding: 0 0 8px 0;">
         <p style="margin:0; padding-left:8px; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase;">
-          <span style="color:#aaaaaa;">${String(catIndex + 1).padStart(2, "0")}</span> <span style="color:#1e7ab8;">${category.name}</span>
+          <span style="color:#aaaaaa;">${String(catIndex + 1).padStart(2, "0")}</span> <span style="color:#1e7ab8;">${stripEmDashes(category.name)}</span>
         </p>
       </td>
     </tr>
@@ -95,7 +96,7 @@ async function sendPromptKitEmail(
     <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
       <tr>
         <td style="background:#f8f8f6; border:1px solid #e4e4e2; border-radius:8px; padding:14px 16px; font-size:13px; color:#333331; line-height:1.7; font-family:monospace;">
-          ${promptKit.aiProfile}
+          ${stripEmDashes(promptKit.aiProfile)}
         </td>
       </tr>
     </table>

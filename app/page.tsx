@@ -54,13 +54,35 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── Section 3: Manifesto ─────────────────────────────────────── */}
+        {/* ── Section 3: AGENT: Prompt Builder (moved up from S62) ───── */}
+        <section className="section" id="prompt-builder" style={{ paddingTop: "80px", paddingBottom: "64px" }}>
+          <div className="container">
+
+            {/* Centered header */}
+            <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center", marginBottom: "40px" }}>
+              <div className="eyebrow" style={{ marginBottom: "16px" }}>START HERE</div>
+              <h2
+                className="heading-1"
+                style={{ marginBottom: 0, fontSize: "var(--section-headline-size)", lineHeight: "var(--section-headline-lh)", letterSpacing: "var(--section-headline-ls)" }}
+              >
+                <span style={{ display: "block" }}>12 prompts. Your first step</span>
+                <span style={{ display: "block" }}>toward your own AI agent.</span>
+              </h2>
+            </div>
+
+            {/* Full Q1 screen embedded — on Continue, navigates to /prompt-builder at Q2 */}
+            <PromptBuilderHomepageWrap />
+
+          </div>
+        </section>
+
+        {/* ── Section 4: Manifesto (moved down from S62) ─────────────── */}
         <section className="section" id="why" style={{ paddingBottom: "72px" }}>
           <div className="container">
             <div className="manifesto-split">
               {/* Left: eyebrow + headline */}
               <div>
-                <div className="eyebrow" style={{ marginBottom: "20px" }}>The real barrier</div>
+                <div className="eyebrow" style={{ marginBottom: "20px" }}>YOUR GUIDE</div>
                 <h2
                   className="heading-1"
                   style={{
@@ -70,42 +92,19 @@ export default function Home() {
                     marginBottom: 0,
                   }}
                 >
-                  The hard part isn&apos;t getting started.
+                  Figuring out AI so you don&apos;t have to.
                 </h2>
               </div>
               {/* Right: body paragraph */}
               <div className="manifesto-split-right">
                 <p className="manifesto-body">
-                  Anyone with the internet can use AI. Getting started is free.<br />
-                  What keeps most people stuck isn&apos;t cost.<br />
-                  It&apos;s that no one told them how to use it.<br />
-                  One good prompt changes that.<br />
-                  That&apos;s where your AI agent begins.
+                  We help you apply AI to your specific job.<br />
+                  Every agent requires a human in the loop.<br />
+                  Each one is built around how you actually work.<br />
+                  Because your time is irreplaceable.
                 </p>
               </div>
             </div>
-          </div>
-        </section>
-
-        {/* ── Section 4: AGENT: Prompt Builder ────────────────────────── */}
-        <section className="section" id="prompt-builder" style={{ paddingTop: "80px", paddingBottom: "64px" }}>
-          <div className="container">
-
-            {/* Centered header */}
-            <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center", marginBottom: "40px" }}>
-              <div className="eyebrow" style={{ marginBottom: "16px" }}>AGENT: Prompt Builder</div>
-              <h2
-                className="heading-1"
-                style={{ marginBottom: 0, fontSize: "var(--section-headline-size)", lineHeight: "var(--section-headline-lh)", letterSpacing: "var(--section-headline-ls)" }}
-              >
-                <span style={{ display: "block" }}>12 prompts built for</span>
-                <span style={{ display: "block" }}>your exact job.</span>
-              </h2>
-            </div>
-
-            {/* Full Q1 screen embedded — on Continue, navigates to /prompt-builder at Q2 */}
-            <PromptBuilderHomepageWrap />
-
           </div>
         </section>
 

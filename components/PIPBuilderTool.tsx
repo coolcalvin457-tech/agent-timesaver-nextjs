@@ -169,6 +169,27 @@ function StepIndicator({ current, total }: { current: number; total: number }) {
   );
 }
 
+// Quality signal — only appears as positive reinforcement at 150+ chars
+function QualitySignal({ value }: { value: string }) {
+  if (value.trim().length >= 150) {
+    return (
+      <p
+        style={{
+          margin: "6px 0 0",
+          fontSize: "0.8125rem",
+          color: "var(--success, #1A7A4A)",
+          display: "flex",
+          alignItems: "center",
+          gap: "4px",
+        }}
+      >
+        ✓ Good detail. The document will reflect this.
+      </p>
+    );
+  }
+  return null;
+}
+
 // ─── Component ─────────────────────────────────────────────────────────────────
 
 interface PIPBuilderToolProps {
@@ -371,7 +392,7 @@ export default function PIPBuilderTool({
 
   function validateS1(): boolean {
     if (!employeeRole.trim() || !department.trim() || !tenure.trim() || !managerName.trim()) {
-      setS1Error("Please fill in all required fields.");
+      setS1Error("We need the role, department, tenure, and manager name to build an accurate document.");
       return false;
     }
     if (!issueType) {
@@ -848,6 +869,7 @@ export default function PIPBuilderTool({
           <p style={helperStyle}>
             Include dates, frequencies, and how it was measured. Vague language is the most common reason PIPs don't hold up.
           </p>
+          <QualitySignal value={deficiencies} />
         </div>
 
         {/* Performance Standard */}
@@ -877,6 +899,7 @@ export default function PIPBuilderTool({
             placeholder="e.g. Meet weekly call quota of 50 for 4 consecutive weeks. All client follow-ups logged within 24 hours, with zero exceptions over the plan period. Both tracked via HubSpot."
             style={{ ...textareaStyle, minHeight: "100px" }}
           />
+          <QualitySignal value={improvementTargets} />
         </div>
 
         {/* Timeline */}
@@ -1019,6 +1042,7 @@ export default function PIPBuilderTool({
           <p style={helperStyle}>
             Plain language is fine. State it clearly so there's no ambiguity about what happens next.
           </p>
+          <QualitySignal value={consequences} />
         </div>
 
         {/* EAP Toggle */}

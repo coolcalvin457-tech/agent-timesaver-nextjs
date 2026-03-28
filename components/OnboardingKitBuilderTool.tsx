@@ -501,7 +501,7 @@ export default function OnboardingKitBuilderTool({
 
   function validateS1(): boolean {
     if (!hireName.trim() || !hireTitle.trim() || !startDate.trim() || !managerName.trim()) {
-      setS1Error("Please fill in all required fields.");
+      setS1Error("We need the hire's name, job title, start date, and manager name to personalize the kit.");
       return false;
     }
     if (!roleType) {

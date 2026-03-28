@@ -3,6 +3,10 @@
 import { useState, useEffect, useRef } from "react";
 import ToolEmailGate from "@/components/shared/ToolEmailGate";
 import ToolLoadingScreen from "@/components/shared/ToolLoadingScreen";
+import BackButton from "@/components/shared/BackButton";
+import StepIndicator from "@/components/shared/StepIndicator";
+import QualitySignal from "@/components/shared/QualitySignal";
+import { blobToBase64, triggerDownload } from "@/components/shared/fileUtils";
 import { useAuth } from "@/components/AuthProvider";
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
@@ -147,48 +151,6 @@ const radioOptionStyle = (selected: boolean): React.CSSProperties => ({
   background: selected ? "rgba(30,122,184,0.10)" : "var(--surface, #FFFFFF)",
   transition: "border-color 0.15s ease, background 0.15s ease",
 });
-
-// ─── Step progress indicator ───────────────────────────────────────────────────
-
-function StepIndicator({ current, total }: { current: number; total: number }) {
-  return (
-    <div style={{ display: "flex", gap: "5px", marginBottom: "28px" }}>
-      {Array.from({ length: total }).map((_, i) => (
-        <div
-          key={i}
-          style={{
-            flex: 1,
-            height: "3px",
-            borderRadius: "2px",
-            background: i < current ? "var(--cta, #1E7AB8)" : "var(--border, #E4E4E2)",
-            transition: "background 0.2s ease",
-          }}
-        />
-      ))}
-    </div>
-  );
-}
-
-// Quality signal — only appears as positive reinforcement at 150+ chars
-function QualitySignal({ value }: { value: string }) {
-  if (value.trim().length >= 150) {
-    return (
-      <p
-        style={{
-          margin: "6px 0 0",
-          fontSize: "0.8125rem",
-          color: "var(--success, #1A7A4A)",
-          display: "flex",
-          alignItems: "center",
-          gap: "4px",
-        }}
-      >
-        ✓ Good detail. The document will reflect this.
-      </p>
-    );
-  }
-  return null;
-}
 
 // ─── Component ─────────────────────────────────────────────────────────────────
 
@@ -632,32 +594,21 @@ export default function PIPBuilderTool({
 
     try {
       // Trigger browser download immediately
-      const blobUrl = URL.createObjectURL(fileBlob);
-      const a = document.createElement("a");
-      a.href = blobUrl;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(blobUrl);
+      triggerDownload(fileBlob, filename);
 
       // Send email with the file attached
-      const reader = new FileReader();
-      reader.readAsDataURL(fileBlob);
-      reader.onloadend = async () => {
-        const base64 = (reader.result as string).split(",")[1];
-        await fetch("/api/pip-builder-email", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: email.trim(),
-            filename,
-            employeeRole: resultRole,
-            timeline: resultTimeline,
-            fileData: base64,
-          }),
-        });
-      };
+      const base64 = await blobToBase64(fileBlob);
+      await fetch("/api/pip-builder-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email.trim(),
+          filename,
+          employeeRole: resultRole,
+          timeline: resultTimeline,
+          fileData: base64,
+        }),
+      });
 
       setScreen("sent");
     } catch {
@@ -841,13 +792,7 @@ export default function PIPBuilderTool({
   if (screen === "s2") {
     return (
       <div ref={toolContainerRef} className="okb-tool">
-        <button
-          type="button"
-          onClick={goBackToS1}
-          style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "0.875rem", cursor: "pointer", padding: "0 0 20px", display: "block" }}
-        >
-          ← Back
-        </button>
+        <BackButton onClick={goBackToS1} />
         <StepIndicator current={2} total={4} />
 
         <div style={{ marginBottom: "28px" }}>
@@ -869,7 +814,7 @@ export default function PIPBuilderTool({
           <p style={helperStyle}>
             Include dates, frequencies, and how it was measured. Vague language is the most common reason PIPs don't hold up.
           </p>
-          <QualitySignal value={deficiencies} />
+          <QualitySignal value={deficiencies} message="Good detail. The document will reflect this." />
         </div>
 
         {/* Performance Standard */}
@@ -899,7 +844,7 @@ export default function PIPBuilderTool({
             placeholder="e.g. Meet weekly call quota of 50 for 4 consecutive weeks. All client follow-ups logged within 24 hours, with zero exceptions over the plan period. Both tracked via HubSpot."
             style={{ ...textareaStyle, minHeight: "100px" }}
           />
-          <QualitySignal value={improvementTargets} />
+          <QualitySignal value={improvementTargets} message="Good detail. The document will reflect this." />
         </div>
 
         {/* Timeline */}
@@ -964,13 +909,7 @@ export default function PIPBuilderTool({
   if (screen === "s3") {
     return (
       <div ref={toolContainerRef} className="okb-tool">
-        <button
-          type="button"
-          onClick={goBackToS2}
-          style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "0.875rem", cursor: "pointer", padding: "0 0 20px", display: "block" }}
-        >
-          ← Back
-        </button>
+        <BackButton onClick={goBackToS2} />
         <StepIndicator current={3} total={4} />
 
         <div style={{ marginBottom: "28px" }}>
@@ -1042,7 +981,7 @@ export default function PIPBuilderTool({
           <p style={helperStyle}>
             Plain language is fine. State it clearly so there's no ambiguity about what happens next.
           </p>
-          <QualitySignal value={consequences} />
+          <QualitySignal value={consequences} message="Good detail. The document will reflect this." />
         </div>
 
         {/* EAP Toggle */}
@@ -1095,13 +1034,7 @@ export default function PIPBuilderTool({
   if (screen === "paywall") {
     return (
       <div ref={toolContainerRef} className="okb-tool">
-        <button
-          type="button"
-          onClick={() => { setS3Error(""); setScreen("s3"); }}
-          style={{ background: "none", border: "none", color: "var(--text-muted, #888886)", fontSize: "0.8125rem", cursor: "pointer", padding: "0", marginBottom: "24px", display: "flex", alignItems: "center", gap: "4px", opacity: 0.7 }}
-        >
-          ← Back
-        </button>
+        <BackButton onClick={() => { setS3Error(""); setScreen("s3"); }} />
         <StepIndicator current={4} total={4} />
 
         {/* Payment cancelled banner */}

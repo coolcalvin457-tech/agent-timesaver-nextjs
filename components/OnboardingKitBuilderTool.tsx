@@ -3,6 +3,10 @@
 import { useState, useEffect, useRef } from "react";
 import ToolEmailGate from "@/components/shared/ToolEmailGate";
 import ToolLoadingScreen from "@/components/shared/ToolLoadingScreen";
+import BackButton from "@/components/shared/BackButton";
+import StepIndicator from "@/components/shared/StepIndicator";
+import QualitySignal from "@/components/shared/QualitySignal";
+import { blobToBase64, triggerDownload } from "@/components/shared/fileUtils";
 import { useAuth } from "@/components/AuthProvider";
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
@@ -86,96 +90,7 @@ function clearStorage(): void {
   }
 }
 
-// ─── Helpers ────────────────────────────────────────────────────────────────────
-
-function blobToBase64(blob: Blob): Promise<string> {
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const result = reader.result as string;
-      resolve(result.split(",")[1] ?? "");
-    };
-    reader.readAsDataURL(blob);
-  });
-}
-
-function triggerDownload(blob: Blob, filename: string) {
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
-
 // ─── Sub-components ────────────────────────────────────────────────────────────
-
-function BackButton({ onClick }: { onClick: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      style={{
-        background: "none",
-        border: "none",
-        color: "var(--text-muted, #888886)",
-        fontSize: "0.8125rem",
-        cursor: "pointer",
-        padding: "0",
-        marginBottom: "24px",
-        display: "flex",
-        alignItems: "center",
-        gap: "4px",
-        opacity: 0.7,
-      }}
-    >
-      ← Back
-    </button>
-  );
-}
-
-// Quality signal — only appears as positive reinforcement at 150+ chars
-function QualitySignal({ value }: { value: string }) {
-  if (value.trim().length >= 150) {
-    return (
-      <p
-        style={{
-          margin: "6px 0 0",
-          fontSize: "0.8125rem",
-          color: "var(--success, #1A7A4A)",
-          display: "flex",
-          alignItems: "center",
-          gap: "4px",
-        }}
-      >
-        ✓ Good detail. The kit will reflect this.
-      </p>
-    );
-  }
-  return null;
-}
-
-// Step progress indicator
-function StepIndicator({ current, total }: { current: number; total: number }) {
-  return (
-    <div style={{ display: "flex", gap: "5px", marginBottom: "28px" }}>
-      {Array.from({ length: total }).map((_, i) => (
-        <div
-          key={i}
-          style={{
-            flex: 1,
-            height: "3px",
-            borderRadius: "2px",
-            background: i < current ? "var(--cta, #1E7AB8)" : "var(--border, #E4E4E2)",
-            transition: "background 0.2s ease",
-          }}
-        />
-      ))}
-    </div>
-  );
-}
 
 // Simple file upload zone (single file, context doc)
 function ContextFileUpload({
@@ -990,7 +905,7 @@ export default function OnboardingKitBuilderTool({
             onChange={(e) => setWhyHired(e.target.value)}
             placeholder={`e.g. We're scaling our outbound motion and ${hireName || "Jordan"} was hired to build the top-of-funnel function from scratch. This role didn't exist before. They're creating the playbook.`}
           />
-          <QualitySignal value={whyHired} />
+          <QualitySignal value={whyHired} message="Good detail. The kit will reflect this." />
         </div>
 
         {/* Week one priorities */}
@@ -1074,7 +989,7 @@ export default function OnboardingKitBuilderTool({
             placeholder="e.g. 30 days: understands all key accounts and has first prospecting list built. 60 days: first outbound sequence live. 90 days: pipeline contribution visible in HubSpot."
           />
           <p style={helperStyle}>Write in plain language. You don't need three separate fields. Just describe all three milestones in one response.</p>
-          <QualitySignal value={thirtyToNinety} />
+          <QualitySignal value={thirtyToNinety} message="Good detail. The kit will reflect this." />
         </div>
 
         {/* Key contacts */}

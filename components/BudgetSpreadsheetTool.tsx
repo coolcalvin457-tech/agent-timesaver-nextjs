@@ -4,6 +4,8 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { track } from "@vercel/analytics";
 import ToolEmailGate from "@/components/shared/ToolEmailGate";
 import ToolLoadingScreen from "@/components/shared/ToolLoadingScreen";
+import BackButton from "@/components/shared/BackButton";
+import { blobToBase64, triggerDownload } from "@/components/shared/fileUtils";
 import { useAuth } from "@/components/AuthProvider";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -26,42 +28,6 @@ function validateFile(file: File, accepted: string[]): string | null {
   if (!accepted.includes(ext))
     return `Unsupported file type. Accepted: ${accepted.join(", ")}`;
   return null;
-}
-
-async function blobToBase64(blob: Blob): Promise<string> {
-  const buffer = await blob.arrayBuffer();
-  const uint8 = new Uint8Array(buffer);
-  let binary = "";
-  for (let i = 0; i < uint8.length; i++) {
-    binary += String.fromCharCode(uint8[i]);
-  }
-  return btoa(binary);
-}
-
-// ─── Back Button ──────────────────────────────────────────────────────────────
-
-function BackButton({ onClick }: { onClick: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      style={{
-        background: "none",
-        border: "none",
-        color: "var(--text-muted, #888886)",
-        fontSize: "0.8125rem",
-        cursor: "pointer",
-        padding: "0",
-        marginBottom: "20px",
-        display: "flex",
-        alignItems: "center",
-        gap: "4px",
-        opacity: 0.7,
-      }}
-    >
-      ← Back
-    </button>
-  );
 }
 
 // ─── Upload Zone ──────────────────────────────────────────────────────────────
@@ -383,18 +349,6 @@ export default function BudgetSpreadsheetTool() {
       );
       go("error");
     }
-  }
-
-  // ── Browser download ───────────────────────────────────────────
-  function triggerDownload(blob: Blob, name: string) {
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = name;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
   }
 
   // ── Email submit ───────────────────────────────────────────────

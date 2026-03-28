@@ -6,6 +6,7 @@ import type { PromptKitResponse } from "@/app/api/prompt-kit/route";
 import ToolEmailGate from "@/components/shared/ToolEmailGate";
 import ToolLoadingScreen from "@/components/shared/ToolLoadingScreen";
 import CrossSellBlock from "@/components/shared/CrossSellBlock";
+import BackButton from "@/components/shared/BackButton";
 import { useAuth } from "@/components/AuthProvider";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -77,31 +78,6 @@ const PREV_SCREEN: Partial<Record<Screen, Screen>> = {
   q3: "q2",
   q4: "q3",
 };
-
-// ─── Back Button ───────────────────────────────────────────────────────────────
-function BackButton({ onClick }: { onClick: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      style={{
-        background: "none",
-        border: "none",
-        color: "var(--text-muted, #888886)",
-        fontSize: "0.8125rem",
-        cursor: "pointer",
-        padding: "0",
-        marginBottom: "20px",
-        display: "flex",
-        alignItems: "center",
-        gap: "4px",
-        opacity: 0.7,
-      }}
-    >
-      ← Back
-    </button>
-  );
-}
 
 // ─── Component ────────────────────────────────────────────────────────────────
 interface PromptBuilderToolProps {

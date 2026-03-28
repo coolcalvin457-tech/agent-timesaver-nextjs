@@ -29,11 +29,8 @@ function buildCategoryHTML(category: PromptCategory, catIndex: number): string {
                 <p style="margin:0 0 6px 0; font-size:14px; font-weight:700; color:#161618;">
                   ${p.title}
                 </p>
-                <p style="margin:0 0 10px 0; font-size:13px; color:#555553; line-height:1.65; font-family:monospace; background:#eeeeed; border-radius:6px; padding:10px 12px;">
+                <p style="margin:0; font-size:13px; color:#555553; line-height:1.65; font-family:monospace; background:#eeeeed; border-radius:6px; padding:10px 12px;">
                   ${p.prompt}
-                </p>
-                <p style="margin:0; font-size:12px; color:#888886; font-style:italic;">
-                  ${p.why}
                 </p>
               </td>
             </tr>
@@ -46,7 +43,7 @@ function buildCategoryHTML(category: PromptCategory, catIndex: number): string {
   return `
     <tr>
       <td style="padding: 0 0 8px 0;">
-        <p style="margin:0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#16425b;">
+        <p style="margin:0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
           ${String(catIndex + 1).padStart(2, "0")} &nbsp;/&nbsp; ${category.name}
         </p>
       </td>
@@ -78,18 +75,26 @@ async function sendPromptKitEmail(
       ${totalPrompts} AI prompts built for ${jobTitle}.
     </h1>
     <p style="margin:0 0 32px 0; font-size:15px; color:#555553; line-height:1.6;">
-      Copy any prompt below and paste it directly into ChatGPT or Claude. Each one is ready to use. Just fill in the brackets and go.
+      Copy any prompt below and paste it directly into your AI tool of choice. Each one is ready to use. Just fill in the brackets and go.
     </p>
 
-    <!-- AI Profile -->
-    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
+    <!-- Step 1: Prompts by category -->
+    <p style="margin:0 0 16px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
+      STEP 1 &nbsp;/&nbsp; YOUR ${totalPrompts} PROMPTS
+    </p>
+    <table width="100%" cellpadding="0" cellspacing="0">
+      ${categoryRows}
+    </table>
+
+    <!-- Step 2: AI Profile -->
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:24px; margin-bottom:32px;">
       <tr>
         <td style="background:#f0f7fc; border:1px solid #bdd9ee; border-radius:12px; padding:24px;">
-          <p style="margin:0 0 4px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#16425b;">
-            Step 1 &nbsp;/&nbsp; Set up your AI Profile first
+          <p style="margin:0 0 4px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
+            STEP 2 &nbsp;/&nbsp; SET UP YOUR AI PROFILE
           </p>
           <p style="margin:0 0 14px 0; font-size:13px; color:#555553; line-height:1.6;">
-            Paste this into your AI tool's settings once. Every prompt you use after that gets better automatically — AI already knows who you are before you say a word.
+            Paste this into your AI tool's settings once. Every prompt you use after that gets better automatically. AI already knows who you are before you say a word.
           </p>
           <p style="margin:0 0 14px 0; font-size:13px; color:#333331; line-height:1.7; font-family:monospace; background:#ffffff; border:1px solid #d0e8f5; border-radius:8px; padding:14px 16px;">
             ${promptKit.aiProfile}
@@ -103,21 +108,53 @@ async function sendPromptKitEmail(
       </tr>
     </table>
 
-    <!-- Prompts by category -->
-    <p style="margin:0 0 16px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#16425b;">
-      Step 2 &nbsp;/&nbsp; Your ${totalPrompts} prompts
-    </p>
-    <table width="100%" cellpadding="0" cellspacing="0">
-      ${categoryRows}
+    <!-- Step 3: AI Workspace Setup -->
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
+      <tr>
+        <td style="background:#f8f8f6; border:1px solid #e4e4e2; border-radius:12px; padding:24px;">
+          <p style="margin:0 0 4px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
+            STEP 3 &nbsp;/&nbsp; YOUR AI WORKSPACE SETUP
+          </p>
+          <p style="margin:0 0 14px 0; font-size:13px; color:#555553; line-height:1.6;">
+            Set this up once. AI will know who you are every time.
+          </p>
+          <p style="margin:0 0 14px 0; font-size:13px; color:#333331; line-height:1.5; font-family:monospace; background:#ffffff; border:1px solid #e4e4e2; border-radius:8px; padding:14px 16px;">
+            Build this folder structure on your desktop:<br/><br/>
+            &#128450; [YourName]'s AI Workspace<br/>
+            &nbsp;&nbsp;&#128196; AI Profile.md<br/>
+            &nbsp;&nbsp;&#128450; Prompt Library<br/>
+            &nbsp;&nbsp;&#128450; Saved Results<br/>
+            &nbsp;&nbsp;&#128450; Reference Files
+          </p>
+          <p style="margin:0 0 8px 0; font-size:12px; color:#888886; line-height:1.6;">
+            AI Profile.md is what your AI will reference. Update as you go.
+          </p>
+          <p style="margin:0; font-size:12px; color:#888886; line-height:1.6;">
+            When AI gives you something worth keeping, ask it to save as an .md file. AI will remember your info between chats.
+          </p>
+        </td>
+      </tr>
     </table>
 
-    <!-- CTA -->
-    <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:32px;">
+    <!-- Cross-sell: AGENT: Workflow Builder -->
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:8px; border-top:1px solid #e4e4e2; padding-top:32px;">
       <tr>
         <td>
-          <a href="https://promptaiagents.com"
-             style="display:inline-block; background:#161618; color:#ffffff; font-size:15px; font-weight:600; text-decoration:none; padding:14px 28px; border-radius:10px;">
-            Your prompts are ready. Now build the workflows.
+          <p style="margin:0 0 4px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
+            YOUR NEXT STEP
+          </p>
+          <p style="margin:0 0 16px 0; font-size:22px; font-weight:800; color:#161618; line-height:1.2; letter-spacing:-0.02em;">
+            AGENT: Workflow Builder
+          </p>
+          <p style="margin:0 0 4px 0; font-size:14px; color:#555553; line-height:1.6;">
+            Turn your prompts into repeatable AI workflows.
+          </p>
+          <p style="margin:0 0 24px 0; font-size:14px; color:#555553; line-height:1.6;">
+            Built for real jobs. Not demos.
+          </p>
+          <a href="https://promptaiagents.com/agents"
+             style="display:inline-block; background:#1e7ab8; color:#ffffff; font-size:15px; font-weight:600; text-decoration:none; padding:12px 28px; border-radius:10px;">
+            Try Now
           </a>
         </td>
       </tr>

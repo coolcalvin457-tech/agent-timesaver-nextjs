@@ -91,8 +91,8 @@ export function buildBaseEmailHTML({
           <!-- Header -->
           <tr>
             <td style="padding: 0 0 32px 0;">
-              <p style="margin:0; font-family:monospace; font-size:13px; font-weight:600; letter-spacing:0.06em; color:#16425b;">
-                ${eyebrowLabel}
+              <p style="margin:0; font-family:monospace; font-size:13px; font-weight:600; letter-spacing:0.06em; color:#1e7ab8;">
+                ${eyebrowLabel.toUpperCase()}
               </p>
             </td>
           </tr>
@@ -107,9 +107,11 @@ export function buildBaseEmailHTML({
           <!-- Footer -->
           <tr>
             <td style="padding: 32px 0 0 0;">
-              <p style="margin:0; font-size:13px; color:#888886; line-height:1.6;">
+              <p style="margin:0 0 6px 0; font-size:13px; color:#888886; line-height:1.6;">
                 You're receiving this because you used ${eyebrowLabel} at
                 <a href="https://promptaiagents.com" style="color:#888886;">promptaiagents.com</a>.
+              </p>
+              <p style="margin:0; font-size:13px; color:#888886; line-height:1.6;">
                 Built for real jobs. Not demos.
               </p>
             </td>

@@ -683,7 +683,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
             12 prompts built for {jobTitle}.
           </h2>
           <p className="screen-subheadline" style={{ marginBottom: "36px" }}>
-            Copy and paste into ChatGPT, Claude, or Gemini.
+            Copy and paste into your AI tool of choice.
           </p>
 
           {/* Prompt categories */}
@@ -796,7 +796,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
               AI Profile.md is what your AI will reference. Update as you go.
             </p>
             <p className="pb-system-step-body" style={{ marginTop: "12px" }}>
-              When AI gives you something worth keeping, ask it to save as an .md file. This is how AI remembers your info between chats.
+              When AI gives you something worth keeping, ask it to save as an .md file. AI will remember your info between chats.
             </p>
           </div>
 

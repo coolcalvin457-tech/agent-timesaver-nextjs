@@ -72,7 +72,7 @@ async function sendPromptKitEmail(
     <p style="margin:0 0 6px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
       STEP 1
     </p>
-    <h1 style="margin:0 0 8px 0; font-size:26px; font-weight:800; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
+    <h1 style="margin:0 0 8px 0; font-family:Georgia,'Times New Roman',serif; font-size:28px; font-weight:400; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
       ${totalPrompts} AI prompts built for ${jobTitle}.
     </h1>
     <p style="margin:0 0 24px 0; font-size:15px; color:#555553; line-height:1.6;">
@@ -86,7 +86,7 @@ async function sendPromptKitEmail(
     <p style="margin:32px 0 6px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
       STEP 2
     </p>
-    <p style="margin:0 0 8px 0; font-size:26px; font-weight:800; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
+    <p style="margin:0 0 8px 0; font-family:Georgia,'Times New Roman',serif; font-size:28px; font-weight:400; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
       Your AI Profile.
     </p>
     <p style="margin:0 0 16px 0; font-size:15px; color:#555553; line-height:1.6;">
@@ -104,7 +104,7 @@ async function sendPromptKitEmail(
     <p style="margin:0 0 6px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
       STEP 3
     </p>
-    <p style="margin:0 0 8px 0; font-size:26px; font-weight:800; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
+    <p style="margin:0 0 8px 0; font-family:Georgia,'Times New Roman',serif; font-size:28px; font-weight:400; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
       Your AI Workspace Setup.
     </p>
     <p style="margin:0 0 16px 0; font-size:15px; color:#555553; line-height:1.6;">
@@ -136,7 +136,7 @@ async function sendPromptKitEmail(
           <p style="margin:0 0 4px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#888886;">
             YOUR NEXT STEP
           </p>
-          <p style="margin:0 0 16px 0; font-size:22px; font-weight:800; color:#161618; line-height:1.2; letter-spacing:-0.02em;">
+          <p style="margin:0 0 16px 0; font-family:Georgia,'Times New Roman',serif; font-size:24px; font-weight:400; color:#161618; line-height:1.2; letter-spacing:-0.02em;">
             AGENT: Workflow Builder
           </p>
           <p style="margin:0 0 4px 0; font-size:14px; color:#555553; line-height:1.6;">

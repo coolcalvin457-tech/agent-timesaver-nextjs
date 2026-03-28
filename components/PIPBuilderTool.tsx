@@ -321,6 +321,27 @@ export default function PIPBuilderTool({
     }
   }, []); // intentionally run once on mount only
 
+  // ── Restore form data after sign-in redirect ───────────────
+  // If user navigated to /login from the paywall, form data was saved to
+  // sessionStorage. On return (after magic link), restore it and jump to paywall.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (initialPaymentStatus) return; // payment flow takes priority
+    try {
+      const returnFlag = sessionStorage.getItem("pip_return_to_paywall");
+      if (!returnFlag) return;
+      sessionStorage.removeItem("pip_return_to_paywall");
+      const saved = loadFromStorage();
+      if (saved) {
+        restoreFromSaved(saved);
+        clearStorage();
+        setScreen("paywall");
+      }
+    } catch {
+      // sessionStorage unavailable
+    }
+  }, []); // run once on mount
+
   // ── Storage helpers ───────────────────────────────────────
 
   function getCurrentFormData(): SavedFormData {
@@ -1195,6 +1216,28 @@ export default function PIPBuilderTool({
               <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.4)", margin: 0, textAlign: "center" }}>
                 Annual subscription. Cancel anytime.
               </p>
+
+              {/* Sign-in link for users who forgot to log in before starting */}
+              {!user && (
+                <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.5)", margin: "14px 0 0", textAlign: "center" }}>
+                  Already have an account?{" "}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      saveToStorage(getCurrentFormData());
+                      sessionStorage.setItem("pip_return_to_paywall", "true");
+                      window.location.href = "/login?redirect=/pip-builder";
+                    }}
+                    style={{
+                      background: "none", border: "none", color: "#60B4F0",
+                      fontSize: "0.8125rem", cursor: "pointer", padding: 0,
+                      textDecoration: "underline", fontFamily: "inherit",
+                    }}
+                  >
+                    Sign in
+                  </button>
+                </p>
+              )}
             </div>
 
             {/* Legacy returning purchaser (fallback) */}

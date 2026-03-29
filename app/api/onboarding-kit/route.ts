@@ -499,7 +499,7 @@ function sectionLabel(text: string): Paragraph {
         allCaps: true,
       }),
     ],
-    spacing: { before: 0, after: 60 },
+    spacing: { before: 0, after: 120 },
   });
 }
 

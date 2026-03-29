@@ -10,6 +10,7 @@ import {
   WidthType,
   BorderStyle,
   ShadingType,
+  PageBreak,
 } from "docx";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -286,7 +287,7 @@ function divider(): Paragraph {
 function sectionLabel(text: string): Paragraph {
   return new Paragraph({
     children: [new TextRun({ text, font: "Calibri", size: 18, bold: true, color: "1E7AB8", allCaps: true })],
-    spacing: { before: 0, after: 60 },
+    spacing: { before: 0, after: 120 },
   });
 }
 
@@ -342,6 +343,11 @@ function buildInfoTable(info: PIPData["employeeInfo"]): Table {
 function buildSignatureBlock(sig: PIPData["signatureBlock"]): (Paragraph | Table)[] {
   const items: (Paragraph | Table)[] = [];
 
+  // Force signature block onto its own page so it never gets split across pages
+  items.push(new Paragraph({
+    children: [new PageBreak()],
+    spacing: { before: 0, after: 0 },
+  }));
   items.push(h2("Acknowledgment of Receipt"));
   items.push(body(
     "Signing this document confirms receipt of the Performance Improvement Plan and acknowledgment of its contents. It does not indicate agreement with the assessments or conclusions contained herein.",

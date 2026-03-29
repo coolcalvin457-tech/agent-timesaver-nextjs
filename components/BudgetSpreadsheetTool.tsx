@@ -574,7 +574,7 @@ export default function BudgetSpreadsheetTool() {
       >
         <div className="loading-screen" style={{ minHeight: "320px" }}>
           <ToolLoadingScreen
-            headingText="Building your spreadsheet..."
+            headingText="Building your spreadsheet."
             timeEstimate="About 20 seconds."
             subLine={loadingMessages[loadingMsgIndex]}
             subLineKey={loadingMsgIndex}
@@ -715,7 +715,7 @@ export default function BudgetSpreadsheetTool() {
           <CrossSellBlock
             productName="AGENT: Prompt Builder"
             descriptionLines={[
-              "Answer four questions about your role. Get 12 prompts built for your actual job.",
+              "12 Personalized Prompts · AI Profile · AI Workspace Setup",
               "Built for real jobs. Not demos.",
             ]}
             buttonLabel="Try It Free"

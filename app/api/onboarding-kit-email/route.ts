@@ -30,7 +30,7 @@ async function sendOnboardingKitEmail(
     <p style="margin:0 0 8px 0; font-size:13px; font-weight:600; color:#1e7ab8; letter-spacing:-0.01em;">
       ${stripEmDashes(hireName)}'s onboarding kit is attached
     </p>
-    <h1 style="margin:0 0 16px 0; font-family:Georgia,serif; font-size:28px; font-weight:400; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
+    <h1 style="margin:0 0 16px 0; font-family:Georgia,serif; font-size:28px; font-weight:700; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
       ${stripEmDashes(hireName)} · ${stripEmDashes(hireTitle)}
     </h1>
     <p style="margin:0 0 32px 0; font-size:15px; color:#555553; line-height:1.6;">
@@ -94,14 +94,14 @@ async function sendOnboardingKitEmail(
         AGENT: PIP Builder
       </h3>
       <p style="font-size:14px;color:#555553;line-height:1.6;margin:0 0 4px;">
-        Structured, defensible Performance Improvement Plans as a ready-to-use .docx file.
+        Improvement Plan · Timeline · Manager Talking Points
       </p>
       <p style="font-size:14px;color:#555553;line-height:1.6;margin:0 0 28px;">
         Included in your HR Agents Package.
       </p>
       <div style="text-align:center;">
         <a href="https://promptaiagents.com/pip-builder" style="display:inline-block;background:#1e7ab8;color:#ffffff;font-size:15px;font-weight:600;padding:14px 28px;border-radius:10px;text-decoration:none;">
-          Try PIP Builder
+          Try Now
         </a>
       </div>
     </td></tr>

@@ -33,13 +33,16 @@ async function sendResultsEmail(
             <tr>
               <td style="padding: 20px 24px;">
                 <p style="margin:0 0 4px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#888886;">
-                  Workflow 0${i + 1} &nbsp;·&nbsp; Saves ~${wf.timeSavedPerWeek}h/week &nbsp;·&nbsp; ${stripEmDashes(wf.tool)}
+                  0${i + 1} &nbsp;·&nbsp; ${stripEmDashes(wf.tool)}
                 </p>
                 <p style="margin:4px 0 8px 0; font-size:15px; font-weight:700; color:#161618; line-height:1.3;">
                   ${stripEmDashes(wf.title)}
                 </p>
-                <p style="margin:0; font-size:14px; color:#555553; line-height:1.6;">
+                <p style="margin:0 0 10px 0; font-size:14px; color:#555553; line-height:1.6;">
                   ${stripEmDashes(wf.description)}
+                </p>
+                <p style="margin:0; font-size:13px; font-weight:600; color:#1e7ab8;">
+                  Saves ~${wf.timeSavedPerWeek}h/week
                 </p>
               </td>
             </tr>
@@ -50,14 +53,11 @@ async function sendResultsEmail(
     .join("");
 
   const heroContent = `
-    <p style="margin:0 0 8px 0; font-size:13px; font-weight:600; color:#1e7ab8; letter-spacing:-0.01em;">
-      Here are your results
-    </p>
-    <h1 style="margin:0 0 8px 0; font-family:Georgia,serif; font-size:28px; font-weight:400; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
-      5 AI workflows built for ${stripEmDashes(jobTitle)}.
+    <h1 style="margin:0 0 8px 0; font-family:Georgia,serif; font-size:28px; font-weight:700; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
+      Your AI workflows are ready.
     </h1>
     <p style="margin:0 0 32px 0; font-size:15px; color:#555553; line-height:1.6;">
-      Based on your answers, here are the workflows that fit your role best — and a real estimate of the time you could get back every week.
+      Based on your answers, here are the workflows that fit your role best. Plus a real estimate of the time you could get back every week.
     </p>
 
     <!-- Workflows -->
@@ -102,15 +102,12 @@ async function sendResultsEmail(
       <h3 style="font-family:Georgia,serif;font-size:24px;font-weight:400;color:#161618;margin:0 0 12px;line-height:1.2;">
         AGENT: Prompt Builder
       </h3>
-      <p style="font-size:14px;color:#555553;line-height:1.6;margin:0 0 4px;">
-        Answer four questions about your role. Get 12 prompts built for your actual job.
-      </p>
       <p style="font-size:14px;color:#555553;line-height:1.6;margin:0 0 28px;">
-        Built for real jobs. Not demos.
+        12 Personalized Prompts · AI Profile · AI Workspace Setup
       </p>
       <div style="text-align:center;">
         <a href="https://promptaiagents.com/prompt-builder" style="display:inline-block;background:#1e7ab8;color:#ffffff;font-size:15px;font-weight:600;padding:14px 28px;border-radius:10px;text-decoration:none;">
-          Try Prompt Builder
+          Try Now
         </a>
       </div>
     </td></tr>
@@ -131,7 +128,7 @@ async function sendResultsEmail(
     body: JSON.stringify({
       from: getFromAddress(),
       to: [email],
-      subject: `Your 5 AI workflows for ${jobTitle}`,
+      subject: "5 AI Workflows Built for Your Role",
       html,
     }),
   });

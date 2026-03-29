@@ -236,6 +236,7 @@ export default function OnboardingKitBuilderTool({
   const { user } = useAuth();
   // ── Tool container ref (for scroll-to-tool on screen changes) ─
   const toolContainerRef = useRef<HTMLDivElement>(null);
+  const isFirstRender = useRef(true);
 
   // ── Screen ──────────────────────────────────────────────────
   const [screen, setScreen] = useState<Screen>("s1");
@@ -358,8 +359,12 @@ export default function OnboardingKitBuilderTool({
     return () => { cancelled = true; };
   }, [screen, user?.email]);
 
-  // ── Scroll to tool container on every screen change ───────
+  // ── Scroll to tool container on screen change (skip initial render) ───────
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     toolContainerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [screen]);
 
@@ -1496,7 +1501,7 @@ export default function OnboardingKitBuilderTool({
         <CrossSellBlock
           productName="AGENT: PIP Builder"
           descriptionLines={[
-            "Structured, defensible Performance Improvement Plans as a ready-to-use .docx file.",
+            "Improvement Plan · Timeline · Manager Talking Points",
             "Included in your HR Agents Package.",
           ]}
           buttonLabel="Try PIP Builder"

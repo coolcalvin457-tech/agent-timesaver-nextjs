@@ -582,15 +582,7 @@ input, textarea {
 }
 
 /* ── Step Progress ────────────────────────────────────────── */
-.step-label {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  margin-bottom: 20px;
-}
+/* .step-label removed S67 — no longer used in any tool */
 
 /* ── Branch Cards ─────────────────────────────────────────── */
 .branch-label {
@@ -779,13 +771,7 @@ input, textarea {
 }
 
 /* ── Question / Choice Selects ────────────────────────────── */
-.question-stem {
-  font-size: 1.0625rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  line-height: 1.4;
-  margin-bottom: 20px;
-}
+/* .question-stem removed S67 — replaced with inline display-font styles */
 
 .question-subheadline {
   font-size: 0.875rem;
@@ -921,12 +907,7 @@ input, textarea {
   to { transform: rotate(360deg); }
 }
 
-.loading-headline {
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 8px;
-}
+/* .loading-headline removed S67 — replaced with inline display-font <h2> in ToolLoadingScreen */
 
 .loading-subline {
   font-size: 0.9375rem;
@@ -1075,64 +1056,7 @@ input, textarea {
   margin-top: 8px;
 }
 
-/* ── Share Row ───────────────────────────────────────────── */
-.share-row {
-  margin-top: 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-}
-
-.share-label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-.share-buttons {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.share-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 9px 18px;
-  border-radius: 8px;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.15s ease;
-  border: 1px solid transparent;
-}
-
-.share-btn-x {
-  background: #000;
-  color: #fff;
-  border-color: #000;
-}
-
-.share-btn-x:hover {
-  background: #1a1a1a;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.25);
-}
-
-.share-btn-li {
-  background: #0A66C2;
-  color: #fff;
-  border-color: #0A66C2;
-}
-
-.share-btn-li:hover {
-  background: #0958a8;
-  box-shadow: 0 2px 10px rgba(10,102,194,0.35);
-}
+/* ── Share Row — removed S67 (no longer used in any tool) ── */
 
 /* ── Gate Card (Screen 07) ────────────────────────────────── */
 .gate-card {
@@ -1738,14 +1662,7 @@ input, textarea {
   margin-bottom: 32px;
 }
 
-/* Step / question text */
-.hero-tool-dark .step-label {
-  color: rgba(255,255,255,0.4);
-}
-
-.hero-tool-dark .question-stem {
-  color: #FFFFFF;
-}
+/* .step-label and .question-stem dark overrides removed S67 */
 
 .hero-tool-dark .question-subheadline {
   color: rgba(255,255,255,0.55);
@@ -1952,9 +1869,7 @@ input, textarea {
 }
 
 /* Loading screen */
-.hero-tool-dark .loading-headline {
-  color: #ffffff;
-}
+/* .loading-headline dark override removed S67 */
 
 .hero-tool-dark .loading-subline {
   color: rgba(255,255,255,0.45);

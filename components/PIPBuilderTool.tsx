@@ -167,6 +167,7 @@ export default function PIPBuilderTool({
   const { user } = useAuth();
   // ── Tool container ref (for scroll-to-tool on screen changes) ─
   const toolContainerRef = useRef<HTMLDivElement>(null);
+  const isFirstRender = useRef(true);
 
   // ── Screen state ──────────────────────────────────────────
   const [screen, setScreen] = useState<Screen>("s1");
@@ -268,8 +269,12 @@ export default function PIPBuilderTool({
     return () => { cancelled = true; };
   }, [screen, user?.email]);
 
-  // ── Scroll to tool container on every screen change ───────
+  // ── Scroll to tool container on screen change (skip initial render) ───────
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     toolContainerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [screen]);
 
@@ -1382,7 +1387,7 @@ export default function PIPBuilderTool({
         <CrossSellBlock
           productName="AGENT: Onboarding Kit"
           descriptionLines={[
-            "Position-specific onboarding kits for every new hire, delivered as a ready-to-use .docx.",
+            "Day 1 Schedule · Welcome Email · IT Checklist · Manager Guide",
             "Included in your HR Agents Package.",
           ]}
           buttonLabel="Try Onboarding Kit"

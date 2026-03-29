@@ -160,7 +160,18 @@ export default function ToolLoadingScreen({
   return (
     <>
       <div className="spinner" />
-      <p className="loading-headline">{headingText}</p>
+      <h2
+        style={{
+          fontFamily: "var(--font-display)",
+          fontSize: "clamp(1.5rem, 3.25vw, 2rem)",
+          fontWeight: 400,
+          lineHeight: 1.25,
+          color: "#FFFFFF",
+          margin: "0 0 6px",
+        }}
+      >
+        {headingText}
+      </h2>
       {subLine && (
         <p key={subLineKey} className="loading-subline">
           {subLine}

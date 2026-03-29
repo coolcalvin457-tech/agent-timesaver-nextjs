@@ -73,7 +73,7 @@ async function sendPromptKitEmail(
     <p style="margin:0 0 6px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
       STEP 1
     </p>
-    <h1 style="margin:0 0 8px 0; font-family:Georgia,'Times New Roman',serif; font-size:28px; font-weight:400; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
+    <h1 style="margin:0 0 8px 0; font-family:Georgia,'Times New Roman',serif; font-size:28px; font-weight:700; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
       ${totalPrompts} AI prompts built for ${jobTitle}.
     </h1>
     <p style="margin:0 0 24px 0; font-size:15px; color:#555553; line-height:1.6;">
@@ -140,11 +140,8 @@ async function sendPromptKitEmail(
           <p style="margin:0 0 16px 0; font-family:Georgia,'Times New Roman',serif; font-size:24px; font-weight:400; color:#161618; line-height:1.2; letter-spacing:-0.02em;">
             AGENT: Workflow Builder
           </p>
-          <p style="margin:0 0 4px 0; font-size:14px; color:#555553; line-height:1.6;">
-            Turn your prompts into repeatable AI workflows.
-          </p>
           <p style="margin:0 0 24px 0; font-size:14px; color:#555553; line-height:1.6;">
-            Built for real jobs. Not demos.
+            Turn your prompts into repeatable AI workflows.
           </p>
           <a href="https://promptaiagents.com/agents"
              style="display:inline-block; background:#1e7ab8; color:#ffffff; font-size:15px; font-weight:600; text-decoration:none; padding:12px 28px; border-radius:10px;">

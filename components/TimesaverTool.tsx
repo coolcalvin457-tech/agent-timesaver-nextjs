@@ -87,6 +87,7 @@ export default function TimesaverTool() {
   const [error, setError] = useState<string | null>(null);
   const [loadingType, setLoadingType] = useState<"questions" | "workflows">("questions");
   const [gateSending, setGateSending] = useState(false);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -272,6 +273,26 @@ export default function TimesaverTool() {
       showWriteIn: false,
       writeInValue: "",
     }));
+
+    // Auto-advance after brief visual feedback (matches Prompt Builder)
+    setTimeout(() => {
+      const newAnswers = [...state.answers, choice];
+      const nextIndex = state.questionIndex + 1;
+
+      if (nextIndex >= state.questions.length) {
+        track("questions_completed", { path: state.path ?? "none", jobTitle: state.jobTitle });
+        loadWorkflows(state.jobTitle, newAnswers, state.path, state.jobDescription);
+      } else {
+        setState((s) => ({
+          ...s,
+          answers: newAnswers,
+          questionIndex: nextIndex,
+          selectedChoice: null,
+          writeInValue: "",
+          showWriteIn: false,
+        }));
+      }
+    }, 180);
   };
 
   const toggleWriteIn = () => {
@@ -305,6 +326,12 @@ export default function TimesaverTool() {
         showWriteIn: false,
       }));
     }
+  };
+
+  const handleCopy = (id: string, text: string) => {
+    navigator.clipboard.writeText(text).catch(() => {});
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2000);
   };
 
   const handleEmailSubmit = async () => {
@@ -531,7 +558,7 @@ export default function TimesaverTool() {
         <div className="loading-screen" style={{ minHeight: "320px" }}>
           <div className="tool-tag" style={{ textAlign: "center" }}>AGENT: Timesaver</div>
           <ToolLoadingScreen
-            headingText={loadingType === "questions" ? "Personalizing your questions..." : "Building your workflows..."}
+            headingText={loadingType === "questions" ? "Personalizing your questions." : "Building your workflows."}
             timeEstimate={loadingType === "questions" ? "About 5 seconds." : "About 15 seconds."}
             subLine={loadingType === "workflows" ? "Calculating hours saved..." : undefined}
           />
@@ -561,14 +588,7 @@ export default function TimesaverTool() {
             ))}
           </div>
 
-          <div
-            className="step-label"
-            style={{ marginBottom: "16px" }}
-          >
-            {isLastQuestion ? "Almost there. " : ""}Question {state.questionIndex + 1} of {totalQuestions}.
-          </div>
-
-          <div className="question-stem">{currentQuestion.stem}</div>
+          <p className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25 }}>{currentQuestion.stem}</p>
 
           <div className="choices">
             {currentQuestion.choices.map((choice, i) => (
@@ -610,14 +630,16 @@ export default function TimesaverTool() {
             </button>
           )}
 
-          <button
-            className="btn btn-primary btn-full"
-            style={{ marginTop: "8px" }}
-            disabled={!canContinueQuestion}
-            onClick={handleNextQuestion}
-          >
-            {isLastQuestion ? "See My Results" : "Continue"}
-          </button>
+          {state.showWriteIn && (
+            <button
+              className="btn btn-primary btn-full"
+              style={{ marginTop: "8px" }}
+              disabled={!canContinueQuestion}
+              onClick={handleNextQuestion}
+            >
+              {isLastQuestion ? "Start Saving Time" : "Continue"}
+            </button>
+          )}
         </div>
       )}
 
@@ -635,7 +657,7 @@ export default function TimesaverTool() {
             <span style={{ color: "var(--cta)" }}>✓</span> Sent to your inbox.
           </div>
 
-          <div className="results-tag">
+          <div className="results-tag" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25 }}>
             You could save {state.roi.totalHoursPerWeek} hours every week.
           </div>
           <p className="results-subheadline">
@@ -644,16 +666,26 @@ export default function TimesaverTool() {
 
           {/* Workflow Cards */}
           <div className="workflow-cards">
-            {state.workflows.map((wf, i) => (
-              <div key={i} className="workflow-card">
-                <div className="workflow-label">Workflow 0{i + 1}</div>
-                <div className="workflow-title">{wf.title}</div>
-                <div className="workflow-desc">{wf.description}</div>
-                <div className="workflow-time">
-                  ⏱ Saves ~{wf.timeSavedPerWeek}h/week · {wf.tool}
+            {state.workflows.map((wf, i) => {
+              const cardId = `wf-${i}`;
+              return (
+                <div key={i} className="workflow-card" style={{ position: "relative" }}>
+                  <button
+                    className={`pb-copy-btn ${copiedId === cardId ? "copied" : ""}`}
+                    onClick={() => handleCopy(cardId, wf.description)}
+                    style={{ position: "absolute", top: "12px", right: "12px" }}
+                  >
+                    {copiedId === cardId ? "✓ Copied" : "Copy"}
+                  </button>
+                  <div className="workflow-label">Workflow 0{i + 1}</div>
+                  <div className="workflow-title">{wf.title}</div>
+                  <div className="workflow-desc">{wf.description}</div>
+                  <div className="workflow-time">
+                    ⏱ Saves ~{wf.timeSavedPerWeek}h/week · {wf.tool}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* ROI Dark Card */}
@@ -667,39 +699,10 @@ export default function TimesaverTool() {
             <div className="roi-sub">Based on publicly available industry data</div>
           </div>
 
-          {/* Social Share */}
-          <div className="share-row">
-            <div className="share-label">Share your results</div>
-            <div className="share-buttons">
-              <a
-                className="share-btn share-btn-x"
-                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`I could save ${state.roi.totalHoursPerWeek} hours every week with AI. Find out how much time you're leaving on the table 👀`)}&url=${encodeURIComponent("https://promptaiagents.com")}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.912-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                </svg>
-                Share on X
-              </a>
-              <a
-                className="share-btn share-btn-li"
-                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent("https://promptaiagents.com")}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                </svg>
-                Share on LinkedIn
-              </a>
-            </div>
-          </div>
-
           <CrossSellBlock
             productName="AGENT: Prompt Builder"
             descriptionLines={[
-              "Answer four questions about your role. Get 12 prompts built for your actual job.",
+              "12 Personalized Prompts · AI Profile · AI Workspace Setup",
               "Built for real jobs. Not demos.",
             ]}
             buttonLabel="Try It Free"

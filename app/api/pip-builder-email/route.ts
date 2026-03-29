@@ -40,7 +40,7 @@ async function sendPIPEmail(
     <p style="margin:0 0 8px 0; font-size:13px; font-weight:600; color:#1e7ab8; letter-spacing:-0.01em;">
       Your PIP document is attached
     </p>
-    <h1 style="margin:0 0 16px 0; font-family:Georgia,serif; font-size:28px; font-weight:400; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
+    <h1 style="margin:0 0 16px 0; font-family:Georgia,serif; font-size:28px; font-weight:700; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
       ${stripEmDashes(employeeRole)} · ${timeline}-day plan
     </h1>
     <p style="margin:0 0 32px 0; font-size:15px; color:#555553; line-height:1.6;">
@@ -114,21 +114,21 @@ async function sendPIPEmail(
         AGENT: Onboarding Kit
       </h3>
       <p style="font-size:14px;color:#555553;line-height:1.6;margin:0 0 4px;">
-        Position-specific onboarding kits for every new hire, delivered as a ready-to-use .docx.
+        Day 1 Schedule · Welcome Email · IT Checklist · Manager Guide
       </p>
       <p style="font-size:14px;color:#555553;line-height:1.6;margin:0 0 28px;">
         Included in your HR Agents Package.
       </p>
       <div style="text-align:center;">
         <a href="https://promptaiagents.com/onboarding-kit-builder" style="display:inline-block;background:#1e7ab8;color:#ffffff;font-size:15px;font-weight:600;padding:14px 28px;border-radius:10px;text-decoration:none;">
-          Try Onboarding Kit
+          Try Now
         </a>
       </div>
     </td></tr>
   `;
 
   const html = buildBaseEmailHTML({
-    preHeaderText: `Your ${employeeRole} PIP is ready — ${timeline}-day plan attached`,
+    preHeaderText: `Your ${employeeRole} PIP is ready: ${timeline}-day plan attached`,
     eyebrowLabel: "AGENT: PIP Builder",
     heroContent,
   });

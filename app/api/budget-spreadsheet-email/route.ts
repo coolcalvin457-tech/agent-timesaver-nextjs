@@ -56,7 +56,7 @@ async function sendBudgetEmail(
 
     <!-- Cross-sell separator -->
     <tr><td style="padding:32px 0 0 0;border-top:1px solid #e4e4e2;">
-      <p style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.06em;color:#888886;text-transform:uppercase;margin:0 0 12px;">
+      <p style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.06em;color:#1e7ab8;text-transform:uppercase;margin:0 0 12px;">
         YOUR NEXT STEP
       </p>
       <h3 style="font-family:Georgia,serif;font-size:24px;font-weight:400;color:#161618;margin:0 0 12px;line-height:1.2;">

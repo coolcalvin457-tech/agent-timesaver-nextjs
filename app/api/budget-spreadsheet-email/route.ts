@@ -28,9 +28,12 @@ async function sendBudgetEmail(
     <p style="margin:0 0 8px 0; font-size:13px; font-weight:600; color:#1e7ab8; letter-spacing:-0.01em;">
       Your spreadsheet is attached
     </p>
-    <h1 style="margin:0 0 16px 0; font-family:Georgia,serif; font-size:28px; font-weight:700; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
-      ${stripEmDashes(budgetTitle)}
+    <h1 style="margin:0 0 6px 0; font-family:Georgia,serif; font-size:28px; font-weight:700; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
+      Your spreadsheet is ready.
     </h1>
+    <p style="margin:0 0 16px 0; font-size:16px; color:#555553; font-weight:600; line-height:1.3;">
+      ${stripEmDashes(budgetTitle)}
+    </p>
     <p style="margin:0 0 32px 0; font-size:15px; color:#555553; line-height:1.6;">
       Open in Excel, Google Sheets, or Numbers. The "How to Use" tab walks you through every formula.
     </p>
@@ -88,7 +91,7 @@ async function sendBudgetEmail(
     body: JSON.stringify({
       from: getFromAddress(),
       to: [email],
-      subject: `Your ${budgetTitle} is ready`,
+      subject: `Your budget spreadsheet is ready`,
       html,
       attachments: [{ filename, content: fileData }],
     }),

@@ -85,23 +85,13 @@ async function sendPIPEmail(
       </tr>
     </table>
 
-    <!-- Attachment info -->
-    <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8f8f6; border:1px solid #e4e4e2; border-radius:10px; margin-bottom:32px;">
-      <tr>
-        <td style="padding:16px 20px;">
-          <p style="margin:0 0 4px 0; font-size:12px; font-weight:700; color:#888886; letter-spacing:0.04em; text-transform:uppercase;">
-            Attached file
-          </p>
-          <p style="margin:0; font-size:13px; color:#333333; font-family:monospace;">
-            ${filename}
-          </p>
-        </td>
-      </tr>
-    </table>
+    <p style="margin:0 0 32px 0; font-size:13px; color:#888886;">
+      📎 ${filename}
+    </p>
 
     <!-- CTA -->
     <a href="https://promptaiagents.com/pip-builder"
-       style="display:inline-block; background:#161618; color:#ffffff; font-size:15px; font-weight:600; text-decoration:none; padding:14px 28px; border-radius:10px;">
+       style="display:inline-block; background:#1e7ab8; color:#ffffff; font-size:15px; font-weight:600; text-decoration:none; padding:14px 28px; border-radius:10px;">
       Build another PIP
     </a>
 

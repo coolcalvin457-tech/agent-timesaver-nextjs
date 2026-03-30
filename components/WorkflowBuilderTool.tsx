@@ -1170,31 +1170,28 @@ export default function WorkflowBuilderTool({
 
       {/* ── Sent ──────────────────────────────────────────── */}
       {screen === "sent" && (
-        <div style={{ textAlign: "center", padding: "20px 0" }}>
-          <div style={{ marginBottom: "16px" }}>
-            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-              <rect width="48" height="48" rx="10" fill="#22C55E" fillOpacity="0.12" />
-              <path d="M15 24.5L21 31L33 18" stroke="#22C55E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        <div style={{ textAlign: "center", padding: "8px 0" }}>
+          <div style={{ display: "inline-block", marginBottom: "20px" }}>
+            <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+              <rect width="56" height="56" rx="12" fill="#1A7A4A" fillOpacity="0.1" />
+              <path d="M16 28l7 7L40 20" stroke="#1A7A4A" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
           <h2
             style={{
-              fontSize: "clamp(1.35rem, 2.5vw, 1.625rem)",
+              fontSize: "clamp(1.5rem, 3.25vw, 2rem)",
               fontWeight: 400,
               fontFamily: "var(--font-display)",
               color: "#FFFFFF",
-              margin: "0 0 8px",
-              lineHeight: 1.3,
+              margin: "0 0 32px",
+              lineHeight: 1.25,
             }}
           >
             Your workflow is in your inbox.
           </h2>
-          <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.45)", margin: "0 0 32px" }}>
-            Check your email for {email}.
-          </p>
           <button
             type="button"
-            className="btn btn-dark-cta"
+            className="btn btn-primary btn-lg btn-full"
             onClick={handleReset}
           >
             Build another workflow

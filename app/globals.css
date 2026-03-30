@@ -3643,6 +3643,11 @@ input, textarea {
 /* light fallback inside a dark frame — the fallback will win in edge cases. */
 
 .hero-tool-dark .tool-container {
+  background: radial-gradient(ellipse at center, rgba(30,122,184,0.09) 0%, #161618 65%);
+  border: 1px solid rgba(30,122,184,0.28);
+  box-shadow: none;
+  transition: border-color 0.2s ease;
+
   /* Cascade dark values into child inline styles that use CSS variables */
   --text-primary:   #FFFFFF;
   --text-secondary: rgba(255,255,255,0.72);
@@ -3652,6 +3657,14 @@ input, textarea {
   --border:         rgba(255,255,255,0.14);
   --border-subtle:  rgba(255,255,255,0.06);
   --cta:            #4da3e0;
+}
+
+.hero-tool-dark .tool-container:hover {
+  border-color: rgba(30,122,184,0.55);
+}
+
+.hero-tool-dark:hover .tool-container {
+  border-color: rgba(30,122,184,0.55);
 }
 
 /* ── HR Tools — Dark Mode (inside .hero-tool-dark frame) ──────────────── */

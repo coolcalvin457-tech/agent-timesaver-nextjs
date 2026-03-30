@@ -217,7 +217,10 @@ input, textarea {
   border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
-.nav.nav-dark .nav-logo,
+.nav.nav-dark .nav-logo {
+  color: #1E7AB8;
+}
+
 .nav.nav-dark .nav-links a {
   color: rgba(255,255,255,0.75);
 }

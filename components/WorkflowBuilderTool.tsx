@@ -410,6 +410,15 @@ export default function WorkflowBuilderTool({
     setScreen("s2");
   }
 
+  function handleFrequencySelect(opt: Frequency): void {
+    setFrequency(opt);
+    // Auto-advance if task description is already filled — same validation as Continue
+    if (taskDescription.trim().length >= 10) {
+      setS1Error("");
+      setTimeout(() => setScreen("s2"), 180);
+    }
+  }
+
   function handleS2Continue(): void {
     if (!collaboration) {
       setS2Error("Please select who works on this with you.");
@@ -643,14 +652,14 @@ export default function WorkflowBuilderTool({
                 <label
                   key={opt}
                   style={radioOptionStyle(frequency === opt)}
-                  onClick={() => setFrequency(opt)}
+                  onClick={() => handleFrequencySelect(opt)}
                 >
                   <input
                     type="radio"
                     name="frequency"
                     value={opt}
                     checked={frequency === opt}
-                    onChange={() => setFrequency(opt)}
+                    onChange={() => handleFrequencySelect(opt)}
                     style={{ marginTop: "2px", accentColor: "var(--cta, #1E7AB8)", flexShrink: 0 }}
                   />
                   <span style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.85)", lineHeight: 1.4 }}>

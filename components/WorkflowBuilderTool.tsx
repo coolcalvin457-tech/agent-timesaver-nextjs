@@ -643,7 +643,7 @@ export default function WorkflowBuilderTool({
               style={{ ...textareaStyle, minHeight: "90px" }}
               value={taskDescription}
               onChange={(e) => setTaskDescription(e.target.value)}
-              placeholder="e.g. Write a competitive analysis for a new product launch"
+              placeholder="e.g. Write a competitive analysis for a new product launch."
               rows={3}
             />
             <QualitySignal value={taskDescription} />

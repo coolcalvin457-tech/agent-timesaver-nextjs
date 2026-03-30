@@ -234,6 +234,21 @@ input, textarea {
   border: 1px solid rgba(255,255,255,0.22);
 }
 
+.nav.nav-dark .nav-dropdown {
+  background: #1A1B22;
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.40);
+}
+
+.nav.nav-dark .nav-dropdown-item {
+  color: rgba(255,255,255,0.75);
+}
+
+.nav.nav-dark .nav-dropdown-item:hover {
+  background: rgba(255,255,255,0.06);
+  color: #ffffff;
+}
+
 .nav-inner {
   display: grid;
   grid-template-columns: 1fr auto 1fr;

@@ -69,7 +69,9 @@ async function parseUploadedFile(file: UploadedFile): Promise<string> {
     }
 
     if (ext === "pdf") {
-      const pdfParse = (await import("pdf-parse")).default;
+      // pdf-parse ESM export doesn't carry .default — cast to callable directly
+      const pdfParseMod = await import("pdf-parse");
+      const pdfParse = pdfParseMod as unknown as (data: Buffer) => Promise<{ text: string }>;
       const result = await pdfParse(buffer);
       return result.text.slice(0, MAX_FILE_CHARS);
     }

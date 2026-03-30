@@ -597,7 +597,6 @@ export default function WorkflowBuilderTool({
         <ToolLoadingScreen
           steps={LOADING_STEPS}
           activeStep={loadingStep}
-          completedSteps={Array.from({ length: loadingStep }, (_, i) => i)}
           timeEstimate="About 30 seconds."
           headingText="Building your workflow."
         />
@@ -606,7 +605,7 @@ export default function WorkflowBuilderTool({
       {/* ── Screen 1: The Task ────────────────────────────── */}
       {screen === "s1" && (
         <>
-          <StepIndicator totalSteps={3} currentStep={1} />
+          <StepIndicator total={3} current={1} />
           <h2
             style={{
               fontSize: "clamp(1.35rem, 2.5vw, 1.625rem)",
@@ -633,7 +632,7 @@ export default function WorkflowBuilderTool({
               placeholder="e.g. Write a competitive analysis for a new product launch"
               rows={3}
             />
-            <QualitySignal text={taskDescription} threshold={80} />
+            <QualitySignal value={taskDescription} />
           </div>
 
           {/* Frequency */}
@@ -679,7 +678,7 @@ export default function WorkflowBuilderTool({
       {screen === "s2" && (
         <>
           <BackButton onClick={() => setScreen("s1")} />
-          <StepIndicator totalSteps={3} currentStep={2} />
+          <StepIndicator total={3} current={2} />
           <h2
             style={{
               fontSize: "clamp(1.35rem, 2.5vw, 1.625rem)",
@@ -801,7 +800,7 @@ export default function WorkflowBuilderTool({
       {screen === "s3" && (
         <>
           <BackButton onClick={() => setScreen("s2")} />
-          <StepIndicator totalSteps={3} currentStep={3} />
+          <StepIndicator total={3} current={3} />
           <h2
             style={{
               fontSize: "clamp(1.35rem, 2.5vw, 1.625rem)",

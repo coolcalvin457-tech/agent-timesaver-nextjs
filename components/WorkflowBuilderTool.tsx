@@ -650,11 +650,11 @@ export default function WorkflowBuilderTool({
           </div>
 
           {/* Upload zone 1 — compact bar */}
-          <div style={{ marginTop: "4px", marginBottom: "12px" }}>
+          <div style={{ marginTop: "4px", marginBottom: "10px", display: "flex", alignItems: "center" }}>
             <label
               className="choose-file-btn"
               style={{
-                display: "inline-flex",
+                display: "flex",
                 alignItems: "center",
                 gap: "8px",
                 cursor: "pointer",
@@ -664,6 +664,8 @@ export default function WorkflowBuilderTool({
                 border: "1px solid rgba(255,255,255,0.1)",
                 borderRadius: "8px",
                 padding: "8px 14px",
+                width: "100%",
+                boxSizing: "border-box",
               }}
             >
               <input
@@ -685,6 +687,7 @@ export default function WorkflowBuilderTool({
                   fontSize: "0.8125rem",
                   cursor: "pointer",
                   marginLeft: "10px",
+                  whiteSpace: "nowrap" as const,
                 }}
               >
                 Remove
@@ -693,11 +696,11 @@ export default function WorkflowBuilderTool({
           </div>
 
           {/* Upload zone 2 — compact bar */}
-          <div style={{ marginBottom: "20px" }}>
+          <div style={{ marginBottom: "20px", display: "flex", alignItems: "center" }}>
             <label
               className="choose-file-btn"
               style={{
-                display: "inline-flex",
+                display: "flex",
                 alignItems: "center",
                 gap: "8px",
                 cursor: "pointer",
@@ -707,6 +710,8 @@ export default function WorkflowBuilderTool({
                 border: "1px solid rgba(255,255,255,0.1)",
                 borderRadius: "8px",
                 padding: "8px 14px",
+                width: "100%",
+                boxSizing: "border-box",
               }}
             >
               <input
@@ -728,6 +733,7 @@ export default function WorkflowBuilderTool({
                   fontSize: "0.8125rem",
                   cursor: "pointer",
                   marginLeft: "10px",
+                  whiteSpace: "nowrap" as const,
                 }}
               >
                 Remove

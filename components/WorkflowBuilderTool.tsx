@@ -1171,6 +1171,7 @@ export default function WorkflowBuilderTool({
 
       {/* ── Sent ──────────────────────────────────────────── */}
       {screen === "sent" && (
+        <>
         <div style={{ textAlign: "center", padding: "8px 0" }}>
           <div style={{ display: "inline-block", marginBottom: "20px" }}>
             <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
@@ -1208,6 +1209,7 @@ export default function WorkflowBuilderTool({
           ]}
           buttonLabel="Get Early Access"
         />
+        </>
       )}
 
       {/* ── Error ─────────────────────────────────────────── */}

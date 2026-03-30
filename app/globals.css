@@ -3647,6 +3647,10 @@ input, textarea {
   border: 1px solid rgba(30,122,184,0.28);
   box-shadow: none;
   transition: border-color 0.2s ease;
+  padding: 40px;
+  max-width: none;
+  margin: 0;
+  overflow: visible;
 
   /* Cascade dark values into child inline styles that use CSS variables */
   --text-primary:   #FFFFFF;
@@ -3665,6 +3669,12 @@ input, textarea {
 
 .hero-tool-dark:hover .tool-container {
   border-color: rgba(30,122,184,0.55);
+}
+
+@media (max-width: 640px) {
+  .hero-tool-dark .tool-container {
+    padding: 28px 20px;
+  }
 }
 
 /* ── HR Tools — Dark Mode (inside .hero-tool-dark frame) ──────────────── */

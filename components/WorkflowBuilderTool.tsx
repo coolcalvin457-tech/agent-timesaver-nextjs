@@ -650,7 +650,7 @@ export default function WorkflowBuilderTool({
           </div>
 
           {/* Upload zone 1 — compact bar */}
-          <div style={{ marginTop: "4px", marginBottom: "10px", display: "flex", alignItems: "center" }}>
+          <div style={{ marginTop: "4px", marginBottom: "16px", display: "flex", alignItems: "center" }}>
             <label
               className="choose-file-btn"
               style={{
@@ -773,7 +773,7 @@ export default function WorkflowBuilderTool({
           </h2>
 
           {/* Frequency */}
-          <div style={fieldGroupStyle}>
+          <div style={{ ...fieldGroupStyle, marginBottom: "36px" }}>
             <label style={labelStyle}>How often do you do this?</label>
             <div style={{ display: "flex", flexDirection: "column" as const, gap: "8px", marginTop: "4px" }}>
               {(["Daily", "Weekly", "Monthly", "1x Project"] as Frequency[]).map((opt) => (

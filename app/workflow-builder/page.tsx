@@ -97,7 +97,7 @@ export default function WorkflowBuilderPage({
         </section>
 
         {/* ── Tool section ───────────────────────────────────── */}
-        <section id="build-workflow" className="section" style={{ paddingTop: "64px", paddingBottom: "96px" }}>
+        <section id="build-workflow" className="section" style={{ paddingTop: "64px", paddingBottom: "96px", scrollMarginTop: "80px" }}>
           <div className="container">
             <div style={{ maxWidth: "760px", margin: "0 auto" }}>
               <div className="pb-frame hero-tool-dark" style={{ maxWidth: "760px" }}>

@@ -1,0 +1,1347 @@
+"use client";
+
+import { useState, useEffect, useRef } from "react";
+import ToolEmailGate from "@/components/shared/ToolEmailGate";
+import ToolLoadingScreen from "@/components/shared/ToolLoadingScreen";
+import BackButton from "@/components/shared/BackButton";
+import StepIndicator from "@/components/shared/StepIndicator";
+import QualitySignal from "@/components/shared/QualitySignal";
+import { blobToBase64, triggerDownload } from "@/components/shared/fileUtils";
+import { useAuth } from "@/components/AuthProvider";
+
+// ─── Types ─────────────────────────────────────────────────────────────────────
+
+type Screen =
+  | "s1"
+  | "s2"
+  | "s3"
+  | "paywall"
+  | "verifying"
+  | "loading"
+  | "email-gate"
+  | "sent"
+  | "error";
+
+type Frequency = "Daily" | "Weekly" | "Monthly" | "1x Project";
+type Collaboration = "Just me" | "Small team" | "Big team";
+
+interface UploadedFile {
+  name: string;
+  type: string;
+  data: string; // base64
+}
+
+interface SavedFormData {
+  taskDescription: string;
+  frequency: Frequency | "";
+  collaboration: Collaboration | "";
+  audiencePriorities: string;
+  jobTitle: string;
+  userTools: string;
+}
+
+// ─── Constants ─────────────────────────────────────────────────────────────────
+
+const WF_STORAGE_KEY = "wf_form_data";
+
+const LOADING_STEPS = [
+  "Analyzing your task",
+  "Mapping the steps",
+  "Selecting the right tools",
+  "Writing your prompts",
+  "Formatting your workflow doc",
+];
+
+const DELIVERABLES = [
+  "Workflow Playbook",
+  "AI Setup",
+  "AI Prompts",
+  "Time Estimates",
+  "Key Insights",
+];
+
+// ─── Storage helpers ────────────────────────────────────────────────────────────
+
+function saveToStorage(data: SavedFormData): void {
+  try {
+    sessionStorage.setItem(WF_STORAGE_KEY, JSON.stringify(data));
+  } catch {
+    // sessionStorage unavailable — continue without saving
+  }
+}
+
+function loadFromStorage(): SavedFormData | null {
+  try {
+    const raw = sessionStorage.getItem(WF_STORAGE_KEY);
+    return raw ? (JSON.parse(raw) as SavedFormData) : null;
+  } catch {
+    return null;
+  }
+}
+
+function clearStorage(): void {
+  try {
+    sessionStorage.removeItem(WF_STORAGE_KEY);
+  } catch {
+    // ignore
+  }
+}
+
+// ─── Styles ─────────────────────────────────────────────────────────────────────
+
+const inputStyle: React.CSSProperties = {
+  width: "100%",
+  padding: "10px 12px",
+  fontSize: "0.9375rem",
+  border: "1px solid var(--border, #E4E4E2)",
+  borderRadius: "6px",
+  background: "var(--surface, #FFFFFF)",
+  color: "var(--text-primary)",
+  outline: "none",
+  boxSizing: "border-box",
+};
+
+const textareaStyle: React.CSSProperties = {
+  ...inputStyle,
+  resize: "vertical" as const,
+  minHeight: "100px",
+  lineHeight: 1.6,
+};
+
+const labelStyle: React.CSSProperties = {
+  display: "block",
+  fontSize: "0.875rem",
+  fontWeight: 600,
+  color: "var(--text-primary)",
+  marginBottom: "6px",
+};
+
+const optionalStyle: React.CSSProperties = {
+  fontSize: "0.8rem",
+  fontWeight: 400,
+  color: "var(--text-muted)",
+  marginLeft: "5px",
+};
+
+const errorStyle: React.CSSProperties = {
+  fontSize: "0.8125rem",
+  color: "#DC2626",
+  marginTop: "6px",
+};
+
+const fieldGroupStyle: React.CSSProperties = {
+  marginBottom: "20px",
+};
+
+const radioOptionStyle = (selected: boolean): React.CSSProperties => ({
+  display: "flex",
+  alignItems: "flex-start",
+  gap: "10px",
+  padding: "10px 14px",
+  border: `1px solid ${selected ? "var(--cta, #1E7AB8)" : "var(--border, #E4E4E2)"}`,
+  borderRadius: "8px",
+  cursor: "pointer",
+  background: selected ? "rgba(30,122,184,0.10)" : "var(--surface, #FFFFFF)",
+  transition: "border-color 0.15s ease, background 0.15s ease",
+});
+
+// ─── Component ──────────────────────────────────────────────────────────────────
+
+interface WorkflowBuilderToolProps {
+  initialPaymentStatus?: string;
+  initialSessionId?: string;
+}
+
+export default function WorkflowBuilderTool({
+  initialPaymentStatus,
+  initialSessionId,
+}: WorkflowBuilderToolProps) {
+  const { user } = useAuth();
+  const toolContainerRef = useRef<HTMLDivElement>(null);
+  const isFirstRender = useRef(true);
+
+  // ── Screen ───────────────────────────────────────────────
+  const [screen, setScreen] = useState<Screen>("s1");
+
+  // ── Screen 1: The Task ───────────────────────────────────
+  const [taskDescription, setTaskDescription] = useState("");
+  const [frequency, setFrequency] = useState<Frequency | "">("");
+
+  // ── Screen 2: The Context ────────────────────────────────
+  const [collaboration, setCollaboration] = useState<Collaboration | "">("");
+  const [audiencePriorities, setAudiencePriorities] = useState("");
+  const [jobTitle, setJobTitle] = useState("");
+  const [userTools, setUserTools] = useState("");
+
+  // ── Screen 3: Reference material ────────────────────────
+  const [processFile, setProcessFile] = useState<File | null>(null);
+  const [exampleFile, setExampleFile] = useState<File | null>(null);
+
+  // ── Error state ───────────────────────────────────────────
+  const [s1Error, setS1Error] = useState("");
+  const [s2Error, setS2Error] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  // ── Paywall state ─────────────────────────────────────────
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [checkoutError, setCheckoutError] = useState("");
+  const [paywallEmail, setPaywallEmail] = useState("");
+  const [paymentCancelled, setPaymentCancelled] = useState(false);
+  const [subscriptionVerified, setSubscriptionVerified] = useState(false);
+  const [subCheckLoading, setSubCheckLoading] = useState(false);
+  const [showReturningCheck, setShowReturningCheck] = useState(false);
+  const [returningEmail, setReturningEmail] = useState("");
+  const [returningCheckLoading, setReturningCheckLoading] = useState(false);
+  const [returningCheckError, setReturningCheckError] = useState("");
+
+  // ── Loading animation ─────────────────────────────────────
+  const [loadingStep, setLoadingStep] = useState(0);
+
+  // ── Email gate ────────────────────────────────────────────
+  const [email, setEmail] = useState("");
+  const [emailSubmitting, setEmailSubmitting] = useState(false);
+  const [emailError, setEmailError] = useState("");
+
+  // ── Result state ──────────────────────────────────────────
+  const [fileBlob, setFileBlob] = useState<Blob | null>(null);
+  const [filename, setFilename] = useState("workflow.docx");
+  const [resultTaskTitle, setResultTaskTitle] = useState("");
+  const [resultStepCount, setResultStepCount] = useState("");
+  const [resultFrequency, setResultFrequency] = useState("");
+
+  // ── Loading animation ─────────────────────────────────────
+  useEffect(() => {
+    if (screen !== "loading") return;
+    setLoadingStep(0);
+    const timers = LOADING_STEPS.map((_, i) =>
+      setTimeout(() => setLoadingStep(i), i * 5000)
+    );
+    return () => timers.forEach(clearTimeout);
+  }, [screen]);
+
+  // ── Auth: pre-fill email (paid tool — do NOT auto-skip) ──
+  useEffect(() => {
+    if (user) {
+      setEmail(user.email);
+      setPaywallEmail(user.email);
+    }
+  }, [user]);
+
+  // ── Auto-check subscription when logged-in user hits paywall ──
+  useEffect(() => {
+    if (screen !== "paywall" || !user?.email) return;
+    let cancelled = false;
+    setSubCheckLoading(true);
+    fetch("/api/verify-workflow-subscription", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: user.email }),
+    })
+      .then((res) => res.json())
+      .then((data: { verified: boolean }) => {
+        if (!cancelled) setSubscriptionVerified(data.verified);
+      })
+      .catch(() => {})
+      .finally(() => { if (!cancelled) setSubCheckLoading(false); });
+    return () => { cancelled = true; };
+  }, [screen, user?.email]);
+
+  // ── Scroll to tool container on screen change ────────────
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    toolContainerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [screen]);
+
+  // ── Restore form from storage helpers ────────────────────
+  function restoreFromSaved(saved: SavedFormData): void {
+    setTaskDescription(saved.taskDescription ?? "");
+    setFrequency((saved.frequency as Frequency) ?? "");
+    setCollaboration((saved.collaboration as Collaboration) ?? "");
+    setAudiencePriorities(saved.audiencePriorities ?? "");
+    setJobTitle(saved.jobTitle ?? "");
+    setUserTools(saved.userTools ?? "");
+  }
+
+  // ── Payment detection on mount ────────────────────────────
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (!initialPaymentStatus) return;
+
+    const saved = loadFromStorage();
+
+    if (initialPaymentStatus === "cancelled") {
+      if (saved) restoreFromSaved(saved);
+      clearStorage();
+      setPaymentCancelled(true);
+      setScreen("paywall");
+      return;
+    }
+
+    if (initialPaymentStatus === "success" && initialSessionId) {
+      if (!saved) {
+        setErrorMsg(
+          "Your payment was successful, but we couldn't recover your form data. Please contact us at results@promptaiagents.com and we'll sort it out."
+        );
+        setScreen("error");
+        return;
+      }
+
+      restoreFromSaved(saved);
+      setScreen("verifying");
+
+      fetch(`/api/verify-payment?session_id=${initialSessionId}`)
+        .then((r) => r.json())
+        .then(({ verified }: { verified: boolean }) => {
+          if (verified) {
+            clearStorage();
+            buildFromData(saved);
+          } else {
+            setCheckoutError(
+              "Payment could not be verified. Please try again or contact results@promptaiagents.com."
+            );
+            setScreen("paywall");
+          }
+        })
+        .catch(() => {
+          setCheckoutError(
+            "Something went wrong verifying your payment. Please contact results@promptaiagents.com."
+          );
+          setScreen("paywall");
+        });
+    }
+  }, []); // intentionally run once on mount only
+
+  // ── Restore form after sign-in redirect ──────────────────
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (initialPaymentStatus) return;
+    try {
+      const returnFlag = sessionStorage.getItem("wf_return_to_paywall");
+      if (!returnFlag) return;
+      sessionStorage.removeItem("wf_return_to_paywall");
+      const saved = loadFromStorage();
+      if (saved) {
+        restoreFromSaved(saved);
+        clearStorage();
+      }
+      setScreen("paywall");
+    } catch {
+      // ignore
+    }
+  }, []); // intentionally run once on mount only
+
+  // ─── Build workflow ───────────────────────────────────────
+
+  async function buildFromData(data: SavedFormData): Promise<void> {
+    setScreen("loading");
+
+    try {
+      // Convert uploaded files to base64
+      let processFileData: { name: string; type: string; data: string } | undefined;
+      let exampleFileData: { name: string; type: string; data: string } | undefined;
+
+      if (processFile) {
+        const b64 = await blobToBase64(processFile);
+        processFileData = { name: processFile.name, type: processFile.type, data: b64 };
+      }
+      if (exampleFile) {
+        const b64 = await blobToBase64(exampleFile);
+        exampleFileData = { name: exampleFile.name, type: exampleFile.type, data: b64 };
+      }
+
+      const res = await fetch("/api/workflow-builder", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          taskDescription: data.taskDescription,
+          frequency: data.frequency,
+          collaboration: data.collaboration,
+          audiencePriorities: data.audiencePriorities || undefined,
+          jobTitle: data.jobTitle || undefined,
+          userTools: data.userTools || undefined,
+          processFile: processFileData,
+          exampleFile: exampleFileData,
+        }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error ?? "Build failed");
+      }
+
+      const blob = await res.blob();
+      const wfFilename = decodeURIComponent(res.headers.get("X-WF-Filename") ?? "workflow.docx");
+      const taskTitle = decodeURIComponent(res.headers.get("X-Task-Title") ?? data.taskDescription);
+      const stepCount = res.headers.get("X-Step-Count") ?? "";
+      const freq = decodeURIComponent(res.headers.get("X-Frequency") ?? data.frequency);
+
+      setFileBlob(blob);
+      setFilename(wfFilename);
+      setResultTaskTitle(taskTitle);
+      setResultStepCount(stepCount);
+      setResultFrequency(freq);
+
+      setScreen("email-gate");
+    } catch (err) {
+      setErrorMsg(
+        err instanceof Error
+          ? err.message
+          : "Something went wrong on our end. Your input is saved. Hit Retry and we'll try again."
+      );
+      setScreen("error");
+    }
+  }
+
+  // ─── Validate and proceed through screens ─────────────────
+
+  function handleS1Continue(): void {
+    if (!taskDescription.trim() || taskDescription.trim().length < 10) {
+      setS1Error("Tell us a bit more about the task. More detail means a better workflow.");
+      return;
+    }
+    if (!frequency) {
+      setS1Error("Please select how often you do this task.");
+      return;
+    }
+    setS1Error("");
+    setScreen("s2");
+  }
+
+  function handleS2Continue(): void {
+    if (!collaboration) {
+      setS2Error("Please select who works on this with you.");
+      return;
+    }
+    setS2Error("");
+    setScreen("s3");
+  }
+
+  function handleS3Build(): void {
+    // Screen 3 is all optional — go straight to paywall
+    setScreen("paywall");
+  }
+
+  // ─── Stripe checkout ──────────────────────────────────────
+
+  async function handleCheckout(): Promise<void> {
+    setCheckoutLoading(true);
+    setCheckoutError("");
+
+    // Save form state before redirecting to Stripe
+    saveToStorage({
+      taskDescription,
+      frequency,
+      collaboration,
+      audiencePriorities,
+      jobTitle,
+      userTools,
+    });
+
+    try {
+      const res = await fetch("/api/workflow-builder-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await res.json() as { url?: string; error?: string };
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        setCheckoutError(data.error ?? "Could not start checkout. Please try again.");
+        setCheckoutLoading(false);
+      }
+    } catch {
+      setCheckoutError("Could not start checkout. Please try again.");
+      setCheckoutLoading(false);
+    }
+  }
+
+  // ─── Returning purchaser check ────────────────────────────
+
+  async function handleReturningCheck(): Promise<void> {
+    if (!returningEmail.trim()) {
+      setReturningCheckError("Please enter your email address.");
+      return;
+    }
+    setReturningCheckLoading(true);
+    setReturningCheckError("");
+    try {
+      const res = await fetch("/api/verify-workflow-subscription", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: returningEmail.trim() }),
+      });
+      const data = await res.json() as { verified: boolean };
+      if (data.verified) {
+        setEmail(returningEmail.trim());
+        setSubscriptionVerified(true);
+        setReturningCheckError("");
+        setShowReturningCheck(false);
+      } else {
+        setReturningCheckError("No active subscription found for that email. Try a different address or subscribe below.");
+      }
+    } catch {
+      setReturningCheckError("Could not check subscription. Please try again.");
+    } finally {
+      setReturningCheckLoading(false);
+    }
+  }
+
+  // ─── Email submit ─────────────────────────────────────────
+
+  async function handleEmailSubmit(): Promise<void> {
+    if (!email.trim() || !email.includes("@")) {
+      setEmailError("Please enter a valid email address.");
+      return;
+    }
+    if (!fileBlob) {
+      setEmailError("Something went wrong. Please start over.");
+      return;
+    }
+
+    setEmailSubmitting(true);
+    setEmailError("");
+
+    // Fire browser download immediately
+    triggerDownload(fileBlob, filename);
+
+    // Send email in background
+    try {
+      const fileData = await blobToBase64(fileBlob);
+      await fetch("/api/workflow-builder-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email.trim(),
+          filename,
+          taskTitle: resultTaskTitle,
+          stepCount: resultStepCount,
+          frequency: resultFrequency,
+          fileData,
+        }),
+      });
+    } catch {
+      // Email failure is non-blocking — download already fired
+    }
+
+    setEmailSubmitting(false);
+    setScreen("sent");
+  }
+
+  // ─── Sign-in redirect ─────────────────────────────────────
+
+  function handleSignIn(): void {
+    saveToStorage({ taskDescription, frequency, collaboration, audiencePriorities, jobTitle, userTools });
+    try {
+      sessionStorage.setItem("wf_return_to_paywall", "1");
+    } catch {
+      // ignore
+    }
+    window.location.href = "/login?redirect=/workflow-builder";
+  }
+
+  // ─── Reset ────────────────────────────────────────────────
+
+  function handleReset(): void {
+    setScreen("s1");
+    setTaskDescription("");
+    setFrequency("");
+    setCollaboration("");
+    setAudiencePriorities("");
+    setJobTitle("");
+    setUserTools("");
+    setProcessFile(null);
+    setExampleFile(null);
+    setFileBlob(null);
+    setFilename("workflow.docx");
+    setResultTaskTitle("");
+    setResultStepCount("");
+    setResultFrequency("");
+    setEmail("");
+    setEmailError("");
+    setS1Error("");
+    setS2Error("");
+    setErrorMsg("");
+    setCheckoutError("");
+    setSubscriptionVerified(false);
+    setPaymentCancelled(false);
+    clearStorage();
+  }
+
+  // ─── Render ───────────────────────────────────────────────
+
+  const currentFormData: SavedFormData = {
+    taskDescription, frequency, collaboration, audiencePriorities, jobTitle, userTools,
+  };
+
+  return (
+    <div
+      ref={toolContainerRef}
+      className="tool-container"
+      style={{ scrollMarginTop: "136px" }}
+    >
+
+      {/* ── Verifying screen ──────────────────────────────── */}
+      {screen === "verifying" && (
+        <div style={{ textAlign: "center", padding: "48px 0" }}>
+          <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.9375rem" }}>
+            Verifying your payment...
+          </p>
+        </div>
+      )}
+
+      {/* ── Loading screen ────────────────────────────────── */}
+      {screen === "loading" && (
+        <ToolLoadingScreen
+          steps={LOADING_STEPS}
+          activeStep={loadingStep}
+          completedSteps={Array.from({ length: loadingStep }, (_, i) => i)}
+          timeEstimate="About 30 seconds."
+          headingText="Building your workflow."
+        />
+      )}
+
+      {/* ── Screen 1: The Task ────────────────────────────── */}
+      {screen === "s1" && (
+        <>
+          <StepIndicator totalSteps={3} currentStep={1} />
+          <h2
+            style={{
+              fontSize: "clamp(1.35rem, 2.5vw, 1.625rem)",
+              fontWeight: 400,
+              fontFamily: "var(--font-display)",
+              color: "var(--text-primary)",
+              margin: "0 0 28px",
+              lineHeight: 1.3,
+            }}
+          >
+            Tell us about your task.
+          </h2>
+
+          {/* Task description */}
+          <div style={fieldGroupStyle}>
+            <label htmlFor="wf-task" style={labelStyle}>
+              What task do you want a workflow for?
+            </label>
+            <textarea
+              id="wf-task"
+              style={{ ...textareaStyle, minHeight: "90px" }}
+              value={taskDescription}
+              onChange={(e) => setTaskDescription(e.target.value)}
+              placeholder="e.g. Write a competitive analysis for a new product launch"
+              rows={3}
+            />
+            <QualitySignal text={taskDescription} threshold={80} />
+          </div>
+
+          {/* Frequency */}
+          <div style={fieldGroupStyle}>
+            <label style={labelStyle}>How often do you do this?</label>
+            <div style={{ display: "flex", flexDirection: "column" as const, gap: "8px", marginTop: "4px" }}>
+              {(["Daily", "Weekly", "Monthly", "1x Project"] as Frequency[]).map((opt) => (
+                <label
+                  key={opt}
+                  style={radioOptionStyle(frequency === opt)}
+                  onClick={() => setFrequency(opt)}
+                >
+                  <input
+                    type="radio"
+                    name="frequency"
+                    value={opt}
+                    checked={frequency === opt}
+                    onChange={() => setFrequency(opt)}
+                    style={{ marginTop: "2px", accentColor: "var(--cta, #1E7AB8)", flexShrink: 0 }}
+                  />
+                  <span style={{ fontSize: "0.9rem", color: "var(--text-primary)", lineHeight: 1.4 }}>
+                    {opt}
+                  </span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {s1Error && <p style={errorStyle}>{s1Error}</p>}
+
+          <button
+            type="button"
+            className="btn btn-dark-cta"
+            style={{ width: "100%", marginTop: "8px" }}
+            onClick={handleS1Continue}
+          >
+            Continue
+          </button>
+        </>
+      )}
+
+      {/* ── Screen 2: The Context ─────────────────────────── */}
+      {screen === "s2" && (
+        <>
+          <BackButton onClick={() => setScreen("s1")} />
+          <StepIndicator totalSteps={3} currentStep={2} />
+          <h2
+            style={{
+              fontSize: "clamp(1.35rem, 2.5vw, 1.625rem)",
+              fontWeight: 400,
+              fontFamily: "var(--font-display)",
+              color: "var(--text-primary)",
+              margin: "0 0 28px",
+              lineHeight: 1.3,
+            }}
+          >
+            Tell us about the context.
+          </h2>
+
+          {/* Collaboration */}
+          <div style={fieldGroupStyle}>
+            <label style={labelStyle}>Who works on this with you?</label>
+            <div style={{ display: "flex", flexDirection: "column" as const, gap: "8px", marginTop: "4px" }}>
+              {(["Just me", "Small team", "Big team"] as Collaboration[]).map((opt) => (
+                <label
+                  key={opt}
+                  style={radioOptionStyle(collaboration === opt)}
+                  onClick={() => setCollaboration(opt)}
+                >
+                  <input
+                    type="radio"
+                    name="collaboration"
+                    value={opt}
+                    checked={collaboration === opt}
+                    onChange={() => setCollaboration(opt)}
+                    style={{ marginTop: "2px", accentColor: "var(--cta, #1E7AB8)", flexShrink: 0 }}
+                  />
+                  <div>
+                    <span style={{ fontSize: "0.9rem", color: "var(--text-primary)", lineHeight: 1.4 }}>
+                      {opt}
+                    </span>
+                    {opt === "Just me" && (
+                      <span style={{ display: "block", fontSize: "0.8rem", color: "var(--text-muted)", lineHeight: 1.4 }}>
+                        I own this task end to end.
+                      </span>
+                    )}
+                    {opt === "Small team" && (
+                      <span style={{ display: "block", fontSize: "0.8rem", color: "var(--text-muted)", lineHeight: 1.4 }}>
+                        A few people are involved. Reviews and handoffs matter.
+                      </span>
+                    )}
+                    {opt === "Big team" && (
+                      <span style={{ display: "block", fontSize: "0.8rem", color: "var(--text-muted)", lineHeight: 1.4 }}>
+                        Multiple teams or stakeholders. Coordination is part of the work.
+                      </span>
+                    )}
+                  </div>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Audience and priorities (optional) */}
+          <div style={fieldGroupStyle}>
+            <label htmlFor="wf-audience" style={labelStyle}>
+              Who sees the finished result, and what matters most to them?
+              <span style={optionalStyle}>(optional)</span>
+            </label>
+            <textarea
+              id="wf-audience"
+              style={{ ...textareaStyle, minHeight: "70px" }}
+              value={audiencePriorities}
+              onChange={(e) => setAudiencePriorities(e.target.value)}
+              placeholder="e.g. My director reviews it. She cares about the recovery plan, not the excuses."
+              rows={2}
+            />
+          </div>
+
+          {/* Job title (optional) */}
+          <div style={fieldGroupStyle}>
+            <label htmlFor="wf-job-title" style={labelStyle}>
+              Your job title
+              <span style={optionalStyle}>(optional)</span>
+            </label>
+            <input
+              id="wf-job-title"
+              type="text"
+              style={inputStyle}
+              value={jobTitle}
+              onChange={(e) => setJobTitle(e.target.value)}
+              placeholder="e.g. Marketing Manager"
+            />
+          </div>
+
+          {/* Tools (optional) */}
+          <div style={fieldGroupStyle}>
+            <label htmlFor="wf-tools" style={labelStyle}>
+              Any tools or apps you already use?
+              <span style={optionalStyle}>(optional)</span>
+            </label>
+            <input
+              id="wf-tools"
+              type="text"
+              style={inputStyle}
+              value={userTools}
+              onChange={(e) => setUserTools(e.target.value)}
+              placeholder="e.g. Google Workspace, Slack, Notion"
+            />
+          </div>
+
+          {s2Error && <p style={errorStyle}>{s2Error}</p>}
+
+          <button
+            type="button"
+            className="btn btn-dark-cta"
+            style={{ width: "100%", marginTop: "8px" }}
+            onClick={handleS2Continue}
+          >
+            Continue
+          </button>
+        </>
+      )}
+
+      {/* ── Screen 3: Reference material ──────────────────── */}
+      {screen === "s3" && (
+        <>
+          <BackButton onClick={() => setScreen("s2")} />
+          <StepIndicator totalSteps={3} currentStep={3} />
+          <h2
+            style={{
+              fontSize: "clamp(1.35rem, 2.5vw, 1.625rem)",
+              fontWeight: 400,
+              fontFamily: "var(--font-display)",
+              color: "var(--text-primary)",
+              margin: "0 0 8px",
+              lineHeight: 1.3,
+            }}
+          >
+            Upload reference material.
+          </h2>
+          <p style={{ fontSize: "0.875rem", color: "var(--text-muted)", margin: "0 0 28px", lineHeight: 1.5 }}>
+            Both fields are optional. If you have files, upload them and the workflow will be built around your actual process.
+          </p>
+
+          {/* Upload zone 1 */}
+          <div style={{ ...fieldGroupStyle, marginBottom: "24px" }}>
+            <label style={labelStyle}>
+              Upload your current process
+              <span style={optionalStyle}>(optional)</span>
+            </label>
+            <p style={{ fontSize: "0.8125rem", color: "var(--text-muted)", margin: "0 0 10px", lineHeight: 1.5 }}>
+              SOPs, checklists, or how you do this today.
+            </p>
+            <FileUploadZone
+              file={processFile}
+              onFileChange={setProcessFile}
+              id="wf-process-file"
+              accept=".txt,.md,.pdf,.docx"
+            />
+          </div>
+
+          {/* Upload zone 2 */}
+          <div style={{ ...fieldGroupStyle, marginBottom: "28px" }}>
+            <label style={labelStyle}>
+              Upload an example of the finished result
+              <span style={optionalStyle}>(optional)</span>
+            </label>
+            <p style={{ fontSize: "0.8125rem", color: "var(--text-muted)", margin: "0 0 10px", lineHeight: 1.5 }}>
+              Past deliverables, templates, or what "done" looks like.
+            </p>
+            <FileUploadZone
+              file={exampleFile}
+              onFileChange={setExampleFile}
+              id="wf-example-file"
+              accept=".txt,.md,.pdf,.docx"
+            />
+          </div>
+
+          <p style={{ fontSize: "0.8125rem", color: "var(--text-muted)", textAlign: "center", margin: "0 0 16px" }}>
+            About 30 seconds.
+          </p>
+
+          <button
+            type="button"
+            className="btn btn-dark-cta"
+            style={{ width: "100%" }}
+            onClick={handleS3Build}
+          >
+            Build My Workflow
+          </button>
+        </>
+      )}
+
+      {/* ── Paywall ───────────────────────────────────────── */}
+      {screen === "paywall" && (
+        <>
+          <BackButton onClick={() => setScreen("s3")} />
+
+          <h2
+            style={{
+              fontSize: "clamp(1.35rem, 2.5vw, 1.625rem)",
+              fontWeight: 400,
+              fontFamily: "var(--font-display)",
+              color: "var(--text-primary)",
+              margin: "0 0 20px",
+              lineHeight: 1.3,
+            }}
+          >
+            Your workflow is almost ready.
+          </h2>
+
+          {paymentCancelled && (
+            <p style={{ fontSize: "0.875rem", color: "rgba(255,200,80,0.9)", marginBottom: "16px" }}>
+              Checkout was cancelled. Your inputs are still here.
+            </p>
+          )}
+
+          {/* What's included */}
+          <div
+            style={{
+              marginBottom: "24px",
+              padding: "0 4px",
+            }}
+          >
+            <p
+              style={{
+                fontSize: "0.6875rem",
+                fontWeight: 700,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase" as const,
+                color: "var(--text-muted)",
+                marginBottom: "12px",
+              }}
+            >
+              Your workflow includes
+            </p>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+              {DELIVERABLES.map((item) => (
+                <li
+                  key={item}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    padding: "7px 0",
+                    borderBottom: "1px solid var(--border, #E4E4E2)",
+                    fontSize: "0.9rem",
+                    color: "var(--text-primary)",
+                  }}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--cta, #1E7AB8)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                  </svg>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Pricing card */}
+          <div
+            style={{
+              background: "var(--dark, #161618)",
+              border: "1px solid rgba(255,255,255,0.12)",
+              borderRadius: "12px",
+              padding: "24px",
+              marginBottom: "16px",
+            }}
+          >
+            <div style={{ marginBottom: "16px" }}>
+              <p
+                style={{
+                  fontSize: "0.6875rem",
+                  fontWeight: 700,
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase" as const,
+                  color: "var(--cta, #1E7AB8)",
+                  margin: "0 0 6px",
+                }}
+              >
+                Annual Subscription
+              </p>
+              <p
+                style={{
+                  fontSize: "1.5rem",
+                  fontWeight: 800,
+                  color: "#FFFFFF",
+                  margin: "0 0 4px",
+                  lineHeight: 1.2,
+                }}
+              >
+                $49 <span style={{ fontSize: "0.9rem", fontWeight: 500, color: "rgba(255,255,255,0.55)" }}>/year</span>
+              </p>
+              <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.5)", margin: 0, lineHeight: 1.5 }}>
+                Unlimited workflows for any task, any job title.
+              </p>
+            </div>
+
+            {/* Subscription active badge for verified users */}
+            {subscriptionVerified && (
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  padding: "10px 14px",
+                  background: "rgba(34,197,94,0.12)",
+                  border: "1px solid rgba(34,197,94,0.30)",
+                  borderRadius: "8px",
+                  marginBottom: "16px",
+                }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span style={{ fontSize: "0.875rem", color: "#22C55E", fontWeight: 600 }}>
+                  Active subscription confirmed
+                </span>
+              </div>
+            )}
+
+            {subCheckLoading && (
+              <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.4)", marginBottom: "12px" }}>
+                Checking subscription...
+              </p>
+            )}
+
+            {subscriptionVerified ? (
+              <button
+                type="button"
+                className="btn btn-dark-cta"
+                style={{ width: "100%" }}
+                onClick={() => buildFromData(currentFormData)}
+              >
+                Build My Workflow
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="btn btn-dark-cta"
+                style={{ width: "100%", opacity: checkoutLoading ? 0.7 : 1 }}
+                onClick={handleCheckout}
+                disabled={checkoutLoading}
+              >
+                {checkoutLoading ? "Redirecting to checkout..." : "Get Access · $49/year"}
+              </button>
+            )}
+
+            {checkoutError && (
+              <p style={{ ...errorStyle, color: "rgba(255,120,100,0.9)", marginTop: "10px" }}>
+                {checkoutError}
+              </p>
+            )}
+
+            <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.35)", textAlign: "center", margin: "12px 0 0" }}>
+              Annual subscription. Cancel anytime.
+            </p>
+
+            {/* Sign-in link — only shown when NOT logged in */}
+            {!user && (
+              <p style={{ fontSize: "0.8125rem", textAlign: "center", margin: "10px 0 0" }}>
+                <span style={{ color: "rgba(255,255,255,0.5)" }}>Already have an account? </span>
+                <button
+                  type="button"
+                  onClick={handleSignIn}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    padding: 0,
+                    fontSize: "0.8125rem",
+                    color: "#60B4F0",
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                  }}
+                >
+                  Sign in
+                </button>
+              </p>
+            )}
+          </div>
+
+          {/* Returning purchaser check */}
+          {!subscriptionVerified && (
+            <div style={{ marginTop: "4px" }}>
+              {!showReturningCheck ? (
+                <button
+                  type="button"
+                  onClick={() => setShowReturningCheck(true)}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    padding: 0,
+                    fontSize: "0.8125rem",
+                    color: "var(--text-muted)",
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                    display: "block",
+                    margin: "0 auto",
+                  }}
+                >
+                  Already have access? Enter your email.
+                </button>
+              ) : (
+                <div style={{ padding: "16px", background: "var(--surface-secondary, #F9F9F7)", border: "1px solid var(--border)", borderRadius: "10px" }}>
+                  <label htmlFor="wf-returning-email" style={{ ...labelStyle, marginBottom: "8px" }}>
+                    Enter your email to verify access
+                  </label>
+                  <div style={{ display: "flex", gap: "8px" }}>
+                    <input
+                      id="wf-returning-email"
+                      type="email"
+                      style={{ ...inputStyle, flex: 1 }}
+                      value={returningEmail}
+                      onChange={(e) => setReturningEmail(e.target.value)}
+                      placeholder="your@email.com"
+                    />
+                    <button
+                      type="button"
+                      className="btn btn-dark-cta"
+                      style={{ whiteSpace: "nowrap" as const, padding: "10px 16px", fontSize: "0.875rem" }}
+                      onClick={handleReturningCheck}
+                      disabled={returningCheckLoading}
+                    >
+                      {returningCheckLoading ? "Checking..." : "Verify"}
+                    </button>
+                  </div>
+                  {returningCheckError && <p style={errorStyle}>{returningCheckError}</p>}
+                </div>
+              )}
+            </div>
+          )}
+        </>
+      )}
+
+      {/* ── Email gate ────────────────────────────────────── */}
+      {screen === "email-gate" && (
+        <>
+          {/* Preview summary block */}
+          <div
+            style={{
+              padding: "16px 20px",
+              background: "rgba(255,255,255,0.05)",
+              border: "1px solid rgba(255,255,255,0.10)",
+              borderRadius: "10px",
+              marginBottom: "24px",
+            }}
+          >
+            <p
+              style={{
+                fontSize: "0.6875rem",
+                fontWeight: 700,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase" as const,
+                color: "var(--cta, #1E7AB8)",
+                margin: "0 0 10px",
+              }}
+            >
+              Your workflow includes
+            </p>
+            <p style={{ fontSize: "0.9375rem", fontWeight: 600, color: "var(--text-primary)", margin: "0 0 6px", lineHeight: 1.3 }}>
+              {resultTaskTitle}
+            </p>
+            <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "6px 16px" }}>
+              {resultStepCount && (
+                <span style={{ fontSize: "0.8125rem", color: "var(--text-muted)" }}>
+                  {resultStepCount}-step workflow
+                </span>
+              )}
+              {resultFrequency && (
+                <span style={{ fontSize: "0.8125rem", color: "var(--text-muted)" }}>
+                  {resultFrequency}
+                </span>
+              )}
+              <span style={{ fontSize: "0.8125rem", color: "var(--text-muted)" }}>
+                Formatted .docx: ready to use and share
+              </span>
+            </div>
+          </div>
+
+          <ToolEmailGate
+            headline="Your workflow is ready."
+            email={email}
+            onEmailChange={setEmail}
+            onSubmit={handleEmailSubmit}
+            loading={emailSubmitting}
+            buttonLabel="Send My Workflow"
+            errorMessage={emailError}
+          />
+        </>
+      )}
+
+      {/* ── Sent ──────────────────────────────────────────── */}
+      {screen === "sent" && (
+        <div style={{ textAlign: "center", padding: "20px 0" }}>
+          <div style={{ marginBottom: "16px" }}>
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+              <rect width="48" height="48" rx="10" fill="#22C55E" fillOpacity="0.12" />
+              <path d="M15 24.5L21 31L33 18" stroke="#22C55E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+          <h2
+            style={{
+              fontSize: "clamp(1.35rem, 2.5vw, 1.625rem)",
+              fontWeight: 400,
+              fontFamily: "var(--font-display)",
+              color: "var(--text-primary)",
+              margin: "0 0 8px",
+              lineHeight: 1.3,
+            }}
+          >
+            Your workflow is in your inbox.
+          </h2>
+          <p style={{ fontSize: "0.875rem", color: "var(--text-muted)", margin: "0 0 32px" }}>
+            Check your email for {email}.
+          </p>
+          <button
+            type="button"
+            className="btn btn-dark-cta"
+            onClick={handleReset}
+          >
+            Build another workflow
+          </button>
+        </div>
+      )}
+
+      {/* ── Error ─────────────────────────────────────────── */}
+      {screen === "error" && (
+        <div style={{ textAlign: "center", padding: "20px 0" }}>
+          <p
+            style={{
+              fontSize: "clamp(1.1rem, 2vw, 1.25rem)",
+              fontWeight: 400,
+              fontFamily: "var(--font-display)",
+              color: "var(--text-primary)",
+              margin: "0 0 8px",
+              lineHeight: 1.4,
+            }}
+          >
+            Something went wrong on our end.
+          </p>
+          <p style={{ fontSize: "0.875rem", color: "var(--text-muted)", margin: "0 0 28px" }}>
+            {errorMsg || "Your input is saved. Hit Retry and we'll try again."}
+          </p>
+          <button
+            type="button"
+            className="btn btn-dark-cta"
+            onClick={() => buildFromData(currentFormData)}
+            style={{ marginBottom: "12px" }}
+          >
+            Retry
+          </button>
+          <br />
+          <button
+            type="button"
+            onClick={handleReset}
+            style={{
+              background: "none",
+              border: "none",
+              padding: 0,
+              fontSize: "0.875rem",
+              color: "var(--text-muted)",
+              textDecoration: "underline",
+              cursor: "pointer",
+              marginTop: "8px",
+            }}
+          >
+            Start over
+          </button>
+        </div>
+      )}
+
+    </div>
+  );
+}
+
+// ─── File Upload Zone sub-component ──────────────────────────────────────────
+
+interface FileUploadZoneProps {
+  file: File | null;
+  onFileChange: (file: File | null) => void;
+  id: string;
+  accept: string;
+}
+
+function FileUploadZone({ file, onFileChange, id, accept }: FileUploadZoneProps) {
+  const [dragOver, setDragOver] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(false);
+    const dropped = e.dataTransfer.files[0];
+    if (dropped) onFileChange(dropped);
+  };
+
+  return (
+    <div
+      style={{
+        border: `2px dashed ${dragOver ? "var(--cta, #1E7AB8)" : "var(--border, #E4E4E2)"}`,
+        borderRadius: "10px",
+        padding: "20px",
+        textAlign: "center",
+        cursor: "pointer",
+        transition: "border-color 0.15s ease, background 0.15s ease",
+        background: dragOver ? "rgba(30,122,184,0.04)" : "transparent",
+      }}
+      onClick={() => inputRef.current?.click()}
+      onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+      onDragLeave={() => setDragOver(false)}
+      onDrop={handleDrop}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") inputRef.current?.click(); }}
+      aria-label={file ? `Selected: ${file.name}. Click to change.` : "Click or drag to upload a file"}
+    >
+      {file ? (
+        <div>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: "6px" }}>
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+          </svg>
+          <p style={{ fontSize: "0.875rem", color: "var(--text-primary)", margin: "0 0 4px", fontWeight: 500 }}>
+            {file.name}
+          </p>
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); onFileChange(null); }}
+            style={{
+              background: "none",
+              border: "none",
+              padding: 0,
+              fontSize: "0.8125rem",
+              color: "var(--text-muted)",
+              textDecoration: "underline",
+              cursor: "pointer",
+            }}
+          >
+            Remove
+          </button>
+        </div>
+      ) : (
+        <div>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: "8px" }}>
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="17 8 12 3 7 8" />
+            <line x1="12" y1="3" x2="12" y2="15" />
+          </svg>
+          <p style={{ fontSize: "0.875rem", color: "var(--text-muted)", margin: 0, lineHeight: 1.5 }}>
+            Click to upload, or drag and drop
+          </p>
+          <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", opacity: 0.6, margin: "4px 0 0" }}>
+            .txt · .md · .pdf · .docx (max 5MB)
+          </p>
+        </div>
+      )}
+      <input
+        ref={inputRef}
+        id={id}
+        type="file"
+        accept={accept}
+        style={{ display: "none" }}
+        onChange={(e) => {
+          const selected = e.target.files?.[0];
+          if (selected) onFileChange(selected);
+          e.target.value = "";
+        }}
+      />
+    </div>
+  );
+}

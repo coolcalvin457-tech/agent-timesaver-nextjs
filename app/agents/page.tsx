@@ -81,6 +81,19 @@ const tools = [
     image: "/tool-previews/pip-builder-preview.jpg",
   },
   {
+    slug: "workflow-builder",
+    href: "/workflow-builder",
+    badgeClass: "tool-badge-paid",
+    label: "All Roles",
+    badgeDisplay: "$49/yr",
+    name: "AGENT: Workflow Builder",
+    tagline: "Build the playbook for any task.",
+    description:
+      "Describe a specific task you want to do better with AI. Get a step-by-step workflow doc: which tools to use, in what order, with the actual prompts to run each step.",
+    cta: "Build Workflow",
+    image: "/tool-previews/workflow-builder-preview.png",
+  },
+  {
     slug: "performance-review-builder",
     href: "#",
     badgeClass: "tool-badge-paid",

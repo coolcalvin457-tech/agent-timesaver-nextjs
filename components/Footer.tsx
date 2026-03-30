@@ -18,6 +18,8 @@ export default function Footer() {
               <li><a href="/prompt-builder">AGENT: Prompt Builder</a></li>
               <li><a href="/budget-spreadsheets">AGENT: Budget Spreadsheets</a></li>
               <li><a href="/onboarding-kit-builder">AGENT: Onboarding Kit</a></li>
+              <li><a href="/pip-builder">AGENT: PIP Builder</a></li>
+              <li><a href="/workflow-builder">AGENT: Workflow Builder</a></li>
             </ul>
           </div>
 

@@ -606,7 +606,7 @@ export default function WorkflowBuilderTool({
         <ToolLoadingScreen
           steps={LOADING_STEPS}
           activeStep={loadingStep}
-          timeEstimate="About 30 seconds."
+          timeEstimate="About 1 minute."
           headingText="Building your workflow."
         />
       )}
@@ -807,19 +807,12 @@ export default function WorkflowBuilderTool({
           >
             Upload reference material.
           </h2>
-          <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.45)", margin: "0 0 28px", lineHeight: 1.5 }}>
-            Both fields are optional. If you have files, upload them and the workflow will be built around your actual process.
-          </p>
-
           {/* Upload zone 1 */}
           <div style={{ ...fieldGroupStyle, marginBottom: "24px" }}>
             <label style={labelStyle}>
               Upload your current process
               <span style={optionalStyle}>(optional)</span>
             </label>
-            <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.45)", margin: "0 0 10px", lineHeight: 1.5 }}>
-              SOPs, checklists, or how you do this today.
-            </p>
             <FileUploadZone
               file={processFile}
               onFileChange={setProcessFile}
@@ -834,9 +827,6 @@ export default function WorkflowBuilderTool({
               Upload an example of the finished result
               <span style={optionalStyle}>(optional)</span>
             </label>
-            <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.45)", margin: "0 0 10px", lineHeight: 1.5 }}>
-              Past deliverables, templates, or what "done" looks like.
-            </p>
             <FileUploadZone
               file={exampleFile}
               onFileChange={setExampleFile}
@@ -844,10 +834,6 @@ export default function WorkflowBuilderTool({
               accept=".txt,.md,.pdf,.docx"
             />
           </div>
-
-          <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.45)", textAlign: "center", margin: "0 0 16px" }}>
-            About 30 seconds.
-          </p>
 
           <button
             type="button"
@@ -1317,9 +1303,6 @@ function FileUploadZone({ file, onFileChange, id, accept }: FileUploadZoneProps)
           </svg>
           <p style={{ fontSize: "0.875rem", color: "var(--text-muted)", margin: 0, lineHeight: 1.5 }}>
             Click to upload, or drag and drop
-          </p>
-          <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", opacity: 0.6, margin: "4px 0 0" }}>
-            .txt · .md · .pdf · .docx (max 5MB)
           </p>
         </div>
       )}

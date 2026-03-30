@@ -284,7 +284,7 @@ async function generateWorkflow(
 function sectionLabel(text: string): Paragraph {
   return new Paragraph({
     children: [new TextRun({ text, font: "Calibri", size: 18, bold: true, color: "1E7AB8", allCaps: true })],
-    spacing: { before: 0, after: 100 },
+    spacing: { before: 0, after: 200 },
   });
 }
 

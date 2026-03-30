@@ -576,6 +576,7 @@ export default function WorkflowBuilderTool({
     setEmailError("");
     setS1Error("");
     setS2Error("");
+    setS3Error("");
     setErrorMsg("");
     setCheckoutError("");
     setSubscriptionVerified(false);

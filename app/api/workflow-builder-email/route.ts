@@ -48,38 +48,28 @@ async function sendWorkflowEmail(
           </p>
           <table width="100%" cellpadding="0" cellspacing="0">
             <tr>
-              <td style="padding:5px 0; font-size:14px; color:#333333; line-height:1.5; vertical-align:top;">
+              <td style="padding:5px 0; font-size:14px; line-height:1.5; vertical-align:top;">
                 <span style="color:#1e7ab8; font-weight:600;">Workflow Playbook</span>
-                <span style="color:#888886;"> &nbsp;·&nbsp; </span>
-                <span style="color:#555553;">Your full step-by-step process, start to finish</span>
               </td>
             </tr>
             <tr>
-              <td style="padding:5px 0; font-size:14px; color:#333333; line-height:1.5; vertical-align:top;">
+              <td style="padding:5px 0; font-size:14px; line-height:1.5; vertical-align:top;">
                 <span style="color:#1e7ab8; font-weight:600;">AI Setup</span>
-                <span style="color:#888886;"> &nbsp;·&nbsp; </span>
-                <span style="color:#555553;">Which tools to open at each step</span>
               </td>
             </tr>
             <tr>
-              <td style="padding:5px 0; font-size:14px; color:#333333; line-height:1.5; vertical-align:top;">
+              <td style="padding:5px 0; font-size:14px; line-height:1.5; vertical-align:top;">
                 <span style="color:#1e7ab8; font-weight:600;">AI Prompts</span>
-                <span style="color:#888886;"> &nbsp;·&nbsp; </span>
-                <span style="color:#555553;">Copy-pasteable prompts, ready to run</span>
               </td>
             </tr>
             <tr>
-              <td style="padding:5px 0; font-size:14px; color:#333333; line-height:1.5; vertical-align:top;">
+              <td style="padding:5px 0; font-size:14px; line-height:1.5; vertical-align:top;">
                 <span style="color:#1e7ab8; font-weight:600;">Time Estimates</span>
-                <span style="color:#888886;"> &nbsp;·&nbsp; </span>
-                <span style="color:#555553;">How long each step takes, and the total</span>
               </td>
             </tr>
             <tr>
-              <td style="padding:5px 0; font-size:14px; color:#333333; line-height:1.5; vertical-align:top;">
+              <td style="padding:5px 0; font-size:14px; line-height:1.5; vertical-align:top;">
                 <span style="color:#1e7ab8; font-weight:600;">Key Insights</span>
-                <span style="color:#888886;"> &nbsp;·&nbsp; </span>
-                <span style="color:#555553;">Specific tips for this workflow</span>
               </td>
             </tr>
           </table>

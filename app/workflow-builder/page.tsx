@@ -47,7 +47,7 @@ export default function WorkflowBuilderPage({
                 color: "#ffffff",
               }}
             >
-              You have a task.<br />We&apos;ll build the workflow.
+              You Have a Task.<br />We&apos;ll Build the Workflow.
             </h1>
 
             <p

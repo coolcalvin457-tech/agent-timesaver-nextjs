@@ -723,21 +723,6 @@ export default function WorkflowBuilderTool({
                     <span style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.85)", lineHeight: 1.4 }}>
                       {opt}
                     </span>
-                    {opt === "Just me" && (
-                      <span style={{ display: "block", fontSize: "0.8rem", color: "rgba(255,255,255,0.45)", lineHeight: 1.4 }}>
-                        I own this task end to end.
-                      </span>
-                    )}
-                    {opt === "Small team" && (
-                      <span style={{ display: "block", fontSize: "0.8rem", color: "rgba(255,255,255,0.45)", lineHeight: 1.4 }}>
-                        A few people are involved. Reviews and handoffs matter.
-                      </span>
-                    )}
-                    {opt === "Big team" && (
-                      <span style={{ display: "block", fontSize: "0.8rem", color: "rgba(255,255,255,0.45)", lineHeight: 1.4 }}>
-                        Multiple teams or stakeholders. Coordination is part of the work.
-                      </span>
-                    )}
                   </div>
                 </label>
               ))}

@@ -871,7 +871,7 @@ export default function WorkflowBuilderTool({
           </div>
 
           {/* Audience and priorities (optional) */}
-          <div style={fieldGroupStyle}>
+          <div style={{ ...fieldGroupStyle, marginBottom: "12px" }}>
             <label htmlFor="wf-audience" style={labelStyle}>
               Who sees the finished result, and what matters most to them?
               <span style={optionalStyle}>(optional)</span>

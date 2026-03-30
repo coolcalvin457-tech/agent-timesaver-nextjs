@@ -444,7 +444,7 @@ export default function BudgetSpreadsheetTool() {
           <textarea
             className="input"
             rows={5}
-            style={{ resize: "vertical", marginBottom: "8px" }}
+            style={{ resize: "vertical", marginBottom: "12px" }}
             placeholder={
               "e.g. Q3 marketing budget, $50K total, with categories for paid ads, content, and tools\n\ne.g. What if we added 2 headcount per department: model 3 scenarios"
             }
@@ -454,7 +454,7 @@ export default function BudgetSpreadsheetTool() {
           />
           <button
             className="btn btn-primary btn-full"
-            style={{ marginTop: "16px" }}
+            style={{ marginTop: "8px" }}
             onClick={() => {
               track("q1_completed");
               go("q2");
@@ -500,7 +500,7 @@ export default function BudgetSpreadsheetTool() {
               display: "flex",
               flexDirection: "column",
               gap: "12px",
-              marginBottom: "24px",
+              marginBottom: "16px",
             }}
           >
             <UploadZone
@@ -529,6 +529,7 @@ export default function BudgetSpreadsheetTool() {
 
           <button
             className="btn btn-primary btn-full"
+            style={{ marginTop: "8px" }}
             onClick={() => {
               track("q2_completed", {
                 hasContentFile: String(!!contentFile),

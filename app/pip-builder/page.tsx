@@ -60,8 +60,7 @@ export default function PIPBuilderPage({
             >
               <span style={{ fontWeight: 800, color: "var(--cta)", fontSize: "1.125rem" }}>$99</span>
               {" · "}
-              <strong style={{ fontWeight: 600, color: "rgba(255,255,255,0.65)" }}>HR Agents Package.</strong>{" "}
-              Annual subscription.
+              <span style={{ fontWeight: 400, color: "rgba(255,255,255,0.65)" }}>HR Agents Package. Annual subscription.</span>
             </p>
 
             <a

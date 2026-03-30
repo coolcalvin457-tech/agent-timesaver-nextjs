@@ -1016,9 +1016,6 @@ export default function WorkflowBuilderTool({
               >
                 $49 <span style={{ fontSize: "0.9rem", fontWeight: 500, color: "rgba(255,255,255,0.55)" }}>/year</span>
               </p>
-              <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.5)", margin: 0, lineHeight: 1.5 }}>
-                Unlimited workflows for any task, any job title.
-              </p>
             </div>
 
             {/* Subscription active badge for verified users */}
@@ -1159,59 +1156,16 @@ export default function WorkflowBuilderTool({
 
       {/* ── Email gate ────────────────────────────────────── */}
       {screen === "email-gate" && (
-        <>
-          {/* Preview summary block */}
-          <div
-            style={{
-              padding: "16px 20px",
-              background: "rgba(255,255,255,0.05)",
-              border: "1px solid rgba(255,255,255,0.10)",
-              borderRadius: "10px",
-              marginBottom: "24px",
-            }}
-          >
-            <p
-              style={{
-                fontSize: "0.6875rem",
-                fontWeight: 700,
-                letterSpacing: "0.1em",
-                textTransform: "uppercase" as const,
-                color: "var(--cta, #1E7AB8)",
-                margin: "0 0 10px",
-              }}
-            >
-              Your workflow includes
-            </p>
-            <p style={{ fontSize: "0.9375rem", fontWeight: 600, color: "#FFFFFF", margin: "0 0 6px", lineHeight: 1.3 }}>
-              {resultTaskTitle}
-            </p>
-            <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "6px 16px" }}>
-              {resultStepCount && (
-                <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.45)" }}>
-                  {resultStepCount}-step workflow
-                </span>
-              )}
-              {resultFrequency && (
-                <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.45)" }}>
-                  {resultFrequency}
-                </span>
-              )}
-              <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.45)" }}>
-                Formatted .docx: ready to use and share
-              </span>
-            </div>
-          </div>
-
-          <ToolEmailGate
-            headline="Your workflow is ready."
-            email={email}
-            onEmailChange={setEmail}
-            onSubmit={handleEmailSubmit}
-            loading={emailSubmitting}
-            buttonLabel="Send My Workflow"
-            errorMessage={emailError}
-          />
-        </>
+        <ToolEmailGate
+          headline="Your workflow is ready."
+          subtitle={resultTaskTitle || undefined}
+          email={email}
+          onEmailChange={setEmail}
+          onSubmit={handleEmailSubmit}
+          loading={emailSubmitting}
+          buttonLabel="Send My Workflow"
+          errorMessage={emailError}
+        />
       )}
 
       {/* ── Sent ──────────────────────────────────────────── */}

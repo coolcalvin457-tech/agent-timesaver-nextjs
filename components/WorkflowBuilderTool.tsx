@@ -93,10 +93,10 @@ const inputStyle: React.CSSProperties = {
   width: "100%",
   padding: "10px 12px",
   fontSize: "0.9375rem",
-  border: "1px solid var(--border, #E4E4E2)",
+  border: "1px solid rgba(255,255,255,0.14)",
   borderRadius: "6px",
-  background: "var(--surface, #FFFFFF)",
-  color: "var(--text-primary)",
+  background: "rgba(255,255,255,0.06)",
+  color: "#FFFFFF",
   outline: "none",
   boxSizing: "border-box",
 };
@@ -125,7 +125,7 @@ const optionalStyle: React.CSSProperties = {
 
 const errorStyle: React.CSSProperties = {
   fontSize: "0.8125rem",
-  color: "#DC2626",
+  color: "#FF8A80",
   marginTop: "6px",
 };
 
@@ -138,10 +138,10 @@ const radioOptionStyle = (selected: boolean): React.CSSProperties => ({
   alignItems: "flex-start",
   gap: "10px",
   padding: "10px 14px",
-  border: `1px solid ${selected ? "var(--cta, #1E7AB8)" : "var(--border, #E4E4E2)"}`,
+  border: `1px solid ${selected ? "var(--cta, #1E7AB8)" : "rgba(255,255,255,0.14)"}`,
   borderRadius: "8px",
   cursor: "pointer",
-  background: selected ? "rgba(30,122,184,0.10)" : "var(--surface, #FFFFFF)",
+  background: selected ? "rgba(30,122,184,0.18)" : "rgba(255,255,255,0.05)",
   transition: "border-color 0.15s ease, background 0.15s ease",
 });
 
@@ -653,7 +653,7 @@ export default function WorkflowBuilderTool({
                     onChange={() => setFrequency(opt)}
                     style={{ marginTop: "2px", accentColor: "var(--cta, #1E7AB8)", flexShrink: 0 }}
                   />
-                  <span style={{ fontSize: "0.9rem", color: "var(--text-primary)", lineHeight: 1.4 }}>
+                  <span style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.85)", lineHeight: 1.4 }}>
                     {opt}
                   </span>
                 </label>
@@ -711,21 +711,21 @@ export default function WorkflowBuilderTool({
                     style={{ marginTop: "2px", accentColor: "var(--cta, #1E7AB8)", flexShrink: 0 }}
                   />
                   <div>
-                    <span style={{ fontSize: "0.9rem", color: "var(--text-primary)", lineHeight: 1.4 }}>
+                    <span style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.85)", lineHeight: 1.4 }}>
                       {opt}
                     </span>
                     {opt === "Just me" && (
-                      <span style={{ display: "block", fontSize: "0.8rem", color: "var(--text-muted)", lineHeight: 1.4 }}>
+                      <span style={{ display: "block", fontSize: "0.8rem", color: "rgba(255,255,255,0.45)", lineHeight: 1.4 }}>
                         I own this task end to end.
                       </span>
                     )}
                     {opt === "Small team" && (
-                      <span style={{ display: "block", fontSize: "0.8rem", color: "var(--text-muted)", lineHeight: 1.4 }}>
+                      <span style={{ display: "block", fontSize: "0.8rem", color: "rgba(255,255,255,0.45)", lineHeight: 1.4 }}>
                         A few people are involved. Reviews and handoffs matter.
                       </span>
                     )}
                     {opt === "Big team" && (
-                      <span style={{ display: "block", fontSize: "0.8rem", color: "var(--text-muted)", lineHeight: 1.4 }}>
+                      <span style={{ display: "block", fontSize: "0.8rem", color: "rgba(255,255,255,0.45)", lineHeight: 1.4 }}>
                         Multiple teams or stakeholders. Coordination is part of the work.
                       </span>
                     )}

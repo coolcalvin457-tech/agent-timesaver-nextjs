@@ -1975,6 +1975,12 @@ input, textarea {
   color: rgba(77,163,224,0.9);
 }
 
+/* Placeholder text inside dark tool frame */
+.pb-frame.hero-tool-dark input::placeholder,
+.pb-frame.hero-tool-dark textarea::placeholder {
+  color: rgba(255,255,255,0.28);
+}
+
 /* Top/sides 52px — bottom slightly reduced to visually balance the absolute-positioned label at the top */
 .pb-frame-body {
   padding: 52px 52px 44px;

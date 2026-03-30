@@ -810,7 +810,7 @@ export default function WorkflowBuilderTool({
           {/* Upload zone 1 */}
           <div style={{ ...fieldGroupStyle, marginBottom: "24px" }}>
             <label style={labelStyle}>
-              Upload your current process
+              Upload workflow example
               <span style={optionalStyle}>(optional)</span>
             </label>
             <FileUploadZone
@@ -824,7 +824,7 @@ export default function WorkflowBuilderTool({
           {/* Upload zone 2 */}
           <div style={{ ...fieldGroupStyle, marginBottom: "28px" }}>
             <label style={labelStyle}>
-              Upload an example of the finished result
+              Upload finished product example
               <span style={optionalStyle}>(optional)</span>
             </label>
             <FileUploadZone

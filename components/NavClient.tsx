@@ -6,9 +6,11 @@ import { useAuth } from "@/components/AuthProvider";
 interface NavClientProps {
   /** Server-read paa_name cookie value. Prevents auth button blink. */
   initialName?: string | null;
+  /** Apply dark-transparent styling for dark-background pages. */
+  dark?: boolean;
 }
 
-export default function NavClient({ initialName }: NavClientProps) {
+export default function NavClient({ initialName, dark }: NavClientProps) {
   const [scrolled, setScrolled] = useState(false);
   const { user, loading, logout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -43,7 +45,7 @@ export default function NavClient({ initialName }: NavClientProps) {
   };
 
   return (
-    <nav className={`nav ${scrolled ? "scrolled" : ""}`}>
+    <nav className={`nav${dark ? " nav-dark" : ""}${scrolled ? " scrolled" : ""}`}>
       <div className="container">
         <div className="nav-inner">
           <a href="/" className="nav-logo">

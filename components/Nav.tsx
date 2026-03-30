@@ -7,10 +7,15 @@
 import { cookies } from "next/headers";
 import NavClient from "./NavClient";
 
-export default async function Nav() {
+interface NavProps {
+  /** Apply dark-transparent styling for dark-background pages */
+  dark?: boolean;
+}
+
+export default async function Nav({ dark }: NavProps = {}) {
   const cookieStore = await cookies();
   const nameCookie = cookieStore.get("paa_name");
   const initialName = nameCookie?.value || null;
 
-  return <NavClient initialName={initialName} />;
+  return <NavClient initialName={initialName} dark={dark} />;
 }

@@ -25,7 +25,7 @@ export default function OnboardingKitBuilderPage({
 }) {
   return (
     <>
-      <Nav />
+      <Nav dark />
       <main
         style={{
           background: "linear-gradient(180deg, #1A1B22 0%, #0E0E10 100%)",

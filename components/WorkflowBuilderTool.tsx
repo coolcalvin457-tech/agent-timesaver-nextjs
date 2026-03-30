@@ -112,14 +112,14 @@ const labelStyle: React.CSSProperties = {
   display: "block",
   fontSize: "0.875rem",
   fontWeight: 600,
-  color: "var(--text-primary)",
+  color: "rgba(255,255,255,0.85)",
   marginBottom: "6px",
 };
 
 const optionalStyle: React.CSSProperties = {
   fontSize: "0.8rem",
   fontWeight: 400,
-  color: "var(--text-muted)",
+  color: "rgba(255,255,255,0.45)",
   marginLeft: "5px",
 };
 
@@ -611,7 +611,7 @@ export default function WorkflowBuilderTool({
               fontSize: "clamp(1.35rem, 2.5vw, 1.625rem)",
               fontWeight: 400,
               fontFamily: "var(--font-display)",
-              color: "var(--text-primary)",
+              color: "#FFFFFF",
               margin: "0 0 28px",
               lineHeight: 1.3,
             }}
@@ -684,7 +684,7 @@ export default function WorkflowBuilderTool({
               fontSize: "clamp(1.35rem, 2.5vw, 1.625rem)",
               fontWeight: 400,
               fontFamily: "var(--font-display)",
-              color: "var(--text-primary)",
+              color: "#FFFFFF",
               margin: "0 0 28px",
               lineHeight: 1.3,
             }}
@@ -806,14 +806,14 @@ export default function WorkflowBuilderTool({
               fontSize: "clamp(1.35rem, 2.5vw, 1.625rem)",
               fontWeight: 400,
               fontFamily: "var(--font-display)",
-              color: "var(--text-primary)",
+              color: "#FFFFFF",
               margin: "0 0 8px",
               lineHeight: 1.3,
             }}
           >
             Upload reference material.
           </h2>
-          <p style={{ fontSize: "0.875rem", color: "var(--text-muted)", margin: "0 0 28px", lineHeight: 1.5 }}>
+          <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.45)", margin: "0 0 28px", lineHeight: 1.5 }}>
             Both fields are optional. If you have files, upload them and the workflow will be built around your actual process.
           </p>
 
@@ -823,7 +823,7 @@ export default function WorkflowBuilderTool({
               Upload your current process
               <span style={optionalStyle}>(optional)</span>
             </label>
-            <p style={{ fontSize: "0.8125rem", color: "var(--text-muted)", margin: "0 0 10px", lineHeight: 1.5 }}>
+            <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.45)", margin: "0 0 10px", lineHeight: 1.5 }}>
               SOPs, checklists, or how you do this today.
             </p>
             <FileUploadZone
@@ -840,7 +840,7 @@ export default function WorkflowBuilderTool({
               Upload an example of the finished result
               <span style={optionalStyle}>(optional)</span>
             </label>
-            <p style={{ fontSize: "0.8125rem", color: "var(--text-muted)", margin: "0 0 10px", lineHeight: 1.5 }}>
+            <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.45)", margin: "0 0 10px", lineHeight: 1.5 }}>
               Past deliverables, templates, or what "done" looks like.
             </p>
             <FileUploadZone
@@ -851,7 +851,7 @@ export default function WorkflowBuilderTool({
             />
           </div>
 
-          <p style={{ fontSize: "0.8125rem", color: "var(--text-muted)", textAlign: "center", margin: "0 0 16px" }}>
+          <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.45)", textAlign: "center", margin: "0 0 16px" }}>
             About 30 seconds.
           </p>
 
@@ -876,7 +876,7 @@ export default function WorkflowBuilderTool({
               fontSize: "clamp(1.35rem, 2.5vw, 1.625rem)",
               fontWeight: 400,
               fontFamily: "var(--font-display)",
-              color: "var(--text-primary)",
+              color: "#FFFFFF",
               margin: "0 0 20px",
               lineHeight: 1.3,
             }}
@@ -903,7 +903,7 @@ export default function WorkflowBuilderTool({
                 fontWeight: 700,
                 letterSpacing: "0.1em",
                 textTransform: "uppercase" as const,
-                color: "var(--text-muted)",
+                color: "rgba(255,255,255,0.45)",
                 marginBottom: "12px",
               }}
             >
@@ -918,9 +918,9 @@ export default function WorkflowBuilderTool({
                     alignItems: "center",
                     gap: "10px",
                     padding: "7px 0",
-                    borderBottom: "1px solid var(--border, #E4E4E2)",
+                    borderBottom: "1px solid rgba(255,255,255,0.12)",
                     fontSize: "0.9rem",
-                    color: "var(--text-primary)",
+                    color: "rgba(255,255,255,0.85)",
                   }}
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--cta, #1E7AB8)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1067,7 +1067,7 @@ export default function WorkflowBuilderTool({
                     border: "none",
                     padding: 0,
                     fontSize: "0.8125rem",
-                    color: "var(--text-muted)",
+                    color: "rgba(255,255,255,0.45)",
                     textDecoration: "underline",
                     cursor: "pointer",
                     display: "block",
@@ -1133,21 +1133,21 @@ export default function WorkflowBuilderTool({
             >
               Your workflow includes
             </p>
-            <p style={{ fontSize: "0.9375rem", fontWeight: 600, color: "var(--text-primary)", margin: "0 0 6px", lineHeight: 1.3 }}>
+            <p style={{ fontSize: "0.9375rem", fontWeight: 600, color: "#FFFFFF", margin: "0 0 6px", lineHeight: 1.3 }}>
               {resultTaskTitle}
             </p>
             <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "6px 16px" }}>
               {resultStepCount && (
-                <span style={{ fontSize: "0.8125rem", color: "var(--text-muted)" }}>
+                <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.45)" }}>
                   {resultStepCount}-step workflow
                 </span>
               )}
               {resultFrequency && (
-                <span style={{ fontSize: "0.8125rem", color: "var(--text-muted)" }}>
+                <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.45)" }}>
                   {resultFrequency}
                 </span>
               )}
-              <span style={{ fontSize: "0.8125rem", color: "var(--text-muted)" }}>
+              <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.45)" }}>
                 Formatted .docx: ready to use and share
               </span>
             </div>
@@ -1179,14 +1179,14 @@ export default function WorkflowBuilderTool({
               fontSize: "clamp(1.35rem, 2.5vw, 1.625rem)",
               fontWeight: 400,
               fontFamily: "var(--font-display)",
-              color: "var(--text-primary)",
+              color: "#FFFFFF",
               margin: "0 0 8px",
               lineHeight: 1.3,
             }}
           >
             Your workflow is in your inbox.
           </h2>
-          <p style={{ fontSize: "0.875rem", color: "var(--text-muted)", margin: "0 0 32px" }}>
+          <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.45)", margin: "0 0 32px" }}>
             Check your email for {email}.
           </p>
           <button
@@ -1207,14 +1207,14 @@ export default function WorkflowBuilderTool({
               fontSize: "clamp(1.1rem, 2vw, 1.25rem)",
               fontWeight: 400,
               fontFamily: "var(--font-display)",
-              color: "var(--text-primary)",
+              color: "#FFFFFF",
               margin: "0 0 8px",
               lineHeight: 1.4,
             }}
           >
             Something went wrong on our end.
           </p>
-          <p style={{ fontSize: "0.875rem", color: "var(--text-muted)", margin: "0 0 28px" }}>
+          <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.45)", margin: "0 0 28px" }}>
             {errorMsg || "Your input is saved. Hit Retry and we'll try again."}
           </p>
           <button
@@ -1234,7 +1234,7 @@ export default function WorkflowBuilderTool({
               border: "none",
               padding: 0,
               fontSize: "0.875rem",
-              color: "var(--text-muted)",
+              color: "rgba(255,255,255,0.45)",
               textDecoration: "underline",
               cursor: "pointer",
               marginTop: "8px",

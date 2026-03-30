@@ -180,6 +180,7 @@ export default function WorkflowBuilderTool({
   // ── Error state ───────────────────────────────────────────
   const [s1Error, setS1Error] = useState("");
   const [s2Error, setS2Error] = useState("");
+  const [s3Error, setS3Error] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
   // ── Paywall state ─────────────────────────────────────────
@@ -402,24 +403,15 @@ export default function WorkflowBuilderTool({
       setS1Error("Tell us a bit more about the task. More detail means a better workflow.");
       return;
     }
-    if (!frequency) {
-      setS1Error("Please select how often you do this task.");
-      return;
-    }
     setS1Error("");
     setScreen("s2");
   }
 
-  function handleFrequencySelect(opt: Frequency): void {
-    setFrequency(opt);
-    // Auto-advance if task description is already filled — same validation as Continue
-    if (taskDescription.trim().length >= 10) {
-      setS1Error("");
-      setTimeout(() => setScreen("s2"), 180);
-    }
-  }
-
   function handleS2Continue(): void {
+    if (!frequency) {
+      setS2Error("Please select how often you do this task.");
+      return;
+    }
     if (!collaboration) {
       setS2Error("Please select who works on this with you.");
       return;
@@ -428,8 +420,20 @@ export default function WorkflowBuilderTool({
     setScreen("s3");
   }
 
+  function handleCollaborationSelect(opt: Collaboration): void {
+    setCollaboration(opt);
+    if (frequency) {
+      setS2Error("");
+      setTimeout(() => setScreen("s3"), 180);
+    }
+  }
+
   function handleS3Build(): void {
-    // Screen 3 is all optional — go straight to paywall
+    if (!jobTitle.trim()) {
+      setS3Error("Please enter your job title so we can personalize your workflow.");
+      return;
+    }
+    setS3Error("");
     setScreen("paywall");
   }
 
@@ -644,30 +648,32 @@ export default function WorkflowBuilderTool({
             <QualitySignal value={taskDescription} />
           </div>
 
-          {/* Frequency */}
-          <div style={fieldGroupStyle}>
-            <label style={labelStyle}>How often do you do this?</label>
-            <div style={{ display: "flex", flexDirection: "column" as const, gap: "8px", marginTop: "4px" }}>
-              {(["Daily", "Weekly", "Monthly", "1x Project"] as Frequency[]).map((opt) => (
-                <label
-                  key={opt}
-                  style={radioOptionStyle(frequency === opt)}
-                  onClick={() => handleFrequencySelect(opt)}
-                >
-                  <input
-                    type="radio"
-                    name="frequency"
-                    value={opt}
-                    checked={frequency === opt}
-                    onChange={() => handleFrequencySelect(opt)}
-                    style={{ marginTop: "2px", accentColor: "var(--cta, #1E7AB8)", flexShrink: 0 }}
-                  />
-                  <span style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.85)", lineHeight: 1.4 }}>
-                    {opt}
-                  </span>
-                </label>
-              ))}
-            </div>
+          {/* Upload zone 1 */}
+          <div style={{ ...fieldGroupStyle, marginBottom: "24px" }}>
+            <label style={labelStyle}>
+              Upload workflow example
+              <span style={optionalStyle}>(optional)</span>
+            </label>
+            <FileUploadZone
+              file={processFile}
+              onFileChange={setProcessFile}
+              id="wf-process-file"
+              accept=".txt,.md,.pdf,.docx"
+            />
+          </div>
+
+          {/* Upload zone 2 */}
+          <div style={{ ...fieldGroupStyle, marginBottom: "20px" }}>
+            <label style={labelStyle}>
+              Upload finished product example
+              <span style={optionalStyle}>(optional)</span>
+            </label>
+            <FileUploadZone
+              file={exampleFile}
+              onFileChange={setExampleFile}
+              id="wf-example-file"
+              accept=".txt,.md,.pdf,.docx"
+            />
           </div>
 
           {s1Error && <p style={errorStyle}>{s1Error}</p>}
@@ -701,6 +707,32 @@ export default function WorkflowBuilderTool({
             Tell us about the context.
           </h2>
 
+          {/* Frequency */}
+          <div style={fieldGroupStyle}>
+            <label style={labelStyle}>How often do you do this?</label>
+            <div style={{ display: "flex", flexDirection: "column" as const, gap: "8px", marginTop: "4px" }}>
+              {(["Daily", "Weekly", "Monthly", "1x Project"] as Frequency[]).map((opt) => (
+                <label
+                  key={opt}
+                  style={radioOptionStyle(frequency === opt)}
+                  onClick={() => setFrequency(opt)}
+                >
+                  <input
+                    type="radio"
+                    name="frequency"
+                    value={opt}
+                    checked={frequency === opt}
+                    onChange={() => setFrequency(opt)}
+                    style={{ marginTop: "2px", accentColor: "var(--cta, #1E7AB8)", flexShrink: 0 }}
+                  />
+                  <span style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.85)", lineHeight: 1.4 }}>
+                    {opt}
+                  </span>
+                </label>
+              ))}
+            </div>
+          </div>
+
           {/* Collaboration */}
           <div style={fieldGroupStyle}>
             <label style={labelStyle}>Who works on this with you?</label>
@@ -709,72 +741,22 @@ export default function WorkflowBuilderTool({
                 <label
                   key={opt}
                   style={radioOptionStyle(collaboration === opt)}
-                  onClick={() => setCollaboration(opt)}
+                  onClick={() => handleCollaborationSelect(opt)}
                 >
                   <input
                     type="radio"
                     name="collaboration"
                     value={opt}
                     checked={collaboration === opt}
-                    onChange={() => setCollaboration(opt)}
+                    onChange={() => handleCollaborationSelect(opt)}
                     style={{ marginTop: "2px", accentColor: "var(--cta, #1E7AB8)", flexShrink: 0 }}
                   />
-                  <div>
-                    <span style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.85)", lineHeight: 1.4 }}>
-                      {opt}
-                    </span>
-                  </div>
+                  <span style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.85)", lineHeight: 1.4 }}>
+                    {opt}
+                  </span>
                 </label>
               ))}
             </div>
-          </div>
-
-          {/* Audience and priorities (optional) */}
-          <div style={fieldGroupStyle}>
-            <label htmlFor="wf-audience" style={labelStyle}>
-              Who sees the finished result, and what matters most to them?
-              <span style={optionalStyle}>(optional)</span>
-            </label>
-            <textarea
-              id="wf-audience"
-              style={{ ...textareaStyle, minHeight: "70px" }}
-              value={audiencePriorities}
-              onChange={(e) => setAudiencePriorities(e.target.value)}
-              placeholder="e.g. My director reviews it. She cares about the recovery plan, not the excuses."
-              rows={2}
-            />
-          </div>
-
-          {/* Job title (optional) */}
-          <div style={fieldGroupStyle}>
-            <label htmlFor="wf-job-title" style={labelStyle}>
-              Your job title
-              <span style={optionalStyle}>(optional)</span>
-            </label>
-            <input
-              id="wf-job-title"
-              type="text"
-              style={inputStyle}
-              value={jobTitle}
-              onChange={(e) => setJobTitle(e.target.value)}
-              placeholder="e.g. Marketing Manager"
-            />
-          </div>
-
-          {/* Tools (optional) */}
-          <div style={fieldGroupStyle}>
-            <label htmlFor="wf-tools" style={labelStyle}>
-              Any tools or apps you already use?
-              <span style={optionalStyle}>(optional)</span>
-            </label>
-            <input
-              id="wf-tools"
-              type="text"
-              style={inputStyle}
-              value={userTools}
-              onChange={(e) => setUserTools(e.target.value)}
-              placeholder="e.g. Google Workspace, Slack, Notion"
-            />
           </div>
 
           {s2Error && <p style={errorStyle}>{s2Error}</p>}
@@ -801,44 +783,66 @@ export default function WorkflowBuilderTool({
               fontWeight: 400,
               fontFamily: "var(--font-display)",
               color: "#FFFFFF",
-              margin: "0 0 8px",
+              margin: "0 0 28px",
               lineHeight: 1.3,
             }}
           >
-            Upload reference material.
+            Help us personalize it.
           </h2>
-          {/* Upload zone 1 */}
-          <div style={{ ...fieldGroupStyle, marginBottom: "24px" }}>
-            <label style={labelStyle}>
-              Upload workflow example
-              <span style={optionalStyle}>(optional)</span>
+
+          {/* Job title (required) */}
+          <div style={fieldGroupStyle}>
+            <label htmlFor="wf-job-title" style={labelStyle}>
+              Your job title
             </label>
-            <FileUploadZone
-              file={processFile}
-              onFileChange={setProcessFile}
-              id="wf-process-file"
-              accept=".txt,.md,.pdf,.docx"
+            <input
+              id="wf-job-title"
+              type="text"
+              style={inputStyle}
+              value={jobTitle}
+              onChange={(e) => setJobTitle(e.target.value)}
+              placeholder="e.g. Marketing Manager"
             />
           </div>
 
-          {/* Upload zone 2 */}
-          <div style={{ ...fieldGroupStyle, marginBottom: "28px" }}>
-            <label style={labelStyle}>
-              Upload finished product example
+          {/* Audience and priorities (optional) */}
+          <div style={fieldGroupStyle}>
+            <label htmlFor="wf-audience" style={labelStyle}>
+              Who sees the finished result, and what matters most to them?
               <span style={optionalStyle}>(optional)</span>
             </label>
-            <FileUploadZone
-              file={exampleFile}
-              onFileChange={setExampleFile}
-              id="wf-example-file"
-              accept=".txt,.md,.pdf,.docx"
+            <textarea
+              id="wf-audience"
+              style={{ ...textareaStyle, minHeight: "70px" }}
+              value={audiencePriorities}
+              onChange={(e) => setAudiencePriorities(e.target.value)}
+              placeholder="e.g. My director reviews it. She cares about the recovery plan, not the excuses."
+              rows={2}
             />
           </div>
+
+          {/* Tools (optional) */}
+          <div style={fieldGroupStyle}>
+            <label htmlFor="wf-tools" style={labelStyle}>
+              Any tools or apps you already use?
+              <span style={optionalStyle}>(optional)</span>
+            </label>
+            <input
+              id="wf-tools"
+              type="text"
+              style={inputStyle}
+              value={userTools}
+              onChange={(e) => setUserTools(e.target.value)}
+              placeholder="e.g. Google Workspace, Slack, Notion"
+            />
+          </div>
+
+          {s3Error && <p style={errorStyle}>{s3Error}</p>}
 
           <button
             type="button"
             className="btn btn-dark-cta"
-            style={{ width: "100%" }}
+            style={{ width: "100%", marginTop: "8px" }}
             onClick={handleS3Build}
           >
             Build My Workflow

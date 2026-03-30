@@ -150,12 +150,18 @@ CORE RULES:
    Always say "your AI tool" or "an AI assistant" for AI-powered steps.
    Non-AI tools (Google Docs, Excel, Slack, Notion, etc.) are named specifically.
 3. No em dashes (the — character). Use a period or a colon instead.
-4. Never use the words "leverage", "unlock", "supercharge", or "automate".
+4. Never use the words "leverage", "unlock", "supercharge", or "automate" anywhere in the workflow document.
+   IMPORTANT: Do NOT add word-ban instructions or style rules inside generated prompts. The prompts you write
+   are instructions the user will paste into an AI tool — they should read naturally, not contain internal
+   directives about vocabulary. Keep these rules internal to your generation process only.
 5. Step count: minimum 4, maximum 8. Claude decides based on task complexity.
    Fewer than 4 feels thin for a paid deliverable. More than 8 is overwhelming.
 6. Every prompt must be copy-pasteable with no editing required. Include context, instruction, and output format.
 7. Expected output per step: specific and concrete, not vague ("a draft email" not "some text").
 8. Tips: 1-2 tips, specific to THIS task and workflow. Not generic productivity advice.
+9. TIME CONSISTENCY (hard rule): Calculate totalTime by summing the estimatedTime values across all steps.
+   The time mentioned in the overview paragraph must match totalTime exactly. Do not estimate time
+   independently in the overview — derive it from the steps and use the same value in both fields.
 
 ${frequencyRules[frequency]}
 
@@ -533,7 +539,7 @@ async function buildDocxFile(workflow: WorkflowData, jobTitle?: string): Promise
   if (workflow.frequency !== "1x Project") {
     children.push(divider());
     children.push(body(
-      `Save this doc. The next time ${workflow.taskTitle.toLowerCase()} comes up, start at Step 1.`,
+      `Save this doc. The next time ${workflow.taskTitle} comes up, start at Step 1.`,
       { italic: true, color: "888886" }
     ));
   }

@@ -79,20 +79,6 @@ export default function ToolsList({ tools }: { tools: Tool[] }) {
         })}
       </div>
 
-      {/* HR package context — shown when HR tools are visible */}
-      {(activeFilter === "All" || activeFilter === "Human Resources") && (
-        <p
-          style={{
-            textAlign: "center",
-            fontSize: "0.875rem",
-            color: "var(--text-muted)",
-            marginBottom: "28px",
-            marginTop: "-4px",
-          }}
-        >
-          HR Agents Package: one $99/year subscription includes Onboarding Kit, PIP Builder, and more agents coming.
-        </p>
-      )}
 
       {/* Tools grid */}
       <div className="tools-grid">

@@ -330,11 +330,14 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
           />
 
           {/* Optional file upload — hidden when embedded on homepage */}
-          {!hideFileUpload && <div style={{ marginTop: "28px" }}>
+          {!hideFileUpload && <div style={{ marginTop: "28px", display: "flex", width: "100%", boxSizing: "border-box", alignItems: "center" }}>
             <label
               className="choose-file-btn"
               style={{
-                display: "inline-flex",
+                display: "flex",
+                flex: 1,
+                width: "100%",
+                boxSizing: "border-box",
                 alignItems: "center",
                 gap: "8px",
                 cursor: "pointer",
@@ -365,6 +368,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
                   fontSize: "0.8125rem",
                   cursor: "pointer",
                   marginLeft: "10px",
+                  whiteSpace: "nowrap",
                 }}
               >
                 Remove

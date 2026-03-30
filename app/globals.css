@@ -3632,10 +3632,31 @@ input, textarea {
   }
 }
 
+/* ── Tool Dark Mode (inside .hero-tool-dark frame) ───────────────────── */
+/* Any tool rendered inside the pb-frame dark shell must resolve CSS        */
+/* variables to dark values. Two container classes exist: .tool-container   */
+/* (free tools + cross-industry paid tools) and .okb-tool (HR tools).       */
+/* Both get the same cascade so var(--surface), var(--border), etc. always  */
+/* resolve to dark values and never fall back to the light #FFFFFF default. */
+/* NEW TOOLS: use one of these two container classes and you get dark        */
+/* styling for free. Never use var(--surface) or var(--border) with a       */
+/* light fallback inside a dark frame — the fallback will win in edge cases. */
+
+.hero-tool-dark .tool-container {
+  /* Cascade dark values into child inline styles that use CSS variables */
+  --text-primary:   #FFFFFF;
+  --text-secondary: rgba(255,255,255,0.72);
+  --text-muted:     rgba(255,255,255,0.40);
+  --surface:        rgba(255,255,255,0.06);
+  --bg-alt:         rgba(255,255,255,0.04);
+  --border:         rgba(255,255,255,0.14);
+  --border-subtle:  rgba(255,255,255,0.06);
+  --cta:            #4da3e0;
+}
+
 /* ── HR Tools — Dark Mode (inside .hero-tool-dark frame) ──────────────── */
-/* When okb-tool renders inside the pb-frame dark shell, transform it from  */
-/* a white card into the same glowing dark card used by tool-container.     */
-/* CSS variable overrides cascade into ALL inline styles using var(--xxx).  */
+/* Same pattern for .okb-tool used by Onboarding Kit, PIP Builder,          */
+/* and all future HR tools.                                                  */
 
 .hero-tool-dark .okb-tool {
   background: radial-gradient(ellipse at center, rgba(30,122,184,0.09) 0%, #161618 65%);

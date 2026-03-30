@@ -649,32 +649,90 @@ export default function WorkflowBuilderTool({
             <QualitySignal value={taskDescription} />
           </div>
 
-          {/* Upload zone 1 */}
-          <div style={{ ...fieldGroupStyle, marginBottom: "24px" }}>
-            <label style={labelStyle}>
-              Upload workflow example
-              <span style={optionalStyle}>(optional)</span>
+          {/* Upload zone 1 — compact bar */}
+          <div style={{ marginTop: "4px", marginBottom: "12px" }}>
+            <label
+              className="choose-file-btn"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                cursor: "pointer",
+                fontSize: "0.875rem",
+                color: processFile ? "var(--cta, #1E7AB8)" : "rgba(255,255,255,0.55)",
+                background: "rgba(255,255,255,0.05)",
+                border: "1px solid rgba(255,255,255,0.1)",
+                borderRadius: "8px",
+                padding: "8px 14px",
+              }}
+            >
+              <input
+                type="file"
+                accept=".txt,.md,.pdf,.docx"
+                style={{ display: "none" }}
+                onChange={(e) => setProcessFile(e.target.files?.[0] ?? null)}
+              />
+              {processFile ? `✓ ${processFile.name}` : "Upload workflow example (optional)"}
             </label>
-            <FileUploadZone
-              file={processFile}
-              onFileChange={setProcessFile}
-              id="wf-process-file"
-              accept=".txt,.md,.pdf,.docx"
-            />
+            {processFile && (
+              <button
+                type="button"
+                onClick={() => setProcessFile(null)}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "rgba(255,255,255,0.35)",
+                  fontSize: "0.8125rem",
+                  cursor: "pointer",
+                  marginLeft: "10px",
+                }}
+              >
+                Remove
+              </button>
+            )}
           </div>
 
-          {/* Upload zone 2 */}
-          <div style={{ ...fieldGroupStyle, marginBottom: "20px" }}>
-            <label style={labelStyle}>
-              Upload finished product example
-              <span style={optionalStyle}>(optional)</span>
+          {/* Upload zone 2 — compact bar */}
+          <div style={{ marginBottom: "20px" }}>
+            <label
+              className="choose-file-btn"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                cursor: "pointer",
+                fontSize: "0.875rem",
+                color: exampleFile ? "var(--cta, #1E7AB8)" : "rgba(255,255,255,0.55)",
+                background: "rgba(255,255,255,0.05)",
+                border: "1px solid rgba(255,255,255,0.1)",
+                borderRadius: "8px",
+                padding: "8px 14px",
+              }}
+            >
+              <input
+                type="file"
+                accept=".txt,.md,.pdf,.docx"
+                style={{ display: "none" }}
+                onChange={(e) => setExampleFile(e.target.files?.[0] ?? null)}
+              />
+              {exampleFile ? `✓ ${exampleFile.name}` : "Upload finished product example (optional)"}
             </label>
-            <FileUploadZone
-              file={exampleFile}
-              onFileChange={setExampleFile}
-              id="wf-example-file"
-              accept=".txt,.md,.pdf,.docx"
-            />
+            {exampleFile && (
+              <button
+                type="button"
+                onClick={() => setExampleFile(null)}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "rgba(255,255,255,0.35)",
+                  fontSize: "0.8125rem",
+                  cursor: "pointer",
+                  marginLeft: "10px",
+                }}
+              >
+                Remove
+              </button>
+            )}
           </div>
 
           {s1Error && <p style={errorStyle}>{s1Error}</p>}
@@ -1234,95 +1292,3 @@ export default function WorkflowBuilderTool({
   );
 }
 
-// ─── File Upload Zone sub-component ──────────────────────────────────────────
-
-interface FileUploadZoneProps {
-  file: File | null;
-  onFileChange: (file: File | null) => void;
-  id: string;
-  accept: string;
-}
-
-function FileUploadZone({ file, onFileChange, id, accept }: FileUploadZoneProps) {
-  const [dragOver, setDragOver] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setDragOver(false);
-    const dropped = e.dataTransfer.files[0];
-    if (dropped) onFileChange(dropped);
-  };
-
-  return (
-    <div
-      style={{
-        border: `2px dashed ${dragOver ? "var(--cta, #1E7AB8)" : "var(--border, #E4E4E2)"}`,
-        borderRadius: "10px",
-        padding: "20px",
-        textAlign: "center",
-        cursor: "pointer",
-        transition: "border-color 0.15s ease, background 0.15s ease",
-        background: dragOver ? "rgba(30,122,184,0.04)" : "transparent",
-      }}
-      onClick={() => inputRef.current?.click()}
-      onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
-      onDragLeave={() => setDragOver(false)}
-      onDrop={handleDrop}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") inputRef.current?.click(); }}
-      aria-label={file ? `Selected: ${file.name}. Click to change.` : "Click or drag to upload a file"}
-    >
-      {file ? (
-        <div>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: "6px" }}>
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-            <polyline points="14 2 14 8 20 8" />
-          </svg>
-          <p style={{ fontSize: "0.875rem", color: "var(--text-primary)", margin: "0 0 4px", fontWeight: 500 }}>
-            {file.name}
-          </p>
-          <button
-            type="button"
-            onClick={(e) => { e.stopPropagation(); onFileChange(null); }}
-            style={{
-              background: "none",
-              border: "none",
-              padding: 0,
-              fontSize: "0.8125rem",
-              color: "var(--text-muted)",
-              textDecoration: "underline",
-              cursor: "pointer",
-            }}
-          >
-            Remove
-          </button>
-        </div>
-      ) : (
-        <div>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: "8px" }}>
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-            <polyline points="17 8 12 3 7 8" />
-            <line x1="12" y1="3" x2="12" y2="15" />
-          </svg>
-          <p style={{ fontSize: "0.875rem", color: "var(--text-muted)", margin: 0, lineHeight: 1.5 }}>
-            Click to upload, or drag and drop
-          </p>
-        </div>
-      )}
-      <input
-        ref={inputRef}
-        id={id}
-        type="file"
-        accept={accept}
-        style={{ display: "none" }}
-        onChange={(e) => {
-          const selected = e.target.files?.[0];
-          if (selected) onFileChange(selected);
-          e.target.value = "";
-        }}
-      />
-    </div>
-  );
-}

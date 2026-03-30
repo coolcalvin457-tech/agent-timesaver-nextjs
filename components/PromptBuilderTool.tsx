@@ -812,6 +812,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
               "Built for real jobs. Not demos.",
             ]}
             buttonLabel="Try Now"
+            href="/workflow-builder"
           />
 
         </div>

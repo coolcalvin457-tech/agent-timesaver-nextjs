@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import ToolEmailGate from "@/components/shared/ToolEmailGate";
 import ToolLoadingScreen from "@/components/shared/ToolLoadingScreen";
+import CrossSellBlock from "@/components/shared/CrossSellBlock";
 import BackButton from "@/components/shared/BackButton";
 import StepIndicator from "@/components/shared/StepIndicator";
 import QualitySignal from "@/components/shared/QualitySignal";
@@ -1197,6 +1198,16 @@ export default function WorkflowBuilderTool({
             Build another workflow
           </button>
         </div>
+
+        {/* Cross-sell — AGENT: Industry Briefing */}
+        <CrossSellBlock
+          productName="AGENT: Industry Briefing"
+          descriptionLines={[
+            "A weekly AI briefing built around your industry, role, and priorities.",
+            "Built for real jobs. Not demos.",
+          ]}
+          buttonLabel="Get Early Access"
+        />
       )}
 
       {/* ── Error ─────────────────────────────────────────── */}

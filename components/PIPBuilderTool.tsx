@@ -794,7 +794,12 @@ export default function PIPBuilderTool({
                   flex: 1,
                   justifyContent: "center",
                 }}
-                onClick={() => setPriorCoaching(val)}
+                onClick={() => {
+                  setPriorCoaching(val);
+                  if (employeeRole.trim() && department.trim() && tenure.trim() && managerName.trim() && issueType) {
+                    setTimeout(() => goToS2(), 180);
+                  }
+                }}
               >
                 <span style={{ fontSize: "0.875rem", fontWeight: 600, color: priorCoaching === val ? "var(--cta, #1E7AB8)" : "var(--text-primary)" }}>
                   {val ? "Yes" : "No"}
@@ -893,7 +898,12 @@ export default function PIPBuilderTool({
                   alignItems: "center",
                   padding: "12px 8px",
                 }}
-                onClick={() => setTimeline(t)}
+                onClick={() => {
+                  setTimeline(t);
+                  if (deficiencies.trim().length >= 80 && improvementTargets.trim().length >= 50) {
+                    setTimeout(() => goToS3(), 180);
+                  }
+                }}
               >
                 <span style={{ fontSize: "1rem", fontWeight: 700, color: "var(--text-primary)" }}>
                   {t}

@@ -880,7 +880,12 @@ export default function OnboardingKitBuilderTool({
               <button
                 key={opt.value}
                 type="button"
-                onClick={() => setRoleType(opt.value)}
+                onClick={() => {
+                  setRoleType(opt.value);
+                  if (hireName.trim() && hireTitle.trim() && startDate.trim() && managerName.trim()) {
+                    setTimeout(() => goToS2(), 180);
+                  }
+                }}
                 style={{
                   padding: "9px 16px",
                   fontSize: "0.875rem",

@@ -37,8 +37,7 @@ const tools = [
     label: "Free",
     name: "AGENT: Prompt Builder",
     tagline: "Receive 12 job-specific prompts.",
-    description:
-      "Answer 4 questions about how you work. Get a personalized Prompt Kit: 12 ready-to-copy prompts organized by category, an AI Profile paragraph, and a Build Your AI System guide.",
+    description: "",
     cta: "Get Free Prompts",
     image: "/tool-previews/prompt-builder-preview.png",
   },
@@ -50,8 +49,7 @@ const tools = [
     badgeDisplay: "$49/yr",
     name: "AGENT: Workflow Builder",
     tagline: "Build the playbook for any task.",
-    description:
-      "Describe a specific task you want to do better with AI. Get a step-by-step workflow doc: which tools to use, in what order, with the actual prompts to run each step.",
+    description: "",
     cta: "Build Workflow",
     image: "/tool-previews/workflow-builder-preview.png",
   },
@@ -62,8 +60,7 @@ const tools = [
     label: "Free",
     name: "AGENT: Budget Spreadsheets",
     tagline: "Budget for \"what-if\" scenarios.",
-    description:
-      "Include categories, timeframes, and any numbers you have. Upload a previous example if available. The more detail, the better the results.",
+    description: "",
     cta: "Get Free Spreadsheets",
     image: "/tool-previews/budget-spreadsheets-preview.png",
   },
@@ -75,8 +72,7 @@ const tools = [
     badgeDisplay: "$99/yr",
     name: "AGENT: Onboarding Kit",
     tagline: "Use for every new hire.",
-    description:
-      "Includes warm welcome letter, first-week schedule, key contacts, 30/60/90 plan, and priority checklist.",
+    description: "",
     cta: "Build My Kit",
     image: "/tool-previews/onboarding-kit-preview.png",
   },
@@ -88,8 +84,7 @@ const tools = [
     badgeDisplay: "$99/yr",
     name: "AGENT: PIP Builder",
     tagline: "A PIP that holds up.",
-    description:
-      "Answer questions about the performance gap, improvement targets, and support offered. Get a structured, defensible PIP document as a ready-to-use .docx file.",
+    description: "",
     cta: "Build My PIP",
     image: "/tool-previews/pip-builder-preview.jpg",
   },

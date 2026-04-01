@@ -65,6 +65,17 @@ const tools = [
     image: "/tool-previews/budget-spreadsheets-preview.png",
   },
   {
+    slug: "industry-intel",
+    href: "/industry-intel",
+    badgeClass: "tool-badge-free",
+    label: "Free",
+    name: "AGENT: Industry Intel",
+    tagline: "Read AI's insights on your industry.",
+    description: "",
+    cta: "Read Industry Intel",
+    image: "/tool-previews/budget-spreadsheets-preview.png",
+  },
+  {
     slug: "onboarding-kit-builder",
     href: "/onboarding-kit-builder",
     badgeClass: "tool-badge-paid",

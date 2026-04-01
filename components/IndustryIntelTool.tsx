@@ -13,8 +13,7 @@ import { useAuth } from "@/components/AuthProvider";
 
 const COMPANY_SIZE_OPTIONS = [
   "Under 200",
-  "200-1,000",
-  "1,000-5,000",
+  "200-5,000",
   "5,000+",
 ];
 

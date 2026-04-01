@@ -331,9 +331,9 @@ export default function IndustryIntelTool() {
           </div>
 
           {/* Company size */}
-          <div style={fieldGroupStyle}>
+          <div style={{ ...fieldGroupStyle, marginBottom: "28px" }}>
             <label style={labelStyle}>Company size</label>
-            <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "4px" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "10px" }}>
               {COMPANY_SIZE_OPTIONS.map((option) => (
                 <button
                   key={option}
@@ -350,7 +350,7 @@ export default function IndustryIntelTool() {
           {/* Decision scope */}
           <div style={{ ...fieldGroupStyle, marginBottom: "8px" }}>
             <label style={labelStyle}>Decision scope</label>
-            <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "4px" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "10px" }}>
               {DECISION_SCOPE_OPTIONS.map((option) => (
                 <button
                   key={option}

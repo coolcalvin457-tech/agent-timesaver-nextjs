@@ -406,6 +406,17 @@ export default function IndustryIntelTool() {
               </button>
             ))}
           </div>
+          <button
+            className="btn btn-primary btn-full"
+            style={{ marginTop: "28px" }}
+            onClick={() => {
+              track("industry_intel_s2_complete", { focusArea });
+              go("s3");
+            }}
+            disabled={!focusArea}
+          >
+            Continue
+          </button>
         </div>
       </div>
     );
@@ -488,20 +499,21 @@ export default function IndustryIntelTool() {
               <label style={labelStyle}>
                 {s3Config.headline} <span style={optionalStyle}>(optional)</span>
               </label>
-              <input
-                type="text"
+              <textarea
                 className="input"
                 placeholder={s3Config.placeholder}
                 value={screen3Input}
                 onChange={(e) => setScreen3Input(e.target.value)}
                 autoFocus
+                rows={4}
+                style={{ resize: "none", lineHeight: 1.6 }}
               />
             </div>
           )}
 
           <button
             className="btn btn-primary btn-full"
-            style={{ marginTop: "8px" }}
+            style={{ marginTop: "28px" }}
             onClick={handleGenerate}
           >
             Build My Intel

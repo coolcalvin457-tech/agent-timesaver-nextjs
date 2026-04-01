@@ -132,7 +132,11 @@ function buildSystemPrompt(input: WorkflowBuilderInput): string {
 
     "Big team": `COLLABORATION: BIG TEAM
 - Add a "who" field to every step with ownership assignments.
-- Include parallel step indicators where multiple people work simultaneously (note in stepTitle or action, e.g. "Step 3A/3B: parallel work").
+- PARALLEL WORK (required): Identify at least one place where two people or teams can work simultaneously.
+  Mark it clearly in the stepTitle (e.g. "Step 3A/3B: Budget + Narrative in Parallel") and in the action
+  explain what each person does. Example: "While you build the budget (Step 3A), the project lead drafts
+  the narrative (Step 3B). Both feed into Step 4." If there is genuinely no parallel work possible, state
+  why in the overview.
 - Add checkpoint/approval steps at natural review gates.
 - Include coordination steps (e.g. "Sync with [role] before proceeding").`,
   };
@@ -156,12 +160,30 @@ CORE RULES:
    directives about vocabulary. Keep these rules internal to your generation process only.
 5. Step count: minimum 4, maximum 8. Claude decides based on task complexity.
    Fewer than 4 feels thin for a paid deliverable. More than 8 is overwhelming.
+   AI PROMPT MINIMUM (hard rule): At least 40% of steps must include a non-null "prompt" field (e.g.
+   3 of 7 steps, 3 of 8 steps, 2 of 5 steps). This is an AI workflow tool. Users are paying for
+   AI-powered steps, not a manual checklist.
+   HOW TO FIND AI OPPORTUNITIES: Before finalizing, review every manual-only step against this list.
+   If a step involves any of these patterns, it needs an AI prompt:
+   - Drafting or writing anything (emails, documents, reports, SOPs, proposals, summaries)
+   - Reviewing, revising, or incorporating feedback into a document
+   - Comparing, evaluating, or scoring options against criteria
+   - Structuring, outlining, or organizing information
+   - Extracting key points, requirements, or action items from source material
+   - Preparing questions or talking points for a meeting or interview
+   - Creating checklists, templates, or frameworks from requirements
+   If you have 3+ consecutive steps with no AI prompt, you are missing opportunities.
 6. Every prompt must be copy-pasteable with no editing required. Include context, instruction, and output format.
 7. Expected output per step: specific and concrete, not vague ("a draft email" not "some text").
 8. Tips: 1-2 tips, specific to THIS task and workflow. Not generic productivity advice.
-9. TIME CONSISTENCY (hard rule): Calculate totalTime by summing the estimatedTime values across all steps.
-   The time mentioned in the overview paragraph must match totalTime exactly. Do not estimate time
-   independently in the overview — derive it from the steps and use the same value in both fields.
+9. TIME CONSISTENCY (hard rule, zero tolerance):
+   STEP 1: Write all steps with estimatedTime values first.
+   STEP 2: Add up every estimatedTime to get the true total. Use the high end of any ranges.
+   STEP 3: Set totalTime to that sum (as a range if steps used ranges).
+   STEP 4: Use that exact totalTime value in the overview paragraph.
+   The overview, totalTime, and sum of step times must all show the same number. Never estimate time
+   independently in any field. If steps sum to 145 minutes, totalTime is "about 2.5 hours" and the
+   overview says "about 2.5 hours." No exceptions.
 
 ${frequencyRules[frequency]}
 
@@ -249,6 +271,73 @@ Return this exact JSON structure:
 }`;
 }
 
+// ─── Time validation ─────────────────────────────────────────────────────────
+
+/**
+ * Extract minute values from a time string like "15-20 minutes", "2-3 hours",
+ * "45 minutes", or "3-5 business days". Returns the high end in minutes.
+ * Returns 0 for unparseable strings (e.g. durations measured in weeks/days
+ * that represent calendar time, not active work time).
+ */
+function parseMinutesFromTime(timeStr: string): number {
+  if (!timeStr) return 0;
+  const lower = timeStr.toLowerCase();
+
+  // Skip calendar-time entries (days, weeks) — these aren't active work time
+  if (lower.includes("day") || lower.includes("week")) return 0;
+
+  // Match patterns like "15-20 minutes", "2-3 hours", "45 minutes", "1 hour"
+  const rangeMatch = lower.match(/(\d+(?:\.\d+)?)\s*[-–]\s*(\d+(?:\.\d+)?)\s*(minute|hour|min|hr)/);
+  if (rangeMatch) {
+    const high = parseFloat(rangeMatch[2]);
+    const unit = rangeMatch[3];
+    return unit.startsWith("hour") || unit.startsWith("hr") ? high * 60 : high;
+  }
+
+  const singleMatch = lower.match(/(\d+(?:\.\d+)?)\s*(minute|hour|min|hr)/);
+  if (singleMatch) {
+    const val = parseFloat(singleMatch[1]);
+    const unit = singleMatch[2];
+    return unit.startsWith("hour") || unit.startsWith("hr") ? val * 60 : val;
+  }
+
+  return 0;
+}
+
+function formatMinutesAsTime(minutes: number): string {
+  if (minutes <= 90) return `about ${minutes} minutes`;
+  const hours = minutes / 60;
+  if (hours === Math.floor(hours)) return `about ${hours} hours`;
+  return `about ${hours.toFixed(1)} hours`;
+}
+
+/**
+ * Validate and fix time consistency: totalTime and overview must reflect the
+ * sum of step estimatedTime values. Corrects in place if they diverge.
+ */
+function enforceTimeConsistency(workflow: WorkflowData): void {
+  const stepMinutes = workflow.steps.map((s) => parseMinutesFromTime(s.estimatedTime));
+  const sumMinutes = stepMinutes.reduce((a, b) => a + b, 0);
+
+  // If we couldn't parse meaningful active time from steps, skip correction
+  if (sumMinutes === 0) return;
+
+  const totalMinutes = parseMinutesFromTime(workflow.totalTime);
+
+  // Allow 20% tolerance — beyond that, override totalTime and patch overview
+  if (totalMinutes > 0 && Math.abs(totalMinutes - sumMinutes) / sumMinutes <= 0.2) return;
+
+  const correctedTime = formatMinutesAsTime(sumMinutes);
+  workflow.totalTime = correctedTime;
+
+  // Patch the overview: replace any time mention with the corrected value
+  // Look for common patterns: "approximately X hours", "about X minutes", "roughly X-Y hours"
+  const timePattern = /(?:approximately|about|roughly|around|budget|total[^.]*?)\s+\d+(?:\.\d+)?(?:\s*[-–]\s*\d+(?:\.\d+)?)?\s*(?:minutes?|hours?|hrs?|mins?)/gi;
+  if (timePattern.test(workflow.overview)) {
+    workflow.overview = workflow.overview.replace(timePattern, correctedTime);
+  }
+}
+
 // ─── Claude API call ──────────────────────────────────────────────────────────
 
 async function generateWorkflow(
@@ -276,7 +365,23 @@ async function generateWorkflow(
   // Strip em dashes that slipped through despite prompt instruction
   const sanitized = jsonMatch[0].replace(/\u2014/g, ":").replace(/\u2013/g, "-");
 
-  return JSON.parse(sanitized) as WorkflowData;
+  const workflow = JSON.parse(sanitized) as WorkflowData;
+
+  // Server-side safety net: fix time inconsistencies the model missed
+  enforceTimeConsistency(workflow);
+
+  return workflow;
+}
+
+/**
+ * Check whether the workflow meets the 40% AI prompt density minimum.
+ * Returns true if at least 40% of steps have a non-null prompt.
+ */
+function hasMinimumPromptDensity(workflow: WorkflowData): boolean {
+  if (!workflow.steps?.length) return false;
+  const promptCount = workflow.steps.filter((s) => s.prompt !== null && s.prompt !== "").length;
+  const ratio = promptCount / workflow.steps.length;
+  return ratio >= 0.4;
 }
 
 // ─── Document helpers ─────────────────────────────────────────────────────────
@@ -681,6 +786,14 @@ export async function POST(req: NextRequest) {
     } else {
       try {
         workflow = await generateWorkflow(input, processText, exampleText);
+
+        // Retry once if AI prompt density is below 40% minimum
+        if (!hasMinimumPromptDensity(workflow)) {
+          console.warn(
+            `Workflow Builder: prompt density below 40% (${workflow.steps.filter((s) => s.prompt).length}/${workflow.steps.length} steps). Retrying.`
+          );
+          workflow = await generateWorkflow(input, processText, exampleText);
+        }
       } catch (err) {
         if (err instanceof SyntaxError) {
           // Retry once on JSON parse failure

@@ -332,7 +332,7 @@ export default function IndustryIntelTool() {
           </div>
 
           {/* Company size */}
-          <div style={{ ...fieldGroupStyle, marginBottom: "36px" }}>
+          <div style={fieldGroupStyle}>
             <label style={labelStyle}>Company size</label>
             <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "4px" }}>
               {COMPANY_SIZE_OPTIONS.map((option) => (
@@ -367,7 +367,7 @@ export default function IndustryIntelTool() {
 
           <button
             className="btn btn-primary btn-full"
-            style={{ marginTop: "8px" }}
+            style={{ marginTop: "28px" }}
             onClick={() => {
               track("industry_intel_s1_complete");
               go("s2");

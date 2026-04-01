@@ -23,6 +23,7 @@ export interface DBUser {
   first_name: string;
   job_title: string | null;
   stripe_customer_id: string | null;
+  suspended: boolean;
   created_at: Date;
   updated_at: Date;
 }

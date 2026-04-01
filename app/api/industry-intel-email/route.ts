@@ -15,6 +15,7 @@ import {
   RESEND_API,
 } from "@/app/api/_shared/emailBase";
 import type { IndustryIntelData, IntelSource } from "@/app/api/industry-intel/route";
+import { logToolUsage } from "@/lib/db";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -303,6 +304,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json() as EmailRequestBody;
     const { email, jobTitle, companyName: _companyName, industry, focusArea, intelData } = body;
+    const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null;
 
     if (!email?.trim() || !intelData || !industry || !jobTitle || !focusArea) {
       return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
@@ -334,6 +336,7 @@ export async function POST(req: NextRequest) {
         }),
       }).catch((err) => console.error("Resend error:", err)),
       addContactToAudience(email.trim()).catch(() => {}),
+      logToolUsage(email.trim(), "industry-intel", ip),
     ]);
 
     // Return docx for browser download immediately

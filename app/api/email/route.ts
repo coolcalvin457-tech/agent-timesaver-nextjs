@@ -7,6 +7,7 @@ import {
   buildBaseEmailHTML,
 } from "@/app/api/_shared/emailBase";
 import { stripEmDashes } from "@/app/api/_shared/sanitize";
+import { logToolUsage } from "@/lib/db";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface EmailRequestBody {
@@ -144,6 +145,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = (await req.json()) as EmailRequestBody;
     const { email, jobTitle, workflows, roi } = body;
+    const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null;
 
     if (!email || !jobTitle || !workflows || !roi) {
       return NextResponse.json(
@@ -163,6 +165,8 @@ export async function POST(req: NextRequest) {
       addContactToAudience(email),
       sendResultsEmail(email, jobTitle, workflows, roi),
     ]);
+
+    logToolUsage(email, "timesaver", ip);
 
     return NextResponse.json({ success: true });
   } catch (error) {

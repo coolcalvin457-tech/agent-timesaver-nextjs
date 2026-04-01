@@ -114,3 +114,36 @@ export async function markMagicLinkUsed(id: string): Promise<void> {
     UPDATE magic_links SET used = TRUE WHERE id = ${id}::uuid
   `;
 }
+
+// ─── Tool usage logging ──────────────────────────────────────────────────────
+
+/**
+ * Log a confirmed tool run. Call fire-and-forget — never throws.
+ * Logging happens at email delivery (the point where email + IP are both known).
+ *
+ * @param email      - Gate email submitted by user. Null if unavailable.
+ * @param toolName   - Slug identifier: 'timesaver' | 'prompt-builder' | 'budget-spreadsheets'
+ *                     | 'onboarding-kit' | 'pip-builder' | 'workflow-builder' | 'industry-intel'
+ * @param ipAddress  - First hop from x-forwarded-for header. Null if unavailable.
+ * @param userId     - UUID from users table if the user is logged in. Null otherwise.
+ */
+export async function logToolUsage(
+  email: string | null,
+  toolName: string,
+  ipAddress: string | null,
+  userId?: string | null
+): Promise<void> {
+  try {
+    await pool.sql`
+      INSERT INTO tool_usage_log (email, tool_name, ip_address, user_id)
+      VALUES (
+        ${email ? email.toLowerCase() : null},
+        ${toolName},
+        ${ipAddress ?? null},
+        ${userId ?? null}
+      )
+    `;
+  } catch (err) {
+    console.error("[logToolUsage] Failed to log tool usage:", err);
+  }
+}

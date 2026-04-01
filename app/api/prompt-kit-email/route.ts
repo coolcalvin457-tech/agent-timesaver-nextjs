@@ -7,6 +7,7 @@ import {
   buildBaseEmailHTML,
 } from "@/app/api/_shared/emailBase";
 import { stripEmDashes } from "@/app/api/_shared/sanitize";
+import { logToolUsage } from "@/lib/db";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -184,6 +185,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = (await req.json()) as PromptKitEmailRequestBody;
     const { email, jobTitle, promptKit } = body;
+    const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null;
 
     if (!email || !jobTitle || !promptKit) {
       return NextResponse.json(
@@ -204,6 +206,8 @@ export async function POST(req: NextRequest) {
       addContactToAudience(email),
       sendPromptKitEmail(email, jobTitle, promptKit),
     ]);
+
+    logToolUsage(email, "prompt-builder", ip);
 
     return NextResponse.json({ success: true });
   } catch (error) {

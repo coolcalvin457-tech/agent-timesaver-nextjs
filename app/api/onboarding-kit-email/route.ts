@@ -6,6 +6,7 @@ import {
   buildBaseEmailHTML,
 } from "@/app/api/_shared/emailBase";
 import { stripEmDashes } from "@/app/api/_shared/sanitize";
+import { logToolUsage } from "@/lib/db";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -130,6 +131,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = (await req.json()) as OnboardingKitEmailBody;
     const { email, filename, hireName, hireTitle, fileData } = body;
+    const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null;
 
     if (!email || !filename || !fileData) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -147,6 +149,8 @@ export async function POST(req: NextRequest) {
       addContactToAudience(email),
       sendOnboardingKitEmail(email, filename, hireName, hireTitle, fileData),
     ]);
+
+    logToolUsage(email, "onboarding-kit", ip);
 
     return NextResponse.json({ success: true });
   } catch (error) {

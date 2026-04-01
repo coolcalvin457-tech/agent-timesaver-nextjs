@@ -1670,13 +1670,16 @@ input, textarea {
   border-color: var(--cta);
 }
 
-/* Screen / main content area */
+/* Screen / main content area — matches okb-tool's 40px internal padding.
+   With .pb-frame-body > .tool-container { padding: 0 } in place, the total
+   vertical space before content is: pb-frame-body (52px) + screen (40px) = 92px,
+   identical to OKB's pb-frame-body (52px) + okb-tool padding (40px). */
 .hero-tool-dark .screen {
   background: transparent;
-  padding-top: 28px;
+  padding-top: 40px;
   padding-left: 44px;
   padding-right: 44px;
-  padding-bottom: 32px;
+  padding-bottom: 40px;
   flex: 1;
   display: flex;
   flex-direction: column;

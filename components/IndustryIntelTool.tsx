@@ -291,6 +291,7 @@ export default function IndustryIntelTool() {
     fontWeight: 400,
     fontSize: "clamp(1.5rem, 3.25vw, 2rem)",
     lineHeight: 1.25,
+    color: "#FFFFFF",
     margin: "0 0 28px",
   };
 

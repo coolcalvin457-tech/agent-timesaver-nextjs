@@ -373,7 +373,7 @@ export default function IndustryIntelTool() {
             }}
             disabled={!canAdvance}
           >
-            Next
+            Continue
           </button>
         </div>
       </div>

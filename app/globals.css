@@ -1986,6 +1986,15 @@ input, textarea {
   padding: 52px 52px 44px;
 }
 
+/* pb-frame-body already handles outer spacing (52px top clears the absolute label).
+   tool-container inside it must NOT add redundant top/side padding — .screen handles
+   all internal padding. Without this override, the triple-stack
+   (pb-frame-body 52px + tool-container 40px + screen 28px = 120px) creates a
+   large visible gap above the first input. Net with this fix: 52 + 0 + 28 = 80px. */
+.pb-frame-body > .tool-container {
+  padding: 0;
+}
+
 /* Choose File button hover */
 .choose-file-btn {
   transition: transform 0.15s ease;

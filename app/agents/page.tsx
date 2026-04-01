@@ -19,18 +19,6 @@ export const metadata: Metadata = {
 
 const tools = [
   {
-    slug: "timesaver",
-    href: "/",
-    badgeClass: "tool-badge-free",
-    label: "Free",
-    name: "AGENT: Timesaver",
-    tagline: "Find your 5 workflows.",
-    description:
-      "Start with your job title. Answer a few questions. Get 5 personalized AI workflows built for your exact role, plus an estimate of how many hours you could save each week.",
-    cta: "Get Free Workflows",
-    image: "/tool-previews/timesaver-preview.png",
-  },
-  {
     slug: "prompt-builder",
     href: "/prompt-builder",
     badgeClass: "tool-badge-free",
@@ -54,17 +42,6 @@ const tools = [
     image: "/tool-previews/workflow-builder-preview.png",
   },
   {
-    slug: "budget-spreadsheets",
-    href: "/budget-spreadsheets",
-    badgeClass: "tool-badge-free",
-    label: "Free",
-    name: "AGENT: Budget Spreadsheets",
-    tagline: "Budget for \"what-if\" scenarios.",
-    description: "",
-    cta: "Get Free Spreadsheets",
-    image: "/tool-previews/budget-spreadsheets-preview.png",
-  },
-  {
     slug: "industry-intel",
     href: "/industry-intel",
     badgeClass: "tool-badge-free",
@@ -73,6 +50,17 @@ const tools = [
     tagline: "Read AI's insights on your industry.",
     description: "",
     cta: "Read Industry Intel",
+    image: "/tool-previews/industry-intel-preview.png",
+  },
+  {
+    slug: "budget-spreadsheets",
+    href: "/budget-spreadsheets",
+    badgeClass: "tool-badge-free",
+    label: "Free",
+    name: "AGENT: Budget Spreadsheets",
+    tagline: "Budget for \"what-if\" scenarios.",
+    description: "",
+    cta: "Get Free Spreadsheets",
     image: "/tool-previews/budget-spreadsheets-preview.png",
   },
   {
@@ -98,6 +86,18 @@ const tools = [
     description: "",
     cta: "Build My PIP",
     image: "/tool-previews/pip-builder-preview.jpg",
+  },
+  {
+    slug: "timesaver",
+    href: "/",
+    badgeClass: "tool-badge-free",
+    label: "Free",
+    name: "AGENT: Timesaver",
+    tagline: "Find your 5 workflows.",
+    description:
+      "Start with your job title. Answer a few questions. Get 5 personalized AI workflows built for your exact role, plus an estimate of how many hours you could save each week.",
+    cta: "Get Free Workflows",
+    image: "/tool-previews/timesaver-preview.png",
   },
   {
     slug: "performance-review-builder",

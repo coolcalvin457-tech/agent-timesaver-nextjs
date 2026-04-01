@@ -11,18 +11,6 @@ import { useAuth } from "@/components/AuthProvider";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const INDUSTRY_CHIPS = [
-  "Healthcare",
-  "Manufacturing",
-  "Technology",
-  "Financial Services",
-  "Education",
-  "Retail",
-  "Professional Services",
-  "Government",
-  "Nonprofit",
-];
-
 const COMPANY_SIZE_OPTIONS = [
   "Under 50",
   "50-200",
@@ -342,27 +330,6 @@ export default function IndustryIntelTool() {
               value={industry}
               onChange={(e) => setIndustry(e.target.value)}
             />
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginTop: "10px" }}>
-              {INDUSTRY_CHIPS.map((chip) => (
-                <button
-                  key={chip}
-                  type="button"
-                  onClick={() => setIndustry(chip)}
-                  style={{
-                    background: industry === chip ? "rgba(30,122,184,0.15)" : "rgba(255,255,255,0.05)",
-                    border: industry === chip ? "1px solid rgba(30,122,184,0.5)" : "1px solid rgba(255,255,255,0.1)",
-                    borderRadius: "20px",
-                    padding: "4px 12px",
-                    fontSize: "0.75rem",
-                    color: industry === chip ? "#60B4F0" : "rgba(255,255,255,0.5)",
-                    cursor: "pointer",
-                    transition: "all 0.15s ease",
-                  }}
-                >
-                  {chip}
-                </button>
-              ))}
-            </div>
           </div>
 
           {/* Company size */}

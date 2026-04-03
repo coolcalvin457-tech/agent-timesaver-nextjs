@@ -215,14 +215,19 @@ Rules:
 
 Return ONLY valid JSON. No explanation text.`;
 
-  const message = await client.messages.create({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const message = await (client.messages.create as any)({
     model: process.env.CLAUDE_MODEL ?? "claude-sonnet-4-6",
     max_tokens: 3000,
+    thinking: { type: "adaptive" },
     messages: [{ role: "user", content: userPrompt }],
     system: systemPrompt,
   });
 
-  const text = message.content[0].type === "text" ? message.content[0].text : "";
+  const text = (message.content as Array<{ type: string; text?: string }>)
+    .filter((block) => block.type === "text" && block.text)
+    .map((block) => block.text!)
+    .join("");
   const jsonMatch = text.match(/\{[\s\S]*\}/);
   if (!jsonMatch) throw new Error("No JSON found in Claude response");
 

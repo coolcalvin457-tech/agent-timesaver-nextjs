@@ -372,7 +372,7 @@ Return this exact JSON structure:
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const message = await (client.messages.create as any)({
     model: process.env.CLAUDE_MODEL ?? "claude-sonnet-4-6",
-    max_tokens: 6000,
+    max_tokens: 16000,
     thinking: { type: "adaptive" },
     system: systemPrompt,
     messages: [{ role: "user", content: userMessage }],

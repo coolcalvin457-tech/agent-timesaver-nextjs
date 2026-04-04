@@ -238,7 +238,7 @@ async function generateIndustryIntel(inputs: IndustryIntelInputs): Promise<Indus
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const message = await (client.messages.create as any)({
     model: process.env.CLAUDE_MODEL ?? "claude-sonnet-4-6",
-    max_tokens: 4096,
+    max_tokens: 16000,
     thinking: { type: "adaptive" },
     system: SYSTEM_PROMPT,
     tools: [{ type: "web_search_20250305", name: "web_search", max_uses: 5 }],

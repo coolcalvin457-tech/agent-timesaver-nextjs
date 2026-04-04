@@ -529,7 +529,7 @@ export default function IndustryIntelTool() {
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <ToolLoadingScreen
           headingText="Building your intel."
-          timeEstimate="About 30 seconds."
+          timeEstimate="About 1 minute."
           steps={LOADING_STEPS}
           activeStep={loadingStep}
         />

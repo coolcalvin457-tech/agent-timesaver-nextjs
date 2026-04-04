@@ -3112,18 +3112,50 @@ input, textarea {
 .tool-card {
   display: flex;
   flex-direction: column;
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: var(--dark);
+  border: 1px solid var(--dark-border);
   border-radius: var(--radius-card);
   padding: 32px;
   text-decoration: none;
   color: inherit;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .tool-card:hover {
-  box-shadow: var(--shadow-hover);
+  border-color: rgba(30, 122, 184, 0.4);
   transform: translateY(-2px);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(30, 122, 184, 0.15);
+}
+
+.tool-card-name {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.tool-card-tagline {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 0;
+  line-height: 1.5;
+}
+
+.tool-card-cta {
+  font-size: 0.9375rem;
+  margin-top: 24px;
+  font-weight: 600;
+  color: var(--cta);
+  display: block;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.tool-card-cta:hover {
+  color: #4da3e0;
 }
 
 .tool-badge-free {
@@ -3134,8 +3166,8 @@ input, textarea {
   text-transform: uppercase;
   padding: 4px 10px;
   border-radius: var(--radius-tag);
-  background: rgba(26, 122, 74, 0.10);
-  color: var(--success);
+  background: rgba(26, 122, 74, 0.20);
+  color: #34D27B;
 }
 
 .tool-badge-paid {
@@ -3146,8 +3178,8 @@ input, textarea {
   text-transform: uppercase;
   padding: 4px 10px;
   border-radius: var(--radius-tag);
-  background: rgba(30, 122, 184, 0.08);
-  color: var(--cta);
+  background: rgba(30, 122, 184, 0.15);
+  color: #4da3e0;
 }
 
 .tool-badge-coming-soon {
@@ -3166,8 +3198,8 @@ input, textarea {
   max-width: 880px;
   margin: 24px auto 0;
   padding: 28px 32px;
-  background: var(--bg-alt);
-  border: 1px dashed var(--border);
+  background: var(--dark);
+  border: 1px dashed var(--dark-border);
   border-radius: var(--radius-card);
   text-align: center;
 }

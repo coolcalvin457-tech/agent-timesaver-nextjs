@@ -27,7 +27,6 @@ const tools = [
     tagline: "Receive 12 job-specific prompts.",
     description: "",
     cta: "Get Free Prompts",
-    image: "/tool-previews/prompt-builder-preview.png",
   },
   {
     slug: "workflow-builder",
@@ -39,7 +38,6 @@ const tools = [
     tagline: "Build the playbook for any task.",
     description: "",
     cta: "Build Workflow",
-    image: "/tool-previews/workflow-builder-preview.png",
   },
   {
     slug: "industry-intel",
@@ -50,7 +48,6 @@ const tools = [
     tagline: "Read AI's insights on your industry.",
     description: "",
     cta: "Read Industry Intel",
-    image: "/tool-previews/industry-intel-preview.png",
   },
   {
     slug: "budget-spreadsheets",
@@ -61,7 +58,6 @@ const tools = [
     tagline: "Budget for \"what-if\" scenarios.",
     description: "",
     cta: "Get Free Spreadsheets",
-    image: "/tool-previews/budget-spreadsheets-preview.png",
   },
   {
     slug: "timesaver",
@@ -73,7 +69,6 @@ const tools = [
     description:
       "Start with your job title. Answer a few questions. Get 5 personalized AI workflows built for your exact role, plus an estimate of how many hours you could save each week.",
     cta: "Get Free Workflows",
-    image: "/tool-previews/timesaver-preview.png",
   },
 ];
 
@@ -112,7 +107,7 @@ export default function AgentsPage() {
             <p
               style={{
                 fontSize: "0.9375rem",
-                color: "var(--text-muted)",
+                color: "rgba(255, 255, 255, 0.45)",
                 margin: 0,
               }}
             >

@@ -102,8 +102,8 @@ export default function AgentsPage() {
           <ToolsList tools={tools} />
 
           {/* More tools placeholder */}
-          <p style={{ textAlign: "center", marginTop: "48px", fontSize: "0.875rem", color: "var(--text-muted)" }}>
-            More agents in progress.
+          <p style={{ textAlign: "center", margin: "72px auto 56px", fontSize: "0.875rem", color: "var(--text-muted)" }}>
+            More agents in progress...
           </p>
         </div>
       </main>

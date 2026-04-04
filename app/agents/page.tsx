@@ -44,7 +44,7 @@ const tools = [
     badgeClass: "tool-badge-free",
     label: "Free",
     name: "AGENT: Industry",
-    tagline: "Read AI's insights on your industry.",
+    tagline: "Get intel on your industry.",
     description: "",
     cta: "Get Intel",
   },

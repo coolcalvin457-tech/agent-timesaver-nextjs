@@ -3112,8 +3112,8 @@ input, textarea {
 .tool-card {
   display: flex;
   flex-direction: column;
-  background: linear-gradient(180deg, #1E1E20 0%, #161618 100%);
-  border: 1px solid rgba(30, 122, 184, 0.16);
+  background: linear-gradient(180deg, #222224 0%, #1A1A1C 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-card);
   padding: 40px;
   text-decoration: none;
@@ -3122,9 +3122,9 @@ input, textarea {
 }
 
 .tool-card:hover {
-  border-color: rgba(30, 122, 184, 0.6);
+  border-color: rgba(30, 122, 184, 0.5);
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(30, 122, 184, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 20px rgba(30, 122, 184, 0.12);
 }
 
 .tool-card-name {
@@ -3138,16 +3138,16 @@ input, textarea {
 
 .tool-card-tagline {
   font-size: 0.9375rem;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.55);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.65);
   margin-bottom: 0;
   line-height: 1.6;
 }
 
 .tool-card-cta {
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   margin-top: 28px;
-  font-weight: 600;
+  font-weight: 400;
   color: #4da3e0;
   display: block;
   text-decoration: none;
@@ -3160,25 +3160,25 @@ input, textarea {
 
 .tool-badge-free {
   display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: 0.6875rem;
+  font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   padding: 4px 10px;
   border-radius: var(--radius-tag);
-  background: rgba(26, 122, 74, 0.20);
+  background: rgba(26, 122, 74, 0.18);
   color: #34D27B;
 }
 
 .tool-badge-paid {
   display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: 0.6875rem;
+  font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   padding: 4px 10px;
   border-radius: var(--radius-tag);
-  background: rgba(30, 122, 184, 0.15);
+  background: rgba(30, 122, 184, 0.14);
   color: #4da3e0;
 }
 

@@ -86,7 +86,7 @@ export default function AgentsPage() {
         {/* Page header */}
         <div className="container">
           <div style={{ paddingTop: "80px", marginBottom: "40px", textAlign: "center" }}>
-            <h1 className="heading-1" style={{ marginBottom: "14px", fontSize: "clamp(2.75rem, 6vw, 4.5rem)", lineHeight: 1.05 }}>
+            <h1 className="heading-1" style={{ marginBottom: "20px", fontSize: "clamp(2.75rem, 6vw, 4.5rem)", lineHeight: 1.05 }}>
               Agents
             </h1>
             <p

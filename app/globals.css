@@ -3112,7 +3112,7 @@ input, textarea {
 .tool-card {
   display: flex;
   flex-direction: column;
-  background: radial-gradient(ellipse 120% 100% at 50% 0%, rgba(30, 122, 184, 0.06) 0%, #161618 50%);
+  background: linear-gradient(180deg, #1E1E20 0%, #161618 100%);
   border: 1px solid rgba(30, 122, 184, 0.16);
   border-radius: var(--radius-card);
   padding: 40px;

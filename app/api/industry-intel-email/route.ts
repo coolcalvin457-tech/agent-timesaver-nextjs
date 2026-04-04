@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+
+export const maxDuration = 60; // .docx generation + Resend delivery
+
 import {
   Document,
   Packer,
@@ -151,8 +154,6 @@ async function buildDocxFile(
   children.push(sectionLabel("The Strategy"));
   children.push(h1("Questions worth raising."));
   children.push(divider());
-  children.push(bodyPara("These questions could shape current and future strategic decisions for your company.", true));
-  children.push(spacer());
   intelData.strategy.forEach((question) => {
     children.push(
       new Paragraph({
@@ -267,8 +268,7 @@ function buildIntelEmailHTML(
 
     <!-- Section 3: The Strategy -->
     <p style="margin:0 0 6px 0; font-size:11px; font-weight:700; letter-spacing:0.08em; color:#1e7ab8; text-transform:uppercase; font-family:monospace;">The Strategy</p>
-    <h2 style="margin:0 0 12px 0; font-size:22px; font-weight:600; color:#161618; line-height:1.2;">Questions worth raising.</h2>
-    <p style="margin:0 0 16px 0; font-size:14px; color:#555555; line-height:1.6;">These questions could shape current and future strategic decisions for your company.</p>
+    <h2 style="margin:0 0 16px 0; font-size:22px; font-weight:600; color:#161618; line-height:1.2;">Questions worth raising.</h2>
     <ul style="margin:0 0 8px 0; padding-left:20px;">
       ${strategyQuestions}
     </ul>

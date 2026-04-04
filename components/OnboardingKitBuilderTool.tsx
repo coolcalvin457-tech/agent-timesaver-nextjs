@@ -1487,8 +1487,8 @@ export default function OnboardingKitBuilderTool({
         <div style={{ textAlign: "center", padding: "8px 0" }}>
           <div style={{ display: "inline-block", marginBottom: "20px" }}>
             <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
-              <rect width="56" height="56" rx="12" fill="#1A7A4A" fillOpacity="0.1" />
-              <path d="M16 28l7 7L40 20" stroke="#1A7A4A" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+              <rect width="56" height="56" rx="12" fill="#22C55E" fillOpacity="0.12" />
+              <path d="M16 28l7 7L40 20" stroke="#22C55E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
           <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 32px" }}>

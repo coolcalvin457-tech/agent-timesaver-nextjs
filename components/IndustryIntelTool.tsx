@@ -567,8 +567,8 @@ export default function IndustryIntelTool() {
           {/* Checkmark */}
           <div style={{ display: "inline-block", marginBottom: "20px" }}>
             <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="56" height="56" rx="12" fill="#1A7A4A" fillOpacity="0.1" />
-              <path d="M16 28l7 7L40 20" stroke="#1A7A4A" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+              <rect width="56" height="56" rx="12" fill="#22C55E" fillOpacity="0.12" />
+              <path d="M16 28l7 7L40 20" stroke="#22C55E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
 

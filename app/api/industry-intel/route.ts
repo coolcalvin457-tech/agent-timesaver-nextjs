@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+export const maxDuration = 120; // Web search + generation exceeds Vercel's 60s default
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface IntelSource {
@@ -80,10 +82,9 @@ Calibrate by decision scope:
 
 Company size: "${companySize}"
 Calibrate by company size:
-- Under 50: lean, resource-constrained. Implications differ sharply from larger orgs.
-- 50-200: scaling, process-building. Different tradeoffs.
-- 200-1,000: mid-market. Decisions involve more stakeholders.
-- 1,000-5,000 or 5,000+: enterprise. Change is slow, stakes are high, coordination is complex.
+- Under 200: lean to scaling. Resource-constrained. Decisions are faster but coverage is thin. Implications differ sharply from larger orgs.
+- 200-5,000: mid-market. Decisions involve more stakeholders. Process-building and coordination matter. Change takes longer than at smaller orgs.
+- 5,000+: enterprise. Change is slow, stakes are high, coordination is complex. Implications operate at a different scale.
 
 ${companyRef}
 ${contextRef}

@@ -34,7 +34,7 @@ const tools = [
     badgeClass: "tool-badge-paid",
     label: "$49/yr",
     name: "AGENT: Workflow",
-    tagline: "Build the playbook for any task.",
+    tagline: "A step-by-step workflow for any task.",
     description: "",
     cta: "Get Workflows",
   },
@@ -64,7 +64,7 @@ const tools = [
     badgeClass: "tool-badge-free",
     label: "Free",
     name: "AGENT: Timesaver",
-    tagline: "Find your 5 workflows.",
+    tagline: "See how many hours you could be saving.",
     description:
       "Start with your job title. Answer a few questions. Get 5 personalized AI workflows built for your exact role, plus an estimate of how many hours you could save each week.",
     cta: "Get Workflows",

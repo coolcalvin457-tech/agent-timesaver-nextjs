@@ -1,7 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-
-export const maxDuration = 120;
-
 import {
   Document,
   Packer,
@@ -15,6 +12,8 @@ import {
   BorderStyle,
   ShadingType,
 } from "docx";
+
+export const maxDuration = 120;
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

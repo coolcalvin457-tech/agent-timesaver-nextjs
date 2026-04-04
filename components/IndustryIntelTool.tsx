@@ -5,6 +5,7 @@ import { track } from "@vercel/analytics";
 import type { IndustryIntelData } from "@/app/api/industry-intel/route";
 import ToolEmailGate from "@/components/shared/ToolEmailGate";
 import ToolLoadingScreen from "@/components/shared/ToolLoadingScreen";
+import CrossSellBlock from "@/components/shared/CrossSellBlock";
 import BackButton from "@/components/shared/BackButton";
 import { triggerDownload } from "@/components/shared/fileUtils";
 import { useAuth } from "@/components/AuthProvider";
@@ -589,39 +590,15 @@ export default function IndustryIntelTool() {
           </button>
 
           {/* Cross-sell — Workflow Builder */}
-          <div style={{
-            marginTop: "32px",
-            paddingTop: "28px",
-            borderTop: "1px solid rgba(255,255,255,0.08)",
-            textAlign: "left",
-          }}>
-            <p className="pb-system-eyebrow" style={{ marginBottom: "8px" }}>YOUR NEXT STEP</p>
-            <p style={{
-              fontFamily: "var(--font-display)",
-              fontWeight: 400,
-              fontSize: "1.25rem",
-              color: "#FFFFFF",
-              margin: "0 0 8px",
-              lineHeight: 1.3,
-            }}>
-              Want this delivered every Monday morning?
-            </p>
-            <p style={{
-              fontSize: "0.875rem",
-              color: "rgba(255,255,255,0.55)",
-              margin: "0 0 16px",
-              lineHeight: 1.6,
-            }}>
-              Workflow Builder turns this into a recurring insight. Set it once. It runs on autopilot.
-            </p>
-            <a
-              href="/workflow-builder"
-              className="btn btn-dark-cta btn-full"
-              style={{ display: "block", textAlign: "center", textDecoration: "none" }}
-            >
-              Try Workflow Builder
-            </a>
-          </div>
+          <CrossSellBlock
+            productName="AGENT: Workflow Builder"
+            descriptionLines={[
+              "Get your industry intel delivered every Monday morning.",
+              "Built for real jobs. Not demos.",
+            ]}
+            buttonLabel="Try Workflow Builder"
+            href="/workflow-builder"
+          />
 
         </div>
       </div>

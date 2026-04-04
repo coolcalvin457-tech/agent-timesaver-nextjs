@@ -1200,14 +1200,15 @@ export default function WorkflowBuilderTool({
           </button>
         </div>
 
-        {/* Cross-sell — AGENT: Industry Briefing */}
+        {/* Cross-sell — AGENT: Industry Intel */}
         <CrossSellBlock
-          productName="AGENT: Industry Briefing"
+          productName="AGENT: Industry Intel"
           descriptionLines={[
-            "A weekly AI briefing built around your industry, role, and priorities.",
+            "One sharp insight about your industry, delivered to your inbox.",
             "Built for real jobs. Not demos.",
           ]}
-          buttonLabel="Get Early Access"
+          buttonLabel="Read Industry Intel"
+          href="/industry-intel"
         />
         </>
       )}

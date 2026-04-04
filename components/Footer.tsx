@@ -14,11 +14,11 @@ export default function Footer() {
           <div>
             <div className="footer-col-label">Agents</div>
             <ul className="footer-col-links">
+              <li><a href="/prompt-builder">AGENT: Prompts</a></li>
+              <li><a href="/workflow-builder">AGENT: Workflow</a></li>
+              <li><a href="/industry-intel">AGENT: Industry</a></li>
+              <li><a href="/budget-spreadsheets">AGENT: Spreadsheets</a></li>
               <li><a href="/#timesaver">AGENT: Timesaver</a></li>
-              <li><a href="/prompt-builder">AGENT: Prompt Builder</a></li>
-              <li><a href="/budget-spreadsheets">AGENT: Budget Spreadsheets</a></li>
-              <li><a href="/industry-intel">AGENT: Industry Intel</a></li>
-              <li><a href="/workflow-builder">AGENT: Workflow Builder</a></li>
             </ul>
           </div>
 

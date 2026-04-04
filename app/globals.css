@@ -3112,19 +3112,20 @@ input, textarea {
 .tool-card {
   display: flex;
   flex-direction: column;
-  background: linear-gradient(180deg, #222224 0%, #1A1A1C 100%);
+  background: linear-gradient(180deg, #1F2228 0%, #1A1A1C 100%);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-card);
   padding: 40px;
   text-decoration: none;
   color: inherit;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
   transition: border-color 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
 }
 
 .tool-card:hover {
   border-color: rgba(30, 122, 184, 0.5);
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 20px rgba(30, 122, 184, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 20px rgba(30, 122, 184, 0.12);
 }
 
 .tool-card-name {

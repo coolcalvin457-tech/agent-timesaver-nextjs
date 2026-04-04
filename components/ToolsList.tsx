@@ -16,7 +16,7 @@ type Tool = {
   isComingSoon?: boolean;
 };
 
-const FILTERS = ["All", "Human Resources"];
+const FILTERS = ["All"];
 
 export default function ToolsList({ tools }: { tools: Tool[] }) {
   const [activeFilter, setActiveFilter] = useState("All");
@@ -28,56 +28,7 @@ export default function ToolsList({ tools }: { tools: Tool[] }) {
 
   return (
     <div>
-      {/* Filter tabs */}
-      <div
-        style={{
-          display: "flex",
-          gap: "8px",
-          marginBottom: "32px",
-          flexWrap: "wrap",
-          justifyContent: "center",
-        }}
-      >
-        {FILTERS.map((filter) => {
-          const isActive = activeFilter === filter;
-          return (
-            <button
-              key={filter}
-              onClick={() => setActiveFilter(filter)}
-              style={{
-                padding: "8px 18px",
-                borderRadius: "8px",
-                border: isActive
-                  ? "1px solid var(--cta)"
-                  : "1px solid var(--border)",
-                background: isActive ? "var(--cta)" : "var(--surface)",
-                color: isActive ? "#ffffff" : "var(--text-secondary)",
-                fontSize: "0.875rem",
-                fontWeight: isActive ? 600 : 500,
-                cursor: "pointer",
-                transition: "all 0.15s ease",
-                fontFamily: "var(--font-sans)",
-                lineHeight: 1.4,
-                letterSpacing: "0.01em",
-              }}
-              onMouseEnter={(e) => {
-                if (!isActive) {
-                  (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--cta)";
-                  (e.currentTarget as HTMLButtonElement).style.color = "var(--text-primary)";
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!isActive) {
-                  (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--border)";
-                  (e.currentTarget as HTMLButtonElement).style.color = "var(--text-secondary)";
-                }
-              }}
-            >
-              {filter}
-            </button>
-          );
-        })}
-      </div>
+      {/* Filter tabs hidden: only one category remaining */}
 
 
       {/* Tools grid */}

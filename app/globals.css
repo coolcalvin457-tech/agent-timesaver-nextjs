@@ -3114,7 +3114,7 @@ input, textarea {
   flex-direction: column;
   background: linear-gradient(180deg, #1F2228 0%, #1A1A1C 100%);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--radius-card);
+  border-radius: 12px;
   padding: 40px;
   text-decoration: none;
   color: inherit;

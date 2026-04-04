@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+export const maxDuration = 120;
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 export interface PromptItem {
   title: string;

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import ExcelJS from "exceljs";
 
+export const maxDuration = 120;
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface BudgetRow {

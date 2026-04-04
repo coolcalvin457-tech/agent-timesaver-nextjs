@@ -292,6 +292,7 @@ input, textarea {
   color: #fff !important;
   padding: 5px 12px;
   border-radius: var(--radius-btn);
+  border: 1px solid rgba(0, 0, 0, 0.18);
   font-size: 0.8125rem !important;
   font-weight: 500 !important;
   letter-spacing: 0.01em;
@@ -319,7 +320,7 @@ input, textarea {
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.01em;
-  border: none;
+  border: 1px solid rgba(0, 0, 0, 0.18);
   cursor: pointer;
   transition: background 0.15s ease, transform 0.15s ease;
   white-space: nowrap;
@@ -3164,11 +3165,10 @@ input, textarea {
   font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.06em;
-  text-transform: uppercase;
   padding: 4px 10px;
   border-radius: var(--radius-tag);
-  background: rgba(26, 122, 74, 0.18);
-  color: #34D27B;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.55);
 }
 
 .tool-badge-paid {
@@ -3176,11 +3176,10 @@ input, textarea {
   font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.06em;
-  text-transform: uppercase;
   padding: 4px 10px;
   border-radius: var(--radius-tag);
-  background: rgba(30, 122, 184, 0.14);
-  color: #4da3e0;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.55);
 }
 
 .tool-badge-coming-soon {

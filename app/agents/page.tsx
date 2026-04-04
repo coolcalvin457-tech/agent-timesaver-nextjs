@@ -22,7 +22,7 @@ const tools = [
     slug: "prompt-builder",
     href: "/prompt-builder",
     badgeClass: "tool-badge-free",
-    label: "Free",
+    label: "FREE",
     name: "AGENT: Prompt Builder",
     tagline: "Receive 12 job-specific prompts.",
     description: "",
@@ -32,8 +32,7 @@ const tools = [
     slug: "workflow-builder",
     href: "/workflow-builder",
     badgeClass: "tool-badge-paid",
-    label: "All Roles",
-    badgeDisplay: "$49/yr",
+    label: "$49/yr",
     name: "AGENT: Workflow Builder",
     tagline: "Build the playbook for any task.",
     description: "",
@@ -43,7 +42,7 @@ const tools = [
     slug: "industry-intel",
     href: "/industry-intel",
     badgeClass: "tool-badge-free",
-    label: "Free",
+    label: "FREE",
     name: "AGENT: Industry Intel",
     tagline: "Read AI's insights on your industry.",
     description: "",
@@ -53,7 +52,7 @@ const tools = [
     slug: "budget-spreadsheets",
     href: "/budget-spreadsheets",
     badgeClass: "tool-badge-free",
-    label: "Free",
+    label: "FREE",
     name: "AGENT: Budget Spreadsheets",
     tagline: "Budget for \"what-if\" scenarios.",
     description: "",
@@ -63,7 +62,7 @@ const tools = [
     slug: "timesaver",
     href: "/",
     badgeClass: "tool-badge-free",
-    label: "Free",
+    label: "FREE",
     name: "AGENT: Timesaver",
     tagline: "Find your 5 workflows.",
     description:
@@ -103,28 +102,9 @@ export default function AgentsPage() {
           <ToolsList tools={tools} />
 
           {/* More tools placeholder */}
-          <div className="tools-coming-soon">
-            <p
-              style={{
-                fontSize: "0.9375rem",
-                color: "rgba(255, 255, 255, 0.45)",
-                margin: 0,
-              }}
-            >
-              More tools in progress. Building in public at{" "}
-              <a
-                href="/blog"
-                style={{
-                  color: "var(--cta)",
-                  textDecoration: "none",
-                  fontWeight: 500,
-                }}
-              >
-                promptaiagents.com/blog
-              </a>
-              .
-            </p>
-          </div>
+          <p style={{ textAlign: "center", marginTop: "48px", fontSize: "0.875rem", color: "var(--text-muted)" }}>
+            More agents in progress.
+          </p>
         </div>
       </main>
       <Footer />

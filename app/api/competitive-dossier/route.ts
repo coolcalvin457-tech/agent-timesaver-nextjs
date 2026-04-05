@@ -217,6 +217,30 @@ function stripEmDashesDeep(obj: unknown): unknown {
   return obj;
 }
 
+function cleanJsonResponse(raw: string): string {
+  let text = raw.trim();
+  // Strip markdown code fences
+  text = text.replace(/^```(?:json)?\s*\n?/i, "").replace(/\n?```\s*$/i, "");
+  // Strip any preamble before the first {
+  const firstBrace = text.indexOf("{");
+  if (firstBrace > 0) text = text.slice(firstBrace);
+  // Strip anything after the last }
+  const lastBrace = text.lastIndexOf("}");
+  if (lastBrace >= 0) text = text.slice(0, lastBrace + 1);
+  // Smart quotes to straight
+  text = text.replace(/[\u201C\u201D]/g, '"');
+  text = text.replace(/[\u2018\u2019]/g, "'");
+  // Em/en dash to hyphen
+  text = text.replace(/\u2014/g, "-");
+  text = text.replace(/\u2013/g, "-");
+  // Trailing commas
+  text = text.replace(/,\s*}/g, "}");
+  text = text.replace(/,\s*]/g, "]");
+  // Control characters (except newline/tab)
+  text = text.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, "");
+  return text;
+}
+
 function truncateToTokenBudget(content: string, tokenBudget: number): string {
   // Rough estimate: 1 token ≈ 4 characters
   const charBudget = tokenBudget * 4;
@@ -576,7 +600,7 @@ The "priority" field is an integer. Lower numbers = higher priority. Be precise.
             .map((b: { text: string }) => b.text)
             .join("\n");
 
-          const parsed = JSON.parse(selectionText);
+          const parsed = JSON.parse(cleanJsonResponse(selectionText));
           selectedPages = parsed.selected ?? [];
         } catch {
           // Fall back: use first 10 URLs
@@ -679,7 +703,7 @@ Produce the competitive intelligence dossier as specified. Return only the JSON 
             .map((b: { text: string }) => b.text)
             .join("\n");
 
-          dossierData = stripEmDashesDeep(JSON.parse(dossierText)) as DossierData;
+          dossierData = stripEmDashesDeep(JSON.parse(cleanJsonResponse(dossierText))) as DossierData;
         } catch {
           // Retry once
           try {
@@ -691,7 +715,7 @@ Produce the competitive intelligence dossier as specified. Return only the JSON 
                 { role: "user", content: userPrompt },
                 {
                   role: "assistant",
-                  content: "I'll provide the dossier as a clean JSON object:",
+                  content: "{",
                 },
               ],
             });
@@ -699,7 +723,7 @@ Produce the competitive intelligence dossier as specified. Return only the JSON 
               .filter((b: { type: string }) => b.type === "text")
               .map((b: { text: string }) => b.text)
               .join("\n");
-            dossierData = stripEmDashesDeep(JSON.parse(retryText)) as DossierData;
+            dossierData = stripEmDashesDeep(JSON.parse(cleanJsonResponse("{" + retryText))) as DossierData;
           } catch {
             send("error", { type: "generation_failed", message: "Your dossier could not be generated. This is on us. Please try again." });
             controller.close();

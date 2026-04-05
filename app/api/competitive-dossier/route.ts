@@ -560,7 +560,7 @@ The "priority" field is an integer. Lower numbers = higher priority. Be precise.
 
         try {
           const selectionRes = await (anthropic.messages.create as Function)({
-            model: process.env.CLAUDE_MODEL ?? "claude-sonnet-4-6",
+            model: process.env.CLAUDE_MODEL || "claude-sonnet-4-6",
             max_tokens: 4096,
             thinking: { type: "adaptive" },
             system: pageSelectionSystemPrompt,
@@ -663,7 +663,7 @@ Produce the competitive intelligence dossier as specified. Return only the JSON 
         let dossierData: DossierData;
         try {
           const dossierRes = await (anthropic.messages.create as Function)({
-            model: process.env.CLAUDE_MODEL ?? "claude-sonnet-4-6",
+            model: process.env.CLAUDE_MODEL || "claude-sonnet-4-6",
             max_tokens: 16000,
             thinking: { type: "adaptive" },
             system: buildDossierSystemPrompt(relationshipType),
@@ -680,7 +680,7 @@ Produce the competitive intelligence dossier as specified. Return only the JSON 
           // Retry once
           try {
             const retryRes = await (anthropic.messages.create as Function)({
-              model: process.env.CLAUDE_MODEL ?? "claude-sonnet-4-6",
+              model: process.env.CLAUDE_MODEL || "claude-sonnet-4-6",
               max_tokens: 16000,
               thinking: { type: "adaptive" },
               system: buildDossierSystemPrompt(relationshipType),

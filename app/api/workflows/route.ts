@@ -242,7 +242,7 @@ Return ONLY valid JSON in this exact format:
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const message = await (client.messages.create as any)({
-    model: process.env.CLAUDE_MODEL ?? "claude-sonnet-4-6",
+    model: process.env.CLAUDE_MODEL || "claude-sonnet-4-6",
     max_tokens: 3000,
     thinking: { type: "adaptive" },
     system: systemPrompt,

@@ -293,7 +293,8 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(result);
   } catch (error) {
-    console.error("Workflows API error:", error);
+    const msg = error instanceof Error ? error.message : String(error);
+    console.error("[workflows] API error:", msg, error);
     return NextResponse.json(
       { error: "Failed to generate workflows" },
       { status: 500 }

@@ -224,7 +224,8 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ questions });
   } catch (error) {
-    console.error("Questions API error:", error);
+    const msg = error instanceof Error ? error.message : String(error);
+    console.error("[questions] API error:", msg, error);
     return NextResponse.json(
       { error: "Failed to generate questions" },
       { status: 500 }

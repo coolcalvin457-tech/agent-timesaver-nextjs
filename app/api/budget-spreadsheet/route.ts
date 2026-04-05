@@ -734,7 +734,8 @@ export async function POST(req: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("Budget Spreadsheet API error:", error);
+    const msg = error instanceof Error ? error.message : String(error);
+    console.error("[budget-spreadsheet] API error:", msg, error);
     return NextResponse.json(
       { error: "Failed to generate budget spreadsheet. Please try again." },
       { status: 500 }

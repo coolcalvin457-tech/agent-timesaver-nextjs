@@ -258,7 +258,8 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(result);
   } catch (error) {
-    console.error("Prompt Kit API error:", error);
+    const msg = error instanceof Error ? error.message : String(error);
+    console.error("[prompt-kit] API error:", msg, error);
     return NextResponse.json(
       { error: "Failed to generate prompt kit" },
       { status: 500 }

@@ -559,7 +559,7 @@ The "priority" field is an integer. Lower numbers = higher priority. Be precise.
         let selectedPages: Array<{ url: string; priority: number; reason: string }> = [];
 
         try {
-          const selectionRes = await anthropic.messages.create({
+          const selectionRes = await (anthropic.messages.create as Function)({
             model: process.env.CLAUDE_MODEL || "claude-sonnet-4-6",
             max_tokens: 2048,
             system: pageSelectionSystemPrompt,

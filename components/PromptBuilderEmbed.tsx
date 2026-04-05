@@ -11,7 +11,7 @@ export default function PromptBuilderEmbed() {
   const handleSubmit = () => {
     if (!jobTitle.trim()) return;
     track("prompt_builder_embed_start", { jobTitle });
-    router.push(`/prompt-builder?jobTitle=${encodeURIComponent(jobTitle.trim())}`);
+    router.push(`/prompts?jobTitle=${encodeURIComponent(jobTitle.trim())}`);
   };
 
   return (
@@ -20,7 +20,7 @@ export default function PromptBuilderEmbed() {
         <div className="browser-dot browser-dot-red" />
         <div className="browser-dot browser-dot-yellow" />
         <div className="browser-dot browser-dot-green" />
-        <div className="browser-url">promptaiagents.com/prompt-builder</div>
+        <div className="browser-url">promptaiagents.com/prompts</div>
       </div>
       <div style={{ padding: "32px 28px 28px" }}>
         <span style={{
@@ -32,7 +32,7 @@ export default function PromptBuilderEmbed() {
           display: "block",
           marginBottom: "20px",
         }}>
-          AGENT: Prompt Builder
+          AGENT: Prompts
         </span>
         <p style={{
           fontFamily: "var(--font-display)",

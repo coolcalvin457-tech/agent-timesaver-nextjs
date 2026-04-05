@@ -1,24 +1,24 @@
-import OnboardingKitBuilderTool from "@/components/OnboardingKitBuilderTool";
-import KitPreviewCards from "@/components/KitPreviewCards";
+import WorkflowBuilderTool from "@/components/WorkflowBuilderTool";
+import WorkflowSectionCards from "@/components/WorkflowSectionCards";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AGENT: Onboarding Kit — Prompt AI Agents",
+  title: "AGENT: Workflow — Prompt AI Agents",
   description:
-    "A position-specific onboarding kit for every new hire. Welcome letter, first-week schedule, key contacts, 30/60/90 plan, and priority checklist — as a ready-to-use .docx file.",
+    "Describe a task you want to do better with AI. Get a step-by-step workflow doc: what tools to use, in what order, with the actual prompts to run each step.",
   openGraph: {
-    title: "AGENT: Onboarding Kit — Prompt AI Agents",
+    title: "AGENT: Workflow — Prompt AI Agents",
     description:
-      "A position-specific onboarding kit for every new hire. Delivered as a ready-to-use .docx file.",
-    url: "https://promptaiagents.com/onboarding-kit-builder",
+      "Describe a task. Get the exact playbook to get it done with AI. Step-by-step workflow delivered as a ready-to-use .docx file.",
+    url: "https://promptaiagents.com/workflow",
     siteName: "Prompt AI Agents",
     type: "website",
   },
 };
 
-export default function OnboardingKitBuilderPage({
+export default function WorkflowBuilderPage({
   searchParams,
 }: {
   searchParams: { payment?: string; session_id?: string };
@@ -32,7 +32,7 @@ export default function OnboardingKitBuilderPage({
           minHeight: "100vh",
         }}
       >
-        {/* ── Hero section ─────────────────────────────────────── */}
+        {/* ── Hero section ──────────────────────────────────── */}
         <section
           className="section"
           style={{ paddingTop: "140px", paddingBottom: "20px" }}
@@ -47,35 +47,33 @@ export default function OnboardingKitBuilderPage({
                 color: "#ffffff",
               }}
             >
-              Position-Specific Onboarding Kit.<br />Use for Every New Hire.
+              You Have a Task.<br />We&apos;ll Build the Workflow.
             </h1>
 
             <p
               style={{
                 fontSize: "0.9375rem",
-                color: "rgba(255,255,255,0.52)",
+                color: "rgba(255,255,255,0.45)",
                 margin: "0 0 32px",
                 lineHeight: 1.6,
-                fontWeight: 400,
-                letterSpacing: "0.02em",
               }}
             >
-              <span style={{ fontWeight: 700, color: "var(--cta)", fontSize: "1.0625rem" }}>$99</span>
+              <span style={{ fontWeight: 800, color: "var(--cta)", fontSize: "1.125rem" }}>$49</span>
               {" · "}
-              HR Agents Package. Annual subscription.
+              <span style={{ fontWeight: 400, color: "rgba(255,255,255,0.65)" }}>Annual subscription.</span>
             </p>
 
             <a
-              href="#build-kit"
+              href="#build-workflow"
               className="btn btn-dark-cta btn-zoom"
-              style={{ padding: "11px 36px", fontSize: "0.9rem", fontWeight: 500, letterSpacing: "0.04em" }}
+              style={{ padding: "10px 28px", fontSize: "0.9rem", fontWeight: 500, letterSpacing: "0.04em" }}
             >
-              Build Kit
+              Build Workflow
             </a>
           </div>
         </section>
 
-        {/* ── What's in the kit ─────────────────────────────────── */}
+        {/* ── What's Included section ────────────────────────── */}
         <section
           className="section dark-kit-section"
           style={{ paddingTop: "32px", paddingBottom: "40px" }}
@@ -91,21 +89,21 @@ export default function OnboardingKitBuilderPage({
                 marginBottom: "20px",
                 textAlign: "left",
               }}>
-                What's included
+                What&apos;s Included
               </p>
-              <KitPreviewCards />
+              <WorkflowSectionCards />
             </div>
           </div>
         </section>
 
-        {/* ── Tool section ─────────────────────────────────────── */}
-        <section id="build-kit" className="section" style={{ paddingTop: "64px", paddingBottom: "96px", scrollMarginTop: "80px" }}>
+        {/* ── Tool section ───────────────────────────────────── */}
+        <section id="build-workflow" className="section" style={{ paddingTop: "64px", paddingBottom: "96px", scrollMarginTop: "80px" }}>
           <div className="container">
             <div style={{ maxWidth: "760px", margin: "0 auto" }}>
               <div className="pb-frame hero-tool-dark" style={{ maxWidth: "760px" }}>
-                <span className="pb-frame-label">AGENT: Onboarding Kit</span>
+                <span className="pb-frame-label">AGENT: Workflow</span>
                 <div className="pb-frame-body">
-                  <OnboardingKitBuilderTool
+                  <WorkflowBuilderTool
                     initialPaymentStatus={searchParams.payment}
                     initialSessionId={searchParams.session_id}
                   />

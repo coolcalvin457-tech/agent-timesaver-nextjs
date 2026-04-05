@@ -3,9 +3,17 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
 export const metadata = {
-  title: "AGENT: Prompt Builder — Prompt AI Agents",
+  title: "AGENT: Prompts — Prompt AI Agents",
   description:
     "Get 12 ready-to-copy AI prompts personalized to your exact job. Built for non-technical professionals who want real results from AI.",
+  openGraph: {
+    title: "AGENT: Prompts — Prompt AI Agents",
+    description:
+      "Get 12 ready-to-copy AI prompts personalized to your exact job. Built for non-technical professionals who want real results from AI.",
+    url: "https://promptaiagents.com/prompts",
+    siteName: "Prompt AI Agents",
+    type: "website",
+  },
 };
 
 export default function PromptBuilderPage({
@@ -46,7 +54,7 @@ export default function PromptBuilderPage({
           <div className="container">
             <div style={{ maxWidth: "760px", margin: "0 auto" }}>
               <div className="pb-frame hero-tool-dark">
-                <span className="pb-frame-label">AGENT: Prompt Builder</span>
+                <span className="pb-frame-label">AGENT: Prompts</span>
                 <div className="pb-frame-body">
                   <PromptBuilderTool initialJobTitle={searchParams.jobTitle} />
                 </div>

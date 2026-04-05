@@ -804,15 +804,15 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
             </p>
           </div>
 
-          {/* Cross-sell — AGENT: Workflow Builder */}
+          {/* Cross-sell — AGENT: Workflow */}
           <CrossSellBlock
-            productName="AGENT: Workflow Builder"
+            productName="AGENT: Workflow"
             descriptionLines={[
               "Turn your prompts into repeatable AI workflows.",
               "Built for real jobs. Not demos.",
             ]}
             buttonLabel="Try Now"
-            href="/workflow-builder"
+            href="/workflow"
           />
 
         </div>

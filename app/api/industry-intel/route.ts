@@ -127,7 +127,7 @@ Return this exact JSON structure:
 }`;
 }
 
-// ─── User Prompt Builder ──────────────────────────────────────────────────────
+// ─── User Prompt ──────────────────────────────────────────────────────────
 
 function buildUserPrompt(inputs: IndustryIntelInputs): string {
   const {
@@ -308,7 +308,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(intelData);
   } catch (error) {
-    console.error("Industry Intel API error:", error);
+    console.error("AGENT: Industry API error:", error);
     return NextResponse.json(
       { error: "Something went wrong building your intel. Please try again." },
       { status: 500 }

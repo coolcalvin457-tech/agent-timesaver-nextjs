@@ -3,9 +3,17 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
 export const metadata = {
-  title: "AGENT: Budget Spreadsheets — Prompt AI Agents",
+  title: "AGENT: Spreadsheets — Prompt AI Agents",
   description:
     "Describe your budget and get a formatted, formula-filled .xlsx file in seconds.",
+  openGraph: {
+    title: "AGENT: Spreadsheets — Prompt AI Agents",
+    description:
+      "Describe your budget and get a formatted, formula-filled .xlsx file in seconds.",
+    url: "https://promptaiagents.com/spreadsheets",
+    siteName: "Prompt AI Agents",
+    type: "website",
+  },
 };
 
 export default function BudgetSpreadsheetsPage() {
@@ -47,7 +55,7 @@ export default function BudgetSpreadsheetsPage() {
           <div className="container">
             <div style={{ maxWidth: "760px", margin: "0 auto" }}>
               <div className="pb-frame hero-tool-dark">
-                <span className="pb-frame-label">AGENT: Budget Spreadsheets</span>
+                <span className="pb-frame-label">AGENT: Spreadsheets</span>
                 <div className="pb-frame-body">
                   <BudgetSpreadsheetTool />
                 </div>

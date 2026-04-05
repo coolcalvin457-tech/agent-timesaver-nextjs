@@ -1934,7 +1934,7 @@ input, textarea {
 }
 
 /* ── Prompt Builder branded frame ────────────────────────── */
-/* Replaces browser-chrome on the /prompt-builder page.       */
+/* Replaces browser-chrome on the /prompts page.              */
 /* Label floats absolutely in the top gap; body is uniform.   */
 
 .pb-frame {

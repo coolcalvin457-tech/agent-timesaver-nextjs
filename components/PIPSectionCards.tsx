@@ -50,7 +50,7 @@ export default function PIPSectionCards() {
           </div>
         ))}
 
-        {/* Featured: Example row — mirrors Onboarding Kit "Full Kit" row */}
+        {/* Featured: Example row — mirrors AGENT: Onboarding "Full Kit" row */}
         <div
           className="kit-list-row kit-list-row-featured"
           onClick={openPreview}

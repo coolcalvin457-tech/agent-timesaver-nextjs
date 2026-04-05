@@ -697,7 +697,7 @@ export default function CompetitiveDossierTool({
             <p style={{ textAlign: "center", marginTop: "16px", fontSize: "0.875rem", color: "rgba(255,255,255,0.45)" }}>
               Already have an account?{" "}
               <a
-                href={`/login?redirect=/competitive-dossier`}
+                href={`/login?redirect=/company`}
                 onClick={() => saveToStorage({ companyUrl, companyName, relationshipType, researchFocus, priorityFocusAreas, existingKnowledge, jobTitle, userIndustry, userCompanyDescription })}
                 style={{ color: "var(--cta, #1E7AB8)", textDecoration: "underline" }}
               >
@@ -883,10 +883,10 @@ export default function CompetitiveDossierTool({
             Download Dossier
           </button>
           <CrossSellBlock
-            productName="AGENT: Workflow Builder"
+            productName="AGENT: Workflow"
             descriptionLines={["Turn any recurring task into an automated workflow.", "Built for real jobs. Not demos."]}
-            buttonLabel="Explore Workflow Builder"
-            href="/workflow-builder"
+            buttonLabel="Explore Workflow"
+            href="/workflow"
           />
         </div>
       )}

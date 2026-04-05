@@ -1188,7 +1188,7 @@ export default function PIPBuilderTool({
 
               {/* Description */}
               <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.6, margin: "0 0 16px" }}>
-                Includes Onboarding Kit, PIP Builder, and every HR agent added to the package. One subscription, all agents.
+                Includes AGENT: Onboarding, AGENT: PIP, and every HR agent added to the package. One subscription, all agents.
               </p>
 
               {/* Email input */}
@@ -1242,7 +1242,7 @@ export default function PIPBuilderTool({
                     onClick={() => {
                       saveToStorage(getCurrentFormData());
                       sessionStorage.setItem("pip_return_to_paywall", "true");
-                      window.location.href = "/login?redirect=/pip-builder";
+                      window.location.href = "/login?redirect=/pip";
                     }}
                     style={{
                       background: "none", border: "none", color: "#60B4F0",
@@ -1395,13 +1395,13 @@ export default function PIPBuilderTool({
         </div>
 
         <CrossSellBlock
-          productName="AGENT: Onboarding Kit"
+          productName="AGENT: Onboarding"
           descriptionLines={[
             "Day 1 Schedule · Welcome Email · IT Checklist · Manager Guide",
             "Included in your HR Agents Package.",
           ]}
-          buttonLabel="Try Onboarding Kit"
-          href="/onboarding-kit-builder"
+          buttonLabel="Try Onboarding"
+          href="/onboarding"
         />
       </div>
     );

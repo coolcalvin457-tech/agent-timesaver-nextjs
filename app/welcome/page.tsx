@@ -64,7 +64,7 @@ export default function WelcomePage() {
           {[
             { num: 1, label: "Community — coming soon", href: null },
             { num: 2, label: "Browse the hub and start with our beginner AI guide", href: GUIDES_URL },
-            { num: 3, label: "Try another AGENT tool when you're ready", href: "/" },
+            { num: 3, label: "Try another agent when you're ready", href: "/" },
           ].map((step) =>
             step.href ? (
               <a

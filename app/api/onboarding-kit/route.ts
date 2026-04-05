@@ -738,14 +738,14 @@ async function buildDocxFile(
   children.push(divider());
   children.push(
     body(
-      `This kit was built for ${hireName} (${hireTitle}) using AGENT: Onboarding Kit Builder at promptaiagents.com. Open it, make any edits you want, and share it before Day 1.`,
+      `This kit was built for ${hireName} (${hireTitle}) using AGENT: Onboarding at promptaiagents.com. Open it, make any edits you want, and share it before Day 1.`,
       { color: "AAAAAA", size: 18, italic: true }
     )
   );
 
   const doc = new Document({
     creator: "promptaiagents.com",
-    title: `Onboarding Kit: ${hireName}`,
+    title: `AGENT: Onboarding: ${hireName}`,
     description: `Complete onboarding kit for ${hireName}, ${hireTitle}`,
     styles: {
       default: {
@@ -864,7 +864,7 @@ export async function POST(req: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("Onboarding Kit API error:", error);
+    console.error("AGENT: Onboarding API error:", error);
     return NextResponse.json(
       { error: "Something went wrong while building the kit. Please try again." },
       { status: 500 }

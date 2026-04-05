@@ -46,7 +46,7 @@ interface BaseEmailOptions {
   preHeaderText: string;
   /**
    * Monospace eyebrow label shown at the top of the email and in the footer.
-   * e.g. "AGENT: Prompt Builder"
+   * e.g. "AGENT: Prompts"
    */
   eyebrowLabel: string;
   /**

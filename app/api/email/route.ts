@@ -101,13 +101,13 @@ async function sendResultsEmail(
         YOUR NEXT STEP
       </p>
       <h3 style="font-family:Georgia,serif;font-size:24px;font-weight:400;color:#161618;margin:0 0 12px;line-height:1.2;">
-        AGENT: Prompt Builder
+        AGENT: Prompts
       </h3>
       <p style="font-size:14px;color:#555553;line-height:1.6;margin:0 0 28px;">
         12 Personalized Prompts · AI Profile · AI Workspace Setup
       </p>
       <div style="text-align:center;">
-        <a href="https://promptaiagents.com/prompt-builder" style="display:inline-block;background:#1e7ab8;color:#ffffff;font-size:15px;font-weight:600;padding:14px 28px;border-radius:10px;text-decoration:none;">
+        <a href="https://promptaiagents.com/prompts" style="display:inline-block;background:#1e7ab8;color:#ffffff;font-size:15px;font-weight:600;padding:14px 28px;border-radius:10px;text-decoration:none;">
           Try Now
         </a>
       </div>

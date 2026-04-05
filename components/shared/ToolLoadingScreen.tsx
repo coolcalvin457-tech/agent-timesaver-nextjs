@@ -10,14 +10,14 @@ interface ToolLoadingScreenProps {
   /** Timing line shown below the heading. e.g. "About 1 minute." */
   timeEstimate: string;
 
-  // ── Checklist variant (paid tools + Prompt Builder) ──────────────────────
+  // ── Checklist variant (paid tools + AGENT: Prompts) ──────────────────────
   /** Step labels for the animated checklist.
    *  Omit (or pass []) to render the simple spinner variant instead. */
   steps?: string[];
   /** Currently active step index (0-based). All prior indices are shown as done. */
   activeStep?: number;
 
-  // ── Spinner variant (free tools: Budget Spreadsheets, Timesaver) ──────────
+  // ── Spinner variant (free tools: AGENT: Spreadsheets, Timesaver) ──────────
   /** Optional secondary line shown below the heading and before timeEstimate.
    *  Spinner variant only. e.g. "Calculating hours saved..." or a rotating status message. */
   subLine?: string;

@@ -589,15 +589,15 @@ export default function IndustryIntelTool() {
             Get Free Intel
           </button>
 
-          {/* Cross-sell — Workflow Builder */}
+          {/* Cross-sell — Workflow */}
           <CrossSellBlock
-            productName="AGENT: Workflow Builder"
+            productName="AGENT: Workflow"
             descriptionLines={[
               "Get your industry intel delivered every Monday morning.",
               "Built for real jobs. Not demos.",
             ]}
-            buttonLabel="Try Workflow Builder"
-            href="/workflow-builder"
+            buttonLabel="Try Workflow"
+            href="/workflow"
           />
 
         </div>

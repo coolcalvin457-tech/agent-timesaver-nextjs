@@ -8,9 +8,9 @@ export const metadata: Metadata = {
   description:
     "Enter your job title. Answer a few questions. Walk away with 5 AI workflows built for your specific role and a real estimate of the time you could get back. Free.",
   openGraph: {
-    title: "AGENT: Timesaver — AI workflows built for your exact job",
+    title: "Prompt AI Agents — AI agents built for your exact job",
     description:
-      "Find out how many hours you could save every week with AI. Free personalized workflows for any role.",
+      "Free and paid AI agents for professionals. Answer a few questions, get personalized workflows, workflows, and more.",
     url: "https://promptaiagents.com",
     siteName: "Prompt AI Agents",
     type: "website",

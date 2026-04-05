@@ -3,7 +3,7 @@
 import React from "react";
 
 interface CrossSellBlockProps {
-  /** Product name line. e.g. "AGENT: Workflow Builder" */
+  /** Product name line. e.g. "AGENT: Workflow" */
   productName: string;
   /** Two description lines shown below the product name */
   descriptionLines: [string, string];

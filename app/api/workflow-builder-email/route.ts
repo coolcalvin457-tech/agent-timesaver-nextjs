@@ -92,7 +92,7 @@ async function sendWorkflowEmail(
     </p>
 
     <!-- CTA -->
-    <a href="https://promptaiagents.com/workflow-builder"
+    <a href="https://promptaiagents.com/workflow"
        style="display:inline-block; background:#1e7ab8; color:#ffffff; font-size:15px; font-weight:600; text-decoration:none; padding:14px 28px; border-radius:10px;">
       Build another workflow
     </a>
@@ -103,7 +103,7 @@ async function sendWorkflowEmail(
         YOUR NEXT STEP
       </p>
       <h3 style="font-family:Georgia,serif; font-size:24px; font-weight:400; color:#161618; margin:0 0 8px; line-height:1.2;">
-        AGENT: Prompt Builder
+        AGENT: Prompts
       </h3>
       <p style="font-size:14px; color:#555553; line-height:1.6; margin:0 0 4px;">
         12 prompts built for your exact job title.
@@ -112,7 +112,7 @@ async function sendWorkflowEmail(
         Free. Takes 3 minutes. Built for real jobs. Not demos.
       </p>
       <div style="text-align:center;">
-        <a href="https://promptaiagents.com/prompt-builder"
+        <a href="https://promptaiagents.com/prompts"
            style="display:inline-block; background:#1e7ab8; color:#ffffff; font-size:15px; font-weight:600; padding:14px 28px; border-radius:10px; text-decoration:none;">
           Get Free Prompts
         </a>
@@ -122,7 +122,7 @@ async function sendWorkflowEmail(
 
   const html = buildBaseEmailHTML({
     preHeaderText: `Your workflow for ${cleanTitle} is ready: ${stepLabel} attached`,
-    eyebrowLabel: "AGENT: Workflow Builder",
+    eyebrowLabel: "AGENT: Workflow",
     heroContent,
   });
 
@@ -172,11 +172,11 @@ export async function POST(req: NextRequest) {
       sendWorkflowEmail(email, filename, taskTitle, stepCount, frequency, fileData),
     ]);
 
-    logToolUsage(email, "workflow-builder", ip);
+    logToolUsage(email, "workflow", ip);
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Workflow Builder Email API error:", error);
+    console.error("AGENT: Workflow Email API error:", error);
     return NextResponse.json({ error: "Failed to send email" }, { status: 500 });
   }
 }

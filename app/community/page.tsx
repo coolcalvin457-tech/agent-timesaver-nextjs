@@ -61,8 +61,8 @@ export default function CommunityPage() {
 
           {/* CTA */}
           <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-            <a href="/#timesaver" className="btn btn-primary btn-full">
-              Try AGENT: Timesaver
+            <a href="/" className="btn btn-primary btn-full">
+              Explore Agents
             </a>
             <a href="/" className="btn btn-outline btn-full">
               Back to homepage

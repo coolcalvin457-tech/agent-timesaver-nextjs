@@ -4,7 +4,7 @@ import { logToolUsage } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
-// ─── Competitive Dossier email delivery ───────────────────────────────────────
+// ─── AGENT: Company email delivery ───────────────────────────────────────
 // Receives the .docx as base64 and sends it to the user's inbox via Resend.
 // Also fires simultaneously with the browser download on the frontend.
 
@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
 
     const emailHtml = buildBaseEmailHTML({
       preHeaderText: `Your competitive intelligence dossier on ${companyName} is ready`,
-      eyebrowLabel: "AGENT: Competitive Dossier",
+      eyebrowLabel: "AGENT: Company",
       heroContent,
     });
 
@@ -83,7 +83,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Fire-and-forget: log tool usage + add to audience
-    void logToolUsage(email, "competitive-dossier", ipAddress, userId ?? null);
+    void logToolUsage(email, "company", ipAddress, userId ?? null);
     void addContactToAudience(email);
 
     return NextResponse.json({ success: true });

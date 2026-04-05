@@ -54,8 +54,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── Section 3: AGENT: Prompt Builder (moved up from S62) ───── */}
-        <section className="section" id="prompt-builder" style={{ paddingTop: "80px", paddingBottom: "64px" }}>
+        {/* ── Section 3: AGENT: Prompts (moved up from S62) ───── */}
+        <section className="section" id="prompts" style={{ paddingTop: "80px", paddingBottom: "64px" }}>
           <div className="container">
 
             {/* Centered header */}
@@ -70,7 +70,7 @@ export default function Home() {
               </h2>
             </div>
 
-            {/* Full Q1 screen embedded — on Continue, navigates to /prompt-builder at Q2 */}
+            {/* Full Q1 screen embedded. On Continue, navigates to /prompts at Q2 */}
             <PromptBuilderHomepageWrap />
 
           </div>

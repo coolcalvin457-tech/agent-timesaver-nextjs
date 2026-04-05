@@ -3,9 +3,17 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
 export const metadata = {
-  title: "AGENT: Industry Intel — Prompt AI Agents",
+  title: "AGENT: Industry — Prompt AI Agents",
   description:
     "Answer a few questions about your role and industry. Get one sharp insight you can act on this week.",
+  openGraph: {
+    title: "AGENT: Industry — Prompt AI Agents",
+    description:
+      "Answer a few questions about your role and industry. Get one sharp insight you can act on this week.",
+    url: "https://promptaiagents.com/industry",
+    siteName: "Prompt AI Agents",
+    type: "website",
+  },
 };
 
 export default function IndustryIntelPage() {
@@ -30,7 +38,7 @@ export default function IndustryIntelPage() {
               }}
             >
               <span style={{ display: "block" }}>Every Industry is Evolving.</span>
-              <span style={{ display: "block" }}>Read Industry Intel.</span>
+              <span style={{ display: "block" }}>Read AGENT: Industry.</span>
             </h1>
           </div>
         </section>
@@ -40,7 +48,7 @@ export default function IndustryIntelPage() {
           <div className="container">
             <div style={{ maxWidth: "760px", margin: "0 auto" }}>
               <div className="pb-frame hero-tool-dark">
-                <span className="pb-frame-label">AGENT: Industry Intel</span>
+                <span className="pb-frame-label">AGENT: Industry</span>
                 <div className="pb-frame-body">
                   <IndustryIntelTool />
                 </div>

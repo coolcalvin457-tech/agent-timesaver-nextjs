@@ -116,10 +116,10 @@ export async function markMagicLinkUsed(id: string): Promise<void> {
   `;
 }
 
-// ─── Competitive Dossier run tracking ───────────────────────────────────────
+// ─── AGENT: Company run tracking ───────────────────────────────────────
 
 /**
- * Count how many Competitive Dossier runs a user has made in the current
+ * Count how many AGENT: Company runs a user has made in the current
  * calendar month (UTC). Used to enforce the 15-run/month limit.
  */
 export async function getMonthlyDossierRunCount(userId: string): Promise<number> {
@@ -133,7 +133,7 @@ export async function getMonthlyDossierRunCount(userId: string): Promise<number>
 }
 
 /**
- * Log a completed Competitive Dossier run.
+ * Log a completed AGENT: Company run.
  * Call after successful generation (before email delivery).
  * Never throws — fire-and-forget safe.
  */
@@ -165,8 +165,8 @@ export async function logDossierRun(
  * Logging happens at email delivery (the point where email + IP are both known).
  *
  * @param email      - Gate email submitted by user. Null if unavailable.
- * @param toolName   - Slug identifier: 'timesaver' | 'prompt-builder' | 'budget-spreadsheets'
- *                     | 'onboarding-kit' | 'pip-builder' | 'workflow-builder' | 'industry-intel'
+ * @param toolName   - Slug identifier: 'timesaver' | 'prompts' | 'spreadsheets'
+ *                     | 'onboarding' | 'pip' | 'workflow' | 'industry' | 'company'
  * @param ipAddress  - First hop from x-forwarded-for header. Null if unavailable.
  * @param userId     - UUID from users table if the user is logged in. Null otherwise.
  */

@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-// ─── Verify Competitive Dossier Subscription ─────────────────────────────────
+// ─── Verify AGENT: Company Subscription ─────────────────────────────────────
 // Called from the paywall screen when a returning user claims they already
-// have a Competitive Dossier subscription.
-// Looks up the email in Stripe, checks for an active CD subscription.
+// have an AGENT: Company subscription.
+// Looks up the email in Stripe, checks for an active subscription.
 
 export async function POST(req: NextRequest) {
   try {

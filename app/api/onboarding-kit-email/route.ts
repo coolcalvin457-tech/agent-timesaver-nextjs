@@ -71,7 +71,7 @@ async function sendOnboardingKitEmail(
     </p>
 
     <!-- CTA -->
-    <a href="https://promptaiagents.com/onboarding-kit-builder"
+    <a href="https://promptaiagents.com/onboarding"
        style="display:inline-block; background:#1e7ab8; color:#ffffff; font-size:15px; font-weight:600; text-decoration:none; padding:14px 28px; border-radius:10px;">
       Build another kit
     </a>
@@ -82,7 +82,7 @@ async function sendOnboardingKitEmail(
         YOUR NEXT STEP
       </p>
       <h3 style="font-family:Georgia,serif;font-size:24px;font-weight:400;color:#161618;margin:0 0 12px;line-height:1.2;">
-        AGENT: PIP Builder
+        AGENT: PIP
       </h3>
       <p style="font-size:14px;color:#555553;line-height:1.6;margin:0 0 4px;">
         Improvement Plan · Timeline · Manager Talking Points
@@ -91,7 +91,7 @@ async function sendOnboardingKitEmail(
         Included in your HR Agents Package.
       </p>
       <div style="text-align:center;">
-        <a href="https://promptaiagents.com/pip-builder" style="display:inline-block;background:#1e7ab8;color:#ffffff;font-size:15px;font-weight:600;padding:14px 28px;border-radius:10px;text-decoration:none;">
+        <a href="https://promptaiagents.com/pip" style="display:inline-block;background:#1e7ab8;color:#ffffff;font-size:15px;font-weight:600;padding:14px 28px;border-radius:10px;text-decoration:none;">
           Try Now
         </a>
       </div>
@@ -100,7 +100,7 @@ async function sendOnboardingKitEmail(
 
   const html = buildBaseEmailHTML({
     preHeaderText: `${hireName}'s onboarding kit is attached: ${hireTitle}`,
-    eyebrowLabel: "AGENT: Onboarding Kit",
+    eyebrowLabel: "AGENT: Onboarding",
     heroContent,
   });
 
@@ -150,11 +150,11 @@ export async function POST(req: NextRequest) {
       sendOnboardingKitEmail(email, filename, hireName, hireTitle, fileData),
     ]);
 
-    logToolUsage(email, "onboarding-kit", ip);
+    logToolUsage(email, "onboarding", ip);
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Onboarding Kit Email API error:", error);
+    console.error("AGENT: Onboarding Email API error:", error);
     return NextResponse.json({ error: "Failed to send email" }, { status: 500 });
   }
 }

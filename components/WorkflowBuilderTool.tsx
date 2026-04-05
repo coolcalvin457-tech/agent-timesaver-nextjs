@@ -553,7 +553,7 @@ export default function WorkflowBuilderTool({
     } catch {
       // ignore
     }
-    window.location.href = "/login?redirect=/workflow-builder";
+    window.location.href = "/login?redirect=/workflow";
   }
 
   // ─── Reset ────────────────────────────────────────────────
@@ -1200,15 +1200,15 @@ export default function WorkflowBuilderTool({
           </button>
         </div>
 
-        {/* Cross-sell — AGENT: Industry Intel */}
+        {/* Cross-sell — AGENT: Industry */}
         <CrossSellBlock
-          productName="AGENT: Industry Intel"
+          productName="AGENT: Industry"
           descriptionLines={[
             "One sharp insight about your industry, delivered to your inbox.",
             "Built for real jobs. Not demos.",
           ]}
-          buttonLabel="Read Industry Intel"
-          href="/industry-intel"
+          buttonLabel="Read Industry"
+          href="/industry"
         />
         </>
       )}

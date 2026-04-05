@@ -131,7 +131,7 @@ async function sendPromptKitEmail(
       When AI gives you something worth keeping, ask it to save as an .md file. AI will now remember your info between chats.
     </p>
 
-    <!-- Cross-sell: AGENT: Workflow Builder -->
+    <!-- Cross-sell: AGENT: Workflow -->
     <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:8px; border-top:1px solid #e4e4e2; padding-top:32px;">
       <tr>
         <td>
@@ -139,7 +139,7 @@ async function sendPromptKitEmail(
             YOUR NEXT STEP
           </p>
           <p style="margin:0 0 16px 0; font-family:Georgia,'Times New Roman',serif; font-size:24px; font-weight:400; color:#161618; line-height:1.2; letter-spacing:-0.02em;">
-            AGENT: Workflow Builder
+            AGENT: Workflow
           </p>
           <p style="margin:0 0 24px 0; font-size:14px; color:#555553; line-height:1.6;">
             Turn your prompts into repeatable AI workflows.
@@ -155,7 +155,7 @@ async function sendPromptKitEmail(
 
   const html = buildBaseEmailHTML({
     preHeaderText: `${totalPrompts} prompts built for ${jobTitle}. Your AI Profile is inside`,
-    eyebrowLabel: "AGENT: Prompt Builder",
+    eyebrowLabel: "AGENT: Prompts",
     heroContent,
   });
 
@@ -207,11 +207,11 @@ export async function POST(req: NextRequest) {
       sendPromptKitEmail(email, jobTitle, promptKit),
     ]);
 
-    logToolUsage(email, "prompt-builder", ip);
+    logToolUsage(email, "prompts", ip);
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Prompt Kit Email API error:", error);
+    console.error("AGENT: Prompts Email API error:", error);
     return NextResponse.json(
       { error: "Failed to send email" },
       { status: 500 }

@@ -5,8 +5,8 @@ export const dynamic = "force-dynamic";
 
 // ─── Stripe Checkout — HR Tools Package ───────────────────────────────────────
 // Creates a hosted payment session for the HR Tools Package founding access.
-// On success, Stripe redirects to /onboarding-kit-builder?payment=success&session_id=xxx
-// On cancel,  Stripe redirects to /onboarding-kit-builder?payment=cancelled
+// On success, Stripe redirects to /onboarding?payment=success&session_id=xxx
+// On cancel,  Stripe redirects to /onboarding?payment=cancelled
 
 export async function POST(req: NextRequest) {
   try {
@@ -27,12 +27,12 @@ export async function POST(req: NextRequest) {
       "line_items[0][price_data][currency]": "usd",
       "line_items[0][price_data][product_data][name]": "HR Tools Package — Founding Access",
       "line_items[0][price_data][product_data][description]":
-        "Onboarding Kit Builder is live today. PIP Builder, Performance Review Builder, and more ship next — all included at no extra cost.",
+        "AGENT: Onboarding is live today. AGENT: PIP, Performance Review Builder, and more ship next — all included at no extra cost.",
       "line_items[0][price_data][unit_amount]": "4900",
       "line_items[0][quantity]": "1",
       mode: "payment",
-      success_url: `${origin}/onboarding-kit-builder?payment=success&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/onboarding-kit-builder?payment=cancelled`,
+      success_url: `${origin}/onboarding?payment=success&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/onboarding?payment=cancelled`,
     });
 
     const stripeRes = await fetch(

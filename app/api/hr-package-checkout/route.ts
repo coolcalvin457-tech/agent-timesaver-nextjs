@@ -42,9 +42,9 @@ export async function POST(req: NextRequest) {
     const origin = req.headers.get("origin") ?? "https://promptaiagents.com";
 
     // Accept tool-specific redirect paths from the request body.
-    // Defaults to onboarding-kit-builder for backward compatibility.
-    let successPath = "onboarding-kit-builder";
-    let cancelPath = "onboarding-kit-builder";
+    // Defaults to onboarding for backward compatibility.
+    let successPath = "onboarding";
+    let cancelPath = "onboarding";
     try {
       const body = await req.json() as { successPath?: string; cancelPath?: string };
       if (body.successPath) successPath = body.successPath;

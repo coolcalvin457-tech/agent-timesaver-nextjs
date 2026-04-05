@@ -4,14 +4,14 @@ import Footer from "@/components/Footer";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AGENT: Competitive Dossier — Prompt AI Agents",
+  title: "AGENT: Company — Prompt AI Agents",
   description:
     "Enter a company URL. Get back a personalized competitive intelligence dossier you can act on. 8 sections. Built for your role.",
   openGraph: {
-    title: "AGENT: Competitive Dossier — Prompt AI Agents",
+    title: "AGENT: Company — Prompt AI Agents",
     description:
       "Enter a company URL. Get a 10-page competitive intelligence dossier in 2 minutes. Personalized to your role and relationship.",
-    url: "https://promptaiagents.com/competitive-dossier",
+    url: "https://promptaiagents.com/company",
     siteName: "Prompt AI Agents",
     type: "website",
   },
@@ -128,7 +128,7 @@ export default function CompetitiveDossierPage({
           <div className="container">
             <div style={{ maxWidth: "760px", margin: "0 auto" }}>
               <div className="pb-frame hero-tool-dark" style={{ maxWidth: "760px" }}>
-                <span className="pb-frame-label">AGENT: Competitive Dossier</span>
+                <span className="pb-frame-label">AGENT: Company</span>
                 <div className="pb-frame-body">
                   <CompetitiveDossierTool
                     initialPaymentStatus={searchParams.payment}

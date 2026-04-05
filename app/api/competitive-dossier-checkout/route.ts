@@ -3,12 +3,12 @@ import { NextRequest, NextResponse } from "next/server";
 // Force dynamic rendering — this route reads request headers at runtime
 export const dynamic = "force-dynamic";
 
-// ─── Stripe Checkout — Competitive Dossier ────────────────────────────────────
-// Checkout route for the Competitive Dossier subscription ($149/year).
+// ─── Stripe Checkout — AGENT: Company ────────────────────────────────────────
+// Checkout route for the AGENT: Company subscription ($149/year).
 // Uses STRIPE_COMPETITIVE_DOSSIER_PRICE_ID env var.
 //
-// On success: Stripe redirects to {origin}/competitive-dossier?payment=success&session_id=xxx
-// On cancel:  Stripe redirects to {origin}/competitive-dossier?payment=cancelled
+// On success: Stripe redirects to {origin}/company?payment=success&session_id=xxx
+// On cancel:  Stripe redirects to {origin}/company?payment=cancelled
 
 export async function POST(req: NextRequest) {
   try {
@@ -23,11 +23,11 @@ export async function POST(req: NextRequest) {
     const priceId = process.env.STRIPE_COMPETITIVE_DOSSIER_PRICE_ID;
     if (!priceId) {
       console.error(
-        "STRIPE_COMPETITIVE_DOSSIER_PRICE_ID is not set. Create the Competitive Dossier " +
+        "STRIPE_COMPETITIVE_DOSSIER_PRICE_ID is not set. Create the AGENT: Company " +
         "product in Stripe ($149/year subscription) and add the Price ID to Vercel env vars."
       );
       return NextResponse.json(
-        { error: "Competitive Dossier price not configured. Contact support." },
+        { error: "AGENT: Company price not configured. Contact support." },
         { status: 500 }
       );
     }
@@ -39,8 +39,8 @@ export async function POST(req: NextRequest) {
       "line_items[0][price]": priceId,
       "line_items[0][quantity]": "1",
       mode: "subscription",
-      success_url: `${origin}/competitive-dossier?payment=success&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/competitive-dossier?payment=cancelled`,
+      success_url: `${origin}/company?payment=success&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/company?payment=cancelled`,
     });
 
     const stripeRes = await fetch(

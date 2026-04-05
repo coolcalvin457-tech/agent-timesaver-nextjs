@@ -5,8 +5,8 @@ export const dynamic = "force-dynamic";
 
 // ─── Stripe Checkout — creates a hosted payment session ───────────────────────
 // Uses Stripe REST API directly (no npm package needed).
-// On success, Stripe redirects to /prompt-builder?payment=success&session_id=xxx
-// On cancel,  Stripe redirects to /prompt-builder?payment=cancelled
+// On success, Stripe redirects to /prompts?payment=success&session_id=xxx
+// On cancel,  Stripe redirects to /prompts?payment=cancelled
 
 export async function POST(req: NextRequest) {
   try {
@@ -27,13 +27,13 @@ export async function POST(req: NextRequest) {
     const params = new URLSearchParams({
       "payment_method_types[]": "card",
       "line_items[0][price_data][currency]": "usd",
-      "line_items[0][price_data][product_data][name]": "AGENT: Prompt Builder",
+      "line_items[0][price_data][product_data][name]": "AGENT: Prompts",
       "line_items[0][price_data][product_data][description]": `12 personalized AI prompts built for ${jobTitle || "your role"} — plus an AI Profile and Build Your AI System guide.`,
       "line_items[0][price_data][unit_amount]": "499",
       "line_items[0][quantity]": "1",
       mode: "payment",
-      success_url: `${origin}/prompt-builder?payment=success&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/prompt-builder?payment=cancelled`,
+      success_url: `${origin}/prompts?payment=success&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/prompts?payment=cancelled`,
     });
 
     const stripeRes = await fetch(

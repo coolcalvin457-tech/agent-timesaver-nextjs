@@ -19,8 +19,8 @@ export const metadata: Metadata = {
 
 const tools = [
   {
-    slug: "prompt-builder",
-    href: "/prompt-builder",
+    slug: "prompts",
+    href: "/prompts",
     badgeClass: "tool-badge-free",
     label: "Free",
     name: "AGENT: Prompts",
@@ -29,8 +29,8 @@ const tools = [
     cta: "Get Prompts",
   },
   {
-    slug: "workflow-builder",
-    href: "/workflow-builder",
+    slug: "workflow",
+    href: "/workflow",
     badgeClass: "tool-badge-paid",
     label: "$49/yr",
     name: "AGENT: Workflow",
@@ -39,8 +39,8 @@ const tools = [
     cta: "Get Workflows",
   },
   {
-    slug: "industry-intel",
-    href: "/industry-intel",
+    slug: "industry",
+    href: "/industry",
     badgeClass: "tool-badge-free",
     label: "Free",
     name: "AGENT: Industry",
@@ -49,8 +49,8 @@ const tools = [
     cta: "Get Intel",
   },
   {
-    slug: "budget-spreadsheets",
-    href: "/budget-spreadsheets",
+    slug: "spreadsheets",
+    href: "/spreadsheets",
     badgeClass: "tool-badge-free",
     label: "Free",
     name: "AGENT: Spreadsheets",

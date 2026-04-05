@@ -5,14 +5,14 @@ import Footer from "@/components/Footer";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AGENT: PIP Builder — Prompt AI Agents",
+  title: "AGENT: PIP — Prompt AI Agents",
   description:
     "A PIP that holds up. Describe the performance situation, get a structured, defensible Performance Improvement Plan as a ready-to-use .docx file.",
   openGraph: {
-    title: "AGENT: PIP Builder — Prompt AI Agents",
+    title: "AGENT: PIP — Prompt AI Agents",
     description:
       "A PIP that holds up. Structured, defensible, and delivered as a ready-to-use .docx file.",
-    url: "https://promptaiagents.com/pip-builder",
+    url: "https://promptaiagents.com/pip",
     siteName: "Prompt AI Agents",
     type: "website",
   },
@@ -101,7 +101,7 @@ export default function PIPBuilderPage({
           <div className="container">
             <div style={{ maxWidth: "760px", margin: "0 auto" }}>
               <div className="pb-frame hero-tool-dark" style={{ maxWidth: "760px" }}>
-                <span className="pb-frame-label">AGENT: PIP Builder</span>
+                <span className="pb-frame-label">AGENT: PIP</span>
                 <div className="pb-frame-body">
                   <PIPBuilderTool
                     initialPaymentStatus={searchParams.payment}

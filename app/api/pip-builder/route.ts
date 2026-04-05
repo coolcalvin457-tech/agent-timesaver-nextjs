@@ -651,7 +651,7 @@ export async function POST(req: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("PIP Builder API error:", error);
+    console.error("AGENT: PIP API error:", error);
     return NextResponse.json(
       { error: "Something went wrong building the document. Your inputs are saved. Try again and it should work." },
       { status: 500 }

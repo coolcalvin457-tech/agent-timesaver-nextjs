@@ -274,7 +274,7 @@ export default function TimesaverTool() {
       writeInValue: "",
     }));
 
-    // Auto-advance after brief visual feedback (matches Prompt Builder)
+    // Auto-advance after brief visual feedback (matches AGENT: Prompts)
     setTimeout(() => {
       const newAnswers = [...state.answers, choice];
       const nextIndex = state.questionIndex + 1;
@@ -700,13 +700,13 @@ export default function TimesaverTool() {
           </div>
 
           <CrossSellBlock
-            productName="AGENT: Prompt Builder"
+            productName="AGENT: Prompts"
             descriptionLines={[
               "12 Personalized Prompts · AI Profile · AI Workspace Setup",
               "Built for real jobs. Not demos.",
             ]}
             buttonLabel="Try It Free"
-            href="/prompt-builder"
+            href="/prompts"
           />
         </div>
       )}

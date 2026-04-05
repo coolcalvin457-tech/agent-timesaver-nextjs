@@ -714,13 +714,13 @@ export default function BudgetSpreadsheetTool() {
           </button>
 
           <CrossSellBlock
-            productName="AGENT: Prompt Builder"
+            productName="AGENT: Prompts"
             descriptionLines={[
               "12 Personalized Prompts · AI Profile · AI Workspace Setup",
               "Built for real jobs. Not demos.",
             ]}
             buttonLabel="Try It Free"
-            href="/prompt-builder"
+            href="/prompts"
           />
         </div>
       </div>

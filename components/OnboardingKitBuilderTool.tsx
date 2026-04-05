@@ -1270,7 +1270,7 @@ export default function OnboardingKitBuilderTool({
 
               {/* Description */}
               <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.6, margin: "0 0 16px" }}>
-                Includes Onboarding Kit, PIP Builder, and every HR agent added to the package. One subscription, all agents.
+                Includes AGENT: Onboarding, AGENT: PIP, and every HR agent added to the package. One subscription, all agents.
               </p>
 
               {/* Email input */}
@@ -1334,7 +1334,7 @@ export default function OnboardingKitBuilderTool({
                         contacts, teamNotes, feedbackCadence,
                       });
                       sessionStorage.setItem("okb_return_to_paywall", "true");
-                      window.location.href = "/login?redirect=/onboarding-kit-builder";
+                      window.location.href = "/login?redirect=/onboarding";
                     }}
                     style={{
                       background: "none", border: "none", color: "#60B4F0",
@@ -1504,13 +1504,13 @@ export default function OnboardingKitBuilderTool({
         </div>
 
         <CrossSellBlock
-          productName="AGENT: PIP Builder"
+          productName="AGENT: PIP"
           descriptionLines={[
             "Improvement Plan · Timeline · Manager Talking Points",
             "Included in your HR Agents Package.",
           ]}
-          buttonLabel="Try PIP Builder"
-          href="/pip-builder"
+          buttonLabel="Try PIP"
+          href="/pip"
         />
       </div>
     );

@@ -107,7 +107,7 @@ async function buildDocxFile(
     new Paragraph({
       children: [
         new TextRun({
-          text: `AGENT: Industry Intel  ·  ${industry}  ·  ${jobTitle}`,
+          text: `AGENT: Industry  ·  ${industry}  ·  ${jobTitle}`,
           font: "Calibri",
           size: 18,
           bold: true,
@@ -183,7 +183,7 @@ async function buildDocxFile(
     new Paragraph({
       children: [
         new TextRun({
-          text: `Built with AGENT: Industry Intel at promptaiagents.com. Built for real jobs. Not demos.`,
+          text: `Built with AGENT: Industry at promptaiagents.com. Built for real jobs. Not demos.`,
           font: "Calibri",
           size: 18,
           color: "AAAAAA",
@@ -196,7 +196,7 @@ async function buildDocxFile(
 
   const doc = new Document({
     creator: "promptaiagents.com",
-    title: `Industry Intel: ${industry} · ${jobTitle}`,
+    title: `AGENT: Industry: ${industry} · ${jobTitle}`,
     description: `Industry intel for ${jobTitle} in ${industry}. Focus: ${focusArea}.`,
     styles: {
       default: {
@@ -287,13 +287,13 @@ function buildIntelEmailHTML(
     <!-- Cross-sell -->
     <p style="margin:0 0 6px 0; font-size:11px; font-weight:700; letter-spacing:0.08em; color:#1e7ab8; text-transform:uppercase; font-family:monospace;">Your next step</p>
     <p style="margin:0 0 8px 0; font-size:16px; font-weight:600; color:#161618; line-height:1.3;">Want this every week?</p>
-    <p style="margin:0 0 16px 0; font-size:14px; color:#555555; line-height:1.6;">Workflow Builder makes it automatic.</p>
-    <a href="https://promptaiagents.com/workflow-builder" style="display:inline-block; background:#161618; color:#ffffff; text-decoration:none; font-size:14px; font-weight:600; padding:12px 24px; border-radius:8px; letter-spacing:0.01em;">Try Workflow Builder</a>
+    <p style="margin:0 0 16px 0; font-size:14px; color:#555555; line-height:1.6;">AGENT: Workflow makes it automatic.</p>
+    <a href="https://promptaiagents.com/workflow" style="display:inline-block; background:#161618; color:#ffffff; text-decoration:none; font-size:14px; font-weight:600; padding:12px 24px; border-radius:8px; letter-spacing:0.01em;">Try AGENT: Workflow</a>
   `;
 
   return buildBaseEmailHTML({
     preHeaderText: "One insight tailored to your role.",
-    eyebrowLabel: "AGENT: Industry Intel",
+    eyebrowLabel: "AGENT: Industry",
     heroContent,
   });
 }
@@ -330,13 +330,13 @@ export async function POST(req: NextRequest) {
         body: JSON.stringify({
           from: getFromAddress(),
           to: [email.trim()],
-          subject: `Your Industry Intel: ${subjectIndustry} · ${jobTitle}`,
+          subject: `Your Industry Report: ${subjectIndustry} · ${jobTitle}`,
           html: emailHTML,
           attachments: [{ filename, content: docxBase64 }],
         }),
       }).catch((err) => console.error("Resend error:", err)),
       addContactToAudience(email.trim()).catch(() => {}),
-      logToolUsage(email.trim(), "industry-intel", ip),
+      logToolUsage(email.trim(), "industry", ip),
     ]);
 
     // Return docx for browser download immediately
@@ -353,7 +353,7 @@ export async function POST(req: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("Industry Intel email route error:", error);
+    console.error("AGENT: Industry email route error:", error);
     return NextResponse.json(
       { error: "Something went wrong delivering your intel. Please try again." },
       { status: 500 }

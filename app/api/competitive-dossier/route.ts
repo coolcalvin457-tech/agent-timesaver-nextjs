@@ -230,8 +230,8 @@ function truncateToTokenBudget(content: string, tokenBudget: number): string {
 // ─── Token budget helper ──────────────────────────────────────────────────────
 
 function getTokenBudget(priority: number): number {
-  if (priority <= 5) return 4000;
-  if (priority <= 15) return 2500;
+  if (priority <= 3) return 3000;
+  if (priority <= 7) return 2000;
   return 1000;
 }
 
@@ -669,8 +669,7 @@ Produce the competitive intelligence dossier as specified. Return only the JSON 
         try {
           const dossierRes = await (anthropic.messages.create as Function)({
             model: process.env.CLAUDE_MODEL || "claude-sonnet-4-6",
-            max_tokens: 16000,
-            thinking: { type: "adaptive" },
+            max_tokens: 12000,
             system: buildDossierSystemPrompt(relationshipType),
             messages: [{ role: "user", content: userPrompt }],
           });
@@ -686,8 +685,7 @@ Produce the competitive intelligence dossier as specified. Return only the JSON 
           try {
             const retryRes = await (anthropic.messages.create as Function)({
               model: process.env.CLAUDE_MODEL || "claude-sonnet-4-6",
-              max_tokens: 16000,
-              thinking: { type: "adaptive" },
+              max_tokens: 12000,
               system: buildDossierSystemPrompt(relationshipType),
               messages: [
                 { role: "user", content: userPrompt },

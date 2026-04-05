@@ -239,7 +239,6 @@ async function generateIndustryIntel(inputs: IndustryIntelInputs): Promise<Indus
   const message = await (client.messages.create as any)({
     model: process.env.CLAUDE_MODEL || "claude-sonnet-4-6",
     max_tokens: 16000,
-    thinking: { type: "adaptive" },
     system: SYSTEM_PROMPT,
     tools: [{ type: "web_search_20250305", name: "web_search", max_uses: 5 }],
     messages: [{ role: "user", content: userPrompt }],

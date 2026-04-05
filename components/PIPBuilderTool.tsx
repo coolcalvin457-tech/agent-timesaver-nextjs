@@ -1344,7 +1344,7 @@ export default function PIPBuilderTool({
       <div ref={toolContainerRef} className="okb-tool">
         <ToolLoadingScreen
           headingText={`Building ${employeeName ? `${employeeName}'s` : "the"} PIP.`}
-          timeEstimate="About 1 minute."
+          timeEstimate="About 2 minutes."
           steps={LOADING_STEPS}
           activeStep={loadingStep}
         />

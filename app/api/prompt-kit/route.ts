@@ -213,7 +213,6 @@ Return ONLY valid JSON in this exact format:
   const message = await (client.messages.create as any)({
     model: process.env.CLAUDE_MODEL || "claude-sonnet-4-6",
     max_tokens: 16000,
-    thinking: { type: "adaptive" },
     messages: [{ role: "user", content: userPrompt }],
     system: systemPrompt,
   });

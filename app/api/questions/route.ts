@@ -174,7 +174,6 @@ Return ONLY valid JSON in this exact format, no explanation:
   const message = await (client.messages.create as any)({
     model: process.env.CLAUDE_MODEL || "claude-sonnet-4-6",
     max_tokens: 4000,
-    thinking: { type: "adaptive" },
     system: systemPrompt,
     messages: [{ role: "user", content: prompt }],
   });

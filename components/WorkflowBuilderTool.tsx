@@ -612,7 +612,7 @@ export default function WorkflowBuilderTool({
         <ToolLoadingScreen
           steps={LOADING_STEPS}
           activeStep={loadingStep}
-          timeEstimate="About 1 minute."
+          timeEstimate="About 2 minutes."
           headingText="Building your workflow."
         />
       )}

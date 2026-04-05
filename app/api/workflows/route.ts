@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+export const maxDuration = 300; // Vercel Pro max; adaptive thinking can exceed 120s
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 export interface Workflow {
   title: string;

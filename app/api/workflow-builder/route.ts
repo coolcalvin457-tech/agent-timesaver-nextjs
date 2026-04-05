@@ -12,7 +12,7 @@ import {
   WidthType,
 } from "docx";
 
-export const maxDuration = 120;
+export const maxDuration = 300; // Vercel Pro max; adaptive thinking can exceed 120s
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

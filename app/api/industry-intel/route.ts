@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export const maxDuration = 120; // Web search + generation exceeds Vercel's 60s default
+export const maxDuration = 300; // Vercel Pro max; adaptive thinking + web search can exceed 120s
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

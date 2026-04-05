@@ -532,7 +532,7 @@ export async function POST(req: NextRequest) {
 
         const pageSelectionSystemPrompt = `You are a competitive intelligence analyst. Your job is to select the most valuable pages from a company website for building a competitive intelligence dossier.
 
-You will receive a list of URLs from a single company's website. Select the 15 to 20 most valuable pages for research purposes. If the site has fewer than 15 worthwhile pages, return all of them.
+You will receive a list of URLs from a single company's website. Select the 10 most valuable pages for research purposes. If the site has fewer than 10 worthwhile pages, return all of them.
 
 Prioritize pages in this order:
 1. Homepage (always include)
@@ -559,15 +559,14 @@ The "priority" field is an integer. Lower numbers = higher priority. Be precise.
         let selectedPages: Array<{ url: string; priority: number; reason: string }> = [];
 
         try {
-          const selectionRes = await (anthropic.messages.create as Function)({
+          const selectionRes = await anthropic.messages.create({
             model: process.env.CLAUDE_MODEL || "claude-sonnet-4-6",
-            max_tokens: 4096,
-            thinking: { type: "adaptive" },
+            max_tokens: 2048,
             system: pageSelectionSystemPrompt,
             messages: [
               {
                 role: "user",
-                content: `Here is the full list of URLs discovered on the target company's website:\n\n${urlList}\n\nSelect the 15 to 20 most valuable pages for competitive intelligence research. Return your selection as the JSON format specified in your instructions.`,
+                content: `Here is the full list of URLs discovered on the target company's website:\n\n${urlList}\n\nSelect the 10 most valuable pages for competitive intelligence research. Return your selection as the JSON format specified in your instructions.`,
               },
             ],
           });
@@ -580,12 +579,12 @@ The "priority" field is an integer. Lower numbers = higher priority. Be precise.
           const parsed = JSON.parse(selectionText);
           selectedPages = parsed.selected ?? [];
         } catch {
-          // Fall back: use first 15 URLs
-          selectedPages = mapLinks.slice(0, 15).map((url, i) => ({ url, priority: i + 1, reason: "Auto-selected" }));
+          // Fall back: use first 10 URLs
+          selectedPages = mapLinks.slice(0, 10).map((url, i) => ({ url, priority: i + 1, reason: "Auto-selected" }));
         }
 
         if (selectedPages.length === 0) {
-          selectedPages = mapLinks.slice(0, 15).map((url, i) => ({ url, priority: i + 1, reason: "Auto-selected" }));
+          selectedPages = mapLinks.slice(0, 10).map((url, i) => ({ url, priority: i + 1, reason: "Auto-selected" }));
         }
 
         // Sort by priority
@@ -597,10 +596,16 @@ The "priority" field is an integer. Lower numbers = higher priority. Be precise.
         const displayName = companyName ?? new URL(companyUrl.startsWith("http") ? companyUrl : `https://${companyUrl}`).hostname.replace("www.", "");
         send("progress", { step: 3, label: `Scanning ${displayName} for intelligence...`, status: "in_progress" });
 
-        // Scrape in parallel
+        // Scrape in parallel with per-page timeout
+        const SCRAPE_TIMEOUT_MS = 15000;
         const scrapeResults = await Promise.allSettled(
           selectedPages.map(async (page) => {
-            const result = await firecrawl.scrape(page.url, { formats: ["markdown"] });
+            const result = await Promise.race([
+              firecrawl.scrape(page.url, { formats: ["markdown"] }),
+              new Promise<never>((_, reject) =>
+                setTimeout(() => reject(new Error("Scrape timeout")), SCRAPE_TIMEOUT_MS)
+              ),
+            ]);
             return { url: page.url, priority: page.priority, content: result.markdown ?? "" };
           })
         );

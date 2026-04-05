@@ -352,11 +352,36 @@ export default function CompetitiveDossierTool({
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let buffer = "";
+      let completed = false;
+
+      // Timeout: if no SSE event arrives within 5 minutes, show error
+      const STREAM_TIMEOUT_MS = 5 * 60 * 1000;
+      let timeoutId = setTimeout(() => {
+        if (!completed) {
+          reader.cancel();
+          setErrorMsg("This is taking longer than expected. Please try again.");
+          setScreen("error-general");
+        }
+      }, STREAM_TIMEOUT_MS);
+
+      const resetTimeout = () => {
+        clearTimeout(timeoutId);
+        if (!completed) {
+          timeoutId = setTimeout(() => {
+            if (!completed) {
+              reader.cancel();
+              setErrorMsg("This is taking longer than expected. Please try again.");
+              setScreen("error-general");
+            }
+          }, STREAM_TIMEOUT_MS);
+        }
+      };
 
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
 
+        resetTimeout();
         buffer += decoder.decode(value, { stream: true });
         const parts = buffer.split("\n\n");
         buffer = parts.pop() ?? "";
@@ -385,6 +410,8 @@ export default function CompetitiveDossierTool({
               return updated;
             });
           } else if (eventType === "complete") {
+            completed = true;
+            clearTimeout(timeoutId);
             const meta = data.metadata as { companyName: string; pagesAnalyzed: number; jobTitle: string };
             setDocxBase64(data.docxBase64 as string);
             setResultCompanyName(meta.companyName ?? companyName ?? "the company");
@@ -392,6 +419,8 @@ export default function CompetitiveDossierTool({
             setResultJobTitle(meta.jobTitle ?? jobTitle);
             setScreen("email-gate");
           } else if (eventType === "error") {
+            completed = true;
+            clearTimeout(timeoutId);
             const errorType = data.type as string;
             setErrorMsg(data.message as string ?? "Something went wrong. Please try again.");
             if (errorType === "site_unreachable") setScreen("error-site");
@@ -400,6 +429,13 @@ export default function CompetitiveDossierTool({
             else setScreen("error-general");
           }
         }
+      }
+
+      // Stream ended without a complete or error event (Vercel killed the function)
+      clearTimeout(timeoutId);
+      if (!completed) {
+        setErrorMsg("This is taking longer than expected. Please try again.");
+        setScreen("error-general");
       }
     } catch {
       setErrorMsg("Something went wrong on our end. Please try again.");

@@ -116,6 +116,48 @@ export async function markMagicLinkUsed(id: string): Promise<void> {
   `;
 }
 
+// ─── Competitive Dossier run tracking ───────────────────────────────────────
+
+/**
+ * Count how many Competitive Dossier runs a user has made in the current
+ * calendar month (UTC). Used to enforce the 15-run/month limit.
+ */
+export async function getMonthlyDossierRunCount(userId: string): Promise<number> {
+  const result = await pool.sql<{ count: string }>`
+    SELECT COUNT(*) AS count
+    FROM competitive_dossier_runs
+    WHERE user_id = ${userId}::uuid
+      AND created_at >= date_trunc('month', now() AT TIME ZONE 'UTC')
+  `;
+  return parseInt(result.rows[0]?.count ?? "0", 10);
+}
+
+/**
+ * Log a completed Competitive Dossier run.
+ * Call after successful generation (before email delivery).
+ * Never throws — fire-and-forget safe.
+ */
+export async function logDossierRun(
+  userId: string,
+  email: string,
+  targetUrl: string,
+  companyName?: string | null
+): Promise<void> {
+  try {
+    await pool.sql`
+      INSERT INTO competitive_dossier_runs (user_id, email, target_url, company_name)
+      VALUES (
+        ${userId}::uuid,
+        ${email.toLowerCase()},
+        ${targetUrl},
+        ${companyName ?? null}
+      )
+    `;
+  } catch (err) {
+    console.error("[logDossierRun] Failed to log dossier run:", err);
+  }
+}
+
 // ─── Tool usage logging ──────────────────────────────────────────────────────
 
 /**

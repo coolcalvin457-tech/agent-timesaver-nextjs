@@ -259,7 +259,17 @@ Return ONLY valid JSON in this exact format:
   const jsonMatch = text.match(/\{[\s\S]*\}/);
   if (!jsonMatch) throw new Error("No JSON found in Claude response");
 
-  return JSON.parse(jsonMatch[0]) as WorkflowsResponse;
+  let jsonStr = jsonMatch[0];
+  jsonStr = jsonStr
+    .replace(/,\s*}/g, "}")
+    .replace(/,\s*]/g, "]")
+    .replace(/[\u201C\u201D]/g, '"')
+    .replace(/[\u2018\u2019]/g, "'")
+    .replace(/\u2014/g, "-")
+    .replace(/\u2013/g, "-")
+    .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, "");
+
+  return JSON.parse(jsonStr) as WorkflowsResponse;
 }
 
 // ─── Route Handler ─────────────────────────────────────────────────────────────

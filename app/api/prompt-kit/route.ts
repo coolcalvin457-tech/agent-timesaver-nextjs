@@ -226,7 +226,32 @@ Return ONLY valid JSON in this exact format:
   const jsonMatch = text.match(/\{[\s\S]*\}/);
   if (!jsonMatch) throw new Error("No JSON found in Claude response");
 
-  return JSON.parse(jsonMatch[0]) as PromptKitResponse;
+  let jsonStr = jsonMatch[0];
+
+  // Defensive cleanup: strip common LLM artifacts that break JSON.parse
+  jsonStr = jsonStr
+    .replace(/,\s*}/g, "}")       // trailing commas before closing brace
+    .replace(/,\s*]/g, "]")       // trailing commas before closing bracket
+    .replace(/[\u201C\u201D]/g, '"')  // smart double quotes to straight
+    .replace(/[\u2018\u2019]/g, "'")  // smart single quotes to straight
+    .replace(/\u2014/g, "-")         // em dash to hyphen
+    .replace(/\u2013/g, "-")         // en dash to hyphen
+    .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, ""); // strip control chars except \n \r \t
+
+  try {
+    return JSON.parse(jsonStr) as PromptKitResponse;
+  } catch (parseError) {
+    // Log first 500 chars around the failure point for debugging
+    const errMsg = parseError instanceof Error ? parseError.message : String(parseError);
+    const posMatch = errMsg.match(/position (\d+)/);
+    if (posMatch) {
+      const pos = parseInt(posMatch[1], 10);
+      const snippet = jsonStr.substring(Math.max(0, pos - 100), pos + 100);
+      console.error("[prompt-kit] JSON parse failed near position", pos, "snippet:", snippet);
+    }
+    console.error("[prompt-kit] Full response length:", text.length, "JSON length:", jsonStr.length);
+    throw parseError;
+  }
 }
 
 // ─── Route Handler ─────────────────────────────────────────────────────────────
@@ -253,7 +278,18 @@ export async function POST(req: NextRequest) {
     if (!process.env.ANTHROPIC_API_KEY) {
       result = MOCK_KIT;
     } else {
-      result = await generatePromptKit(jobTitle, workType, aiUsage, challenge, jobDescription);
+      try {
+        result = await generatePromptKit(jobTitle, workType, aiUsage, challenge, jobDescription);
+      } catch (firstError) {
+        const firstMsg = firstError instanceof Error ? firstError.message : String(firstError);
+        // Retry once on JSON parse failures (common with large adaptive thinking responses)
+        if (firstMsg.includes("JSON") || firstMsg.includes("Expected")) {
+          console.warn("[prompt-kit] First attempt failed with JSON error, retrying:", firstMsg);
+          result = await generatePromptKit(jobTitle, workType, aiUsage, challenge, jobDescription);
+        } else {
+          throw firstError;
+        }
+      }
     }
 
     return NextResponse.json(result);

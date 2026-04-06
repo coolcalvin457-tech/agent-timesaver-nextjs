@@ -17,6 +17,7 @@ import {
   addContactToAudience,
   RESEND_API,
 } from "@/app/api/_shared/emailBase";
+import { stripEmDashes } from "@/app/api/_shared/sanitize";
 import type { IndustryIntelData, IntelSource } from "@/app/api/industry-intel/route";
 import { logToolUsage } from "@/lib/db";
 
@@ -310,6 +311,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
     }
 
+    // Server-side em dash strip before docx/email generation
+    intelData.insight = stripEmDashes(intelData.insight);
+    intelData.connection = stripEmDashes(intelData.connection);
+    intelData.strategy = intelData.strategy.map(stripEmDashes);
+
     // Build docx once — used for both browser download and email attachment
     const docxBuffer = await buildDocxFile(intelData, jobTitle, industry, focusArea);
     const safeIndustry = industry.replace(/[^a-zA-Z0-9]/g, "-").toLowerCase();
@@ -330,7 +336,7 @@ export async function POST(req: NextRequest) {
         body: JSON.stringify({
           from: getFromAddress(),
           to: [email.trim()],
-          subject: `Your Industry Report: ${subjectIndustry} · ${jobTitle}`,
+          subject: `Your Industry Intel: ${subjectIndustry} · ${jobTitle}`,
           html: emailHTML,
           attachments: [{ filename, content: docxBase64 }],
         }),

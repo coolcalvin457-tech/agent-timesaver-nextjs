@@ -33,7 +33,7 @@ const FOCUS_AREA_OPTIONS = [
   "Market conditions and economic signals",
 ];
 
-const LOADING_STEPS = ["Insight", "Connection", "Strategy", "Sources"];
+const LOADING_STEPS = ["The Insight", "The Connection", "The Strategy", "The Sources"];
 
 type Screen = "s1" | "s2" | "s3" | "loading" | "email-gate" | "sent";
 
@@ -146,7 +146,7 @@ export default function IndustryIntelTool() {
     if (screen !== "loading") return;
     setLoadingStep(0);
     const timers = LOADING_STEPS.map((_, i) =>
-      setTimeout(() => setLoadingStep(i), i * 7500)
+      setTimeout(() => setLoadingStep(i), i * 12000)
     );
     return () => timers.forEach(clearTimeout);
   }, [screen]);
@@ -566,10 +566,10 @@ export default function IndustryIntelTool() {
         <div className="screen" style={{ textAlign: "center" }}>
 
           {/* Checkmark */}
-          <div style={{ display: "inline-block", marginBottom: "20px" }}>
+          <div style={{ display: "inline-block", marginBottom: "16px" }}>
             <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect width="56" height="56" rx="12" fill="#22C55E" fillOpacity="0.12" />
-              <path d="M16 28l7 7L40 20" stroke="#22C55E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M18 28.5L24.5 35L38 21" stroke="#22C55E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
 
@@ -596,7 +596,7 @@ export default function IndustryIntelTool() {
               "Get your industry intel delivered every Monday morning.",
               "Built for real jobs. Not demos.",
             ]}
-            buttonLabel="Try Workflow"
+            buttonLabel="Try AGENT: Workflow"
             href="/workflow"
           />
 

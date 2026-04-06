@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+import { cleanJsonResponse } from "../_shared/cleanJson";
+import { stripEmDashes } from "../_shared/sanitize";
 
-export const maxDuration = 300; // Vercel Pro max; adaptive thinking + web search can exceed 120s
+export const maxDuration = 300; // Vercel Pro max; web search can exceed 120s
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -250,13 +252,14 @@ async function generateIndustryIntel(inputs: IndustryIntelInputs): Promise<Indus
     .map((block) => block.text!)
     .join("");
 
-  const jsonMatch = text.match(/\{[\s\S]*\}/);
-  if (!jsonMatch) throw new Error("No JSON found in Claude response");
+  const parsed = JSON.parse(cleanJsonResponse(text)) as IndustryIntelData;
 
-  // Strip em dashes that slipped through
-  const sanitized = jsonMatch[0].replace(/\u2014/g, ":").replace(/\u2013/g, "-");
+  // Server-side em dash strip on all text fields before delivery
+  parsed.insight = stripEmDashes(parsed.insight);
+  parsed.connection = stripEmDashes(parsed.connection);
+  parsed.strategy = parsed.strategy.map(stripEmDashes);
 
-  return JSON.parse(sanitized) as IndustryIntelData;
+  return parsed;
 }
 
 // ─── Route Handler ────────────────────────────────────────────────────────────
@@ -296,12 +299,34 @@ export async function POST(req: NextRequest) {
     } else {
       try {
         intelData = await generateIndustryIntel(inputs);
-      } catch (err) {
-        if (err instanceof SyntaxError) {
-          // JSON parse failed — retry once
-          intelData = await generateIndustryIntel(inputs);
+      } catch (firstErr) {
+        if (firstErr instanceof SyntaxError || (firstErr instanceof Error && firstErr.message.includes("No JSON found"))) {
+          console.warn("[industry-intel] First attempt failed, retrying with assistant prefill:", firstErr instanceof Error ? firstErr.message : String(firstErr));
+          const Anthropic = (await import("@anthropic-ai/sdk")).default;
+          const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+          const userPrompt = buildUserPrompt(inputs);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const retryMsg = await (client.messages.create as any)({
+            model: process.env.CLAUDE_MODEL || "claude-sonnet-4-6",
+            max_tokens: 16000,
+            system: SYSTEM_PROMPT,
+            tools: [{ type: "web_search_20250305", name: "web_search", max_uses: 5 }],
+            messages: [
+              { role: "user", content: userPrompt },
+              { role: "assistant", content: "{" },
+            ],
+          });
+          const retryText = (retryMsg.content as Array<{ type: string; text?: string }>)
+            .filter((block: { type: string }) => block.type === "text")
+            .map((block: { text?: string }) => block.text!)
+            .join("");
+          const parsed = JSON.parse(cleanJsonResponse("{" + retryText)) as IndustryIntelData;
+          parsed.insight = stripEmDashes(parsed.insight);
+          parsed.connection = stripEmDashes(parsed.connection);
+          parsed.strategy = parsed.strategy.map(stripEmDashes);
+          intelData = parsed;
         } else {
-          throw err;
+          throw firstErr;
         }
       }
     }

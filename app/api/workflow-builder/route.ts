@@ -11,6 +11,7 @@ import {
   TableCell,
   WidthType,
 } from "docx";
+import { cleanJsonResponse } from "@/app/api/_shared/cleanJson";
 
 export const maxDuration = 300; // Vercel Pro max; adaptive thinking can exceed 120s
 
@@ -366,13 +367,30 @@ async function generateWorkflow(
     .filter((block) => block.type === "text" && block.text)
     .map((block) => block.text!)
     .join("");
-  const jsonMatch = text.match(/\{[\s\S]*\}/);
-  if (!jsonMatch) throw new Error("No JSON found in Claude response");
 
-  // Strip em dashes that slipped through despite prompt instruction
-  const sanitized = jsonMatch[0].replace(/\u2014/g, ":").replace(/\u2013/g, "-");
-
-  const workflow = JSON.parse(sanitized) as WorkflowData;
+  const cleaned = cleanJsonResponse(text);
+  let workflow: WorkflowData;
+  try {
+    workflow = JSON.parse(cleaned) as WorkflowData;
+  } catch {
+    // Retry with assistant prefill to force JSON continuation
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const retryMsg = await (client.messages.create as any)({
+      model: process.env.CLAUDE_MODEL || "claude-sonnet-4-6",
+      max_tokens: 16000,
+      thinking: { type: "adaptive" },
+      system: systemPrompt,
+      messages: [
+        { role: "user", content: userMessage },
+        { role: "assistant", content: "{" },
+      ],
+    });
+    const retryText = (retryMsg.content as Array<{ type: string; text?: string }>)
+      .filter((block: { type: string; text?: string }) => block.type === "text" && block.text)
+      .map((block: { type: string; text?: string }) => block.text!)
+      .join("");
+    workflow = JSON.parse(cleanJsonResponse("{" + retryText)) as WorkflowData;
+  }
 
   // Server-side safety net: fix time inconsistencies the model missed
   enforceTimeConsistency(workflow);
@@ -791,23 +809,14 @@ export async function POST(req: NextRequest) {
     if (!process.env.ANTHROPIC_API_KEY) {
       workflow = buildMockWorkflow(input);
     } else {
-      try {
-        workflow = await generateWorkflow(input, processText, exampleText);
+      workflow = await generateWorkflow(input, processText, exampleText);
 
-        // Retry once if AI prompt density is below 40% minimum
-        if (!hasMinimumPromptDensity(workflow)) {
-          console.warn(
-            `AGENT: Workflow: prompt density below 40% (${workflow.steps.filter((s) => s.prompt).length}/${workflow.steps.length} steps). Retrying.`
-          );
-          workflow = await generateWorkflow(input, processText, exampleText);
-        }
-      } catch (err) {
-        if (err instanceof SyntaxError) {
-          // Retry once on JSON parse failure
-          workflow = await generateWorkflow(input, processText, exampleText);
-        } else {
-          throw err;
-        }
+      // Retry once if AI prompt density is below 40% minimum
+      if (!hasMinimumPromptDensity(workflow)) {
+        console.warn(
+          `AGENT: Workflow: prompt density below 40% (${workflow.steps.filter((s) => s.prompt).length}/${workflow.steps.length} steps). Retrying.`
+        );
+        workflow = await generateWorkflow(input, processText, exampleText);
       }
     }
 

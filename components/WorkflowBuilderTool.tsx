@@ -46,11 +46,11 @@ interface SavedFormData {
 const WF_STORAGE_KEY = "wf_form_data";
 
 const LOADING_STEPS = [
-  "Analyzing your task",
-  "Mapping the steps",
-  "Selecting the right tools",
-  "Writing your prompts",
-  "Formatting your workflow doc",
+  "Workflow Playbook",
+  "AI Setup",
+  "AI Prompts",
+  "Time Estimates",
+  "Key Insights",
 ];
 
 const DELIVERABLES = [
@@ -95,7 +95,7 @@ const inputStyle: React.CSSProperties = {
   padding: "10px 12px",
   fontSize: "0.9375rem",
   border: "1px solid rgba(255,255,255,0.14)",
-  borderRadius: "6px",
+  borderRadius: "8px",
   background: "rgba(255,255,255,0.06)",
   color: "#FFFFFF",
   outline: "none",
@@ -215,8 +215,10 @@ export default function WorkflowBuilderTool({
   useEffect(() => {
     if (screen !== "loading") return;
     setLoadingStep(0);
+    // Spread steps across ~3-minute build: 0s, 30s, 70s, 120s, 155s
+    const delays = [0, 30000, 70000, 120000, 155000];
     const timers = LOADING_STEPS.map((_, i) =>
-      setTimeout(() => setLoadingStep(i), i * 5000)
+      setTimeout(() => setLoadingStep(i), delays[i])
     );
     return () => timers.forEach(clearTimeout);
   }, [screen]);
@@ -1134,10 +1136,10 @@ export default function WorkflowBuilderTool({
       {screen === "sent" && (
         <>
         <div style={{ textAlign: "center", padding: "8px 0" }}>
-          <div style={{ display: "inline-block", marginBottom: "20px" }}>
+          <div style={{ display: "inline-block", marginBottom: "16px" }}>
             <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
               <rect width="56" height="56" rx="12" fill="#22C55E" fillOpacity="0.12" />
-              <path d="M16 28l7 7L40 20" stroke="#22C55E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M18 28.5L24.5 35L38 21" stroke="#22C55E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
           <h2
@@ -1168,7 +1170,7 @@ export default function WorkflowBuilderTool({
             "One sharp insight about your industry, delivered to your inbox.",
             "Built for real jobs. Not demos.",
           ]}
-          buttonLabel="Read Industry"
+          buttonLabel="Try AGENT: Industry"
           href="/industry"
         />
         </>

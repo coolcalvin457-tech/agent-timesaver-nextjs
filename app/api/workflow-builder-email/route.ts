@@ -93,31 +93,31 @@ async function sendWorkflowEmail(
 
     <!-- CTA -->
     <a href="https://promptaiagents.com/workflow"
-       style="display:inline-block; background:#1e7ab8; color:#ffffff; font-size:15px; font-weight:600; text-decoration:none; padding:14px 28px; border-radius:10px;">
+       style="display:inline-block; background:#1e7ab8; color:#ffffff; font-size:15px; font-weight:600; text-decoration:none; padding:14px 28px; border-radius:8px;">
       Build another workflow
     </a>
 
     <!-- Cross-sell -->
-    <tr><td style="padding:32px 0 0 0; border-top:1px solid #e4e4e2;">
+    <div style="padding:32px 0 0 0; border-top:1px solid #e4e4e2;">
       <p style="font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:600; letter-spacing:0.06em; color:#1e7ab8; text-transform:uppercase; margin:0 0 12px;">
         YOUR NEXT STEP
       </p>
       <h3 style="font-family:Georgia,serif; font-size:24px; font-weight:400; color:#161618; margin:0 0 8px; line-height:1.2;">
-        AGENT: Prompts
+        AGENT: Industry
       </h3>
       <p style="font-size:14px; color:#555553; line-height:1.6; margin:0 0 4px;">
-        12 prompts built for your exact job title.
+        One sharp insight about your industry, delivered to your inbox.
       </p>
       <p style="font-size:14px; color:#555553; line-height:1.6; margin:0 0 28px;">
-        Free. Takes 3 minutes. Built for real jobs. Not demos.
+        Built for real jobs. Not demos.
       </p>
       <div style="text-align:center;">
-        <a href="https://promptaiagents.com/prompts"
-           style="display:inline-block; background:#1e7ab8; color:#ffffff; font-size:15px; font-weight:600; padding:14px 28px; border-radius:10px; text-decoration:none;">
-          Get Free Prompts
+        <a href="https://promptaiagents.com/industry"
+           style="display:inline-block; background:#1e7ab8; color:#ffffff; font-size:15px; font-weight:600; padding:14px 28px; border-radius:8px; text-decoration:none;">
+          Try AGENT: Industry
         </a>
       </div>
-    </td></tr>
+    </div>
   `;
 
   const html = buildBaseEmailHTML({

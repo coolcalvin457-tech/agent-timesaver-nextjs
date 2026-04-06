@@ -447,6 +447,12 @@ export default function CompetitiveDossierTool({
     }
   }
 
+  // ── Sign-in handler ───────────────────────────────────────────────────────────
+
+  function handleSignIn(): void {
+    window.location.href = "/login?redirect=/company";
+  }
+
   // ── Paywall handlers ──────────────────────────────────────────────────────────
 
   async function handleCheckout() {
@@ -596,7 +602,7 @@ export default function CompetitiveDossierTool({
           {s1Error && <p style={errorStyle}>{s1Error}</p>}
 
           <button onClick={goToS2} className="btn btn-dark-cta" style={{ width: "100%", marginTop: "8px" }}>
-            Next
+            Continue
           </button>
         </div>
       )}
@@ -669,7 +675,7 @@ export default function CompetitiveDossierTool({
           </div>
 
           <button onClick={goToS3} className="btn btn-dark-cta" style={{ width: "100%", marginTop: "8px" }}>
-            Next
+            Continue
           </button>
         </div>
       )}
@@ -731,72 +737,221 @@ export default function CompetitiveDossierTool({
 
       {/* ── Paywall ──────────────────────────────────────────────────────────── */}
       {screen === "paywall" && (
-        <div style={{ textAlign: "center" }}>
-          <div style={{ display: "inline-block", marginBottom: "20px" }}>
-            <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
-              <rect width="56" height="56" rx="12" fill="#1E7AB8" fillOpacity="0.12" />
-              <path d="M20 28l5 5 11-10" stroke="#1E7AB8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </div>
-          <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.25rem, 2.5vw, 1.625rem)", color: "#fff", margin: "0 0 12px" }}>
-            Competitive intelligence on any company.
+        <>
+          <h2
+            style={{
+              fontSize: "clamp(1.35rem, 2.5vw, 1.625rem)",
+              fontWeight: 400,
+              fontFamily: "var(--font-display)",
+              color: "#FFFFFF",
+              margin: "0 0 20px",
+              lineHeight: 1.3,
+            }}
+          >
+            Competitive intelligence on any company, tailored to your role.
           </h2>
-          <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.6)", margin: "0 0 8px", lineHeight: 1.6 }}>
-            <span style={{ fontWeight: 700, color: "#fff", fontSize: "1.125rem" }}>$149</span>
-            {" · "}
-            <span>Annual subscription.</span>
-          </p>
-          <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.5)", margin: "0 0 28px", lineHeight: 1.6 }}>
-            {MONTHLY_RUN_LIMIT} dossiers per month. Unlimited companies. Cancel anytime.
-          </p>
 
           {paymentCancelled && (
-            <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.55)", marginBottom: "16px" }}>
-              Your purchase was cancelled. No charge was made.
+            <p style={{ fontSize: "0.875rem", color: "rgba(255,200,80,0.9)", marginBottom: "16px" }}>
+              Checkout was cancelled. No charge was made.
             </p>
           )}
 
-          {checkoutError && <p style={{ ...errorStyle, marginBottom: "12px" }}>{checkoutError}</p>}
-
-          <button
-            onClick={handleCheckout}
-            disabled={checkoutLoading}
-            className="btn btn-dark-cta"
-            style={{ width: "100%", marginBottom: "16px", opacity: checkoutLoading ? 0.7 : 1 }}
-          >
-            {checkoutLoading ? "Opening checkout..." : "Subscribe — $149/year"}
-          </button>
-
-          {!showReturningCheck ? (
-            <button
-              onClick={() => setShowReturningCheck(true)}
-              style={{ background: "none", border: "none", color: "rgba(255,255,255,0.45)", fontSize: "0.875rem", cursor: "pointer", textDecoration: "underline" }}
+          {/* What's included */}
+          <div style={{ marginBottom: "24px", padding: "0 4px" }}>
+            <p
+              style={{
+                fontSize: "0.6875rem",
+                fontWeight: 700,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase" as const,
+                color: "rgba(255,255,255,0.45)",
+                marginBottom: "12px",
+              }}
             >
-              Already subscribed?
-            </button>
-          ) : (
-            <div style={{ marginTop: "8px", textAlign: "left" }}>
-              <label style={{ ...labelStyle, fontSize: "0.8125rem" }}>Enter your subscription email</label>
-              <input
-                type="email"
-                value={returningEmail}
-                onChange={(e) => setReturningEmail(e.target.value)}
-                placeholder="your@email.com"
-                style={{ ...inputStyle, marginBottom: "10px" }}
-                onKeyDown={(e) => e.key === "Enter" && handleReturningCheck()}
-              />
-              {returningCheckError && <p style={errorStyle}>{returningCheckError}</p>}
-              <button
-                onClick={handleReturningCheck}
-                disabled={returningCheckLoading}
-                className="btn btn-dark-cta"
-                style={{ width: "100%", opacity: returningCheckLoading ? 0.7 : 1 }}
+              Your dossier includes
+            </p>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+              {DOSSIER_SECTIONS.map((item) => (
+                <li
+                  key={item}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    padding: "7px 0",
+                    borderBottom: "1px solid rgba(255,255,255,0.12)",
+                    fontSize: "0.9rem",
+                    color: "rgba(255,255,255,0.85)",
+                  }}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--cta, #1E7AB8)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                  </svg>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Pricing card */}
+          <div
+            style={{
+              background: "var(--dark, #161618)",
+              border: "1px solid rgba(255,255,255,0.12)",
+              borderRadius: "12px",
+              padding: "24px",
+              marginBottom: "16px",
+            }}
+          >
+            <div style={{ marginBottom: "16px" }}>
+              <p
+                style={{
+                  fontSize: "0.6875rem",
+                  fontWeight: 700,
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase" as const,
+                  color: "var(--cta, #1E7AB8)",
+                  margin: "0 0 6px",
+                }}
               >
-                {returningCheckLoading ? "Checking..." : "Verify Access"}
+                Annual Subscription
+              </p>
+              <p
+                style={{
+                  fontSize: "1.5rem",
+                  fontWeight: 800,
+                  color: "#FFFFFF",
+                  margin: "0 0 4px",
+                  lineHeight: 1.2,
+                }}
+              >
+                $149 <span style={{ fontSize: "0.9rem", fontWeight: 500, color: "rgba(255,255,255,0.55)" }}>/year</span>
+              </p>
+            </div>
+
+            {/* Subscription active badge for verified users */}
+            {subscriptionVerified && (
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  padding: "10px 14px",
+                  background: "rgba(34,197,94,0.12)",
+                  border: "1px solid rgba(34,197,94,0.30)",
+                  borderRadius: "8px",
+                  marginBottom: "16px",
+                }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span style={{ fontSize: "0.875rem", color: "#22C55E", fontWeight: 600 }}>
+                  Active subscription confirmed
+                </span>
+              </div>
+            )}
+
+            {subscriptionVerified ? (
+              <button
+                type="button"
+                className="btn btn-dark-cta"
+                style={{ width: "100%" }}
+                onClick={() => setScreen("s1")}
+              >
+                Get Started
               </button>
+            ) : (
+              <button
+                type="button"
+                className="btn btn-dark-cta"
+                style={{ width: "100%", opacity: checkoutLoading ? 0.7 : 1 }}
+                onClick={handleCheckout}
+                disabled={checkoutLoading}
+              >
+                {checkoutLoading ? "Redirecting to checkout..." : "Get Access \u00B7 $149/year"}
+              </button>
+            )}
+
+            {checkoutError && (
+              <p style={{ ...errorStyle, color: "rgba(255,120,100,0.9)", marginTop: "10px" }}>
+                {checkoutError}
+              </p>
+            )}
+
+            <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.35)", textAlign: "center", margin: "12px 0 0" }}>
+              Annual subscription. Cancel anytime.
+            </p>
+
+            {/* Sign-in link — only shown when NOT logged in */}
+            {!user && (
+              <p style={{ fontSize: "0.8125rem", textAlign: "center", margin: "10px 0 0" }}>
+                <span style={{ color: "rgba(255,255,255,0.5)" }}>Already have an account? </span>
+                <button
+                  type="button"
+                  onClick={handleSignIn}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    padding: 0,
+                    fontSize: "0.8125rem",
+                    color: "#60B4F0",
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                  }}
+                >
+                  Sign in
+                </button>
+              </p>
+            )}
+          </div>
+
+          {/* Returning purchaser check */}
+          {!subscriptionVerified && (
+            <div style={{ marginTop: "4px" }}>
+              {!showReturningCheck ? (
+                <button
+                  type="button"
+                  onClick={() => setShowReturningCheck(true)}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    padding: 0,
+                    fontSize: "0.8125rem",
+                    color: "rgba(255,255,255,0.45)",
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                  }}
+                >
+                  Problems with access?
+                </button>
+              ) : (
+                <div style={{ marginTop: "8px", textAlign: "left" }}>
+                  <label style={{ ...labelStyle, fontSize: "0.8125rem" }}>Enter your subscription email</label>
+                  <input
+                    type="email"
+                    value={returningEmail}
+                    onChange={(e) => setReturningEmail(e.target.value)}
+                    placeholder="your@email.com"
+                    style={{ ...inputStyle, marginBottom: "10px" }}
+                    onKeyDown={(e) => e.key === "Enter" && handleReturningCheck()}
+                  />
+                  {returningCheckError && <p style={errorStyle}>{returningCheckError}</p>}
+                  <button
+                    onClick={handleReturningCheck}
+                    disabled={returningCheckLoading}
+                    className="btn btn-dark-cta"
+                    style={{ width: "100%", opacity: returningCheckLoading ? 0.7 : 1 }}
+                  >
+                    {returningCheckLoading ? "Checking..." : "Verify Access"}
+                  </button>
+                </div>
+              )}
             </div>
           )}
-        </div>
+        </>
       )}
 
       {/* ── Loading (SSE) ────────────────────────────────────────────────────── */}
@@ -809,7 +964,7 @@ export default function CompetitiveDossierTool({
             color: "#fff",
             margin: "0 0 8px",
           }}>
-            Building your dossier.
+            Building your competitive dossier.
           </h2>
           <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.45)", margin: "0 0 36px" }}>
             About 3 minutes.
@@ -834,11 +989,11 @@ export default function CompetitiveDossierTool({
                   <span style={{
                     fontSize: "0.9rem",
                     color: status === "complete"
-                      ? "rgba(255,255,255,0.9)"
+                      ? "rgba(255,255,255,0.5)"
                       : status === "in_progress"
-                      ? "#ffffff"
-                      : "rgba(255,255,255,0.35)",
-                    fontWeight: status === "in_progress" ? 500 : 400,
+                      ? "#FFFFFF"
+                      : "rgba(255,255,255,0.75)",
+                    fontWeight: status === "in_progress" ? 600 : 400,
                     transition: "color 0.3s ease",
                   }}>
                     {step}
@@ -854,10 +1009,10 @@ export default function CompetitiveDossierTool({
       {/* ── Email gate ───────────────────────────────────────────────────────── */}
       {screen === "email-gate" && (
         <div>
-          <div style={{ display: "inline-block", marginBottom: "20px" }}>
+          <div style={{ display: "inline-block", marginBottom: "16px" }}>
             <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
               <rect width="56" height="56" rx="12" fill="#22C55E" fillOpacity="0.12" />
-              <path d="M16 28l7 7L40 20" stroke="#22C55E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M18 28.5L24.5 35L38 21" stroke="#22C55E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
           <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.25rem, 2.5vw, 1.625rem)", color: "#fff", margin: "0 0 20px" }}>
@@ -894,25 +1049,26 @@ export default function CompetitiveDossierTool({
       {/* ── Sent screen ──────────────────────────────────────────────────────── */}
       {screen === "sent" && (
         <div style={{ textAlign: "center" }}>
-          <div style={{ display: "inline-block", marginBottom: "20px" }}>
+          <div style={{ display: "inline-block", marginBottom: "16px" }}>
             <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
               <rect width="56" height="56" rx="12" fill="#22C55E" fillOpacity="0.12" />
-              <path d="M16 28l7 7L40 20" stroke="#22C55E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M18 28.5L24.5 35L38 21" stroke="#22C55E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
-          <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.25rem, 2.5vw, 1.625rem)", color: "#fff", margin: "0 0 12px" }}>
-            Dossier sent.
+          <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", color: "#FFFFFF", margin: "0 0 32px", lineHeight: 1.25 }}>
+            Your dossier is in your inbox.
           </h2>
-          <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.55)", margin: "0 0 24px", lineHeight: 1.6 }}>
-            Check your inbox for the full report. You can also download it below.
-          </p>
-          <button onClick={handleDownloadAgain} className="btn" style={{ marginBottom: "32px", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.16)", color: "#fff", padding: "10px 24px", borderRadius: "var(--radius-btn, 8px)", cursor: "pointer", fontSize: "0.9rem" }}>
-            Download Dossier
+          <button
+            onClick={() => { setScreen("s1"); setCompanyUrl(""); setCompanyName(""); setRelationshipType(""); setResearchFocus(""); setPriorityFocusAreas([]); setExistingKnowledge(""); }}
+            className="btn btn-primary btn-lg btn-full"
+            style={{ marginBottom: "32px" }}
+          >
+            Build another dossier
           </button>
           <CrossSellBlock
             productName="AGENT: Workflow"
-            descriptionLines={["Turn any recurring task into an automated workflow.", "Built for real jobs. Not demos."]}
-            buttonLabel="Explore Workflow"
+            descriptionLines={["Turn any recurring task into a step-by-step workflow with AI prompts, time estimates, and a ready-to-use playbook.", "Built for real jobs. Not demos."]}
+            buttonLabel="Try AGENT: Workflow"
             href="/workflow"
           />
         </div>

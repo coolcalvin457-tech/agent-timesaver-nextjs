@@ -94,6 +94,7 @@ export default function TimesaverTool() {
   const topRef = useRef<HTMLDivElement>(null);
   const authSkipFired = useRef(false);
   const isFirstRender = useRef(true);
+  const hasScrolledToTool = useRef(false);
 
   const [flipStage, setFlipStage] = useState<"idle" | "in">("idle");
 
@@ -109,13 +110,16 @@ export default function TimesaverTool() {
     }
   }, [flipStage]);
 
-  // ── Scroll to top on screen change (skip initial render) ────────
+  // ── Scroll to tool on first entry only (free tool pattern: flip animation handles subsequent transitions) ────────
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
     }
-    topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (!hasScrolledToTool.current) {
+      topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      hasScrolledToTool.current = true;
+    }
   }, [state.screen]);
 
   // ── Auth: skip email gate if logged in ─────────────────────────
@@ -161,9 +165,16 @@ export default function TimesaverTool() {
         if (!res.ok) throw new Error("Failed to fetch questions");
         const data = await res.json() as { questions: Question[] };
 
+        // Defensive em dash strip on all Claude-generated question text
+        const sanitizedQuestions = data.questions.map((q) => ({
+          ...q,
+          stem: stripEmDashes(q.stem),
+          choices: q.choices.map((c) => stripEmDashes(c)),
+        }));
+
         setState((s) => ({
           ...s,
-          questions: data.questions,
+          questions: sanitizedQuestions,
           questionIndex: 0,
           selectedChoice: null,
           writeInValue: "",
@@ -376,7 +387,7 @@ export default function TimesaverTool() {
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0" }}>
             <div className="tool-tag" style={{ textAlign: "center", marginBottom: "20px" }}>AGENT: Timesaver</div>
             <h1 className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25, marginBottom: "20px" }}>
-              See how many hours<br />you could be saving.
+              See how many hours<br />you could save.
             </h1>
             <p className="screen-subheadline" style={{ marginBottom: "28px" }}>
               <span style={{ display: "block" }}>Answer a few questions.</span>
@@ -558,7 +569,7 @@ export default function TimesaverTool() {
         <div className="loading-screen" style={{ minHeight: "320px" }}>
           <div className="tool-tag" style={{ textAlign: "center" }}>AGENT: Timesaver</div>
           <ToolLoadingScreen
-            headingText={loadingType === "questions" ? "Personalizing your questions." : "Building your workflows."}
+            headingText={loadingType === "questions" ? "Personalizing your questions..." : "Building your workflows..."}
             timeEstimate={loadingType === "questions" ? "About 5 seconds." : "About 15 seconds."}
             subLine={loadingType === "workflows" ? "Calculating hours saved..." : undefined}
           />
@@ -573,7 +584,7 @@ export default function TimesaverTool() {
           <BackButton onClick={() => go("jobTitle")} />
 
           {/* Progress pips */}
-          <div className="progress-bar" style={{ marginBottom: "24px" }}>
+          <div className="progress-bar" style={{ marginBottom: "12px" }}>
             {Array.from({ length: totalQuestions }).map((_, i) => (
               <div
                 key={i}
@@ -587,6 +598,11 @@ export default function TimesaverTool() {
               />
             ))}
           </div>
+
+          {/* Step label */}
+          <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.5)", margin: "0 0 16px", fontWeight: 500 }}>
+            {isLastQuestion ? `Almost there. Question ${state.questionIndex + 1} of ${totalQuestions}.` : `Question ${state.questionIndex + 1} of ${totalQuestions}.`}
+          </p>
 
           <p className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25 }}>{currentQuestion.stem}</p>
 

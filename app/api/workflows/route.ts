@@ -246,7 +246,7 @@ Return ONLY valid JSON in this exact format:
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const message = await (client.messages.create as any)({
     model: process.env.CLAUDE_MODEL || "claude-sonnet-4-6",
-    max_tokens: 3000,
+    max_tokens: 16000,
     system: systemPrompt,
     messages: [{ role: "user", content: prompt }],
   });
@@ -293,7 +293,7 @@ export async function POST(req: NextRequest) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const retryMsg = await (client.messages.create as any)({
             model: process.env.CLAUDE_MODEL || "claude-sonnet-4-6",
-            max_tokens: 3000,
+            max_tokens: 16000,
             system: "You recommend AI workflows for corporate professionals. Return ONLY valid JSON.",
             messages: [
               { role: "user", content: `Generate 5 AI workflow recommendations for a "${jobTitle}" who answered:\n${answersSection}\n\nReturn valid JSON with "workflows" array and "roi" object. Start with {` },

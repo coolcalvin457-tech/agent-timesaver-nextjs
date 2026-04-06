@@ -18,6 +18,13 @@ interface BudgetSection {
   rowCount: number;
 }
 
+const LOADING_STEPS = [
+  "Budget Categories",
+  "Line Items",
+  "Formulas",
+  "Formatting",
+];
+
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 const CONTENT_TYPES = [".xlsx", ".csv", ".txt"];
 const TEMPLATE_TYPES = [".xlsx"];
@@ -206,7 +213,7 @@ export default function BudgetSpreadsheetTool() {
   const [emailSubmitting, setEmailSubmitting] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [flipStage, setFlipStage] = useState<"idle" | "in">("idle");
-  const [loadingMsgIndex, setLoadingMsgIndex] = useState(0);
+  const [loadingStep, setLoadingStep] = useState(0);
 
   const topRef = useRef<HTMLDivElement>(null);
   const isFirstRender = useRef(true);
@@ -238,14 +245,14 @@ export default function BudgetSpreadsheetTool() {
     topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [screen]);
 
-  // ── Cycle loading messages ─────────────────────────────────────
+  // ── Advance checklist step during loading ───────────────────────
   useEffect(() => {
     if (screen !== "loading") {
-      setLoadingMsgIndex(0);
+      setLoadingStep(0);
       return;
     }
     const interval = setInterval(() => {
-      setLoadingMsgIndex((prev) => (prev + 1) % 5);
+      setLoadingStep((prev) => Math.min(prev + 1, LOADING_STEPS.length - 1));
     }, 4000);
     return () => clearInterval(interval);
   }, [screen]);
@@ -413,7 +420,7 @@ export default function BudgetSpreadsheetTool() {
     setEmailError("");
     setEmailSubmitting(false);
     setFlipStage("idle");
-    setLoadingMsgIndex(0);
+    setLoadingStep(0);
   }
 
   // ─── Render ───────────────────────────────────────────────────
@@ -560,14 +567,6 @@ export default function BudgetSpreadsheetTool() {
 
   // ── Screen: Loading ────────────────────────────────────────────
   if (screen === "loading") {
-    const loadingMessages = [
-      "Reading your description...",
-      "Mapping budget categories...",
-      "Setting realistic estimates...",
-      "Formatting your spreadsheet...",
-      "Almost ready...",
-    ];
-
     return (
       <div
         className={`tool-container${flipClass ? ` ${flipClass}` : ""}`}
@@ -577,8 +576,8 @@ export default function BudgetSpreadsheetTool() {
           <ToolLoadingScreen
             headingText="Building your spreadsheet."
             timeEstimate="About 20 seconds."
-            subLine={loadingMessages[loadingMsgIndex]}
-            subLineKey={loadingMsgIndex}
+            steps={LOADING_STEPS}
+            activeStep={loadingStep}
           />
         </div>
       </div>
@@ -684,7 +683,7 @@ export default function BudgetSpreadsheetTool() {
               marginTop: 0,
             }}
           >
-            <span style={{ color: "var(--cta)", marginRight: "6px" }}>✓</span>
+            <span style={{ color: "#22C55E", marginRight: "6px" }}>✓</span>
             Sent to your inbox. File downloaded automatically.
           </p>
 
@@ -714,13 +713,13 @@ export default function BudgetSpreadsheetTool() {
           </button>
 
           <CrossSellBlock
-            productName="AGENT: Prompts"
+            productName="AGENT: Industry"
             descriptionLines={[
-              "12 Personalized Prompts · AI Profile · AI Workspace Setup",
+              "Real-time industry intel calibrated to your role.",
               "Built for real jobs. Not demos.",
             ]}
-            buttonLabel="Try It Free"
-            href="/prompts"
+            buttonLabel="Try Now"
+            href="/industry"
           />
         </div>
       </div>

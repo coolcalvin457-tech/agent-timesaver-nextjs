@@ -8,6 +8,8 @@ import {
 import { stripEmDashes } from "@/app/api/_shared/sanitize";
 import { logToolUsage } from "@/lib/db";
 
+export const maxDuration = 60; // Email-only route — no Claude call
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 interface BudgetSpreadsheetEmailBody {
@@ -55,13 +57,16 @@ async function sendBudgetEmail(
         YOUR NEXT STEP
       </p>
       <h3 style="font-family:Georgia,serif;font-size:24px;font-weight:400;color:#161618;margin:0 0 12px;line-height:1.2;">
-        AGENT: Prompts
+        AGENT: Industry
       </h3>
-      <p style="font-size:14px;color:#555553;line-height:1.6;margin:0 0 28px;">
-        12 Personalized Prompts · AI Profile · AI Workspace Setup
+      <p style="font-size:14px;color:#555553;line-height:1.6;margin:0 0 4px;">
+        Real-time industry intel calibrated to your role.
+      </p>
+      <p style="font-size:14px;color:#555553;line-height:1.6;margin:0 0 24px;">
+        Built for real jobs. Not demos.
       </p>
       <div style="text-align:center;">
-        <a href="https://promptaiagents.com/prompts" style="display:inline-block;background:#1e7ab8;color:#ffffff;font-size:15px;font-weight:600;padding:14px 28px;border-radius:10px;text-decoration:none;">
+        <a href="https://promptaiagents.com/industry" style="display:inline-block;background:#1e7ab8;color:#ffffff;font-size:15px;font-weight:600;padding:14px 28px;border-radius:10px;text-decoration:none;">
           Try Now
         </a>
       </div>
@@ -83,7 +88,7 @@ async function sendBudgetEmail(
     body: JSON.stringify({
       from: getFromAddress(),
       to: [email],
-      subject: `Your budget spreadsheet is ready`,
+      subject: `Your ${stripEmDashes(budgetTitle)} is ready`,
       html,
       attachments: [{ filename, content: fileData }],
     }),

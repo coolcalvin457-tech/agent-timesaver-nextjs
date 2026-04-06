@@ -70,14 +70,36 @@ const DOSSIER_SECTIONS = [
   "What This Means for You",
 ];
 
+// Loading steps use canonical deliverable names (matches all other tools).
+// Backend sends 6 SSE pipeline events; STEP_MAP spreads them across 8 deliverables.
 const LOADING_STEPS = [
-  "Mapping website structure...",
-  "Selecting high-value pages...",
-  "Scanning for intelligence...",
-  "Analyzing competitive signals...",
-  "Tailoring insights to your role...",
-  "Formatting your dossier...",
+  "Company Snapshot",
+  "Business Model and Pricing",
+  "Target Market and Positioning",
+  "Product and Service Breakdown",
+  "Growth Signals",
+  "Content and Public Voice",
+  "Strengths and Gaps",
+  "What This Means for You",
 ];
+
+// Maps backend pipeline step (1-6) to deliverable indices (0-7) to mark as active/complete
+const STEP_MAP_ACTIVE: Record<number, number[]> = {
+  1: [0],       // Mapping site → Company Snapshot active
+  2: [1],       // Selecting pages → Business Model active
+  3: [2],       // Scraping → Target Market active
+  4: [4],       // Analyzing → Growth Signals active
+  5: [6],       // Tailoring → Strengths and Gaps active
+  6: [7],       // Formatting → What This Means for You active
+};
+const STEP_MAP_COMPLETE: Record<number, number[]> = {
+  1: [0],             // Company Snapshot done
+  2: [1],             // Business Model done
+  3: [2, 3],          // Target Market + Product Breakdown done
+  4: [4, 5],          // Growth Signals + Content and Public Voice done
+  5: [6],             // Strengths and Gaps done
+  6: [7],             // What This Means for You done
+};
 
 const MONTHLY_RUN_LIMIT = 15;
 
@@ -402,15 +424,15 @@ export default function CompetitiveDossierTool({
           try { data = JSON.parse(dataMatch[1]); } catch { continue; }
 
           if (eventType === "progress") {
-            const step = (data.step as number) - 1;
+            const backendStep = data.step as number;
             const status = data.status as "in_progress" | "complete";
-            // Update the label for step 3 with company name
-            if (step === 2 && data.label) {
-              LOADING_STEPS[2] = data.label as string;
-            }
+            const map = status === "complete" ? STEP_MAP_COMPLETE : STEP_MAP_ACTIVE;
+            const indices = map[backendStep] ?? [];
             setLoadingStepStatuses((prev) => {
               const updated = [...prev];
-              updated[step] = status;
+              for (const idx of indices) {
+                updated[idx] = status;
+              }
               return updated;
             });
           } else if (eventType === "complete") {
@@ -976,14 +998,13 @@ export default function CompetitiveDossierTool({
                 <div key={i} style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "16px" }}>
                   <div style={{ width: "20px", height: "20px", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
                     {status === "complete" ? (
-                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <circle cx="10" cy="10" r="9" stroke="#22C55E" strokeWidth="1.5" />
-                        <path d="M6 10l3 3 5-5" stroke="#22C55E" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
+                      <div style={{ width: "10px", height: "10px", borderRadius: "50%", border: "2px solid #22C55E", background: "#22C55E" }} />
                     ) : status === "in_progress" ? (
-                      <div style={{ width: "14px", height: "14px", border: "2px solid rgba(255,255,255,0.3)", borderTopColor: "#fff", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
+                      <div style={{ width: "10px", height: "10px", borderRadius: "50%", border: "2px solid #1E7AB8", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#1E7AB8" }} />
+                      </div>
                     ) : (
-                      <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: "rgba(255,255,255,0.2)" }} />
+                      <div style={{ width: "10px", height: "10px", borderRadius: "50%", border: "2px solid rgba(255,255,255,0.2)" }} />
                     )}
                   </div>
                   <span style={{
@@ -1002,7 +1023,7 @@ export default function CompetitiveDossierTool({
               );
             })}
           </div>
-          <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+          {/* spinner removed — uses blue dot consistent with all other tools */}
         </div>
       )}
 

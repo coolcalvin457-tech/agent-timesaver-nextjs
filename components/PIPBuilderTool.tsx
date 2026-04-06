@@ -95,7 +95,7 @@ const inputStyle: React.CSSProperties = {
   padding: "10px 12px",
   fontSize: "0.9375rem",
   border: "1px solid var(--border, #E4E4E2)",
-  borderRadius: "6px",
+  borderRadius: "8px",
   background: "var(--surface, #FFFFFF)",
   color: "var(--text-primary)",
   outline: "none",
@@ -233,8 +233,10 @@ export default function PIPBuilderTool({
   useEffect(() => {
     if (screen !== "loading") return;
     setLoadingStep(0);
+    // Spread 7 steps across ~3-minute build: 0s, 20s, 45s, 75s, 110s, 140s, 165s
+    const stepDelays = [0, 20000, 45000, 75000, 110000, 140000, 165000];
     const timers = LOADING_STEPS.map((_, i) =>
-      setTimeout(() => setLoadingStep(i), i * 4500)
+      setTimeout(() => setLoadingStep(i), stepDelays[i])
     );
     return () => timers.forEach(clearTimeout);
   }, [screen]);
@@ -641,7 +643,7 @@ export default function PIPBuilderTool({
   if (screen === "s1") {
     return (
       <div ref={toolContainerRef} className="okb-tool">
-        <StepIndicator current={1} total={4} />
+        <StepIndicator current={1} total={3} />
         <div style={{ marginBottom: "28px" }}>
           <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: 0 }}>
             Tell us about the situation.
@@ -801,7 +803,7 @@ export default function PIPBuilderTool({
     return (
       <div ref={toolContainerRef} className="okb-tool">
         <BackButton onClick={goBackToS1} />
-        <StepIndicator current={2} total={4} />
+        <StepIndicator current={2} total={3} />
 
         <div style={{ marginBottom: "28px" }}>
           <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: 0 }}>
@@ -923,7 +925,7 @@ export default function PIPBuilderTool({
     return (
       <div ref={toolContainerRef} className="okb-tool">
         <BackButton onClick={goBackToS2} />
-        <StepIndicator current={3} total={4} />
+        <StepIndicator current={3} total={3} />
 
         <div style={{ marginBottom: "28px" }}>
           <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: 0 }}>
@@ -1274,14 +1276,6 @@ export default function PIPBuilderTool({
           </>
         )}
 
-        {/* Edit inputs link */}
-        <button
-          type="button"
-          onClick={() => { setS3Error(""); setScreen("s3"); }}
-          style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "0.875rem", cursor: "pointer", padding: 0, opacity: 0.7 }}
-        >
-          ← Edit my inputs
-        </button>
       </div>
     );
   }
@@ -1345,10 +1339,10 @@ export default function PIPBuilderTool({
     return (
       <div ref={toolContainerRef} className="okb-tool">
         <div style={{ textAlign: "center", padding: "8px 0" }}>
-          <div style={{ display: "inline-block", marginBottom: "20px" }}>
+          <div style={{ display: "inline-block", marginBottom: "16px" }}>
             <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
               <rect width="56" height="56" rx="12" fill="#22C55E" fillOpacity="0.12" />
-              <path d="M16 28l7 7L40 20" stroke="#22C55E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M18 28.5L24.5 35L38 21" stroke="#22C55E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
           <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 32px" }}>
@@ -1366,10 +1360,10 @@ export default function PIPBuilderTool({
         <CrossSellBlock
           productName="AGENT: Onboarding"
           descriptionLines={[
-            "Day 1 Schedule · Welcome Email · IT Checklist · Manager Guide",
+            "Welcome Letter · First-Week Schedule · 30-60-90 Day Plan · New Hire Checklist",
             "Included in your HR Agents Package.",
           ]}
-          buttonLabel="Try Onboarding"
+          buttonLabel="Try AGENT: Onboarding"
           href="/onboarding"
         />
       </div>

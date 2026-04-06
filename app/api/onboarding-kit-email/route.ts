@@ -66,18 +66,45 @@ async function sendOnboardingKitEmail(
       </tr>
     </table>
 
+    <!-- What's Included card -->
+    <div style="background:#fafaf8; border:1px solid #e4e4e2; border-radius:8px; padding:20px 24px; margin:0 0 32px 0;">
+      <p style="font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#888886; margin:0 0 16px;">
+        WHAT'S INCLUDED
+      </p>
+      <div style="border-bottom:1px solid #e4e4e2; padding:0 0 12px 0; margin:0 0 12px 0;">
+        <p style="font-size:14px; font-weight:700; color:#161618; margin:0 0 2px;">Welcome Letter</p>
+        <p style="font-size:13px; color:#888886; margin:0;">Personalized welcome from the hiring manager, written in their voice.</p>
+      </div>
+      <div style="border-bottom:1px solid #e4e4e2; padding:0 0 12px 0; margin:0 0 12px 0;">
+        <p style="font-size:14px; font-weight:700; color:#161618; margin:0 0 2px;">First-Week Schedule</p>
+        <p style="font-size:13px; color:#888886; margin:0;">Day-by-day plan for the first five days, time-anchored and achievable.</p>
+      </div>
+      <div style="border-bottom:1px solid #e4e4e2; padding:0 0 12px 0; margin:0 0 12px 0;">
+        <p style="font-size:14px; font-weight:700; color:#161618; margin:0 0 2px;">Key Contacts</p>
+        <p style="font-size:13px; color:#888886; margin:0;">The people who matter most in the first 90 days and why.</p>
+      </div>
+      <div style="border-bottom:1px solid #e4e4e2; padding:0 0 12px 0; margin:0 0 12px 0;">
+        <p style="font-size:14px; font-weight:700; color:#161618; margin:0 0 2px;">30-60-90 Day Plan</p>
+        <p style="font-size:13px; color:#888886; margin:0;">Role-specific milestones for the first three months.</p>
+      </div>
+      <div style="padding:0;">
+        <p style="font-size:14px; font-weight:700; color:#161618; margin:0 0 2px;">New Hire Checklist</p>
+        <p style="font-size:13px; color:#888886; margin:0;">Pre-start through Month 1 checklist, ordered by when each item needs to happen.</p>
+      </div>
+    </div>
+
     <p style="margin:0 0 32px 0; font-size:13px; color:#888886;">
       📎 ${filename}
     </p>
 
     <!-- CTA -->
     <a href="https://promptaiagents.com/onboarding"
-       style="display:inline-block; background:#1e7ab8; color:#ffffff; font-size:15px; font-weight:600; text-decoration:none; padding:14px 28px; border-radius:10px;">
+       style="display:inline-block; background:#1e7ab8; color:#ffffff; font-size:15px; font-weight:600; text-decoration:none; padding:14px 28px; border-radius:8px;">
       Build another kit
     </a>
 
     <!-- Cross-sell separator -->
-    <tr><td style="padding:32px 0 0 0;border-top:1px solid #e4e4e2;">
+    <div style="padding:32px 0 0 0; margin:32px 0 0 0; border-top:1px solid #e4e4e2;">
       <p style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.06em;color:#1e7ab8;text-transform:uppercase;margin:0 0 12px;">
         YOUR NEXT STEP
       </p>
@@ -91,11 +118,11 @@ async function sendOnboardingKitEmail(
         Included in your HR Agents Package.
       </p>
       <div style="text-align:center;">
-        <a href="https://promptaiagents.com/pip" style="display:inline-block;background:#1e7ab8;color:#ffffff;font-size:15px;font-weight:600;padding:14px 28px;border-radius:10px;text-decoration:none;">
-          Try Now
+        <a href="https://promptaiagents.com/pip" style="display:inline-block;background:#1e7ab8;color:#ffffff;font-size:15px;font-weight:600;padding:14px 28px;border-radius:8px;text-decoration:none;">
+          Try AGENT: PIP
         </a>
       </div>
-    </td></tr>
+    </div>
   `;
 
   const html = buildBaseEmailHTML({

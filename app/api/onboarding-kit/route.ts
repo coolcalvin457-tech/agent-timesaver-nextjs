@@ -13,6 +13,7 @@ import {
   ShadingType,
 } from "docx";
 import { cleanJsonResponse } from "../_shared/cleanJson";
+import { stripEmDashes } from "../_shared/sanitize";
 
 export const maxDuration = 300; // Vercel Pro max; adaptive thinking can exceed 120s
 
@@ -629,12 +630,10 @@ async function buildDocxFile(
 ): Promise<Buffer> {
   const children: (Paragraph | Table)[] = [];
 
-  // ── Section 1: Warm Welcome Letter ────────────────────────────────
-  children.push(sectionLabel("Warm Welcome Letter"));
-  children.push(h1("Welcome to the Team!"));
+  // ── Section 1: Welcome Letter ────────────────────────────────
+  children.push(sectionLabel("Welcome Letter"));
+  children.push(h1(`Welcome to the Team, ${hireName}.`));
   children.push(divider());
-  children.push(body("We're excited to have you onboard.", { bold: true, size: 24 }));
-  children.push(spacer());
 
   // Salutation
   children.push(body(`Hi ${hireName},`, { size: 22 }));
@@ -856,6 +855,40 @@ export async function POST(req: NextRequest) {
         }
       }
     }
+
+    // Strip em dashes from all AI-generated content before building .docx
+    const sanitizeKit = (kit: OnboardingKitData): OnboardingKitData => {
+      const s = stripEmDashes;
+      return {
+        welcomeLetter: {
+          subject: s(kit.welcomeLetter.subject),
+          body: s(kit.welcomeLetter.body),
+        },
+        firstWeekSchedule: kit.firstWeekSchedule.map((day) => ({
+          day: s(day.day),
+          items: day.items.map(s),
+        })),
+        keyContacts: kit.keyContacts.map((c) => ({
+          name: s(c.name),
+          title: s(c.title),
+          email: c.email,
+          why: s(c.why),
+        })),
+        roleExpectations: {
+          overview: s(kit.roleExpectations.overview),
+          day30: kit.roleExpectations.day30.map(s),
+          day60: kit.roleExpectations.day60.map(s),
+          day90: kit.roleExpectations.day90.map(s),
+        },
+        newHireChecklist: {
+          preStart: kit.newHireChecklist.preStart.map(s),
+          dayOne: kit.newHireChecklist.dayOne.map(s),
+          weekOne: kit.newHireChecklist.weekOne.map(s),
+          monthOne: kit.newHireChecklist.monthOne.map(s),
+        },
+      };
+    };
+    kitData = sanitizeKit(kitData);
 
     const docxBuffer = await buildDocxFile(kitData, hireName, hireTitle, managerName);
     const safeHireName = hireName.replace(/[^a-zA-Z0-9]/g, "-").toLowerCase();

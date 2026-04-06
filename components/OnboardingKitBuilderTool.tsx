@@ -323,8 +323,9 @@ export default function OnboardingKitBuilderTool({
   useEffect(() => {
     if (screen !== "loading") return;
     setLoadingStep(0);
+    const stepDelays = [0, 25000, 55000, 95000, 130000]; // ~25s intervals across 3-minute build
     const timers = LOADING_STEPS.map((_, i) =>
-      setTimeout(() => setLoadingStep(i), i * 5500)
+      setTimeout(() => setLoadingStep(i), stepDelays[i])
     );
     return () => timers.forEach(clearTimeout);
   }, [screen]);
@@ -756,7 +757,7 @@ export default function OnboardingKitBuilderTool({
   if (screen === "s1") {
     return (
       <div ref={toolContainerRef} className="okb-tool">
-        <StepIndicator current={1} total={4} />
+        <StepIndicator current={1} total={3} />
         <div style={{ marginBottom: "28px" }}>
           <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: 0 }}>
             Tell us about your new hire.
@@ -879,7 +880,7 @@ export default function OnboardingKitBuilderTool({
     return (
       <div ref={toolContainerRef} className="okb-tool">
         <BackButton onClick={goBackToS1} />
-        <StepIndicator current={2} total={4} />
+        <StepIndicator current={2} total={3} />
 
         <div style={{ marginBottom: "28px" }}>
           <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: 0 }}>
@@ -951,7 +952,7 @@ export default function OnboardingKitBuilderTool({
     return (
       <div ref={toolContainerRef} className="okb-tool">
         <BackButton onClick={goBackToS2} />
-        <StepIndicator current={3} total={4} />
+        <StepIndicator current={3} total={3} />
 
         <div style={{ marginBottom: "28px" }}>
           <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: 0 }}>
@@ -1429,10 +1430,10 @@ export default function OnboardingKitBuilderTool({
     return (
       <div ref={toolContainerRef} className="okb-tool">
         <div style={{ textAlign: "center", padding: "8px 0" }}>
-          <div style={{ display: "inline-block", marginBottom: "20px" }}>
+          <div style={{ display: "inline-block", marginBottom: "16px" }}>
             <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
               <rect width="56" height="56" rx="12" fill="#22C55E" fillOpacity="0.12" />
-              <path d="M16 28l7 7L40 20" stroke="#22C55E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M18 28.5L24.5 35L38 21" stroke="#22C55E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
           <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 32px" }}>
@@ -1453,7 +1454,7 @@ export default function OnboardingKitBuilderTool({
             "Improvement Plan · Timeline · Manager Talking Points",
             "Included in your HR Agents Package.",
           ]}
-          buttonLabel="Try PIP"
+          buttonLabel="Try AGENT: PIP"
           href="/pip"
         />
       </div>

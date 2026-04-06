@@ -162,7 +162,7 @@ export default function WorkflowBuilderTool({
   const isFirstRender = useRef(true);
 
   // ── Screen ───────────────────────────────────────────────
-  const [screen, setScreen] = useState<Screen>("s1");
+  const [screen, setScreen] = useState<Screen>("paywall");
 
   // ── Screen 1: The Task ───────────────────────────────────
   const [taskDescription, setTaskDescription] = useState("");
@@ -232,6 +232,7 @@ export default function WorkflowBuilderTool({
   // ── Auto-check subscription when logged-in user hits paywall ──
   useEffect(() => {
     if (screen !== "paywall" || !user?.email) return;
+    if (initialPaymentStatus) return; // skip when returning from Stripe
     let cancelled = false;
     setSubCheckLoading(true);
     fetch("/api/verify-workflow-subscription", {
@@ -241,12 +242,15 @@ export default function WorkflowBuilderTool({
     })
       .then((res) => res.json())
       .then((data: { verified: boolean }) => {
-        if (!cancelled) setSubscriptionVerified(data.verified);
+        if (!cancelled) {
+          setSubscriptionVerified(data.verified);
+          if (data.verified) setScreen("s1");
+        }
       })
       .catch(() => {})
       .finally(() => { if (!cancelled) setSubCheckLoading(false); });
     return () => { cancelled = true; };
-  }, [screen, user?.email]);
+  }, [screen, user?.email, initialPaymentStatus]);
 
   // ── Scroll to tool container on screen change ────────────
   useEffect(() => {
@@ -272,10 +276,7 @@ export default function WorkflowBuilderTool({
   useEffect(() => {
     if (!initialPaymentStatus) return;
 
-    const saved = loadFromStorage();
-
     if (initialPaymentStatus === "cancelled") {
-      if (saved) restoreFromSaved(saved);
       clearStorage();
       setPaymentCancelled(true);
       setScreen("paywall");
@@ -283,15 +284,6 @@ export default function WorkflowBuilderTool({
     }
 
     if (initialPaymentStatus === "success" && initialSessionId) {
-      if (!saved) {
-        setErrorMsg(
-          "Your payment was successful, but we couldn't recover your form data. Please contact us at results@promptaiagents.com and we'll sort it out."
-        );
-        setScreen("error");
-        return;
-      }
-
-      restoreFromSaved(saved);
       setScreen("verifying");
 
       fetch(`/api/verify-payment?session_id=${initialSessionId}`)
@@ -299,7 +291,8 @@ export default function WorkflowBuilderTool({
         .then(({ verified }: { verified: boolean }) => {
           if (verified) {
             clearStorage();
-            buildFromData(saved);
+            setSubscriptionVerified(true);
+            setScreen("s1");
           } else {
             setCheckoutError(
               "Payment could not be verified. Please try again or contact results@promptaiagents.com."
@@ -316,24 +309,9 @@ export default function WorkflowBuilderTool({
     }
   }, []); // intentionally run once on mount only
 
-  // ── Restore form after sign-in redirect ──────────────────
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    if (initialPaymentStatus) return;
-    try {
-      const returnFlag = sessionStorage.getItem("wf_return_to_paywall");
-      if (!returnFlag) return;
-      sessionStorage.removeItem("wf_return_to_paywall");
-      const saved = loadFromStorage();
-      if (saved) {
-        restoreFromSaved(saved);
-        clearStorage();
-      }
-      setScreen("paywall");
-    } catch {
-      // ignore
-    }
-  }, []); // intentionally run once on mount only
+  // ── Restore after sign-in redirect ───────────────────────
+  // After sign-in, the user lands back on the paywall (initial screen).
+  // The auto-check subscription effect above handles verification.
 
   // ─── Build workflow ───────────────────────────────────────
 
@@ -435,7 +413,7 @@ export default function WorkflowBuilderTool({
       return;
     }
     setS3Error("");
-    setScreen("paywall");
+    buildFromData(currentFormData);
   }
 
   // ─── Stripe checkout ──────────────────────────────────────
@@ -443,16 +421,6 @@ export default function WorkflowBuilderTool({
   async function handleCheckout(): Promise<void> {
     setCheckoutLoading(true);
     setCheckoutError("");
-
-    // Save form state before redirecting to Stripe
-    saveToStorage({
-      taskDescription,
-      frequency,
-      collaboration,
-      audiencePriorities,
-      jobTitle,
-      userTools,
-    });
 
     try {
       const res = await fetch("/api/workflow-builder-checkout", {
@@ -493,6 +461,7 @@ export default function WorkflowBuilderTool({
         setSubscriptionVerified(true);
         setReturningCheckError("");
         setShowReturningCheck(false);
+        setScreen("s1");
       } else {
         setReturningCheckError("No active subscription found for that email. Try a different address or subscribe below.");
       }
@@ -547,12 +516,6 @@ export default function WorkflowBuilderTool({
   // ─── Sign-in redirect ─────────────────────────────────────
 
   function handleSignIn(): void {
-    saveToStorage({ taskDescription, frequency, collaboration, audiencePriorities, jobTitle, userTools });
-    try {
-      sessionStorage.setItem("wf_return_to_paywall", "1");
-    } catch {
-      // ignore
-    }
     window.location.href = "/login?redirect=/workflow";
   }
 
@@ -919,8 +882,6 @@ export default function WorkflowBuilderTool({
       {/* ── Paywall ───────────────────────────────────────── */}
       {screen === "paywall" && (
         <>
-          <BackButton onClick={() => setScreen("s3")} />
-
           <h2
             style={{
               fontSize: "clamp(1.35rem, 2.5vw, 1.625rem)",
@@ -931,7 +892,7 @@ export default function WorkflowBuilderTool({
               lineHeight: 1.3,
             }}
           >
-            Your workflow is almost ready.
+            Turn any recurring task into a step-by-step workflow.
           </h2>
 
           {paymentCancelled && (
@@ -1053,9 +1014,9 @@ export default function WorkflowBuilderTool({
                 type="button"
                 className="btn btn-dark-cta"
                 style={{ width: "100%" }}
-                onClick={() => buildFromData(currentFormData)}
+                onClick={() => setScreen("s1")}
               >
-                Build My Workflow
+                Get Started
               </button>
             ) : (
               <button

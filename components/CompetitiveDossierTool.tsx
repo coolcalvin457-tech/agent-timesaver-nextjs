@@ -188,7 +188,7 @@ export default function CompetitiveDossierTool({
   const isFirstRender = useRef(true);
 
   // ── Screen ───────────────────────────────────────────────────────────────────
-  const [screen, setScreen] = useState<Screen>("s1");
+  const [screen, setScreen] = useState<Screen>("paywall");
 
   // ── Screen 1 ─────────────────────────────────────────────────────────────────
   const [companyUrl, setCompanyUrl] = useState("");
@@ -241,25 +241,36 @@ export default function CompetitiveDossierTool({
     if (user?.email) setEmail(user.email);
   }, [user]);
 
+  // ── Auto-check subscription for logged-in users on paywall ─────────────────
+  useEffect(() => {
+    if (screen !== "paywall" || !user?.email) return;
+    if (initialPaymentStatus) return; // skip when returning from Stripe
+    let cancelled = false;
+    fetch("/api/verify-cd-subscription", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: user.email }),
+    })
+      .then((res) => res.json())
+      .then((data: { verified: boolean }) => {
+        if (!cancelled && data.verified) {
+          setSubscriptionVerified(true);
+          setScreen("s1");
+        }
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [screen, user?.email, initialPaymentStatus]);
+
   // ── Handle payment return ─────────────────────────────────────────────────────
   useEffect(() => {
     if (initialPaymentStatus === "success" && initialSessionId) {
       setSubscriptionVerified(true);
-      const saved = loadFromStorage();
-      if (saved) {
-        setCompanyUrl(saved.companyUrl);
-        setCompanyName(saved.companyName);
-        setRelationshipType(saved.relationshipType);
-        setResearchFocus(saved.researchFocus);
-        setPriorityFocusAreas(saved.priorityFocusAreas);
-        setExistingKnowledge(saved.existingKnowledge);
-        setJobTitle(saved.jobTitle);
-        setUserIndustry(saved.userIndustry);
-        setUserCompanyDescription(saved.userCompanyDescription);
-        clearStorage();
-      }
+      clearStorage();
+      setScreen("s1");
     } else if (initialPaymentStatus === "cancelled") {
       setPaymentCancelled(true);
+      // screen stays on "paywall" (initial state)
     }
   }, [initialPaymentStatus, initialSessionId]);
 
@@ -310,13 +321,6 @@ export default function CompetitiveDossierTool({
     if (!jobTitle.trim()) { setS3Error("Job title is required."); return; }
     if (!userIndustry.trim()) { setS3Error("Industry is required."); return; }
     setS3Error("");
-
-    if (!user && !subscriptionVerified) {
-      saveToStorage({ companyUrl, companyName, relationshipType, researchFocus, priorityFocusAreas, existingKnowledge, jobTitle, userIndustry, userCompanyDescription });
-      setScreen("paywall");
-      return;
-    }
-
     startGeneration();
   }
 
@@ -476,7 +480,7 @@ export default function CompetitiveDossierTool({
       const data = await res.json() as { verified: boolean };
       if (data.verified) {
         setSubscriptionVerified(true);
-        startGeneration();
+        setScreen("s1");
       } else {
         setReturningCheckError("No active subscription found for that email. If you just purchased, please wait a moment and try again.");
         setReturningCheckLoading(false);
@@ -590,12 +594,6 @@ export default function CompetitiveDossierTool({
           </div>
 
           {s1Error && <p style={errorStyle}>{s1Error}</p>}
-
-          {paymentCancelled && (
-            <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.55)", marginBottom: "16px" }}>
-              Your purchase was cancelled. No charge was made.
-            </p>
-          )}
 
           <button onClick={goToS2} className="btn btn-dark-cta" style={{ width: "100%", marginTop: "8px" }}>
             Next
@@ -728,19 +726,6 @@ export default function CompetitiveDossierTool({
           <button onClick={goToBuilding} className="btn btn-dark-cta" style={{ width: "100%", marginTop: "8px" }}>
             Build My Dossier
           </button>
-
-          {!user && (
-            <p style={{ textAlign: "center", marginTop: "16px", fontSize: "0.875rem", color: "rgba(255,255,255,0.45)" }}>
-              Already have an account?{" "}
-              <a
-                href={`/login?redirect=/company`}
-                onClick={() => saveToStorage({ companyUrl, companyName, relationshipType, researchFocus, priorityFocusAreas, existingKnowledge, jobTitle, userIndustry, userCompanyDescription })}
-                style={{ color: "var(--cta, #1E7AB8)", textDecoration: "underline" }}
-              >
-                Sign in
-              </a>
-            </p>
-          )}
         </div>
       )}
 
@@ -754,7 +739,7 @@ export default function CompetitiveDossierTool({
             </svg>
           </div>
           <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.25rem, 2.5vw, 1.625rem)", color: "#fff", margin: "0 0 12px" }}>
-            Get your dossier.
+            Competitive intelligence on any company.
           </h2>
           <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.6)", margin: "0 0 8px", lineHeight: 1.6 }}>
             <span style={{ fontWeight: 700, color: "#fff", fontSize: "1.125rem" }}>$149</span>
@@ -764,6 +749,12 @@ export default function CompetitiveDossierTool({
           <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.5)", margin: "0 0 28px", lineHeight: 1.6 }}>
             {MONTHLY_RUN_LIMIT} dossiers per month. Unlimited companies. Cancel anytime.
           </p>
+
+          {paymentCancelled && (
+            <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.55)", marginBottom: "16px" }}>
+              Your purchase was cancelled. No charge was made.
+            </p>
+          )}
 
           {checkoutError && <p style={{ ...errorStyle, marginBottom: "12px" }}>{checkoutError}</p>}
 

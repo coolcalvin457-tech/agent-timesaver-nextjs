@@ -170,7 +170,7 @@ export default function PIPBuilderTool({
   const isFirstRender = useRef(true);
 
   // ── Screen state ──────────────────────────────────────────
-  const [screen, setScreen] = useState<Screen>("s1");
+  const [screen, setScreen] = useState<Screen>("paywall");
 
   // ── Screen 1: The Situation ───────────────────────────────
   const [employeeName, setEmployeeName] = useState("");
@@ -253,6 +253,7 @@ export default function PIPBuilderTool({
   // ── Auto-check subscription when logged-in user hits paywall ──
   useEffect(() => {
     if (screen !== "paywall" || !user?.email) return;
+    if (initialPaymentStatus) return; // skip when returning from Stripe
     let cancelled = false;
     setSubCheckLoading(true);
     fetch("/api/verify-subscription", {
@@ -262,12 +263,15 @@ export default function PIPBuilderTool({
     })
       .then((res) => res.json())
       .then((data: { verified: boolean }) => {
-        if (!cancelled) setSubscriptionVerified(data.verified);
+        if (!cancelled) {
+          setSubscriptionVerified(data.verified);
+          if (data.verified) setScreen("s1");
+        }
       })
       .catch(() => {})
       .finally(() => { if (!cancelled) setSubCheckLoading(false); });
     return () => { cancelled = true; };
-  }, [screen, user?.email]);
+  }, [screen, user?.email, initialPaymentStatus]);
 
   // ── Scroll to tool container on screen change (skip initial render) ───────
   useEffect(() => {
@@ -283,10 +287,7 @@ export default function PIPBuilderTool({
   useEffect(() => {
     if (!initialPaymentStatus) return;
 
-    const saved = loadFromStorage();
-
     if (initialPaymentStatus === "cancelled") {
-      if (saved) restoreFromSaved(saved);
       clearStorage();
       setPaymentCancelled(true);
       setScreen("paywall");
@@ -294,15 +295,6 @@ export default function PIPBuilderTool({
     }
 
     if (initialPaymentStatus === "success" && initialSessionId) {
-      if (!saved) {
-        setErrorMsg(
-          "Your payment was successful, but we couldn't recover your form data. Please contact us at results@promptaiagents.com and we'll sort it out."
-        );
-        setScreen("error");
-        return;
-      }
-
-      restoreFromSaved(saved);
       setScreen("verifying");
 
       fetch(`/api/verify-payment?session_id=${initialSessionId}`)
@@ -310,7 +302,8 @@ export default function PIPBuilderTool({
         .then(({ verified }: { verified: boolean }) => {
           if (verified) {
             clearStorage();
-            buildFromData(saved);
+            setSubscriptionVerified(true);
+            setScreen("s1");
           } else {
             setCheckoutError(
               "Payment could not be verified. Please try again or contact results@promptaiagents.com."
@@ -327,26 +320,8 @@ export default function PIPBuilderTool({
     }
   }, []); // intentionally run once on mount only
 
-  // ── Restore form data after sign-in redirect ───────────────
-  // If user navigated to /login from the paywall, form data was saved to
-  // sessionStorage. On return (after magic link), restore it and jump to paywall.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    if (initialPaymentStatus) return; // payment flow takes priority
-    try {
-      const returnFlag = sessionStorage.getItem("pip_return_to_paywall");
-      if (!returnFlag) return;
-      sessionStorage.removeItem("pip_return_to_paywall");
-      const saved = loadFromStorage();
-      if (saved) {
-        restoreFromSaved(saved);
-        clearStorage();
-        setScreen("paywall");
-      }
-    } catch {
-      // sessionStorage unavailable
-    }
-  }, []); // run once on mount
+  // ── After sign-in redirect, user lands on paywall (initial screen).
+  // The auto-check subscription effect above handles verification.
 
   // ── Storage helpers ───────────────────────────────────────
 
@@ -455,11 +430,9 @@ export default function PIPBuilderTool({
     setScreen("s2");
   }
 
-  function goToPaywall() {
+  function goToBuild() {
     if (!validateS3()) return;
-    setPaymentCancelled(false);
-    setCheckoutError("");
-    setScreen("paywall");
+    handleBuild();
   }
 
   // ── Core build logic ──────────────────────────────────────
@@ -552,25 +525,24 @@ export default function PIPBuilderTool({
       const { verified } = await subRes.json() as { verified: boolean };
 
       if (verified) {
-        // Active subscription confirmed — pre-populate email gate and build
         setEmail(paywallEmail.trim());
-        await buildFromData(getCurrentFormData());
+        setSubscriptionVerified(true);
+        setCheckoutLoading(false);
+        setScreen("s1");
         return;
       }
     } catch {
       // If subscription check fails, proceed to Stripe anyway
     }
 
-    // No active subscription — save form data and redirect to Stripe
-    saveToStorage(getCurrentFormData());
-
+    // No active subscription — redirect to Stripe
     try {
       const res = await fetch("/api/hr-package-checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          successPath: "pip-builder",
-          cancelPath: "pip-builder",
+          successPath: "pip",
+          cancelPath: "pip",
           customerEmail: paywallEmail.trim(),
         }),
       });
@@ -603,7 +575,8 @@ export default function PIPBuilderTool({
 
       if (verified) {
         setEmail(returningEmail.trim());
-        await buildFromData(getCurrentFormData());
+        setSubscriptionVerified(true);
+        setScreen("s1");
       } else {
         setReturningCheckError("No active subscription found for that email. Purchase below.");
       }
@@ -1061,7 +1034,7 @@ export default function PIPBuilderTool({
         <button
           type="button"
           className="btn btn-primary btn-lg btn-full"
-          onClick={goToPaywall}
+          onClick={goToBuild}
           style={{ marginTop: "8px" }}
         >
           Build My PIP
@@ -1074,8 +1047,6 @@ export default function PIPBuilderTool({
   if (screen === "paywall") {
     return (
       <div ref={toolContainerRef} className="okb-tool">
-        <BackButton onClick={() => { setS3Error(""); setScreen("s3"); }} />
-        <StepIndicator current={4} total={4} />
 
         {/* Payment cancelled banner */}
         {paymentCancelled && (
@@ -1084,13 +1055,13 @@ export default function PIPBuilderTool({
             borderRadius: "8px", padding: "12px 16px", marginBottom: "24px",
             fontSize: "0.875rem", color: "var(--text-secondary)",
           }}>
-            Payment wasn&apos;t completed. Your progress is saved. Try again below.
+            Payment wasn&apos;t completed. No charge was made. Try again below.
           </div>
         )}
 
         <div style={{ marginBottom: "24px" }}>
           <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: 0 }}>
-            {employeeName ? `${employeeName}'s` : "Your"} PIP is almost ready.
+            Build a complete performance improvement plan.
           </h2>
         </div>
 
@@ -1149,7 +1120,7 @@ export default function PIPBuilderTool({
               type="button"
               onClick={() => {
                 setEmail(paywallEmail.trim());
-                buildFromData(getCurrentFormData());
+                setScreen("s1");
               }}
               style={{
                 width: "100%", padding: "13px 20px", fontSize: "0.9375rem", fontWeight: 700,
@@ -1158,7 +1129,7 @@ export default function PIPBuilderTool({
                 cursor: "pointer", transition: "background 0.15s ease",
               }}
             >
-              Build My PIP
+              Get Started
             </button>
           </div>
         ) : (
@@ -1240,8 +1211,6 @@ export default function PIPBuilderTool({
                   <button
                     type="button"
                     onClick={() => {
-                      saveToStorage(getCurrentFormData());
-                      sessionStorage.setItem("pip_return_to_paywall", "true");
                       window.location.href = "/login?redirect=/pip";
                     }}
                     style={{

@@ -239,7 +239,7 @@ export default function OnboardingKitBuilderTool({
   const isFirstRender = useRef(true);
 
   // ── Screen ──────────────────────────────────────────────────
-  const [screen, setScreen] = useState<Screen>("s1");
+  const [screen, setScreen] = useState<Screen>("paywall");
 
   // ── Screen 1: The Hire ─────────────────────────────────────
   const [hireName, setHireName] = useState("");
@@ -343,6 +343,7 @@ export default function OnboardingKitBuilderTool({
   // ── Auto-check subscription when logged-in user hits paywall ──
   useEffect(() => {
     if (screen !== "paywall" || !user?.email) return;
+    if (initialPaymentStatus) return; // skip when returning from Stripe
     let cancelled = false;
     setSubCheckLoading(true);
     fetch("/api/verify-subscription", {
@@ -352,12 +353,15 @@ export default function OnboardingKitBuilderTool({
     })
       .then((res) => res.json())
       .then((data: { verified: boolean }) => {
-        if (!cancelled) setSubscriptionVerified(data.verified);
+        if (!cancelled) {
+          setSubscriptionVerified(data.verified);
+          if (data.verified) setScreen("s1");
+        }
       })
       .catch(() => {})
       .finally(() => { if (!cancelled) setSubCheckLoading(false); });
     return () => { cancelled = true; };
-  }, [screen, user?.email]);
+  }, [screen, user?.email, initialPaymentStatus]);
 
   // ── Scroll to tool container on screen change (skip initial render) ───────
   useEffect(() => {
@@ -373,38 +377,25 @@ export default function OnboardingKitBuilderTool({
   useEffect(() => {
     if (!initialPaymentStatus) return;
 
-    const saved = loadFromStorage();
-
-    // User cancelled at Stripe — restore inputs and show paywall
+    // User cancelled at Stripe
     if (initialPaymentStatus === "cancelled") {
-      if (saved) restoreFromSaved(saved);
       clearStorage();
       setPaymentCancelled(true);
       setScreen("paywall");
       return;
     }
 
-    // Payment succeeded — verify and build
+    // Payment succeeded — verify and go to s1
     if (initialPaymentStatus === "success" && initialSessionId) {
-      if (!saved) {
-        // Edge case: sessionStorage was cleared (e.g. different browser/tab)
-        setErrorMsg(
-          "Your payment was successful, but we couldn't recover your form data. Please contact us at results@promptaiagents.com and we'll sort it out."
-        );
-        setScreen("error");
-        return;
-      }
-
-      restoreFromSaved(saved);
       setScreen("verifying");
 
-      // Verify with Stripe, then build
       fetch(`/api/verify-payment?session_id=${initialSessionId}`)
         .then((r) => r.json())
         .then(({ verified }: { verified: boolean }) => {
           if (verified) {
             clearStorage();
-            buildFromData(saved);
+            setSubscriptionVerified(true);
+            setScreen("s1");
           } else {
             setCheckoutError(
               "Payment could not be verified. Please try again or contact results@promptaiagents.com."
@@ -421,26 +412,8 @@ export default function OnboardingKitBuilderTool({
     }
   }, []); // intentionally run once on mount only
 
-  // ── Restore form data after sign-in redirect ───────────────
-  // If user navigated to /login from the paywall, form data was saved to
-  // sessionStorage. On return (after magic link), restore it and jump to paywall.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    if (initialPaymentStatus) return; // payment flow takes priority
-    try {
-      const returnFlag = sessionStorage.getItem("okb_return_to_paywall");
-      if (!returnFlag) return;
-      sessionStorage.removeItem("okb_return_to_paywall");
-      const saved = loadFromStorage();
-      if (saved) {
-        restoreFromSaved(saved);
-        clearStorage();
-        setScreen("paywall");
-      }
-    } catch {
-      // sessionStorage unavailable
-    }
-  }, []); // run once on mount
+  // ── After sign-in redirect, user lands on paywall (initial screen).
+  // The auto-check subscription effect above handles verification.
 
   // ── Validation ────────────────────────────────────────────
 
@@ -501,11 +474,9 @@ export default function OnboardingKitBuilderTool({
     setScreen("s2");
   }
 
-  function goToPaywall() {
+  function goToBuild() {
     if (!validateS3()) return;
-    setPaymentCancelled(false);
-    setCheckoutError("");
-    setScreen("paywall");
+    handleBuild();
   }
 
   // ── Update a contact row ──────────────────────────────────
@@ -603,33 +574,24 @@ export default function OnboardingKitBuilderTool({
       const { verified } = await subRes.json() as { verified: boolean };
 
       if (verified) {
-        // Active subscription confirmed — pre-populate email gate and build
         setEmail(paywallEmail.trim());
-        await buildFromData({
-          hireName, hireTitle, department, startDate, managerName, roleType,
-          whyHired, weekOnePriorities, keyTools, howTeamWorks, thirtyToNinety,
-          contacts, teamNotes, feedbackCadence,
-        }, contextFile);
+        setSubscriptionVerified(true);
+        setCheckoutLoading(false);
+        setScreen("s1");
         return;
       }
     } catch {
       // If subscription check fails, proceed to Stripe anyway
     }
 
-    // No active subscription — save form data and redirect to Stripe
-    saveToStorage({
-      hireName, hireTitle, department, startDate, managerName, roleType,
-      whyHired, weekOnePriorities, keyTools, howTeamWorks, thirtyToNinety,
-      contacts, teamNotes, feedbackCadence,
-    });
-
+    // No active subscription — redirect to Stripe
     try {
       const res = await fetch("/api/hr-package-checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          successPath: "onboarding-kit-builder",
-          cancelPath: "onboarding-kit-builder",
+          successPath: "onboarding",
+          cancelPath: "onboarding",
           customerEmail: paywallEmail.trim(),
         }),
       });
@@ -662,14 +624,8 @@ export default function OnboardingKitBuilderTool({
 
       if (verified) {
         setEmail(returningEmail.trim());
-        const saved = loadFromStorage();
-        await buildFromData(
-          saved ?? {
-            hireName, hireTitle, department, startDate, managerName, roleType,
-            whyHired, weekOnePriorities, keyTools, howTeamWorks, thirtyToNinety,
-            contacts, teamNotes, feedbackCadence,
-          }
-        );
+        setSubscriptionVerified(true);
+        setScreen("s1");
       } else {
         setReturningCheckError("No active subscription found for that email. Purchase below.");
       }
@@ -1096,7 +1052,7 @@ export default function OnboardingKitBuilderTool({
         <button
           type="button"
           className="btn btn-primary btn-lg btn-full"
-          onClick={goToPaywall}
+          onClick={goToBuild}
           style={{ marginTop: "8px" }}
         >
           Build My Kit
@@ -1109,8 +1065,6 @@ export default function OnboardingKitBuilderTool({
   if (screen === "paywall") {
     return (
       <div ref={toolContainerRef} className="okb-tool">
-        <BackButton onClick={() => { setS3Error(""); setScreen("s3"); }} />
-        <StepIndicator current={4} total={4} />
 
         {/* Payment cancelled banner */}
         {paymentCancelled && (
@@ -1125,13 +1079,13 @@ export default function OnboardingKitBuilderTool({
               color: "var(--text-secondary)",
             }}
           >
-            Payment wasn&apos;t completed. Your progress is saved. Try again below.
+            Payment wasn&apos;t completed. No charge was made. Try again below.
           </div>
         )}
 
         <div style={{ marginBottom: "24px" }}>
           <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: 0 }}>
-            {hireName ? `${hireName}'s` : "Your"} onboarding kit is almost ready.
+            Build a complete onboarding kit for any new hire.
           </h2>
         </div>
 
@@ -1207,11 +1161,7 @@ export default function OnboardingKitBuilderTool({
               type="button"
               onClick={() => {
                 setEmail(paywallEmail.trim());
-                buildFromData({
-                  hireName, hireTitle, department, startDate, managerName, roleType,
-                  whyHired, weekOnePriorities, keyTools, howTeamWorks, thirtyToNinety,
-                  contacts, teamNotes, feedbackCadence,
-                }, contextFile);
+                setScreen("s1");
               }}
               style={{
                 width: "100%",
@@ -1226,7 +1176,7 @@ export default function OnboardingKitBuilderTool({
                 transition: "background 0.15s ease",
               }}
             >
-              Build My Kit
+              Get Started
             </button>
           </div>
         ) : (
@@ -1328,12 +1278,6 @@ export default function OnboardingKitBuilderTool({
                   <button
                     type="button"
                     onClick={() => {
-                      saveToStorage({
-                        hireName, hireTitle, department, startDate, managerName, roleType,
-                        whyHired, weekOnePriorities, keyTools, howTeamWorks, thirtyToNinety,
-                        contacts, teamNotes, feedbackCadence,
-                      });
-                      sessionStorage.setItem("okb_return_to_paywall", "true");
                       window.location.href = "/login?redirect=/onboarding";
                     }}
                     style={{

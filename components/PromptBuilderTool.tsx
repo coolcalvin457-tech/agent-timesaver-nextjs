@@ -467,9 +467,19 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
               </button>
             </>
           ) : (
-            <button className="write-in-toggle" onClick={toggleWriteIn} type="button">
-              <span>+</span> Something else? Write it in.
-            </button>
+            <>
+              <button className="write-in-toggle" onClick={toggleWriteIn} type="button">
+                <span>+</span> Something else? Write it in.
+              </button>
+              <button
+                className="btn btn-primary btn-full"
+                style={{ marginTop: "8px" }}
+                onClick={() => advanceQ2(workType)}
+                disabled={!workType}
+              >
+                Continue
+              </button>
+            </>
           )}
         </div>
       </div>
@@ -530,9 +540,19 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
               </button>
             </>
           ) : (
-            <button className="write-in-toggle" onClick={toggleWriteIn} type="button">
-              <span>+</span> Something else? Write it in.
-            </button>
+            <>
+              <button className="write-in-toggle" onClick={toggleWriteIn} type="button">
+                <span>+</span> Something else? Write it in.
+              </button>
+              <button
+                className="btn btn-primary btn-full"
+                style={{ marginTop: "8px" }}
+                onClick={() => advanceQ3(aiUsage)}
+                disabled={!aiUsage}
+              >
+                Continue
+              </button>
+            </>
           )}
         </div>
       </div>
@@ -617,9 +637,19 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
               </button>
             </>
           ) : (
-            <button className="write-in-toggle" onClick={toggleWriteIn} type="button">
-              <span>+</span> Something else? Write it in.
-            </button>
+            <>
+              <button className="write-in-toggle" onClick={toggleWriteIn} type="button">
+                <span>+</span> Something else? Write it in.
+              </button>
+              <button
+                className="btn btn-primary btn-full"
+                style={{ marginTop: "8px" }}
+                onClick={() => advanceQ4(challenge)}
+                disabled={!challenge}
+              >
+                Build My Prompt Kit
+              </button>
+            </>
           )}
         </div>
       </div>

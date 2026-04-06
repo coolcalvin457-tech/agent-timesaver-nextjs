@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { cleanJsonResponse } from "@/app/api/_shared/cleanJson";
 
-export const maxDuration = 300; // Vercel Pro max; adaptive thinking can exceed 120s
+export const maxDuration = 300; // Vercel Pro max
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 export interface PromptItem {
@@ -125,7 +126,8 @@ async function generatePromptKit(
   workType: string,
   aiUsage: string,
   challenge: string,
-  jobDescription?: string
+  jobDescription?: string,
+  retryWithPrefill = false
 ): Promise<PromptKitResponse> {
   const Anthropic = (await import("@anthropic-ai/sdk")).default;
   const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
@@ -209,46 +211,38 @@ Return ONLY valid JSON in this exact format:
   ]
 }`;
 
+  const messages: Array<{ role: string; content: string }> = [
+    { role: "user", content: userPrompt },
+  ];
+  if (retryWithPrefill) {
+    messages.push({ role: "assistant", content: "{" });
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const message = await (client.messages.create as any)({
     model: process.env.CLAUDE_MODEL || "claude-sonnet-4-6",
     max_tokens: 16000,
-    messages: [{ role: "user", content: userPrompt }],
+    messages,
     system: systemPrompt,
   });
 
-  const text = (message.content as Array<{ type: string; text?: string }>)
+  let text = (message.content as Array<{ type: string; text?: string }>)
     .filter((block) => block.type === "text" && block.text)
     .map((block) => block.text!)
     .join("");
 
-  const jsonMatch = text.match(/\{[\s\S]*\}/);
-  if (!jsonMatch) throw new Error("No JSON found in Claude response");
+  // When retrying with assistant prefill, prepend the "{" that was used as prefill
+  if (retryWithPrefill) {
+    text = "{" + text;
+  }
 
-  let jsonStr = jsonMatch[0];
-
-  // Defensive cleanup: strip common LLM artifacts that break JSON.parse
-  jsonStr = jsonStr
-    .replace(/,\s*}/g, "}")       // trailing commas before closing brace
-    .replace(/,\s*]/g, "]")       // trailing commas before closing bracket
-    .replace(/[\u201C\u201D]/g, '"')  // smart double quotes to straight
-    .replace(/[\u2018\u2019]/g, "'")  // smart single quotes to straight
-    .replace(/\u2014/g, "-")         // em dash to hyphen
-    .replace(/\u2013/g, "-")         // en dash to hyphen
-    .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, ""); // strip control chars except \n \r \t
+  const cleaned = cleanJsonResponse(text);
 
   try {
-    return JSON.parse(jsonStr) as PromptKitResponse;
+    return JSON.parse(cleaned) as PromptKitResponse;
   } catch (parseError) {
-    // Log first 500 chars around the failure point for debugging
     const errMsg = parseError instanceof Error ? parseError.message : String(parseError);
-    const posMatch = errMsg.match(/position (\d+)/);
-    if (posMatch) {
-      const pos = parseInt(posMatch[1], 10);
-      const snippet = jsonStr.substring(Math.max(0, pos - 100), pos + 100);
-      console.error("[prompt-kit] JSON parse failed near position", pos, "snippet:", snippet);
-    }
-    console.error("[prompt-kit] Full response length:", text.length, "JSON length:", jsonStr.length);
+    console.error("[prompt-kit] JSON parse failed:", errMsg, "| length:", cleaned.length);
     throw parseError;
   }
 }
@@ -281,10 +275,10 @@ export async function POST(req: NextRequest) {
         result = await generatePromptKit(jobTitle, workType, aiUsage, challenge, jobDescription);
       } catch (firstError) {
         const firstMsg = firstError instanceof Error ? firstError.message : String(firstError);
-        // Retry once on JSON parse failures (common with large adaptive thinking responses)
+        // Retry once on JSON parse failures with assistant prefill to force JSON continuation
         if (firstMsg.includes("JSON") || firstMsg.includes("Expected")) {
-          console.warn("[prompt-kit] First attempt failed with JSON error, retrying:", firstMsg);
-          result = await generatePromptKit(jobTitle, workType, aiUsage, challenge, jobDescription);
+          console.warn("[prompt-kit] First attempt failed with JSON error, retrying with prefill:", firstMsg);
+          result = await generatePromptKit(jobTitle, workType, aiUsage, challenge, jobDescription, true);
         } else {
           throw firstError;
         }

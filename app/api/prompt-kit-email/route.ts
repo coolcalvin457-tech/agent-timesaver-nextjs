@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+
+export const maxDuration = 60; // Email-only route, no Claude call
+
 import type { PromptItem, PromptCategory, PromptKitResponse } from "@/app/api/prompt-kit/route";
 import {
   RESEND_API,
@@ -141,10 +144,13 @@ async function sendPromptKitEmail(
           <p style="margin:0 0 16px 0; font-family:Georgia,'Times New Roman',serif; font-size:24px; font-weight:400; color:#161618; line-height:1.2; letter-spacing:-0.02em;">
             AGENT: Workflow
           </p>
-          <p style="margin:0 0 24px 0; font-size:14px; color:#555553; line-height:1.6;">
+          <p style="margin:0 0 4px 0; font-size:14px; color:#555553; line-height:1.6;">
             Turn your prompts into repeatable AI workflows.
           </p>
-          <a href="https://promptaiagents.com/agents"
+          <p style="margin:0 0 24px 0; font-size:14px; color:#555553; line-height:1.6;">
+            Built for real jobs. Not demos.
+          </p>
+          <a href="https://promptaiagents.com/workflow"
              style="display:inline-block; background:#1e7ab8; color:#ffffff; font-size:15px; font-weight:600; text-decoration:none; padding:12px 28px; border-radius:10px;">
             Try Now
           </a>

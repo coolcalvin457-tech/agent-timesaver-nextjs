@@ -5,11 +5,11 @@ import Footer from "@/components/Footer";
 export const metadata = {
   title: "AGENT: Prompts — Prompt AI Agents",
   description:
-    "Get 12 ready-to-copy AI prompts personalized to your exact job. Built for non-technical professionals who want real results from AI.",
+    "Get 12 ready-to-copy AI prompts personalized to your exact job. Built for real jobs. Not demos.",
   openGraph: {
     title: "AGENT: Prompts — Prompt AI Agents",
     description:
-      "Get 12 ready-to-copy AI prompts personalized to your exact job. Built for non-technical professionals who want real results from AI.",
+      "Get 12 ready-to-copy AI prompts personalized to your exact job. Built for real jobs. Not demos.",
     url: "https://promptaiagents.com/prompts",
     siteName: "Prompt AI Agents",
     type: "website",

@@ -107,9 +107,9 @@ export default function ToolLoadingScreen({
                     height: "20px",
                     borderRadius: "50%",
                     border: `1.5px solid ${
-                      isDone ? "#1A7A4A" : isActive ? "#1E7AB8" : "rgba(255,255,255,0.2)"
+                      isDone ? "#22C55E" : isActive ? "#1E7AB8" : "rgba(255,255,255,0.2)"
                     }`,
-                    background: isDone ? "#1A7A4A" : "transparent",
+                    background: isDone ? "#22C55E" : "transparent",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",

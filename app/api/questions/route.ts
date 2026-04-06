@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { cleanJsonResponse } from "../_shared/cleanJson";
 
 export const maxDuration = 300; // Vercel Pro max; adaptive thinking can exceed 120s
 
@@ -183,21 +184,7 @@ Return ONLY valid JSON in this exact format, no explanation:
     .map((block) => block.text!)
     .join("");
 
-  // Extract JSON from response
-  const jsonMatch = text.match(/\{[\s\S]*\}/);
-  if (!jsonMatch) throw new Error("No JSON found in Claude response");
-
-  let jsonStr = jsonMatch[0];
-  jsonStr = jsonStr
-    .replace(/,\s*}/g, "}")
-    .replace(/,\s*]/g, "]")
-    .replace(/[\u201C\u201D]/g, '"')
-    .replace(/[\u2018\u2019]/g, "'")
-    .replace(/\u2014/g, "-")
-    .replace(/\u2013/g, "-")
-    .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, "");
-
-  const parsed = JSON.parse(jsonStr) as QuestionsResponse;
+  const parsed = JSON.parse(cleanJsonResponse(text)) as QuestionsResponse;
   return parsed.questions;
 }
 
@@ -224,11 +211,34 @@ export async function POST(req: NextRequest) {
       // No API key — use mock data for local development
       questions = getMockQuestions(jobTitle, path, jobDescription);
     } else {
-      questions = await generateQuestionsWithClaude(
-        jobTitle,
-        path,
-        jobDescription
-      );
+      try {
+        questions = await generateQuestionsWithClaude(jobTitle, path, jobDescription);
+      } catch (firstErr) {
+        if (firstErr instanceof SyntaxError || (firstErr instanceof Error && firstErr.message.includes("No JSON found"))) {
+          console.warn("[questions] First attempt failed, retrying with assistant prefill:", firstErr instanceof Error ? firstErr.message : String(firstErr));
+          const Anthropic = (await import("@anthropic-ai/sdk")).default;
+          const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+          const questionCount = path === "A" ? 2 : 3;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const retryMsg = await (client.messages.create as any)({
+            model: process.env.CLAUDE_MODEL || "claude-sonnet-4-6",
+            max_tokens: 4000,
+            system: "You write sharp, specific questions for working professionals. Return ONLY valid JSON.",
+            messages: [
+              { role: "user", content: `Generate ${questionCount} multiple-choice questions for a "${jobTitle}". Return valid JSON with a "questions" array. Start with {` },
+              { role: "assistant", content: "{" },
+            ],
+          });
+          const retryText = (retryMsg.content as Array<{ type: string; text?: string }>)
+            .filter((block: { type: string }) => block.type === "text")
+            .map((block: { text?: string }) => block.text!)
+            .join("");
+          const parsed = JSON.parse(cleanJsonResponse("{" + retryText)) as QuestionsResponse;
+          questions = parsed.questions;
+        } else {
+          throw firstErr;
+        }
+      }
     }
 
     return NextResponse.json({ questions });

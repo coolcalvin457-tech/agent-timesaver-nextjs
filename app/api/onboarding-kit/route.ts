@@ -12,6 +12,7 @@ import {
   BorderStyle,
   ShadingType,
 } from "docx";
+import { cleanJsonResponse } from "../_shared/cleanJson";
 
 export const maxDuration = 300; // Vercel Pro max; adaptive thinking can exceed 120s
 
@@ -382,14 +383,8 @@ Return this exact JSON structure:
     .filter((block) => block.type === "text" && block.text)
     .map((block) => block.text!)
     .join("");
-  const jsonMatch = text.match(/\{[\s\S]*\}/);
-  if (!jsonMatch) throw new Error("No JSON found in Claude response");
 
-  // Strip any em dashes that slipped through despite the prompt instruction
-  // Replace — with a colon (matches the design system rule: use periods or colons, never em dashes)
-  const sanitized = jsonMatch[0].replace(/\u2014/g, ":");
-
-  return JSON.parse(sanitized) as OnboardingKitData;
+  return JSON.parse(cleanJsonResponse(text)) as OnboardingKitData;
 }
 
 // ─── Document Builder ─────────────────────────────────────────────────────────
@@ -832,15 +827,32 @@ export async function POST(req: NextRequest) {
     if (!process.env.ANTHROPIC_API_KEY) {
       kitData = MOCK_KIT;
     } else {
-      // Retry once on parse failure
       try {
         kitData = await generateOnboardingKit(payload, fileContext);
-      } catch (err) {
-        if (err instanceof SyntaxError) {
-          // JSON parse failed — retry once
-          kitData = await generateOnboardingKit(payload, fileContext);
+      } catch (firstErr) {
+        // Retry once on JSON parse failure with assistant prefill to nudge valid JSON
+        if (firstErr instanceof SyntaxError || (firstErr instanceof Error && firstErr.message.includes("No JSON found"))) {
+          console.warn("[onboarding-kit] First attempt failed, retrying with assistant prefill:", firstErr instanceof Error ? firstErr.message : String(firstErr));
+          const Anthropic = (await import("@anthropic-ai/sdk")).default;
+          const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const retryMsg = await (client.messages.create as any)({
+            model: process.env.CLAUDE_MODEL || "claude-sonnet-4-6",
+            max_tokens: 16000,
+            thinking: { type: "adaptive" },
+            system: "You are a senior HR professional. Return ONLY valid JSON. No explanation text. No markdown.",
+            messages: [
+              { role: "user", content: "Return the onboarding kit as valid JSON. Start with {" },
+              { role: "assistant", content: "{" },
+            ],
+          });
+          const retryText = (retryMsg.content as Array<{ type: string; text?: string }>)
+            .filter((block: { type: string }) => block.type === "text")
+            .map((block: { text?: string }) => block.text!)
+            .join("");
+          kitData = JSON.parse(cleanJsonResponse("{" + retryText)) as OnboardingKitData;
         } else {
-          throw err;
+          throw firstErr;
         }
       }
     }

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { cleanJsonResponse } from "../_shared/cleanJson";
 
 export const maxDuration = 300; // Vercel Pro max; adaptive thinking can exceed 120s
 
@@ -255,20 +256,7 @@ Return ONLY valid JSON in this exact format:
     .map((block) => block.text!)
     .join("");
 
-  const jsonMatch = text.match(/\{[\s\S]*\}/);
-  if (!jsonMatch) throw new Error("No JSON found in Claude response");
-
-  let jsonStr = jsonMatch[0];
-  jsonStr = jsonStr
-    .replace(/,\s*}/g, "}")
-    .replace(/,\s*]/g, "]")
-    .replace(/[\u201C\u201D]/g, '"')
-    .replace(/[\u2018\u2019]/g, "'")
-    .replace(/\u2014/g, "-")
-    .replace(/\u2013/g, "-")
-    .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, "");
-
-  return JSON.parse(jsonStr) as WorkflowsResponse;
+  return JSON.parse(cleanJsonResponse(text)) as WorkflowsResponse;
 }
 
 // ─── Route Handler ─────────────────────────────────────────────────────────────
@@ -294,12 +282,33 @@ export async function POST(req: NextRequest) {
     if (!process.env.ANTHROPIC_API_KEY) {
       result = getMockWorkflows(jobTitle);
     } else {
-      result = await generateWorkflowsWithClaude(
-        jobTitle,
-        answers,
-        path,
-        jobDescription
-      );
+      try {
+        result = await generateWorkflowsWithClaude(jobTitle, answers, path, jobDescription);
+      } catch (firstErr) {
+        if (firstErr instanceof SyntaxError || (firstErr instanceof Error && firstErr.message.includes("No JSON found"))) {
+          console.warn("[workflows] First attempt failed, retrying with assistant prefill:", firstErr instanceof Error ? firstErr.message : String(firstErr));
+          const Anthropic = (await import("@anthropic-ai/sdk")).default;
+          const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+          const answersSection = answers.map((a: string, i: number) => `Q${i + 1}: ${a}`).join("\n");
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const retryMsg = await (client.messages.create as any)({
+            model: process.env.CLAUDE_MODEL || "claude-sonnet-4-6",
+            max_tokens: 3000,
+            system: "You recommend AI workflows for corporate professionals. Return ONLY valid JSON.",
+            messages: [
+              { role: "user", content: `Generate 5 AI workflow recommendations for a "${jobTitle}" who answered:\n${answersSection}\n\nReturn valid JSON with "workflows" array and "roi" object. Start with {` },
+              { role: "assistant", content: "{" },
+            ],
+          });
+          const retryText = (retryMsg.content as Array<{ type: string; text?: string }>)
+            .filter((block: { type: string }) => block.type === "text")
+            .map((block: { text?: string }) => block.text!)
+            .join("");
+          result = JSON.parse(cleanJsonResponse("{" + retryText)) as WorkflowsResponse;
+        } else {
+          throw firstErr;
+        }
+      }
     }
 
     return NextResponse.json(result);

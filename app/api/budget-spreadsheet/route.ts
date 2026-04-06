@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import ExcelJS from "exceljs";
+import { cleanJsonResponse } from "../_shared/cleanJson";
 
 export const maxDuration = 300; // Vercel Pro max; adaptive thinking can exceed 120s
 
@@ -229,20 +230,8 @@ Return ONLY valid JSON. No explanation text.`;
     .filter((block) => block.type === "text" && block.text)
     .map((block) => block.text!)
     .join("");
-  const jsonMatch = text.match(/\{[\s\S]*\}/);
-  if (!jsonMatch) throw new Error("No JSON found in Claude response");
 
-  let jsonStr = jsonMatch[0];
-  jsonStr = jsonStr
-    .replace(/,\s*}/g, "}")
-    .replace(/,\s*]/g, "]")
-    .replace(/[\u201C\u201D]/g, '"')
-    .replace(/[\u2018\u2019]/g, "'")
-    .replace(/\u2014/g, "-")
-    .replace(/\u2013/g, "-")
-    .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, "");
-
-  const parsed = JSON.parse(jsonStr) as BudgetSpreadsheetData;
+  const parsed = JSON.parse(cleanJsonResponse(text)) as BudgetSpreadsheetData;
   return sanitizeBudgetData(parsed);
 }
 
@@ -717,7 +706,33 @@ export async function POST(req: NextRequest) {
     if (!process.env.ANTHROPIC_API_KEY) {
       budgetData = MOCK_BUDGET;
     } else {
-      budgetData = await generateBudgetStructure(description.trim(), contentContext, templateContext);
+      try {
+        budgetData = await generateBudgetStructure(description.trim(), contentContext, templateContext);
+      } catch (firstErr) {
+        if (firstErr instanceof SyntaxError || (firstErr instanceof Error && firstErr.message.includes("No JSON found"))) {
+          console.warn("[budget-spreadsheet] First attempt failed, retrying with assistant prefill:", firstErr instanceof Error ? firstErr.message : String(firstErr));
+          const Anthropic = (await import("@anthropic-ai/sdk")).default;
+          const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const retryMsg = await (client.messages.create as any)({
+            model: process.env.CLAUDE_MODEL || "claude-sonnet-4-6",
+            max_tokens: 16000,
+            system: "You are a financial planning expert. Return ONLY valid JSON. No explanation text. No markdown.",
+            messages: [
+              { role: "user", content: `Create a budget spreadsheet JSON for: "${description.trim()}". Return valid JSON with filename, title, subtitle, period, currency, hasActualColumn, and sections array. Start with {` },
+              { role: "assistant", content: "{" },
+            ],
+          });
+          const retryText = (retryMsg.content as Array<{ type: string; text?: string }>)
+            .filter((block: { type: string }) => block.type === "text")
+            .map((block: { text?: string }) => block.text!)
+            .join("");
+          const parsed = JSON.parse(cleanJsonResponse("{" + retryText)) as BudgetSpreadsheetData;
+          budgetData = sanitizeBudgetData(parsed);
+        } else {
+          throw firstErr;
+        }
+      }
     }
 
     const fileBytes = await buildExcelFile(budgetData);

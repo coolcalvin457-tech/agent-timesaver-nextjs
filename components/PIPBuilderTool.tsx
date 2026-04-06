@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import ToolEmailGate from "@/components/shared/ToolEmailGate";
 import ToolLoadingScreen from "@/components/shared/ToolLoadingScreen";
 import BackButton from "@/components/shared/BackButton";
 import StepIndicator from "@/components/shared/StepIndicator";
@@ -19,7 +18,6 @@ type Screen =
   | "paywall"
   | "verifying"
   | "loading"
-  | "email-gate"
   | "sent"
   | "error";
 
@@ -218,10 +216,8 @@ export default function PIPBuilderTool({
   // ── Loading animation state ───────────────────────────────
   const [loadingStep, setLoadingStep] = useState(0);
 
-  // ── Email gate state ──────────────────────────────────────
+  // ── Email (auto-send after build) ─────────────────────────
   const [email, setEmail] = useState("");
-  const [emailSubmitting, setEmailSubmitting] = useState(false);
-  const [emailError, setEmailError] = useState("");
 
   // ── Result state ──────────────────────────────────────────
   const [fileBlob, setFileBlob] = useState<Blob | null>(null);
@@ -483,11 +479,31 @@ export default function PIPBuilderTool({
       const blob = await res.blob();
       const rawFilename = res.headers.get("X-PIP-Filename");
       const rawTimeline = res.headers.get("X-Timeline");
+      const pipFilename = rawFilename ? decodeURIComponent(rawFilename) : "pip-document.docx";
 
       setFileBlob(blob);
-      setFilename(rawFilename ? decodeURIComponent(rawFilename) : "pip-document.docx");
+      setFilename(pipFilename);
       if (rawTimeline) setResultTimeline(rawTimeline);
-      setScreen("email-gate");
+
+      // Auto-deliver: download file + send email in background
+      triggerDownload(blob, pipFilename);
+      if (email) {
+        blobToBase64(blob).then((base64) => {
+          fetch("/api/pip-builder-email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: email.trim(),
+              filename: pipFilename,
+              employeeRole: data.employeeRole,
+              timeline: rawTimeline || data.timeline || "30",
+              fileData: base64,
+            }),
+          }).catch(() => {});
+        }).catch(() => {});
+      }
+
+      setScreen("sent");
     } catch (err) {
       setErrorMsg(
         err instanceof Error
@@ -586,39 +602,6 @@ export default function PIPBuilderTool({
       setReturningCheckError("Something went wrong. Please try again.");
     } finally {
       setReturningCheckLoading(false);
-    }
-  }
-
-  // ── Email submit ──────────────────────────────────────────
-
-  async function handleEmailSubmit() {
-    if (!email.trim() || !fileBlob) return;
-
-    setEmailSubmitting(true);
-    setEmailError("");
-
-    try {
-      // Trigger browser download immediately
-      triggerDownload(fileBlob, filename);
-
-      // Send email with the file attached
-      const base64 = await blobToBase64(fileBlob);
-      await fetch("/api/pip-builder-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: email.trim(),
-          filename,
-          employeeRole: resultRole,
-          timeline: resultTimeline,
-          fileData: base64,
-        }),
-      });
-
-      setScreen("sent");
-    } catch {
-      setEmailError("Something went wrong. Try downloading again.");
-      setEmailSubmitting(false);
     }
   }
 
@@ -1315,26 +1298,7 @@ export default function PIPBuilderTool({
     );
   }
 
-  // ── Email gate screen ─────────────────────────────────────
-  if (screen === "email-gate") {
-    return (
-      <div ref={toolContainerRef} className="okb-tool">
-        <ToolEmailGate
-          headline={`${employeeName ? `${employeeName}'s` : "Your"} PIP is ready.`}
-          subtitle={employeeRole || undefined}
-          email={email}
-          onEmailChange={setEmail}
-          onSubmit={handleEmailSubmit}
-          loading={emailSubmitting}
-          buttonLabel="Send My PIP"
-          errorMessage={emailError || undefined}
-          inputId="pip-email"
-        />
-      </div>
-    );
-  }
-
-  // ── Sent screen ───────────────────────────────────────────
+  // ── Sent screen (auto-delivered) ──────────────────────────
   if (screen === "sent") {
     return (
       <div ref={toolContainerRef} className="okb-tool">
@@ -1345,9 +1309,33 @@ export default function PIPBuilderTool({
               <path d="M18 28.5L24.5 35L38 21" stroke="#22C55E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
-          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 32px" }}>
-            {employeeName ? `${employeeName}'s` : "Your"} PIP is in your inbox.
+          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 8px" }}>
+            {employeeName ? `${employeeName}'s` : "Your"} PIP is ready.
           </h2>
+          <p style={{ fontSize: "0.875rem", color: "var(--text-muted)", margin: "0 0 32px" }}>
+            Downloaded to your device and sent to {email || "your inbox"}.
+          </p>
+          {fileBlob && (
+            <button
+              type="button"
+              onClick={() => triggerDownload(fileBlob, filename)}
+              style={{
+                background: "none",
+                border: "none",
+                padding: 0,
+                fontSize: "0.8125rem",
+                color: "var(--cta, #1E7AB8)",
+                textDecoration: "underline",
+                cursor: "pointer",
+                marginBottom: "24px",
+                display: "block",
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
+            >
+              Download again
+            </button>
+          )}
           <button
             type="button"
             className="btn btn-primary btn-lg btn-full"

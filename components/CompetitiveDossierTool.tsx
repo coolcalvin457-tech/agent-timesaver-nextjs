@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import ToolEmailGate from "@/components/shared/ToolEmailGate";
 import CrossSellBlock from "@/components/shared/CrossSellBlock";
 import BackButton from "@/components/shared/BackButton";
 import StepIndicator from "@/components/shared/StepIndicator";
@@ -17,7 +16,6 @@ type Screen =
   | "paywall"
   | "verifying"
   | "loading"
-  | "email-gate"
   | "sent"
   | "error-site"
   | "error-data"
@@ -247,10 +245,8 @@ export default function CompetitiveDossierTool({
     LOADING_STEPS.map(() => "pending")
   );
 
-  // ── Email gate ───────────────────────────────────────────────────────────────
+  // ── Email (auto-send after build) ─────────────────────────────────────────────
   const [email, setEmail] = useState("");
-  const [emailSubmitting, setEmailSubmitting] = useState(false);
-  const [emailError, setEmailError] = useState("");
 
   // ── Result ───────────────────────────────────────────────────────────────────
   const [docxBase64, setDocxBase64] = useState("");
@@ -439,11 +435,33 @@ export default function CompetitiveDossierTool({
             completed = true;
             clearTimeout(timeoutId);
             const meta = data.metadata as { companyName: string; pagesAnalyzed: number; jobTitle: string };
-            setDocxBase64(data.docxBase64 as string);
-            setResultCompanyName(meta.companyName ?? companyName ?? "the company");
+            const b64 = data.docxBase64 as string;
+            const cName = meta.companyName ?? companyName ?? "the company";
+            const cJobTitle = meta.jobTitle ?? jobTitle;
+            setDocxBase64(b64);
+            setResultCompanyName(cName);
             setResultPagesAnalyzed(meta.pagesAnalyzed ?? 0);
-            setResultJobTitle(meta.jobTitle ?? jobTitle);
-            setScreen("email-gate");
+            setResultJobTitle(cJobTitle);
+
+            // Auto-deliver: download file + send email in background
+            const blob = base64ToBlob(b64, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+            const fn = `${cName.replace(/[^a-zA-Z0-9]/g, "-")}-Dossier.docx`;
+            triggerDownload(blob, fn);
+            if (email) {
+              fetch("/api/competitive-dossier-email", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  email,
+                  companyName: cName,
+                  jobTitle: cJobTitle,
+                  docxBase64: b64,
+                  userId: user?.id ?? undefined,
+                }),
+              }).catch(() => {});
+            }
+
+            setScreen("sent");
           } else if (eventType === "error") {
             completed = true;
             clearTimeout(timeoutId);
@@ -517,38 +535,6 @@ export default function CompetitiveDossierTool({
       setReturningCheckError("Could not verify. Please try again.");
       setReturningCheckLoading(false);
     }
-  }
-
-  // ── Email gate submit ─────────────────────────────────────────────────────────
-
-  async function handleEmailSubmit() {
-    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setEmailError("Please enter a valid email address.");
-      return;
-    }
-    setEmailSubmitting(true);
-    setEmailError("");
-
-    // Trigger browser download immediately
-    const blob = base64ToBlob(docxBase64, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-    const filename = `${resultCompanyName.replace(/[^a-zA-Z0-9]/g, "-")}-Dossier.docx`;
-    triggerDownload(blob, filename);
-
-    // Fire email in background
-    fetch("/api/competitive-dossier-email", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email,
-        companyName: resultCompanyName,
-        jobTitle: resultJobTitle,
-        docxBase64,
-        userId: user?.id ?? undefined,
-      }),
-    }).catch(console.error);
-
-    setEmailSubmitting(false);
-    setScreen("sent");
   }
 
   function base64ToBlob(base64: string, mimeType: string): Blob {
@@ -1027,18 +1013,21 @@ export default function CompetitiveDossierTool({
         </div>
       )}
 
-      {/* ── Email gate ───────────────────────────────────────────────────────── */}
-      {screen === "email-gate" && (
-        <div>
+      {/* ── Sent screen (auto-delivered) ────────────────────────────────────── */}
+      {screen === "sent" && (
+        <div style={{ textAlign: "center" }}>
           <div style={{ display: "inline-block", marginBottom: "16px" }}>
             <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
               <rect width="56" height="56" rx="12" fill="#22C55E" fillOpacity="0.12" />
               <path d="M18 28.5L24.5 35L38 21" stroke="#22C55E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
-          <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.25rem, 2.5vw, 1.625rem)", color: "#fff", margin: "0 0 20px" }}>
+          <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", color: "#FFFFFF", margin: "0 0 8px", lineHeight: 1.25 }}>
             Your dossier is ready.
           </h2>
+          <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.5)", margin: "0 0 24px" }}>
+            Downloaded to your device and sent to {email || "your inbox"}.
+          </p>
 
           {/* Proof of work preview */}
           <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: "var(--radius-card, 12px)", border: "1px solid rgba(255,255,255,0.10)", padding: "16px 20px", marginBottom: "24px", textAlign: "left" }}>
@@ -1055,30 +1044,30 @@ export default function CompetitiveDossierTool({
             </p>
           </div>
 
-          <ToolEmailGate
-            headline=""
-            email={email}
-            onEmailChange={setEmail}
-            onSubmit={handleEmailSubmit}
-            loading={emailSubmitting}
-            buttonLabel="Send My Dossier"
-          />
-          {emailError && <p style={errorStyle}>{emailError}</p>}
-        </div>
-      )}
-
-      {/* ── Sent screen ──────────────────────────────────────────────────────── */}
-      {screen === "sent" && (
-        <div style={{ textAlign: "center" }}>
-          <div style={{ display: "inline-block", marginBottom: "16px" }}>
-            <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
-              <rect width="56" height="56" rx="12" fill="#22C55E" fillOpacity="0.12" />
-              <path d="M18 28.5L24.5 35L38 21" stroke="#22C55E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </div>
-          <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", color: "#FFFFFF", margin: "0 0 32px", lineHeight: 1.25 }}>
-            Your dossier is in your inbox.
-          </h2>
+          {docxBase64 && (
+            <button
+              type="button"
+              onClick={() => {
+                const blob = base64ToBlob(docxBase64, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+                triggerDownload(blob, `${resultCompanyName.replace(/[^a-zA-Z0-9]/g, "-")}-Dossier.docx`);
+              }}
+              style={{
+                background: "none",
+                border: "none",
+                padding: 0,
+                fontSize: "0.8125rem",
+                color: "var(--cta, #1E7AB8)",
+                textDecoration: "underline",
+                cursor: "pointer",
+                marginBottom: "24px",
+                display: "block",
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
+            >
+              Download again
+            </button>
+          )}
           <button
             onClick={() => { setScreen("s1"); setCompanyUrl(""); setCompanyName(""); setRelationshipType(""); setResearchFocus(""); setPriorityFocusAreas([]); setExistingKnowledge(""); }}
             className="btn btn-primary btn-lg btn-full"

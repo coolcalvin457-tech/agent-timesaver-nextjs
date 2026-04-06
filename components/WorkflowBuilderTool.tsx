@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import ToolEmailGate from "@/components/shared/ToolEmailGate";
 import ToolLoadingScreen from "@/components/shared/ToolLoadingScreen";
 import CrossSellBlock from "@/components/shared/CrossSellBlock";
 import BackButton from "@/components/shared/BackButton";
@@ -19,7 +18,6 @@ type Screen =
   | "paywall"
   | "verifying"
   | "loading"
-  | "email-gate"
   | "sent"
   | "error";
 
@@ -199,10 +197,8 @@ export default function WorkflowBuilderTool({
   // ── Loading animation ─────────────────────────────────────
   const [loadingStep, setLoadingStep] = useState(0);
 
-  // ── Email gate ────────────────────────────────────────────
+  // ── Email (auto-send after build) ─────────────────────────
   const [email, setEmail] = useState("");
-  const [emailSubmitting, setEmailSubmitting] = useState(false);
-  const [emailError, setEmailError] = useState("");
 
   // ── Result state ──────────────────────────────────────────
   const [fileBlob, setFileBlob] = useState<Blob | null>(null);
@@ -366,7 +362,26 @@ export default function WorkflowBuilderTool({
       setResultStepCount(stepCount);
       setResultFrequency(freq);
 
-      setScreen("email-gate");
+      // Auto-deliver: download file + send email in background
+      triggerDownload(blob, wfFilename);
+      if (email) {
+        blobToBase64(blob).then((fileData) => {
+          fetch("/api/workflow-builder-email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: email.trim(),
+              filename: wfFilename,
+              taskTitle,
+              stepCount,
+              frequency: freq,
+              fileData,
+            }),
+          }).catch(() => {});
+        }).catch(() => {});
+      }
+
+      setScreen("sent");
     } catch (err) {
       setErrorMsg(
         err instanceof Error
@@ -474,47 +489,6 @@ export default function WorkflowBuilderTool({
     }
   }
 
-  // ─── Email submit ─────────────────────────────────────────
-
-  async function handleEmailSubmit(): Promise<void> {
-    if (!email.trim() || !email.includes("@")) {
-      setEmailError("Please enter a valid email address.");
-      return;
-    }
-    if (!fileBlob) {
-      setEmailError("Something went wrong. Please start over.");
-      return;
-    }
-
-    setEmailSubmitting(true);
-    setEmailError("");
-
-    // Fire browser download immediately
-    triggerDownload(fileBlob, filename);
-
-    // Send email in background
-    try {
-      const fileData = await blobToBase64(fileBlob);
-      await fetch("/api/workflow-builder-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: email.trim(),
-          filename,
-          taskTitle: resultTaskTitle,
-          stepCount: resultStepCount,
-          frequency: resultFrequency,
-          fileData,
-        }),
-      });
-    } catch {
-      // Email failure is non-blocking — download already fired
-    }
-
-    setEmailSubmitting(false);
-    setScreen("sent");
-  }
-
   // ─── Sign-in redirect ─────────────────────────────────────
 
   function handleSignIn(): void {
@@ -539,7 +513,6 @@ export default function WorkflowBuilderTool({
     setResultStepCount("");
     setResultFrequency("");
     setEmail("");
-    setEmailError("");
     setS1Error("");
     setS2Error("");
     setS3Error("");
@@ -1118,21 +1091,7 @@ export default function WorkflowBuilderTool({
         </>
       )}
 
-      {/* ── Email gate ────────────────────────────────────── */}
-      {screen === "email-gate" && (
-        <ToolEmailGate
-          headline="Your workflow is ready."
-          subtitle={resultTaskTitle || undefined}
-          email={email}
-          onEmailChange={setEmail}
-          onSubmit={handleEmailSubmit}
-          loading={emailSubmitting}
-          buttonLabel="Send My Workflow"
-          errorMessage={emailError}
-        />
-      )}
-
-      {/* ── Sent ──────────────────────────────────────────── */}
+      {/* ── Sent (auto-delivered) ────────────────────────── */}
       {screen === "sent" && (
         <>
         <div style={{ textAlign: "center", padding: "8px 0" }}>
@@ -1148,12 +1107,36 @@ export default function WorkflowBuilderTool({
               fontWeight: 400,
               fontFamily: "var(--font-display)",
               color: "#FFFFFF",
-              margin: "0 0 32px",
+              margin: "0 0 8px",
               lineHeight: 1.25,
             }}
           >
-            Your workflow is in your inbox.
+            Your workflow is ready.
           </h2>
+          <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.5)", margin: "0 0 32px" }}>
+            Downloaded to your device and sent to {email || "your inbox"}.
+          </p>
+          {fileBlob && (
+            <button
+              type="button"
+              onClick={() => triggerDownload(fileBlob, filename)}
+              style={{
+                background: "none",
+                border: "none",
+                padding: 0,
+                fontSize: "0.8125rem",
+                color: "var(--cta, #1E7AB8)",
+                textDecoration: "underline",
+                cursor: "pointer",
+                marginBottom: "24px",
+                display: "block",
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
+            >
+              Download again
+            </button>
+          )}
           <button
             type="button"
             className="btn btn-primary btn-lg btn-full"
@@ -1163,7 +1146,7 @@ export default function WorkflowBuilderTool({
           </button>
         </div>
 
-        {/* Cross-sell — AGENT: Industry */}
+        {/* Cross-sell: AGENT: Industry */}
         <CrossSellBlock
           productName="AGENT: Industry"
           descriptionLines={[

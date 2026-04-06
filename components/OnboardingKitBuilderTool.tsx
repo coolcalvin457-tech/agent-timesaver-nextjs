@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import ToolEmailGate from "@/components/shared/ToolEmailGate";
 import ToolLoadingScreen from "@/components/shared/ToolLoadingScreen";
 import BackButton from "@/components/shared/BackButton";
 import StepIndicator from "@/components/shared/StepIndicator";
@@ -19,7 +18,6 @@ type Screen =
   | "paywall"
   | "verifying"
   | "loading"
-  | "email-gate"
   | "sent"
   | "error";
 
@@ -272,10 +270,8 @@ export default function OnboardingKitBuilderTool({
   const [filename, setFilename] = useState("onboarding-kit.docx");
   const [loadingStep, setLoadingStep] = useState(0);
 
-  // ── Email gate state ──────────────────────────────────────
+  // ── Email (auto-send after build) ─────────────────────────
   const [email, setEmail] = useState("");
-  const [emailSubmitting, setEmailSubmitting] = useState(false);
-  const [emailError, setEmailError] = useState("");
 
   // ── Paywall / checkout state ──────────────────────────────
   const [checkoutLoading, setCheckoutLoading] = useState(false);
@@ -527,10 +523,30 @@ export default function OnboardingKitBuilderTool({
 
       const blob = await res.blob();
       const rawFilename = res.headers.get("X-Kit-Filename");
+      const kitFilename = rawFilename ? decodeURIComponent(rawFilename) : "onboarding-kit.docx";
 
       setFileBlob(blob);
-      setFilename(rawFilename ? decodeURIComponent(rawFilename) : "onboarding-kit.docx");
-      setScreen("email-gate");
+      setFilename(kitFilename);
+
+      // Auto-deliver: download file + send email in background
+      triggerDownload(blob, kitFilename);
+      if (email) {
+        blobToBase64(blob).then((fileData) => {
+          fetch("/api/onboarding-kit-email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: email.trim(),
+              filename: kitFilename,
+              hireName: data.hireName.trim(),
+              hireTitle: data.hireTitle.trim(),
+              fileData,
+            }),
+          }).catch(() => {});
+        }).catch(() => {});
+      }
+
+      setScreen("sent");
     } catch (err) {
       setErrorMsg(
         err instanceof Error
@@ -637,50 +653,6 @@ export default function OnboardingKitBuilderTool({
     }
   }
 
-  // ── Email submit: download + send simultaneously ──────────
-
-  async function handleEmailSubmit() {
-    if (!email.trim() || !email.includes("@") || !fileBlob || emailSubmitting) return;
-
-    setEmailSubmitting(true);
-    setEmailError("");
-
-    // Browser download fires immediately
-    triggerDownload(fileBlob, filename);
-
-    try {
-      const fileData = await blobToBase64(fileBlob);
-
-      const res = await fetch("/api/onboarding-kit-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: email.trim(),
-          filename,
-          hireName: hireName.trim(),
-          hireTitle: hireTitle.trim(),
-          fileData,
-        }),
-      });
-
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error((data as { error?: string }).error ?? "Email delivery failed.");
-      }
-
-      setScreen("sent");
-    } catch (err) {
-      // Download already fired — show soft error, don't block user
-      setEmailError(
-        err instanceof Error
-          ? err.message
-          : "Email delivery failed. Your file should still have downloaded."
-      );
-    } finally {
-      setEmailSubmitting(false);
-    }
-  }
-
   // ── Reset ──────────────────────────────────────────────────
 
   function handleReset() {
@@ -693,7 +665,7 @@ export default function OnboardingKitBuilderTool({
     setContacts([{ name: "", title: "", email: "" }, { name: "", title: "", email: "" }, { name: "", title: "", email: "" }]);
     setTeamNotes(""); setFeedbackCadence("");
     setFileBlob(null); setFilename("onboarding-kit.docx");
-    setEmail(""); setEmailError(""); setEmailSubmitting(false);
+    setEmail("");
     setErrorMsg(""); setS1Error(""); setS2Error(""); setS3Error("");
     setCheckoutLoading(false); setCheckoutError(""); setPaywallEmail(""); setPaymentCancelled(false);
     setShowReturningCheck(false); setReturningEmail(""); setReturningCheckError("");
@@ -1406,26 +1378,7 @@ export default function OnboardingKitBuilderTool({
     );
   }
 
-  // ── Email gate ──────────────────────────────────────────────
-  if (screen === "email-gate") {
-    return (
-      <div ref={toolContainerRef} className="okb-tool">
-        <ToolEmailGate
-          headline={`${hireName ? `${hireName}'s` : "The"} onboarding kit is ready.`}
-          subtitle={hireTitle || undefined}
-          email={email}
-          onEmailChange={setEmail}
-          onSubmit={handleEmailSubmit}
-          loading={emailSubmitting}
-          buttonLabel="Send My Kit"
-          errorMessage={emailError || undefined}
-          inputId="okb-email"
-        />
-      </div>
-    );
-  }
-
-  // ── Sent screen ─────────────────────────────────────────────
+  // ── Sent screen (auto-delivered) ──────────────────────────
   if (screen === "sent") {
     return (
       <div ref={toolContainerRef} className="okb-tool">
@@ -1436,9 +1389,33 @@ export default function OnboardingKitBuilderTool({
               <path d="M18 28.5L24.5 35L38 21" stroke="#22C55E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
-          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 32px" }}>
-            {hireName ? `${hireName}'s` : "Your"} kit is in your inbox.
+          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 8px" }}>
+            {hireName ? `${hireName}'s` : "Your"} onboarding kit is ready.
           </h2>
+          <p style={{ fontSize: "0.875rem", color: "var(--text-muted)", margin: "0 0 32px" }}>
+            Downloaded to your device and sent to {email || "your inbox"}.
+          </p>
+          {fileBlob && (
+            <button
+              type="button"
+              onClick={() => triggerDownload(fileBlob, filename)}
+              style={{
+                background: "none",
+                border: "none",
+                padding: 0,
+                fontSize: "0.8125rem",
+                color: "var(--cta, #1E7AB8)",
+                textDecoration: "underline",
+                cursor: "pointer",
+                marginBottom: "24px",
+                display: "block",
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
+            >
+              Download again
+            </button>
+          )}
           <button
             type="button"
             className="btn btn-primary btn-lg btn-full"

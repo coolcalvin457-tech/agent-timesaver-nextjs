@@ -438,7 +438,7 @@ export default function TimesaverTool() {
 
           <input
             className="input"
-            style={{ marginBottom: "6px" }}
+            style={{ marginBottom: "28px" }}
             type="text"
             placeholder="e.g. Operations Manager, Finance Director"
             value={jobTitleInput}
@@ -449,15 +449,6 @@ export default function TimesaverTool() {
             }}
             autoFocus
           />
-          <p
-            style={{
-              fontSize: "0.8125rem",
-              color: "var(--text-muted)",
-              marginBottom: "28px",
-            }}
-          >
-            The more specific, the better.
-          </p>
 
           <p
             style={{

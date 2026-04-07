@@ -4,7 +4,7 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { track } from "@vercel/analytics";
 
 import type { Question } from "@/app/api/questions/route";
-import type { Workflow, ROI } from "@/app/api/workflows/route";
+import type { TimeSaver, ROI } from "@/app/api/workflows/route";
 import ToolLoadingScreen from "@/components/shared/ToolLoadingScreen";
 import ToolEmailGate from "@/components/shared/ToolEmailGate";
 import BackButton from "@/components/shared/BackButton";
@@ -12,12 +12,12 @@ import CrossSellBlock from "@/components/shared/CrossSellBlock";
 import { useAuth } from "@/components/AuthProvider";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
-// Workflows-stage animated checklist (S112-F10). Locked steps per Layer 3
-// (master-tool-spec-category-free.md §196). Advances on a timer synced to
-// the ~60s API call.
-const WORKFLOW_LOADING_STEPS = [
+// Time-savers-stage animated checklist (S112-F10, renamed S115-F46).
+// Locked steps per Layer 3 (master-tool-spec-category-free.md). Advances on
+// a timer synced to the ~60s API call.
+const TIME_SAVER_LOADING_STEPS = [
   "Analyzing role",
-  "Building workflows",
+  "Building time-savers",
   "Calculating hours saved",
 ] as const;
 
@@ -44,7 +44,7 @@ interface AppState {
   writeInValue: string;
   showWriteIn: boolean;
   answers: string[];
-  workflows: Workflow[];
+  timeSavers: TimeSaver[];
   roi: ROI | null;
 }
 
@@ -55,13 +55,13 @@ function stripEmDashes(s: string): string {
   return s.replace(/[—–]/g, " - ").replace(/ {2,}/g, " ").trim();
 }
 
-function sanitizeWorkflowData(workflows: Workflow[], roi: ROI): { workflows: Workflow[]; roi: ROI } {
+function sanitizeTimeSaverData(timeSavers: TimeSaver[], roi: ROI): { timeSavers: TimeSaver[]; roi: ROI } {
   return {
-    workflows: workflows.map((wf) => ({
-      ...wf,
-      title: stripEmDashes(wf.title),
-      description: stripEmDashes(wf.description),
-      tool: stripEmDashes(wf.tool),
+    timeSavers: timeSavers.map((ts) => ({
+      ...ts,
+      title: stripEmDashes(ts.title),
+      description: stripEmDashes(ts.description),
+      tool: stripEmDashes(ts.tool),
     })),
     roi: {
       ...roi,
@@ -85,7 +85,7 @@ export default function TimesaverTool() {
     writeInValue: "",
     showWriteIn: false,
     answers: [],
-    workflows: [],
+    timeSavers: [],
     roi: null,
   });
 
@@ -95,7 +95,7 @@ export default function TimesaverTool() {
   const [isDragOver, setIsDragOver] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [loadingType, setLoadingType] = useState<"questions" | "workflows">("questions");
+  const [loadingType, setLoadingType] = useState<"questions" | "timeSavers">("questions");
   const [loadingStep, setLoadingStep] = useState(0);
   const [gateSending, setGateSending] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -121,12 +121,13 @@ export default function TimesaverTool() {
     }
   }, [flipStage]);
 
-  // ── Workflows-stage checklist advance (S112-F10) ──────────────────────────
+  // ── Time-savers-stage checklist advance (S112-F10, renamed S115-F46) ─────
   // Advance the loading checklist on a timer while the /api/workflows call is
   // in-flight. ~60s total budget split across 3 steps. Resets when the stage
-  // starts. Does NOT run on the questions (Thinking) stage.
+  // starts. Does NOT run on the questions (Thinking) stage. (Route path still
+  // "/api/workflows" as an intentional non-migration — see S115 code notes.)
   useEffect(() => {
-    if (state.screen !== "loading" || loadingType !== "workflows") {
+    if (state.screen !== "loading" || loadingType !== "timeSavers") {
       setLoadingStep(0);
       return;
     }
@@ -163,14 +164,14 @@ export default function TimesaverTool() {
         body: JSON.stringify({
           email: user.email,
           jobTitle: state.jobTitle,
-          workflows: state.workflows,
+          timeSavers: state.timeSavers,
           roi: state.roi,
         }),
       }).catch(() => {});
       track("email_submitted", { jobTitle: state.jobTitle });
       go("results");
     }
-  }, [state.screen, user, state.jobTitle, state.workflows, state.roi, go]);
+  }, [state.screen, user, state.jobTitle, state.timeSavers, state.roi, go]);
 
   // ── API Call 1: Generate questions ─────────────────────────────────────────
   const loadQuestions = useCallback(
@@ -221,12 +222,13 @@ export default function TimesaverTool() {
     [go]
   );
 
-  // ── API Call 2: Generate workflows ────────────────────────────────────────
-  const loadWorkflows = useCallback(
+  // ── API Call 2: Generate time-savers ──────────────────────────────────────
+  // Route path stays "/api/workflows" as an intentional non-migration (S115-F46).
+  const loadTimeSavers = useCallback(
     async (jobTitle: string, answers: string[], path: Path, jobDescription?: string) => {
       setIsLoading(true);
       setError(null);
-      setLoadingType("workflows");
+      setLoadingType("timeSavers");
       go("loading");
 
       try {
@@ -236,14 +238,14 @@ export default function TimesaverTool() {
           body: JSON.stringify({ jobTitle, answers, path, jobDescription }),
         });
 
-        if (!res.ok) throw new Error("Failed to fetch workflows");
-        const data = await res.json() as { workflows: Workflow[]; roi: ROI };
-        const sanitized = sanitizeWorkflowData(data.workflows, data.roi);
+        if (!res.ok) throw new Error("Failed to fetch time-savers");
+        const data = await res.json() as { timeSavers: TimeSaver[]; roi: ROI };
+        const sanitized = sanitizeTimeSaverData(data.timeSavers, data.roi);
 
         track("results_viewed", { jobTitle, path: path ?? "none" });
         setState((s) => ({
           ...s,
-          workflows: sanitized.workflows,
+          timeSavers: sanitized.timeSavers,
           roi: sanitized.roi,
           screen: "gate",
         }));
@@ -333,7 +335,7 @@ export default function TimesaverTool() {
 
       if (nextIndex >= state.questions.length) {
         track("questions_completed", { path: state.path ?? "none", jobTitle: state.jobTitle });
-        loadWorkflows(state.jobTitle, newAnswers, state.path, state.jobDescription);
+        loadTimeSavers(state.jobTitle, newAnswers, state.path, state.jobDescription);
       } else {
         setState((s) => ({
           ...s,
@@ -365,9 +367,9 @@ export default function TimesaverTool() {
     const nextIndex = state.questionIndex + 1;
 
     if (nextIndex >= state.questions.length) {
-      // All questions answered — load workflows
+      // All questions answered — load time-savers
       track("questions_completed", { path: state.path ?? "none", jobTitle: state.jobTitle });
-      loadWorkflows(state.jobTitle, newAnswers, state.path, state.jobDescription);
+      loadTimeSavers(state.jobTitle, newAnswers, state.path, state.jobDescription);
     } else {
       setState((s) => ({
         ...s,
@@ -396,7 +398,7 @@ export default function TimesaverTool() {
       body: JSON.stringify({
         email: emailGateInput.trim(),
         jobTitle: state.jobTitle,
-        workflows: state.workflows,
+        timeSavers: state.timeSavers,
         roi: state.roi,
       }),
     }).catch(() => {});
@@ -590,11 +592,11 @@ export default function TimesaverTool() {
             // No timing line, no eyebrow, no checklist — animated ellipsis only.
             <ToolLoadingScreen headingText="Thinking" />
           ) : (
-            // Stage 2: animated checklist (S112-F10).
+            // Stage 2: animated checklist (S112-F10, renamed S115-F46).
             <ToolLoadingScreen
-              headingText="Building your workflows."
+              headingText="Building your time-savers."
               timeEstimate="About 1 minute."
-              steps={[...WORKFLOW_LOADING_STEPS]}
+              steps={[...TIME_SAVER_LOADING_STEPS]}
               activeStep={loadingStep}
             />
           )}
@@ -700,24 +702,24 @@ export default function TimesaverTool() {
             You could save {state.roi.totalHoursPerWeek} hours every week.
           </div>
 
-          {/* Workflow Cards */}
-          <div className="workflow-cards">
-            {state.workflows.map((wf, i) => {
-              const cardId = `wf-${i}`;
+          {/* Time-saver Cards (S115-F46: plain "01" label, no prefix) */}
+          <div className="time-saver-cards">
+            {state.timeSavers.map((ts, i) => {
+              const cardId = `ts-${i}`;
               return (
-                <div key={i} className="workflow-card" style={{ position: "relative" }}>
+                <div key={i} className="time-saver-card" style={{ position: "relative" }}>
                   <button
                     className={`pb-copy-btn ${copiedId === cardId ? "copied" : ""}`}
-                    onClick={() => handleCopy(cardId, wf.description)}
+                    onClick={() => handleCopy(cardId, ts.description)}
                     style={{ position: "absolute", top: "12px", right: "12px" }}
                   >
                     {copiedId === cardId ? "✓ Copied" : "Copy"}
                   </button>
-                  <div className="workflow-label">Workflow 0{i + 1}</div>
-                  <div className="workflow-title">{wf.title}</div>
-                  <div className="workflow-desc">{wf.description}</div>
-                  <div className="workflow-time">
-                    ⏱ Saves ~{wf.timeSavedPerWeek}h/week
+                  <div className="time-saver-label">0{i + 1}</div>
+                  <div className="time-saver-title">{ts.title}</div>
+                  <div className="time-saver-desc">{ts.description}</div>
+                  <div className="time-saver-time">
+                    ⏱ Saves ~{ts.timeSavedPerWeek}h/week
                   </div>
                 </div>
               );

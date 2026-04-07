@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import type { Workflow, ROI } from "@/app/api/workflows/route";
+import type { TimeSaver, ROI } from "@/app/api/workflows/route";
 import {
   RESEND_API,
   getFromAddress,
@@ -9,11 +9,15 @@ import {
 import { stripEmDashes } from "@/app/api/_shared/sanitize";
 import { logToolUsage } from "@/lib/db";
 
+// NOTE (S115, F46): Timesaver outputs are "time-savers" everywhere in UI and
+// email copy. "Workflow" is reserved for AGENT: Workflow paid tool. The
+// import path "@/app/api/workflows/route" is an intentional non-migration.
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface EmailRequestBody {
   email: string;
   jobTitle: string;
-  workflows: Workflow[];
+  timeSavers: TimeSaver[];
   roi: ROI;
 }
 
@@ -22,12 +26,12 @@ interface EmailRequestBody {
 async function sendResultsEmail(
   email: string,
   jobTitle: string,
-  workflows: Workflow[],
+  timeSavers: TimeSaver[],
   roi: ROI
 ): Promise<void> {
-  const workflowRows = workflows
+  const timeSaverRows = timeSavers
     .map(
-      (wf, i) => `
+      (ts, i) => `
       <tr>
         <td style="padding: 0 0 20px 0;">
           <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8f8f6; border:1px solid #e4e4e2; border-radius:12px; overflow:hidden;">
@@ -37,13 +41,13 @@ async function sendResultsEmail(
                   0${i + 1}
                 </p>
                 <p style="margin:4px 0 8px 0; font-size:15px; font-weight:700; color:#161618; line-height:1.3;">
-                  ${stripEmDashes(wf.title)}
+                  ${stripEmDashes(ts.title)}
                 </p>
                 <p style="margin:0 0 10px 0; font-size:14px; color:#555553; line-height:1.6;">
-                  ${stripEmDashes(wf.description)}
+                  ${stripEmDashes(ts.description)}
                 </p>
                 <p style="margin:0; font-size:13px; font-weight:600; color:#1e7ab8;">
-                  Saves ~${wf.timeSavedPerWeek}h/week
+                  Saves ~${ts.timeSavedPerWeek}h/week
                 </p>
               </td>
             </tr>
@@ -53,17 +57,16 @@ async function sendResultsEmail(
     )
     .join("");
 
+  // Intro paragraph removed (S111-F31, applied inline with S115-F46 since it
+  // sat on the same edit surface). Headline goes directly to the cards.
   const heroContent = `
-    <h1 style="margin:0 0 8px 0; font-family:Georgia,serif; font-size:28px; font-weight:700; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
-      Your AI workflows are ready.
+    <h1 style="margin:0 0 32px 0; font-family:Georgia,serif; font-size:28px; font-weight:700; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
+      Your AI time-savers are ready.
     </h1>
-    <p style="margin:0 0 32px 0; font-size:15px; color:#555553; line-height:1.6;">
-      Based on your answers, here are the workflows that fit your role best. Plus a real estimate of the time you could get back every week.
-    </p>
 
-    <!-- Workflows -->
+    <!-- Time-savers -->
     <table width="100%" cellpadding="0" cellspacing="0">
-      ${workflowRows}
+      ${timeSaverRows}
     </table>
 
     <!-- ROI Card -->
@@ -118,7 +121,7 @@ async function sendResultsEmail(
   `;
 
   const html = buildBaseEmailHTML({
-    preHeaderText: `Your ${jobTitle} workflows are ready. Here's what you could save.`,
+    preHeaderText: `Your ${jobTitle} time-savers are ready. Here's what you could save.`,
     eyebrowLabel: "AGENT: Timesaver",
     heroContent,
   });
@@ -132,7 +135,7 @@ async function sendResultsEmail(
     body: JSON.stringify({
       from: getFromAddress(),
       to: [email],
-      subject: `Your 5 AI workflows for ${jobTitle}`,
+      subject: `Your 5 AI time-savers for ${jobTitle}`,
       html,
     }),
   });
@@ -147,10 +150,10 @@ async function sendResultsEmail(
 export async function POST(req: NextRequest) {
   try {
     const body = (await req.json()) as EmailRequestBody;
-    const { email, jobTitle, workflows, roi } = body;
+    const { email, jobTitle, timeSavers, roi } = body;
     const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null;
 
-    if (!email || !jobTitle || !workflows || !roi) {
+    if (!email || !jobTitle || !timeSavers || !roi) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
@@ -166,7 +169,7 @@ export async function POST(req: NextRequest) {
     // Run both in parallel — adding to list and sending email
     await Promise.all([
       addContactToAudience(email),
-      sendResultsEmail(email, jobTitle, workflows, roi),
+      sendResultsEmail(email, jobTitle, timeSavers, roi),
     ]);
 
     logToolUsage(email, "timesaver", ip);

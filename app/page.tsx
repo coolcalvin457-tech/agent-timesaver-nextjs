@@ -46,7 +46,7 @@ export default function Home() {
                 Imagine getting 5-10 hours back<br />every week.
               </h2>
               <p className="dream-body">
-                Setting up personalized AI workflows is now within reach.<br />
+                Personalized AI time-savers are now within reach.<br />
                 Reports, meeting preps, follow-ups, you name it.<br />
                 In fact, you&apos;re closer than you think.
               </p>
@@ -130,7 +130,7 @@ export default function Home() {
               </div>
               <div className="outcome-card">
                 <div className="outcome-label">Capability</div>
-                <div className="outcome-headline">Workflows built for your actual job.</div>
+                <div className="outcome-headline">Time-savers built for your actual job.</div>
                 <p className="outcome-body">
                   You&apos;ll gain real processes that you can try today. No
                   more generic advice that still keeps you guessing.
@@ -193,7 +193,7 @@ export default function Home() {
               }}
             >
               Start with AGENT: Timesaver.<br />
-              5 minutes. 5 workflows.
+              5 minutes. 5 time-savers.
             </p>
             <HeroButton />
           </div>

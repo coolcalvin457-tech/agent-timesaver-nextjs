@@ -346,7 +346,7 @@ export default function PostPage() {
                 marginRight: "auto",
               }}
             >
-              Ready to build your first workflow?
+              Ready to build your first time-saver?
             </h2>
             <p
               style={{
@@ -360,7 +360,7 @@ export default function PostPage() {
               }}
             >
               Enter your job title. Answer a few questions. Walk away with 5
-              AI workflows built for your specific role — and a real estimate
+              AI time-savers built for your specific role. A real estimate
               of the time you could get back.
             </p>
             <a href="/#timesaver" className="btn btn-primary">

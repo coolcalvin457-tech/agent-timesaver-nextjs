@@ -979,21 +979,22 @@ input, textarea {
   line-height: 1.5;
 }
 
-.workflow-cards {
+/* Time-saver result cards (S115-F46 rename from .workflow-*). AGENT: Timesaver. */
+.time-saver-cards {
   display: flex;
   flex-direction: column;
   gap: 12px;
   margin-bottom: 24px;
 }
 
-.workflow-card {
+.time-saver-card {
   background: var(--bg-alt);
   border: 1px solid var(--border);
   border-radius: var(--radius-card);
   padding: 20px 24px;
 }
 
-.workflow-label {
+.time-saver-label {
   font-family: var(--font-mono);
   font-size: 0.6875rem;
   font-weight: 600;
@@ -1003,21 +1004,21 @@ input, textarea {
   margin-bottom: 6px;
 }
 
-.workflow-title {
+.time-saver-title {
   font-size: 0.9375rem;
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: 6px;
 }
 
-.workflow-desc {
+.time-saver-desc {
   font-size: 0.875rem;
   color: var(--text-secondary);
   line-height: 1.55;
   margin-bottom: 10px;
 }
 
-.workflow-time {
+.time-saver-time {
   font-size: 0.8125rem;
   font-weight: 600;
   color: var(--cta);
@@ -1832,21 +1833,21 @@ input, textarea {
   color: rgba(255,255,255,0.75);
 }
 
-/* Workflow result cards */
-.hero-tool-dark .workflow-card {
+/* Time-saver result cards (dark frame variant) — S115-F46 rename */
+.hero-tool-dark .time-saver-card {
   background: var(--dark-surface);
   border-color: var(--dark-border);
 }
 
-.hero-tool-dark .workflow-label {
+.hero-tool-dark .time-saver-label {
   color: rgba(255,255,255,0.35);
 }
 
-.hero-tool-dark .workflow-title {
+.hero-tool-dark .time-saver-title {
   color: rgba(255,255,255,0.9);
 }
 
-.hero-tool-dark .workflow-desc {
+.hero-tool-dark .time-saver-desc {
   color: rgba(255,255,255,0.55);
 }
 

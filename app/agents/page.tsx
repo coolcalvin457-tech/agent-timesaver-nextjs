@@ -66,8 +66,8 @@ const tools = [
     name: "AGENT: Timesaver",
     tagline: "See how many hours you could be saving.",
     description:
-      "Start with your job title. Answer a few questions. Get 5 personalized AI workflows built for your exact role, plus an estimate of how many hours you could save each week.",
-    cta: "Get Workflows",
+      "Start with your job title. Answer a few questions. Get 5 personalized AI time-savers built for your exact role, plus an estimate of how many hours you could save each week.",
+    cta: "Get Time-Savers",
   },
 ];
 

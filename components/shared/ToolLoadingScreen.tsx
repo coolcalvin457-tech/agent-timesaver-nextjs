@@ -156,10 +156,9 @@ export default function ToolLoadingScreen({
     );
   }
 
-  // ── Spinner variant ────────────────────────────────────────────────────────
+  // ── Spinner variant (no icon above heading per Layer 1 §1.3, S111) ────────
   return (
-    <>
-      <div className="spinner" />
+    <div style={{ paddingTop: "40px" }}>
       <h2
         style={{
           fontFamily: "var(--font-display)",
@@ -180,6 +179,6 @@ export default function ToolLoadingScreen({
       <p className="loading-subline" style={{ marginTop: "8px" }}>
         {timeEstimate}
       </p>
-    </>
+    </div>
   );
 }

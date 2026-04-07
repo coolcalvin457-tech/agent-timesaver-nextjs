@@ -105,7 +105,7 @@ export default function ToolEmailGate({
         >
           Where should we send it?
         </label>
-        <div style={{ display: "flex", gap: "10px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
           <input
             id={inputId}
             type="email"
@@ -116,11 +116,11 @@ export default function ToolEmailGate({
             autoFocus
             autoComplete="email"
             disabled={loading}
-            style={{ flex: 1 }}
+            style={{ width: "100%" }}
           />
           <button
             type="submit"
-            className="btn btn-primary btn-lg"
+            className="btn btn-primary btn-lg btn-full"
             disabled={loading || !email.trim()}
           >
             {loading ? "Sending..." : buttonLabel}

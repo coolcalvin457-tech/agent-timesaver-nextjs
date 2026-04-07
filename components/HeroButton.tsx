@@ -11,7 +11,7 @@ export default function HeroButton() {
 
   return (
     <button className="btn btn-primary btn-lg" onClick={handleClick}>
-      Get Started →
+      Get Started
     </button>
   );
 }

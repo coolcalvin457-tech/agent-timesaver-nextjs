@@ -232,6 +232,18 @@ export default function TimesaverTool() {
   const handlePathSelect = (path: Path) => {
     setState((s) => ({ ...s, path }));
     track("path_selected", { path: path ?? "none" });
+    // Auto-advance after 180ms (Layer 1 1.4 S80 pattern). Continue button stays as fallback.
+    const trimmed = jobTitleInput.trim();
+    if (trimmed.length > 1) {
+      setTimeout(() => {
+        setState((s) => ({ ...s, jobTitle: trimmed }));
+        if (path === "A") {
+          go("jdUpload");
+        } else if (path === "B") {
+          loadQuestions(trimmed, "B");
+        }
+      }, 180);
+    }
   };
 
   const handleJobTitleContinue = () => {
@@ -386,13 +398,9 @@ export default function TimesaverTool() {
         <div className="screen" style={{ display: "flex", flexDirection: "column", flex: "0 0 auto", textAlign: "center", justifyContent: "center", paddingTop: "72px", paddingBottom: "72px" }}>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0" }}>
             <div className="tool-tag" style={{ textAlign: "center", marginBottom: "20px" }}>AGENT: Timesaver</div>
-            <h1 className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25, marginBottom: "20px" }}>
+            <h1 className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25, marginBottom: "28px" }}>
               See how many hours<br />you could save.
             </h1>
-            <p className="screen-subheadline" style={{ marginBottom: "28px" }}>
-              <span style={{ display: "block" }}>Answer a few questions.</span>
-              <span style={{ display: "block", marginTop: "6px" }}>Get 5 personalized AI workflows.</span>
-            </p>
             <button
               id="timesaver-start-btn"
               className="btn btn-primary"
@@ -410,10 +418,7 @@ export default function TimesaverTool() {
         <div className="screen">
           <div className="tool-tag">AGENT: Timesaver</div>
 
-          <h1 className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25 }}>What&apos;s your job title?</h1>
-          <p className="screen-subheadline">
-            Be specific. &ldquo;Senior HR Business Partner&rdquo; beats &ldquo;HR.&rdquo;
-          </p>
+          <h1 className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25, marginBottom: "28px" }}>What&apos;s your job title?</h1>
 
           {error && (
             <div
@@ -433,9 +438,9 @@ export default function TimesaverTool() {
 
           <input
             className="input"
-            style={{ marginBottom: "36px" }}
+            style={{ marginBottom: "6px" }}
             type="text"
-            placeholder="e.g. Real Estate Agent, HR Director, 3rd Grade Teacher..."
+            placeholder="e.g. Operations Manager, Finance Director"
             value={jobTitleInput}
             onChange={(e) => setJobTitleInput(e.target.value)}
             onKeyDown={(e) => {
@@ -444,6 +449,15 @@ export default function TimesaverTool() {
             }}
             autoFocus
           />
+          <p
+            style={{
+              fontSize: "0.8125rem",
+              color: "var(--text-muted)",
+              marginBottom: "28px",
+            }}
+          >
+            The more specific, the better.
+          </p>
 
           <p
             style={{
@@ -462,10 +476,6 @@ export default function TimesaverTool() {
               type="button"
             >
               <div className="branch-card-title">YES</div>
-              <div className="branch-card-desc">
-                Upload a file or<br />copy &amp; paste.
-              </div>
-              <span className="branch-badge branch-badge-a">Best results</span>
             </button>
 
             <button
@@ -474,10 +484,6 @@ export default function TimesaverTool() {
               type="button"
             >
               <div className="branch-card-title">NO</div>
-              <div className="branch-card-desc">
-                I&apos;ll answer multiple<br />choice questions.
-              </div>
-              <span className="branch-badge branch-badge-b">Quick start</span>
             </button>
           </div>
 
@@ -570,7 +576,7 @@ export default function TimesaverTool() {
           <div className="tool-tag" style={{ textAlign: "center" }}>AGENT: Timesaver</div>
           <ToolLoadingScreen
             headingText={loadingType === "questions" ? "Personalizing your questions..." : "Building your workflows..."}
-            timeEstimate={loadingType === "questions" ? "About 5 seconds." : "About 15 seconds."}
+            timeEstimate={loadingType === "questions" ? "About 5 seconds." : "About 1 minute."}
             subLine={loadingType === "workflows" ? "Calculating hours saved..." : undefined}
           />
         </div>
@@ -604,7 +610,7 @@ export default function TimesaverTool() {
             {isLastQuestion ? `Almost there. Question ${state.questionIndex + 1} of ${totalQuestions}.` : `Question ${state.questionIndex + 1} of ${totalQuestions}.`}
           </p>
 
-          <p className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25 }}>{currentQuestion.stem}</p>
+          <p className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25, overflowWrap: "break-word", wordBreak: "break-word", maxWidth: "100%", marginBottom: "20px" }}>{currentQuestion.stem}</p>
 
           <div className="choices">
             {currentQuestion.choices.map((choice, i) => (
@@ -668,17 +674,14 @@ export default function TimesaverTool() {
             display: "flex", alignItems: "center", gap: "8px",
             background: "rgba(30,122,184,0.06)", border: "1px solid rgba(30,122,184,0.15)",
             borderRadius: "8px", padding: "10px 14px", marginBottom: "20px",
-            fontSize: "0.875rem", color: "var(--text-secondary)",
+            fontSize: "0.875rem", color: "#FFFFFF",
           }}>
-            <span style={{ color: "var(--cta)" }}>✓</span> Sent to your inbox.
+            <span style={{ color: "#FFFFFF" }}>✓</span> Sent to your inbox.
           </div>
 
-          <div className="results-tag" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25 }}>
+          <div className="results-tag" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25, color: "#FFFFFF", marginBottom: "28px" }}>
             You could save {state.roi.totalHoursPerWeek} hours every week.
           </div>
-          <p className="results-subheadline">
-            Based on your answers and industry data.
-          </p>
 
           {/* Workflow Cards */}
           <div className="workflow-cards">

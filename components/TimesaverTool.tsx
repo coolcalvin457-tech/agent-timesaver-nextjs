@@ -501,7 +501,7 @@ export default function TimesaverTool() {
           <div className="tool-tag">AGENT: Timesaver</div>
           <BackButton onClick={() => go("jobTitle")} />
 
-          <h1 className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25, whiteSpace: "nowrap", marginBottom: "28px" }}>Upload or copy &amp; paste.</h1>
+          <h1 className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25, marginBottom: "28px" }}>Add job description.</h1>
 
           {fileUploaded ? (
             <div className="upload-success">
@@ -520,14 +520,9 @@ export default function TimesaverTool() {
               }}
             >
               <button
-                className="btn btn-outline btn-sm"
+                className="btn btn-primary btn-sm"
                 onClick={() => fileInputRef.current?.click()}
                 type="button"
-                style={{
-                  borderColor: isDragOver ? "var(--cta)" : "var(--cta)",
-                  color: "#fff",
-                  background: "transparent",
-                }}
               >
                 Choose File
               </button>

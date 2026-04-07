@@ -7,8 +7,10 @@ import React from "react";
 interface ToolLoadingScreenProps {
   /** Main heading text. e.g. "Building your prompt kit." */
   headingText: string;
-  /** Timing line shown below the heading. e.g. "About 1 minute." */
-  timeEstimate: string;
+  /** Timing line shown below the heading. e.g. "About 1 minute."
+   *  Optional. Omit on intermediate/sub-5-second loading states where a
+   *  countdown would feel jarring (per Layer 1 §1.3, S112). */
+  timeEstimate?: string;
 
   // ── Checklist variant (paid tools + AGENT: Prompts) ──────────────────────
   /** Step labels for the animated checklist.
@@ -68,12 +70,14 @@ export default function ToolLoadingScreen({
         >
           {headingText}
         </h2>
-        <p
-          className="loading-subline"
-          style={{ marginTop: "8px", marginBottom: "32px" }}
-        >
-          {timeEstimate}
-        </p>
+        {timeEstimate && (
+          <p
+            className="loading-subline"
+            style={{ marginTop: "8px", marginBottom: "32px" }}
+          >
+            {timeEstimate}
+          </p>
+        )}
 
         {/* Step-by-step progress */}
         <div
@@ -176,9 +180,11 @@ export default function ToolLoadingScreen({
           {subLine}
         </p>
       )}
-      <p className="loading-subline" style={{ marginTop: "8px" }}>
-        {timeEstimate}
-      </p>
+      {timeEstimate && (
+        <p className="loading-subline" style={{ marginTop: "8px" }}>
+          {timeEstimate}
+        </p>
+      )}
     </div>
   );
 }

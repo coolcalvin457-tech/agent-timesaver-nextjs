@@ -556,10 +556,9 @@ export default function TimesaverTool() {
       {/* ── Loading Screen ─────────────────────────────────────────────────── */}
       {state.screen === "loading" && (
         <div className="loading-screen" style={{ minHeight: "320px" }}>
-          <div className="tool-tag" style={{ textAlign: "center" }}>AGENT: Timesaver</div>
           <ToolLoadingScreen
-            headingText={loadingType === "questions" ? "Personalizing your questions..." : "Building your workflows..."}
-            timeEstimate={loadingType === "questions" ? "About 5 seconds." : "About 1 minute."}
+            headingText={loadingType === "questions" ? "Thinking" : "Building your workflows..."}
+            timeEstimate={loadingType === "questions" ? undefined : "About 1 minute."}
             subLine={loadingType === "workflows" ? "Calculating hours saved..." : undefined}
           />
         </div>

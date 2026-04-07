@@ -34,7 +34,7 @@ async function sendResultsEmail(
             <tr>
               <td style="padding: 20px 24px;">
                 <p style="margin:0 0 4px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#888886;">
-                  0${i + 1} &nbsp;·&nbsp; ${stripEmDashes(wf.tool)}
+                  0${i + 1}
                 </p>
                 <p style="margin:4px 0 8px 0; font-size:15px; font-weight:700; color:#161618; line-height:1.3;">
                   ${stripEmDashes(wf.title)}

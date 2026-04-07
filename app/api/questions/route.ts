@@ -13,161 +13,83 @@ export interface QuestionsResponse {
   questions: Question[];
 }
 
-// ─── Mock data (used when ANTHROPIC_API_KEY is not set) ───────────────────────
-const MOCK_QUESTIONS: Record<string, Question[]> = {
-  marketing: [
-    {
-      stem: "Where does most of your time go during a typical week (not your busiest)?",
-      choices: [
-        "Writing content — emails, posts, copy, briefs",
-        "Reporting and pulling data from multiple tools",
-        "Coordinating with designers, agencies, or stakeholders",
-        "Researching trends, competitors, and audiences",
-      ],
-    },
-    {
-      stem: "What does your current content or campaign workflow look like?",
-      choices: [
-        "It's mostly improvised — we figure it out as we go",
-        "We have a loose process but it breaks down regularly",
-        "We have a solid system but it's too manual",
-        "Our process is good — I just want to make it faster",
-      ],
-    },
-    {
-      stem: "Which outcome would have the biggest impact on your work this month?",
-      choices: [
-        "Producing more high-quality content in less time",
-        "Making better data-driven decisions faster",
-        "Spending less time on coordination and status updates",
-        "Getting ahead of trends before my competitors do",
-      ],
-    },
-  ],
-  sales: [
-    {
-      stem: "What part of your sales cycle eats the most time?",
-      choices: [
-        "Prospecting and building qualified lead lists",
-        "Writing personalized outreach and follow-ups",
-        "Preparing for calls — research, decks, talking points",
-        "CRM updates, notes, and admin after calls",
-      ],
-    },
-    {
-      stem: "How many personalized outreach messages do you send in a typical week?",
-      choices: [
-        "Fewer than 10 — quality over quantity",
-        "10 to 30 — trying to find the right balance",
-        "30 to 75 — volume is a big part of my strategy",
-        "More than 75 — I'm in full hustle mode",
-      ],
-    },
-    {
-      stem: "What would a 10-hour-per-week time savings mean for your quota?",
-      choices: [
-        "I could finally hit my number consistently",
-        "I'd be going after bigger, harder deals",
-        "I'd close the same amount — just with less stress",
-        "I'd have time to actually coach and develop my team",
-      ],
-    },
-  ],
-  default: [
-    {
-      stem: "Which type of work takes up the most time during a typical week (not your busiest)?",
-      choices: [
-        "Writing and communication — emails, documents, reports",
-        "Research and gathering information from multiple sources",
-        "Coordinating with other people and tracking progress",
-        "Analysis, decisions, and preparing for meetings",
-      ],
-    },
-    {
-      stem: "How would you describe the way you currently use AI tools?",
-      choices: [
-        "I barely use them — not sure where to start",
-        "I've tried a few things but haven't stuck with anything",
-        "I use ChatGPT or Claude occasionally but not systematically",
-        "I already use AI regularly and want to go deeper",
-      ],
-    },
-    {
-      stem: "What would getting back 5 to 10 hours a week actually change for you?",
-      choices: [
-        "I'd finally finish projects I've been putting off",
-        "I'd spend more time on the strategic work I actually enjoy",
-        "I'd have breathing room instead of always being behind",
-        "I'd take on more responsibility or bigger opportunities",
-      ],
-    },
-  ],
-};
+// ─── Fixed Questions (S111, locked) ───────────────────────────────────────────
+// Three canonical questions. Stems are immutable — AI generates answer options only.
+// All stems seven words or under. Spec: master-tool-spec-category-free.md §196.
+const FIXED_QUESTION_STEMS: readonly [string, string, string] = [
+  "What takes up most of your time?",
+  "When work piles up, what happens?",
+  "What would save you the most time?",
+] as const;
 
-function getJobCategory(title: string): string {
-  const t = title.toLowerCase();
-  if (/market|content|brand|seo|growth|demand|social/i.test(t)) return "marketing";
-  if (/sales|account exec|bdr|sdr|business dev|revenue/i.test(t)) return "sales";
-  if (/teacher|instructor|educator|professor|tutor|coach/i.test(t)) return "teacher";
-  if (/hr|human resource|people ops|recruiter|talent/i.test(t)) return "hr";
-  if (/nurse|doctor|physician|clinical|patient|medical|health/i.test(t)) return "healthcare";
-  if (/financ|accountant|analyst|cfo|controller|budget/i.test(t)) return "finance";
-  if (/product manager|pm |program manager|project manager/i.test(t)) return "pm";
-  return "default";
-}
+// ─── Mock choices (used when ANTHROPIC_API_KEY is not set) ────────────────────
+// Default noun-phrase answer options, 7 words max, per S111 rule.
+const MOCK_CHOICES: [string[], string[], string[]] = [
+  [
+    "Writing emails, docs, and reports",
+    "Research and information gathering",
+    "Coordinating people and tracking progress",
+    "Analysis, decisions, and meeting prep",
+  ],
+  [
+    "Late nights and missed deadlines",
+    "Quality drops across everything",
+    "Constant context-switching and dropped balls",
+    "Strategic work gets deprioritized first",
+  ],
+  [
+    "Faster first drafts and writing",
+    "Automated research and summaries",
+    "Cleaner handoffs and status updates",
+    "Better meeting prep and follow-ups",
+  ],
+];
 
-function getMockQuestions(
-  jobTitle: string,
-  path: "A" | "B",
-  jobDescription?: string
-): Question[] {
-  const category = getJobCategory(jobTitle);
-  const pool = MOCK_QUESTIONS[category] ?? MOCK_QUESTIONS["default"];
-  // Path A = 2 questions, Path B = 3 questions
-  return path === "A" ? pool.slice(0, 2) : pool.slice(0, 3);
+function getMockQuestions(): Question[] {
+  return FIXED_QUESTION_STEMS.map((stem, i) => ({
+    stem,
+    choices: MOCK_CHOICES[i],
+  }));
 }
 
 // ─── Claude API Call ──────────────────────────────────────────────────────────
+// Stems are locked. Claude generates 4 noun-phrase answer options per stem,
+// tailored to the job title. Options: noun phrases, 7 words max, parallel structure.
 async function generateQuestionsWithClaude(
   jobTitle: string,
-  path: "A" | "B",
   jobDescription?: string
 ): Promise<Question[]> {
   const Anthropic = (await import("@anthropic-ai/sdk")).default;
   const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
-  const questionCount = path === "A" ? 2 : 3;
   const contextSection = jobDescription
     ? `\nJob Description:\n${jobDescription.slice(0, 3000)}`
     : "";
 
-  const systemPrompt = `You write sharp, specific questions for working professionals. Your job is to surface the most useful information about how someone actually spends their time, so AI workflow recommendations can be tailored to their real work and not a generic job description.`;
+  const systemPrompt = `You generate concise, job-specific answer options for a fixed set of questions about how professionals spend their time. You never rewrite the questions. You produce noun-phrase options that sound like things a colleague in that exact role would actually say.`;
 
-  const jdInstruction = jobDescription
-    ? `Pull specific responsibilities, tasks, and language directly from the job description above into the question choices. The choices should name real tasks from their role, not generic categories.`
-    : `Use your knowledge of this specific role to write choices that name real tasks professionals in this position actually do — not broad categories.`;
+  const stemsList = FIXED_QUESTION_STEMS.map((s, i) => `Q${i + 1}: "${s}"`).join("\n");
 
-  const prompt = `A user has entered their job title: "${jobTitle}"${contextSection}
+  const prompt = `Job Title: "${jobTitle}"${contextSection}
 
-Generate exactly ${questionCount} multiple-choice questions to understand how they work. These answers will be used to recommend 5 specific AI workflows for their job.
+For each of the three fixed questions below, generate exactly 4 answer options tailored to this job title.
 
-Question design rules:
-- Each question must hit a distinct angle — cover these in order: (1) where their time actually goes during a typical week, (2) how mature or broken their current workflow is, (3) what a meaningful breakthrough would look like for them
-- Questions must read as specific to this job title — a question for a "${jobTitle}" should sound completely different from a question for a different role
-- ${jdInstruction}
-- Each question must have exactly 4 answer choices, parallel in structure and length
-- If a question could be ambiguous about timeframe or scope, fold the clarification into the stem itself in parentheses — e.g., "What takes up the most time during a typical week (not your busiest)?"
-- No em dashes
-- No jargon
-- Write like a direct colleague, not a survey form
+${stemsList}
 
-Return ONLY valid JSON in this exact format, no explanation:
+Answer option rules (strict):
+- Every option is a NOUN PHRASE. No sentences. No verbs in first position. No "I" or "we" statements.
+- Maximum 7 words per option. Count every word.
+- Parallel structure within a question: if one option starts with a gerund, all four start with a gerund. If one starts with an adjective, all four do.
+- Options must read as specific to a "${jobTitle}". A finance director and a marketing manager should see completely different options.
+- No em dashes. No jargon. No generic filler like "other" or "something else".
+- Do not reference specific AI tool names (ChatGPT, Claude, Gemini, etc.) in any option.
+
+Return ONLY valid JSON in this exact format, no explanation. Use the exact stem text provided above:
 {
   "questions": [
-    {
-      "stem": "Question text here?",
-      "choices": ["Choice A", "Choice B", "Choice C", "Choice D"]
-    }
+    { "stem": "${FIXED_QUESTION_STEMS[0]}", "choices": ["...", "...", "...", "..."] },
+    { "stem": "${FIXED_QUESTION_STEMS[1]}", "choices": ["...", "...", "...", "..."] },
+    { "stem": "${FIXED_QUESTION_STEMS[2]}", "choices": ["...", "...", "...", "..."] }
   ]
 }`;
 
@@ -185,22 +107,30 @@ Return ONLY valid JSON in this exact format, no explanation:
     .join("");
 
   const parsed = JSON.parse(cleanJsonResponse(text)) as QuestionsResponse;
-  return parsed.questions;
+
+  // Defensive: force the locked stems regardless of what Claude returned.
+  return parsed.questions.slice(0, 3).map((q, i) => ({
+    stem: FIXED_QUESTION_STEMS[i],
+    choices: q.choices.slice(0, 4),
+  }));
 }
 
 // ─── Route Handler ─────────────────────────────────────────────────────────────
+// Note: `path` is still accepted in the request body for backwards compatibility
+// but no longer affects the question count. Both paths receive the same three
+// fixed questions. JD context, when present, informs Claude's option generation.
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { jobTitle, path, jobDescription } = body as {
+    const { jobTitle, jobDescription } = body as {
       jobTitle: string;
-      path: "A" | "B";
+      path?: "A" | "B";
       jobDescription?: string;
     };
 
-    if (!jobTitle || !path) {
+    if (!jobTitle) {
       return NextResponse.json(
-        { error: "jobTitle and path are required" },
+        { error: "jobTitle is required" },
         { status: 400 }
       );
     }
@@ -209,32 +139,16 @@ export async function POST(req: NextRequest) {
 
     if (!process.env.ANTHROPIC_API_KEY) {
       // No API key — use mock data for local development
-      questions = getMockQuestions(jobTitle, path, jobDescription);
+      questions = getMockQuestions();
     } else {
       try {
-        questions = await generateQuestionsWithClaude(jobTitle, path, jobDescription);
+        questions = await generateQuestionsWithClaude(jobTitle, jobDescription);
       } catch (firstErr) {
         if (firstErr instanceof SyntaxError || (firstErr instanceof Error && firstErr.message.includes("No JSON found"))) {
-          console.warn("[questions] First attempt failed, retrying with assistant prefill:", firstErr instanceof Error ? firstErr.message : String(firstErr));
-          const Anthropic = (await import("@anthropic-ai/sdk")).default;
-          const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-          const questionCount = path === "A" ? 2 : 3;
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const retryMsg = await (client.messages.create as any)({
-            model: process.env.CLAUDE_MODEL || "claude-sonnet-4-6",
-            max_tokens: 4000,
-            system: "You write sharp, specific questions for working professionals. Return ONLY valid JSON.",
-            messages: [
-              { role: "user", content: `Generate ${questionCount} multiple-choice questions for a "${jobTitle}". Return valid JSON with a "questions" array. Start with {` },
-              { role: "assistant", content: "{" },
-            ],
-          });
-          const retryText = (retryMsg.content as Array<{ type: string; text?: string }>)
-            .filter((block: { type: string }) => block.type === "text")
-            .map((block: { text?: string }) => block.text!)
-            .join("");
-          const parsed = JSON.parse(cleanJsonResponse("{" + retryText)) as QuestionsResponse;
-          questions = parsed.questions;
+          console.warn("[questions] First attempt failed, falling back to mock choices:", firstErr instanceof Error ? firstErr.message : String(firstErr));
+          // Fallback: use mock choices with locked stems. Safer than a retry
+          // because the stems are already fixed — we only lose personalization.
+          questions = getMockQuestions();
         } else {
           throw firstErr;
         }

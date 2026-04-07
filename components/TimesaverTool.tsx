@@ -11,6 +11,16 @@ import BackButton from "@/components/shared/BackButton";
 import CrossSellBlock from "@/components/shared/CrossSellBlock";
 import { useAuth } from "@/components/AuthProvider";
 
+// ─── Constants ────────────────────────────────────────────────────────────────
+// Workflows-stage animated checklist (S112-F10). Locked steps per Layer 3
+// (master-tool-spec-category-free.md §196). Advances on a timer synced to
+// the ~60s API call.
+const WORKFLOW_LOADING_STEPS = [
+  "Analyzing role",
+  "Building workflows",
+  "Calculating hours saved",
+] as const;
+
 // ─── State Types ───────────────────────────────────────────────────────────────
 type Screen =
   | "intro"
@@ -86,6 +96,7 @@ export default function TimesaverTool() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loadingType, setLoadingType] = useState<"questions" | "workflows">("questions");
+  const [loadingStep, setLoadingStep] = useState(0);
   const [gateSending, setGateSending] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
@@ -109,6 +120,24 @@ export default function TimesaverTool() {
       return () => clearTimeout(t);
     }
   }, [flipStage]);
+
+  // ── Workflows-stage checklist advance (S112-F10) ──────────────────────────
+  // Advance the loading checklist on a timer while the /api/workflows call is
+  // in-flight. ~60s total budget split across 3 steps. Resets when the stage
+  // starts. Does NOT run on the questions (Thinking) stage.
+  useEffect(() => {
+    if (state.screen !== "loading" || loadingType !== "workflows") {
+      setLoadingStep(0);
+      return;
+    }
+    setLoadingStep(0);
+    const t1 = setTimeout(() => setLoadingStep(1), 18000);
+    const t2 = setTimeout(() => setLoadingStep(2), 40000);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, [state.screen, loadingType]);
 
   // ── Scroll to tool on first entry only (free tool pattern: flip animation handles subsequent transitions) ────────
   useEffect(() => {
@@ -556,11 +585,19 @@ export default function TimesaverTool() {
       {/* ── Loading Screen ─────────────────────────────────────────────────── */}
       {state.screen === "loading" && (
         <div className="loading-screen" style={{ minHeight: "320px" }}>
-          <ToolLoadingScreen
-            headingText={loadingType === "questions" ? "Thinking" : "Building your workflows..."}
-            timeEstimate={loadingType === "questions" ? undefined : "About 1 minute."}
-            subLine={loadingType === "workflows" ? "Calculating hours saved..." : undefined}
-          />
+          {loadingType === "questions" ? (
+            // Stage 1: calm intermediate "Thinking" screen (S112, Layer 1 §1.3).
+            // No timing line, no eyebrow, no checklist — animated ellipsis only.
+            <ToolLoadingScreen headingText="Thinking" />
+          ) : (
+            // Stage 2: animated checklist (S112-F10).
+            <ToolLoadingScreen
+              headingText="Building your workflows."
+              timeEstimate="About 1 minute."
+              steps={[...WORKFLOW_LOADING_STEPS]}
+              activeStep={loadingStep}
+            />
+          )}
         </div>
       )}
 
@@ -571,8 +608,8 @@ export default function TimesaverTool() {
 
           <BackButton onClick={() => go("jobTitle")} />
 
-          {/* Progress pips */}
-          <div className="progress-bar" style={{ marginBottom: "12px" }}>
+          {/* Progress pips (S111-F17 — StepIndicator present on free tools) */}
+          <div className="progress-bar" style={{ marginBottom: "24px" }}>
             {Array.from({ length: totalQuestions }).map((_, i) => (
               <div
                 key={i}
@@ -587,10 +624,8 @@ export default function TimesaverTool() {
             ))}
           </div>
 
-          {/* Step label */}
-          <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.5)", margin: "0 0 16px", fontWeight: 500 }}>
-            {isLastQuestion ? `Almost there. Question ${state.questionIndex + 1} of ${totalQuestions}.` : `Question ${state.questionIndex + 1} of ${totalQuestions}.`}
-          </p>
+          {/* Question counter label and "Almost there." filler removed (S112-F14).
+              Progress bar alone communicates position. */}
 
           <p className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25, overflowWrap: "break-word", wordBreak: "break-word", maxWidth: "100%", marginBottom: "20px" }}>{currentQuestion.stem}</p>
 
@@ -682,7 +717,7 @@ export default function TimesaverTool() {
                   <div className="workflow-title">{wf.title}</div>
                   <div className="workflow-desc">{wf.description}</div>
                   <div className="workflow-time">
-                    ⏱ Saves ~{wf.timeSavedPerWeek}h/week · {wf.tool}
+                    ⏱ Saves ~{wf.timeSavedPerWeek}h/week
                   </div>
                 </div>
               );

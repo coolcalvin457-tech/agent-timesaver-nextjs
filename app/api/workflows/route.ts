@@ -7,7 +7,9 @@ export const maxDuration = 300; // Vercel Pro max; adaptive thinking can exceed 
 export interface Workflow {
   title: string;
   description: string;
-  tool: string;
+  tool: string; // Deprecated (S112-F25/F32): always "" for model-agnostic output.
+  // Retained in the type for backwards compatibility with cached mock data and
+  // client rendering guards. New content must not reference a specific AI tool.
   timeSavedPerWeek: number; // hours
 }
 
@@ -194,7 +196,7 @@ async function generateWorkflowsWithClaude(
     : "";
   const answersSection = answers.map((a, i) => `Q${i + 1}: ${a}`).join("\n");
 
-  const systemPrompt = `You are an expert at helping corporate professionals understand exactly how AI can replace manual, time-consuming work in their specific job. You know which AI tools are best suited for which tasks, you write in plain language, and you produce recommendations that feel like they were written by a colleague who knows their role inside out. Not a generic AI assistant.`;
+  const systemPrompt = `You are an expert at helping corporate professionals understand exactly how AI can replace manual, time-consuming work in their specific job. You write in plain language and produce recommendations that feel like they were written by a colleague who knows their role inside out. You are deliberately tool-agnostic: you describe workflows by what the person does and what they get back, never by which chatbot or product they use.`;
 
   const prompt = `Job Title: "${jobTitle}"${contextSection}
 
@@ -205,13 +207,16 @@ Generate exactly 5 AI workflow recommendations for this person. Each workflow mu
 
 For each workflow:
 - Give it a short, memorable name (3-7 words) that references their specific type of work, not a generic task category
-- Write 2-3 sentences using this structure: (1) Start with the trigger — when they would use this, or what they hand to the AI. (2) Describe the exact action — what to give it and how to use it. (3) State the concrete outcome — what they get back and how fast.
-- Name the specific AI tool best suited for this task (Claude, Perplexity, Notion AI, Gemini, ChatGPT, etc.)
+- Write 2-3 sentences using this structure: (1) Start with the trigger — when they would use this, or what they paste into AI. (2) Describe the exact action — what to hand it and how to use it. (3) State the concrete outcome — what they get back and how fast.
 - Estimate realistic hours saved per week (0.5 to 4 hours — be conservative and credible)
 
-Tool variety rule: Do not assign Claude to all 5 workflows. Vary tools where they genuinely fit better. Perplexity is better for research and monitoring. Notion AI is better for notes, databases, and documentation. Use judgment based on what the task actually requires.
+MODEL-AGNOSTIC RULE (strict, S112):
+- Do NOT name any specific AI tool, model, product, or company anywhere in the workflow title, description, or the "tool" field.
+- Banned words anywhere in output: Claude, ChatGPT, GPT, OpenAI, Anthropic, Gemini, Bard, Perplexity, Notion AI, Copilot, Llama, Mistral, Grok.
+- Refer to "AI", "an AI assistant", "a research AI", or "an AI writing tool" when you need to name the category of tool. Prefer verbs over tool names: "ask AI to summarize", "paste your notes into AI", "have AI draft the reply".
+- The "tool" field in the JSON must always be an empty string "". It is retained for backwards compatibility with old clients but will not be rendered.
 
-Answer tie-back rule: At least 2 workflows must directly address something the user named in their answers. If they said writing takes most of their time, one workflow title and description must be explicitly about their type of writing. If they said they are just starting with AI, write all descriptions at a beginner-friendly level with clear, literal instructions.
+Answer tie-back rule: At least 2 workflows must directly address something the user named in their answers. If they said writing takes most of their time, one workflow title and description must be explicitly about their type of writing.
 
 ROI calculation:
 - Total hours saved per week (sum of all 5 workflows)
@@ -231,7 +236,7 @@ Return ONLY valid JSON in this exact format:
     {
       "title": "Workflow name here",
       "description": "2-3 sentence practical description.",
-      "tool": "Tool name",
+      "tool": "",
       "timeSavedPerWeek": 1.5
     }
   ],
@@ -279,6 +284,22 @@ export async function POST(req: NextRequest) {
 
     let result: WorkflowsResponse;
 
+    // Model-agnostic enforcement (S112-F25/F32). Strips any specific AI tool
+    // names that may leak through from the LLM or mock data. Runs on every
+    // path, including mocks and retry, so the client never sees tool names.
+    const stripToolNames = (res: WorkflowsResponse): WorkflowsResponse => {
+      const BANNED = /\b(claude|chatgpt|gpt-?\d*|openai|anthropic|gemini|bard|perplexity|notion ai|copilot|llama|mistral|grok)\b/gi;
+      return {
+        ...res,
+        workflows: res.workflows.map((wf) => ({
+          ...wf,
+          title: wf.title.replace(BANNED, "AI").replace(/\s{2,}/g, " ").trim(),
+          description: wf.description.replace(BANNED, "AI").replace(/\s{2,}/g, " ").trim(),
+          tool: "",
+        })),
+      };
+    };
+
     if (!process.env.ANTHROPIC_API_KEY) {
       result = getMockWorkflows(jobTitle);
     } else {
@@ -311,7 +332,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    return NextResponse.json(result);
+    return NextResponse.json(stripToolNames(result));
   } catch (error) {
     const msg = error instanceof Error ? error.message : String(error);
     console.error("[workflows] API error:", msg, error);

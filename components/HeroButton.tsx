@@ -1,17 +1,9 @@
-"use client";
+import Link from "next/link";
 
 export default function HeroButton() {
-  const handleClick = () => {
-    const btn = document.getElementById("timesaver-start-btn") as HTMLButtonElement | null;
-    if (btn) {
-      btn.click();
-      btn.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-  };
-
   return (
-    <button className="btn btn-primary btn-lg" onClick={handleClick}>
+    <Link href="/agents" className="btn btn-primary btn-lg">
       Get Started
-    </button>
+    </Link>
   );
 }

@@ -510,27 +510,24 @@ export default function TimesaverTool() {
             </div>
           ) : (
             <div
-              onClick={() => fileInputRef.current?.click()}
               onDragOver={(e) => { e.preventDefault(); setIsDragOver(true); }}
               onDragLeave={() => setIsDragOver(false)}
               onDrop={handleDrop}
               style={{
-                border: `1.5px dashed ${isDragOver ? "var(--cta)" : "rgba(30,122,184,0.6)"}`,
-                borderRadius: "var(--radius-input)",
-                padding: "28px 20px",
-                textAlign: "center",
-                cursor: "pointer",
-                marginBottom: "0",
+                display: "flex",
+                justifyContent: "center",
+                padding: "8px 0",
               }}
             >
-              <div style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.7)", marginBottom: "12px" }}>
-                Drag and drop, or
-              </div>
               <button
                 className="btn btn-outline btn-sm"
-                onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}
+                onClick={() => fileInputRef.current?.click()}
                 type="button"
-                style={{ borderColor: "var(--cta)", color: "#fff", background: "transparent" }}
+                style={{
+                  borderColor: isDragOver ? "var(--cta)" : "var(--cta)",
+                  color: "#fff",
+                  background: "transparent",
+                }}
               >
                 Choose File
               </button>
@@ -547,7 +544,7 @@ export default function TimesaverTool() {
           <textarea
             ref={textareaRef}
             className="textarea"
-            placeholder="Or paste your job description here..."
+            placeholder="Paste job description here."
             style={{ marginTop: "28px", marginBottom: "24px" }}
             defaultValue={state.jobDescription}
           />

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { buildBaseEmailHTML, getFromAddress, addContactToAudience, RESEND_API } from "@/app/api/_shared/emailBase";
+import { buildBaseEmailHTML, buildCrossSellBlockHTML, getFromAddress, addContactToAudience, RESEND_API } from "@/app/api/_shared/emailBase";
 import { logToolUsage } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
@@ -37,12 +37,8 @@ export async function POST(req: NextRequest) {
       <h1 style="margin:0 0 6px 0; font-family:Georgia,serif; font-size:28px; font-weight:700; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
         Your dossier on ${companyName} is attached.
       </h1>
-      <p style="margin:0 0 24px 0; font-size:16px; color:#555553; font-weight:600; line-height:1.3;">
+      <p style="margin:0 0 28px 0; font-size:16px; color:#555553; font-weight:600; line-height:1.3;">
         ${companyName} · ${jobTitle}
-      </p>
-
-      <p style="margin:0 0 28px 0; font-size:15px; color:#555553; line-height:1.6;">
-        Here's your competitive intelligence dossier on ${companyName}, tailored for your role as ${jobTitle}. The full report is attached as a Word document. Open it in Word or Google Docs. Share it with your team.
       </p>
 
       <!-- What's included card -->
@@ -116,31 +112,19 @@ export async function POST(req: NextRequest) {
         Build another dossier
       </a>
 
-      <!-- Cross-sell -->
-      <div style="padding:32px 0 0 0; border-top:1px solid #e4e4e2;">
-        <p style="font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:600; letter-spacing:0.06em; color:#1e7ab8; text-transform:uppercase; margin:0 0 12px;">
-          YOUR NEXT STEP
-        </p>
-        <h3 style="font-family:Georgia,serif; font-size:24px; font-weight:400; color:#161618; margin:0 0 8px; line-height:1.2;">
-          AGENT: Workflow
-        </h3>
-        <p style="font-size:14px; color:#555553; line-height:1.6; margin:0 0 4px;">
-          Turn any recurring task into a step-by-step workflow with AI prompts, time estimates, and a ready-to-use playbook.
-        </p>
-        <p style="font-size:14px; color:#555553; line-height:1.6; margin:0 0 28px;">
-          Built for real jobs. Not demos.
-        </p>
-        <div style="text-align:center;">
-          <a href="https://promptaiagents.com/workflow"
-             style="display:inline-block; background:#1e7ab8; color:#ffffff; font-size:15px; font-weight:600; padding:14px 28px; border-radius:8px; text-decoration:none;">
-            Try AGENT: Workflow
-          </a>
-        </div>
-      </div>
+      ${buildCrossSellBlockHTML({
+        productName: "AGENT: Workflow",
+        checklistItems: [
+          "Workflow Playbook",
+          "AI Setup",
+          "Key Insights",
+        ],
+        href: "https://promptaiagents.com/workflow",
+      })}
     `;
 
     const emailHtml = buildBaseEmailHTML({
-      preHeaderText: `Your competitive intelligence dossier on ${companyName} is ready`,
+      preHeaderText: `A competitive dossier on ${companyName}`,
       eyebrowLabel: "AGENT: Company",
       heroContent,
     });
@@ -148,7 +132,7 @@ export async function POST(req: NextRequest) {
     const resendPayload = {
       from: getFromAddress(),
       to: [email],
-      subject: `Your dossier on ${companyName}: ${jobTitle}`,
+      subject: "AGENT: COMPANY",
       html: emailHtml,
       attachments: [
         {

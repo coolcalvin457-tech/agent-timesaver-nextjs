@@ -4,6 +4,7 @@ import {
   getFromAddress,
   addContactToAudience,
   buildBaseEmailHTML,
+  buildCrossSellBlockHTML,
 } from "@/app/api/_shared/emailBase";
 import { stripEmDashes } from "@/app/api/_shared/sanitize";
 import { logToolUsage } from "@/lib/db";
@@ -28,15 +29,9 @@ async function sendOnboardingKitEmail(
   fileData: string
 ): Promise<void> {
   const heroContent = `
-    <p style="margin:0 0 8px 0; font-size:13px; font-weight:600; color:#1e7ab8; letter-spacing:-0.01em;">
-      ${stripEmDashes(hireName)}'s onboarding kit is attached
-    </p>
-    <h1 style="margin:0 0 16px 0; font-family:Georgia,serif; font-size:28px; font-weight:700; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
+    <h1 style="margin:0 0 32px 0; font-family:Georgia,serif; font-size:28px; font-weight:700; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
       ${stripEmDashes(hireName)} · ${stripEmDashes(hireTitle)}
     </h1>
-    <p style="margin:0 0 32px 0; font-size:15px; color:#555553; line-height:1.6;">
-      Here's your onboarding kit for ${stripEmDashes(hireName)}, built for the ${stripEmDashes(hireTitle)} role. It's attached below and ready to open.
-    </p>
 
     <!-- Next steps -->
     <p style="margin:0 0 16px 0; font-size:15px; color:#555553; line-height:1.6;">
@@ -103,30 +98,19 @@ async function sendOnboardingKitEmail(
       Build another kit
     </a>
 
-    <!-- Cross-sell separator -->
-    <div style="padding:32px 0 0 0; margin:32px 0 0 0; border-top:1px solid #e4e4e2;">
-      <p style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.06em;color:#1e7ab8;text-transform:uppercase;margin:0 0 12px;">
-        YOUR NEXT STEP
-      </p>
-      <h3 style="font-family:Georgia,serif;font-size:24px;font-weight:400;color:#161618;margin:0 0 12px;line-height:1.2;">
-        AGENT: PIP
-      </h3>
-      <p style="font-size:14px;color:#555553;line-height:1.6;margin:0 0 4px;">
-        Improvement Plan · Timeline · Manager Talking Points
-      </p>
-      <p style="font-size:14px;color:#555553;line-height:1.6;margin:0 0 28px;">
-        Included in your HR Agents Package.
-      </p>
-      <div style="text-align:center;">
-        <a href="https://promptaiagents.com/pip" style="display:inline-block;background:#1e7ab8;color:#ffffff;font-size:15px;font-weight:600;padding:14px 28px;border-radius:8px;text-decoration:none;">
-          Try AGENT: PIP
-        </a>
-      </div>
-    </div>
+    ${buildCrossSellBlockHTML({
+      productName: "AGENT: PIP",
+      checklistItems: [
+        "Improvement Plan",
+        "Timeline",
+        "Manager Talking Points",
+      ],
+      href: "https://promptaiagents.com/pip",
+    })}
   `;
 
   const html = buildBaseEmailHTML({
-    preHeaderText: `${hireName}'s onboarding kit is attached: ${hireTitle}`,
+    preHeaderText: `An onboarding kit for ${hireName}, ${hireTitle}`,
     eyebrowLabel: "AGENT: Onboarding",
     heroContent,
   });
@@ -140,7 +124,7 @@ async function sendOnboardingKitEmail(
     body: JSON.stringify({
       from: getFromAddress(),
       to: [email],
-      subject: `Your onboarding kit for ${hireName}: ${hireTitle}`,
+      subject: "AGENT: ONBOARDING",
       html,
       attachments: [{ filename, content: fileData }],
     }),

@@ -1427,11 +1427,12 @@ export default function OnboardingKitBuilderTool({
 
         <CrossSellBlock
           productName="AGENT: PIP"
-          descriptionLines={[
-            "Improvement Plan · Timeline · Manager Talking Points",
-            "Included in your HR Agents Package.",
+          checklistItems={[
+            "Improvement Plan",
+            "Timeline",
+            "Manager Talking Points",
           ]}
-          buttonLabel="Try AGENT: PIP"
+          buttonLabel="Try Now"
           href="/pip"
         />
       </div>

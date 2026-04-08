@@ -1347,11 +1347,13 @@ export default function PIPBuilderTool({
 
         <CrossSellBlock
           productName="AGENT: Onboarding"
-          descriptionLines={[
-            "Welcome Letter · First-Week Schedule · 30-60-90 Day Plan · New Hire Checklist",
-            "Included in your HR Agents Package.",
+          checklistItems={[
+            "Welcome Letter",
+            "First-Week Schedule",
+            "30-60-90 Day Plan",
+            "New Hire Checklist",
           ]}
-          buttonLabel="Try AGENT: Onboarding"
+          buttonLabel="Try Now"
           href="/onboarding"
         />
       </div>

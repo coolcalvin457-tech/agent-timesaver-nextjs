@@ -13,6 +13,7 @@ import {
 } from "docx";
 import {
   buildBaseEmailHTML,
+  buildCrossSellBlockHTML,
   getFromAddress,
   addContactToAudience,
   RESEND_API,
@@ -283,17 +284,19 @@ function buildIntelEmailHTML(
       ${sourcesLinks}
     </ul>
 
-    <hr style="border:none; border-top:1px solid #e4e4e2; margin:32px 0;" />
-
-    <!-- Cross-sell -->
-    <p style="margin:0 0 6px 0; font-size:11px; font-weight:700; letter-spacing:0.08em; color:#1e7ab8; text-transform:uppercase; font-family:monospace;">Your next step</p>
-    <p style="margin:0 0 8px 0; font-size:16px; font-weight:600; color:#161618; line-height:1.3;">Want this every week?</p>
-    <p style="margin:0 0 16px 0; font-size:14px; color:#555555; line-height:1.6;">AGENT: Workflow makes it automatic.</p>
-    <a href="https://promptaiagents.com/workflow" style="display:inline-block; background:#161618; color:#ffffff; text-decoration:none; font-size:14px; font-weight:600; padding:12px 24px; border-radius:8px; letter-spacing:0.01em;">Try AGENT: Workflow</a>
+    ${buildCrossSellBlockHTML({
+      productName: "AGENT: Workflow",
+      checklistItems: [
+        "Workflow Playbook",
+        "AI Setup",
+        "Key Insights",
+      ],
+      href: "https://promptaiagents.com/workflow",
+    })}
   `;
 
   return buildBaseEmailHTML({
-    preHeaderText: "One insight tailored to your role.",
+    preHeaderText: `Industry intel on ${industry} for ${jobTitle}`,
     eyebrowLabel: "AGENT: Industry",
     heroContent,
   });
@@ -324,7 +327,6 @@ export async function POST(req: NextRequest) {
     // Fire email in background — don't block file download response
     const emailHTML = buildIntelEmailHTML(intelData, jobTitle, industry, focusArea);
     const docxBase64 = Buffer.from(docxBuffer).toString("base64");
-    const subjectIndustry = industry.length > 30 ? industry.slice(0, 30) : industry;
 
     Promise.all([
       fetch(`${RESEND_API}/emails`, {
@@ -336,7 +338,7 @@ export async function POST(req: NextRequest) {
         body: JSON.stringify({
           from: getFromAddress(),
           to: [email.trim()],
-          subject: `Your Industry Intel: ${subjectIndustry} · ${jobTitle}`,
+          subject: "AGENT: INDUSTRY",
           html: emailHTML,
           attachments: [{ filename, content: docxBase64 }],
         }),

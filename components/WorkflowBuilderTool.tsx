@@ -1149,11 +1149,12 @@ export default function WorkflowBuilderTool({
         {/* Cross-sell: AGENT: Industry */}
         <CrossSellBlock
           productName="AGENT: Industry"
-          descriptionLines={[
-            "One sharp insight about your industry, delivered to your inbox.",
-            "Built for real jobs. Not demos.",
+          checklistItems={[
+            "Intel Report",
+            "Relevant Insights",
+            "Role-Specific",
           ]}
-          buttonLabel="Try AGENT: Industry"
+          buttonLabel="Try Now"
           href="/industry"
         />
         </>

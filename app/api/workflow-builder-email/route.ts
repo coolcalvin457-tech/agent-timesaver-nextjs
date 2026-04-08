@@ -4,6 +4,7 @@ import {
   getFromAddress,
   addContactToAudience,
   buildBaseEmailHTML,
+  buildCrossSellBlockHTML,
 } from "@/app/api/_shared/emailBase";
 import { stripEmDashes } from "@/app/api/_shared/sanitize";
 import { logToolUsage } from "@/lib/db";
@@ -36,12 +37,8 @@ async function sendWorkflowEmail(
     <h1 style="margin:0 0 6px 0; font-family:Georgia,serif; font-size:28px; font-weight:700; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
       Your workflow is ready.
     </h1>
-    <p style="margin:0 0 24px 0; font-size:16px; color:#555553; font-weight:600; line-height:1.3;">
+    <p style="margin:0 0 28px 0; font-size:16px; color:#555553; font-weight:600; line-height:1.3;">
       ${cleanTitle}
-    </p>
-
-    <p style="margin:0 0 28px 0; font-size:15px; color:#555553; line-height:1.6;">
-      Your workflow doc is attached. Follow it step by step the next time this task comes up.
     </p>
 
     <!-- What's included card -->
@@ -97,31 +94,19 @@ async function sendWorkflowEmail(
       Build another workflow
     </a>
 
-    <!-- Cross-sell -->
-    <div style="padding:32px 0 0 0; border-top:1px solid #e4e4e2;">
-      <p style="font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:600; letter-spacing:0.06em; color:#1e7ab8; text-transform:uppercase; margin:0 0 12px;">
-        YOUR NEXT STEP
-      </p>
-      <h3 style="font-family:Georgia,serif; font-size:24px; font-weight:400; color:#161618; margin:0 0 8px; line-height:1.2;">
-        AGENT: Industry
-      </h3>
-      <p style="font-size:14px; color:#555553; line-height:1.6; margin:0 0 4px;">
-        One sharp insight about your industry, delivered to your inbox.
-      </p>
-      <p style="font-size:14px; color:#555553; line-height:1.6; margin:0 0 28px;">
-        Built for real jobs. Not demos.
-      </p>
-      <div style="text-align:center;">
-        <a href="https://promptaiagents.com/industry"
-           style="display:inline-block; background:#1e7ab8; color:#ffffff; font-size:15px; font-weight:600; padding:14px 28px; border-radius:8px; text-decoration:none;">
-          Try AGENT: Industry
-        </a>
-      </div>
-    </div>
+    ${buildCrossSellBlockHTML({
+      productName: "AGENT: Industry",
+      checklistItems: [
+        "Intel Report",
+        "Relevant Insights",
+        "Role-Specific",
+      ],
+      href: "https://promptaiagents.com/industry",
+    })}
   `;
 
   const html = buildBaseEmailHTML({
-    preHeaderText: `Your workflow for ${cleanTitle} is ready: ${stepLabel} attached`,
+    preHeaderText: `Your ${cleanTitle} workflow`,
     eyebrowLabel: "AGENT: Workflow",
     heroContent,
   });
@@ -135,7 +120,7 @@ async function sendWorkflowEmail(
     body: JSON.stringify({
       from: getFromAddress(),
       to: [email],
-      subject: `Your workflow is ready: ${cleanTitle}`,
+      subject: "AGENT: WORKFLOW",
       html,
       attachments: [{ filename, content: fileData }],
     }),

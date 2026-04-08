@@ -6,6 +6,7 @@ import ToolEmailGate from "@/components/shared/ToolEmailGate";
 import ToolLoadingScreen from "@/components/shared/ToolLoadingScreen";
 import BackButton from "@/components/shared/BackButton";
 import CrossSellBlock from "@/components/shared/CrossSellBlock";
+import StepIndicator from "@/components/shared/StepIndicator";
 import { blobToBase64, triggerDownload } from "@/components/shared/fileUtils";
 import { useAuth } from "@/components/AuthProvider";
 
@@ -28,7 +29,6 @@ const LOADING_STEPS = [
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 const CONTENT_TYPES = [".xlsx", ".csv", ".txt"];
 const TEMPLATE_TYPES = [".xlsx"];
-const QUESTION_SCREENS: Screen[] = ["q1", "q2"];
 
 function validateFile(file: File, accepted: string[]): string | null {
   if (file.size > MAX_FILE_SIZE) return "File is too large. Maximum size is 10 MB.";
@@ -282,22 +282,6 @@ export default function BudgetSpreadsheetTool() {
 
   const flipClass = flipStage === "in" ? "screen-flip-in" : "";
 
-  // ── Progress bar ───────────────────────────────────────────────
-  const progressIndex = QUESTION_SCREENS.indexOf(screen as Screen);
-
-  const ProgressBar = () => (
-    <div className="progress-bar">
-      {QUESTION_SCREENS.map((s, i) => (
-        <div
-          key={s}
-          className={`progress-pip ${
-            i < progressIndex ? "done" : i === progressIndex ? "active" : ""
-          }`}
-        />
-      ))}
-    </div>
-  );
-
   // ── Helpers ────────────────────────────────────────────────────
   const canSubmit = description.trim().length >= 10;
   const canSendEmail = email.trim().length > 3 && email.includes("@");
@@ -433,7 +417,7 @@ export default function BudgetSpreadsheetTool() {
         ref={topRef}
       >
         <div className="screen">
-          <ProgressBar />
+          <StepIndicator total={2} current={1} />
           <p
             className="screen-headline"
             style={{
@@ -485,7 +469,7 @@ export default function BudgetSpreadsheetTool() {
       >
         <div className="screen">
           <BackButton onClick={() => go("q1")} />
-          <ProgressBar />
+          <StepIndicator total={2} current={2} />
           <p
             className="screen-headline"
             style={{
@@ -714,9 +698,10 @@ export default function BudgetSpreadsheetTool() {
 
           <CrossSellBlock
             productName="AGENT: Industry"
-            descriptionLines={[
-              "Real-time industry intel calibrated to your role.",
-              "Built for real jobs. Not demos.",
+            checklistItems={[
+              "Intel Report",
+              "Relevant Insights",
+              "Role-Specific",
             ]}
             buttonLabel="Try Now"
             href="/industry"

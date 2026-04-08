@@ -6,6 +6,7 @@ import type { IndustryIntelData } from "@/app/api/industry-intel/route";
 import ToolEmailGate from "@/components/shared/ToolEmailGate";
 import ToolLoadingScreen from "@/components/shared/ToolLoadingScreen";
 import CrossSellBlock from "@/components/shared/CrossSellBlock";
+import StepIndicator from "@/components/shared/StepIndicator";
 import BackButton from "@/components/shared/BackButton";
 import { triggerDownload } from "@/components/shared/fileUtils";
 import { useAuth } from "@/components/AuthProvider";
@@ -249,19 +250,6 @@ export default function IndustryIntelTool() {
     await deliverIntel(email.trim());
   };
 
-  // ── Progress bar ─────────────────────────────────────────────────
-  const progressIndex = ["s1", "s2", "s3"].indexOf(screen);
-  const ProgressBar = () => (
-    <div className="progress-bar">
-      {["s1", "s2", "s3"].map((s, i) => (
-        <div
-          key={s}
-          className={`progress-pip ${i < progressIndex ? "done" : i === progressIndex ? "active" : ""}`}
-        />
-      ))}
-    </div>
-  );
-
   // ── Shared styles ─────────────────────────────────────────────────
   const labelStyle: React.CSSProperties = {
     display: "block",
@@ -289,7 +277,7 @@ export default function IndustryIntelTool() {
     return (
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
-          <ProgressBar />
+          <StepIndicator total={3} current={1} />
           <h2 style={headlineStyle}>Your Industry</h2>
 
           {/* Job title */}
@@ -387,7 +375,7 @@ export default function IndustryIntelTool() {
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
           <BackButton onClick={() => go("s1")} />
-          <ProgressBar />
+          <StepIndicator total={3} current={2} />
           <h2 style={headlineStyle}>Type of Intel</h2>
           <div className="choices">
             {FOCUS_AREA_OPTIONS.map((option) => (
@@ -432,7 +420,7 @@ export default function IndustryIntelTool() {
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
           <BackButton onClick={() => go("s2")} />
-          <ProgressBar />
+          <StepIndicator total={3} current={3} />
           <h2 style={headlineStyle}>Sharpen Focus</h2>
 
           {error && (
@@ -592,11 +580,12 @@ export default function IndustryIntelTool() {
           {/* Cross-sell — Workflow */}
           <CrossSellBlock
             productName="AGENT: Workflow"
-            descriptionLines={[
-              "Get your industry intel delivered every Monday morning.",
-              "Built for real jobs. Not demos.",
+            checklistItems={[
+              "Workflow Playbook",
+              "AI Setup",
+              "Key Insights",
             ]}
-            buttonLabel="Try AGENT: Workflow"
+            buttonLabel="Try Now"
             href="/workflow"
           />
 

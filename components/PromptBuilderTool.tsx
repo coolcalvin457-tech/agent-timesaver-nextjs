@@ -6,6 +6,7 @@ import type { PromptKitResponse } from "@/app/api/prompt-kit/route";
 import ToolEmailGate from "@/components/shared/ToolEmailGate";
 import ToolLoadingScreen from "@/components/shared/ToolLoadingScreen";
 import CrossSellBlock from "@/components/shared/CrossSellBlock";
+import StepIndicator from "@/components/shared/StepIndicator";
 import BackButton from "@/components/shared/BackButton";
 import { useAuth } from "@/components/AuthProvider";
 
@@ -71,7 +72,6 @@ function sanitizePromptKit(data: PromptKitResponse): PromptKitResponse {
 }
 
 type Screen = "q1" | "q2" | "q3" | "q4" | "loading" | "email-gate" | "results";
-const QUESTION_SCREENS: Screen[] = ["q1", "q2", "q3", "q4"];
 
 const PREV_SCREEN: Partial<Record<Screen, Screen>> = {
   q2: "q1",
@@ -183,8 +183,6 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
   const flipClass = flipStage === "in" ? "screen-flip-in" : "";
 
   // ── Helpers ────────────────────────────────────────────────────
-  const progressIndex = QUESTION_SCREENS.indexOf(screen);
-
   const resetWriteIn = () => {
     setShowWriteIn(false);
     setWriteInValue("");
@@ -290,26 +288,12 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
     setEmailLoading(false);
   };
 
-  // ── Progress Bar ───────────────────────────────────────────────
-  const ProgressBar = () => (
-    <div className="progress-bar">
-      {QUESTION_SCREENS.map((s, i) => (
-        <div
-          key={s}
-          className={`progress-pip ${
-            i < progressIndex ? "done" : i === progressIndex ? "active" : ""
-          }`}
-        />
-      ))}
-    </div>
-  );
-
   // ── Screen: Q1 — Job Title ─────────────────────────────────────
   if (screen === "q1") {
     return (
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
-          <ProgressBar />
+          <StepIndicator total={4} current={1} />
           <p className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25 }}>What&apos;s your job title?</p>
           <p className="screen-subheadline">
             Be specific. &ldquo;Senior HR Business Partner&rdquo; is better than &ldquo;HR.&rdquo;
@@ -383,7 +367,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
                 What&apos;s included
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                {["12 Personalized Prompts", "AI Profile", "AI Workspace Setup"].map((item) => (
+                {["AI Workspace Setup", "AI Profile", "12 Personalized Prompts"].map((item) => (
                   <div key={item} className="prompt-builder-kit-pill">
                     <span className="kit-item-check" style={{ fontSize: "0.75rem" }}>✓</span>
                     <span>{item}</span>
@@ -427,7 +411,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
           <BackButton onClick={() => goBack("q2")} />
-          <ProgressBar />
+          <StepIndicator total={4} current={2} />
           <p className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25 }}>
             What best describes most of your work?
           </p>
@@ -500,7 +484,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
           <BackButton onClick={() => goBack("q3")} />
-          <ProgressBar />
+          <StepIndicator total={4} current={3} />
           <p className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25 }}>
             Have you used ChatGPT, Claude, or Gemini?
           </p>
@@ -582,7 +566,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
           <BackButton onClick={() => goBack("q4")} />
-          <ProgressBar />
+          <StepIndicator total={4} current={4} />
           <p className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25 }}>
             {q4Heading}
           </p>
@@ -837,9 +821,10 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
           {/* Cross-sell — AGENT: Workflow */}
           <CrossSellBlock
             productName="AGENT: Workflow"
-            descriptionLines={[
-              "Turn your prompts into repeatable AI workflows.",
-              "Built for real jobs. Not demos.",
+            checklistItems={[
+              "Workflow Playbook",
+              "AI Setup",
+              "Key Insights",
             ]}
             buttonLabel="Try Now"
             href="/workflow"

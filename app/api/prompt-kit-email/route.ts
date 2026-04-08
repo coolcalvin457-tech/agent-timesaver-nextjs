@@ -8,6 +8,7 @@ import {
   getFromAddress,
   addContactToAudience,
   buildBaseEmailHTML,
+  buildCrossSellBlockHTML,
 } from "@/app/api/_shared/emailBase";
 import { stripEmDashes } from "@/app/api/_shared/sanitize";
 import { logToolUsage } from "@/lib/db";
@@ -73,45 +74,13 @@ async function sendPromptKitEmail(
   );
 
   const heroContent = `
-    <!-- Step 1: Prompts by category -->
+    <!-- Step 1: AI Workspace Setup -->
     <p style="margin:0 0 6px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
       STEP 1
     </p>
     <h1 style="margin:0 0 8px 0; font-family:Georgia,'Times New Roman',serif; font-size:28px; font-weight:700; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
-      ${totalPrompts} prompts built for ${jobTitle}.
-    </h1>
-    <p style="margin:0 0 24px 0; font-size:15px; color:#555553; line-height:1.6;">
-      Copy any prompt below and paste it directly into your AI tool of choice.
-    </p>
-    <table width="100%" cellpadding="0" cellspacing="0">
-      ${categoryRows}
-    </table>
-
-    <!-- Step 2: AI Profile -->
-    <p style="margin:32px 0 6px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
-      STEP 2
-    </p>
-    <p style="margin:0 0 8px 0; font-family:Georgia,'Times New Roman',serif; font-size:28px; font-weight:400; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
-      Your AI Profile.
-    </p>
-    <p style="margin:0 0 16px 0; font-size:15px; color:#555553; line-height:1.6;">
-      Paste this into your AI once. Every output after will gradually get better over time, as AI learns who you are.
-    </p>
-    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
-      <tr>
-        <td style="background:#f8f8f6; border:1px solid #e4e4e2; border-radius:8px; padding:14px 16px; font-size:13px; color:#333331; line-height:1.7; font-family:monospace;">
-          ${stripEmDashes(promptKit.aiProfile)}
-        </td>
-      </tr>
-    </table>
-
-    <!-- Step 3: AI Workspace Setup -->
-    <p style="margin:0 0 6px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
-      STEP 3
-    </p>
-    <p style="margin:0 0 8px 0; font-family:Georgia,'Times New Roman',serif; font-size:28px; font-weight:400; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
       Your AI Workspace Setup.
-    </p>
+    </h1>
     <p style="margin:0 0 16px 0; font-size:15px; color:#555553; line-height:1.6;">
       Set this up once. AI will know who you are every time.
     </p>
@@ -134,33 +103,51 @@ async function sendPromptKitEmail(
       When AI gives you something worth keeping, ask it to save as an .md file. AI will now remember your info between chats.
     </p>
 
-    <!-- Cross-sell: AGENT: Workflow -->
-    <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:8px; border-top:1px solid #e4e4e2; padding-top:32px;">
+    <!-- Step 2: AI Profile -->
+    <p style="margin:0 0 6px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
+      STEP 2
+    </p>
+    <p style="margin:0 0 8px 0; font-family:Georgia,'Times New Roman',serif; font-size:28px; font-weight:400; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
+      Your AI Profile.
+    </p>
+    <p style="margin:0 0 16px 0; font-size:15px; color:#555553; line-height:1.6;">
+      Paste this into your AI once. Every output after will gradually get better over time, as AI learns who you are.
+    </p>
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
       <tr>
-        <td>
-          <p style="margin:0 0 12px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
-            YOUR NEXT STEP
-          </p>
-          <p style="margin:0 0 16px 0; font-family:Georgia,'Times New Roman',serif; font-size:24px; font-weight:400; color:#161618; line-height:1.2; letter-spacing:-0.02em;">
-            AGENT: Workflow
-          </p>
-          <p style="margin:0 0 4px 0; font-size:14px; color:#555553; line-height:1.6;">
-            Turn your prompts into repeatable AI workflows.
-          </p>
-          <p style="margin:0 0 24px 0; font-size:14px; color:#555553; line-height:1.6;">
-            Built for real jobs. Not demos.
-          </p>
-          <a href="https://promptaiagents.com/workflow"
-             style="display:inline-block; background:#1e7ab8; color:#ffffff; font-size:15px; font-weight:600; text-decoration:none; padding:12px 28px; border-radius:10px;">
-            Try Now
-          </a>
+        <td style="background:#f8f8f6; border:1px solid #e4e4e2; border-radius:8px; padding:14px 16px; font-size:13px; color:#333331; line-height:1.7; font-family:monospace;">
+          ${stripEmDashes(promptKit.aiProfile)}
         </td>
       </tr>
     </table>
+
+    <!-- Step 3: Prompts by category -->
+    <p style="margin:0 0 6px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
+      STEP 3
+    </p>
+    <p style="margin:0 0 8px 0; font-family:Georgia,'Times New Roman',serif; font-size:28px; font-weight:400; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
+      ${totalPrompts} prompts built for ${jobTitle}.
+    </p>
+    <p style="margin:0 0 24px 0; font-size:15px; color:#555553; line-height:1.6;">
+      Copy any prompt below and paste it directly into your AI tool of choice.
+    </p>
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
+      ${categoryRows}
+    </table>
+
+    ${buildCrossSellBlockHTML({
+      productName: "AGENT: Workflow",
+      checklistItems: [
+        "Workflow Playbook",
+        "AI Setup",
+        "Key Insights",
+      ],
+      href: "https://promptaiagents.com/workflow",
+    })}
   `;
 
   const html = buildBaseEmailHTML({
-    preHeaderText: `${totalPrompts} prompts built for ${jobTitle}. Your AI Profile is inside`,
+    preHeaderText: `An AI prompt kit for ${jobTitle}`,
     eyebrowLabel: "AGENT: Prompts",
     heroContent,
   });
@@ -174,7 +161,7 @@ async function sendPromptKitEmail(
     body: JSON.stringify({
       from: getFromAddress(),
       to: [email],
-      subject: `Your AI Prompt Kit for ${jobTitle}`,
+      subject: "AGENT: PROMPTS",
       html,
     }),
   });

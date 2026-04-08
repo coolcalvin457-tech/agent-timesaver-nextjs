@@ -4,6 +4,7 @@ import {
   getFromAddress,
   addContactToAudience,
   buildBaseEmailHTML,
+  buildCrossSellBlockHTML,
 } from "@/app/api/_shared/emailBase";
 import { stripEmDashes } from "@/app/api/_shared/sanitize";
 import { logToolUsage } from "@/lib/db";
@@ -48,30 +49,20 @@ async function sendPIPEmail(
       Build another PIP
     </a>
 
-    <!-- Cross-sell separator -->
-    <div style="padding:32px 0 0 0;border-top:1px solid #e4e4e2;">
-      <p style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.06em;color:#1e7ab8;text-transform:uppercase;margin:0 0 12px;">
-        YOUR NEXT STEP
-      </p>
-      <h3 style="font-family:Georgia,serif;font-size:24px;font-weight:400;color:#161618;margin:0 0 12px;line-height:1.2;">
-        AGENT: Onboarding
-      </h3>
-      <p style="font-size:14px;color:#555553;line-height:1.6;margin:0 0 4px;">
-        Welcome Letter · First-Week Schedule · 30-60-90 Day Plan · New Hire Checklist
-      </p>
-      <p style="font-size:14px;color:#555553;line-height:1.6;margin:0 0 28px;">
-        Included in your HR Agents Package.
-      </p>
-      <div style="text-align:center;">
-        <a href="https://promptaiagents.com/onboarding" style="display:inline-block;background:#1e7ab8;color:#ffffff;font-size:15px;font-weight:600;padding:14px 28px;border-radius:8px;text-decoration:none;">
-          Try AGENT: Onboarding
-        </a>
-      </div>
-    </div>
+    ${buildCrossSellBlockHTML({
+      productName: "AGENT: Onboarding",
+      checklistItems: [
+        "Welcome Letter",
+        "First-Week Schedule",
+        "30-60-90 Day Plan",
+        "New Hire Checklist",
+      ],
+      href: "https://promptaiagents.com/onboarding",
+    })}
   `;
 
   const html = buildBaseEmailHTML({
-    preHeaderText: `Your ${employeeRole} PIP is ready: ${timeline}-day plan attached`,
+    preHeaderText: `A ${timeline}-day improvement plan for ${employeeRole}`,
     eyebrowLabel: "AGENT: PIP",
     heroContent,
   });
@@ -85,7 +76,7 @@ async function sendPIPEmail(
     body: JSON.stringify({
       from: getFromAddress(),
       to: [email],
-      subject: `Your PIP document: ${employeeRole}, ${timeline}-day plan`,
+      subject: "AGENT: PIP",
       html,
       attachments: [{ filename, content: fileData }],
     }),

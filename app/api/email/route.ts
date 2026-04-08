@@ -102,9 +102,9 @@ async function sendResultsEmail(
     ${buildCrossSellBlockHTML({
       productName: "AGENT: Prompts",
       checklistItems: [
-        "12 Personalized Prompts",
-        "AI Profile",
         "AI Workspace Setup",
+        "AI Profile",
+        "12 Personalized Prompts",
       ],
       href: "https://promptaiagents.com/prompts",
       buttonLabel: "Try Now",

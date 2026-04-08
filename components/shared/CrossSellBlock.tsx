@@ -7,16 +7,9 @@ interface CrossSellBlockProps {
   productName: string;
   /**
    * Checklist of deliverables shown as a blue checkmark list, one per line.
-   * Replaces the legacy `descriptionLines` pattern (F51, S118). Every new
-   * CrossSellBlock call site should use this prop.
+   * Title-case, 2-4 word named deliverables (S123 voice rule).
    */
-  checklistItems?: string[];
-  /**
-   * @deprecated F51, S118. Legacy two-line description prop. Kept for
-   * backwards compatibility while the remaining 7 tool call sites migrate
-   * during the F47 Bucket B sweep. Do NOT use on new call sites.
-   */
-  descriptionLines?: [string, string];
+  checklistItems: string[];
   /** Button label. Canonical platform-wide is "Try Now" (S111). */
   buttonLabel: string;
   /** If provided, button navigates to this URL. If omitted, button is inert. */
@@ -40,7 +33,6 @@ interface CrossSellBlockProps {
 export default function CrossSellBlock({
   productName,
   checklistItems,
-  descriptionLines,
   buttonLabel,
   href,
 }: CrossSellBlockProps) {
@@ -66,74 +58,49 @@ export default function CrossSellBlock({
         {productName}
       </h4>
 
-      {checklistItems && checklistItems.length > 0 ? (
-        <ul
-          style={{
-            listStyle: "none",
-            padding: 0,
-            margin: "0 0 28px",
-            display: "flex",
-            flexDirection: "column",
-            gap: "10px",
-          }}
-        >
-          {checklistItems.map((item) => (
-            <li
-              key={item}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "12px",
-                fontSize: "0.9375rem",
-                color: "rgba(255,255,255,0.7)",
-                lineHeight: 1.5,
-              }}
+      <ul
+        style={{
+          listStyle: "none",
+          padding: 0,
+          margin: "0 0 28px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+        }}
+      >
+        {checklistItems.map((item) => (
+          <li
+            key={item}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+              fontSize: "0.9375rem",
+              color: "rgba(255,255,255,0.7)",
+              lineHeight: 1.5,
+            }}
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+              style={{ flexShrink: 0 }}
             >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                aria-hidden="true"
-                style={{ flexShrink: 0 }}
-              >
-                <circle cx="12" cy="12" r="11" fill="#1e7ab8" fillOpacity="0.12" />
-                <path
-                  d="M8 12.5L11 15.5L16.5 9.5"
-                  stroke="#1e7ab8"
-                  strokeWidth="2.25"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span>{item}</span>
-            </li>
-          ))}
-        </ul>
-      ) : descriptionLines ? (
-        <>
-          <p
-            style={{
-              fontSize: "0.9rem",
-              color: "rgba(255,255,255,0.55)",
-              lineHeight: 1.6,
-              margin: "0 0 4px",
-            }}
-          >
-            {descriptionLines[0]}
-          </p>
-          <p
-            style={{
-              fontSize: "0.9rem",
-              color: "rgba(255,255,255,0.55)",
-              lineHeight: 1.6,
-              margin: "0 0 28px",
-            }}
-          >
-            {descriptionLines[1]}
-          </p>
-        </>
-      ) : null}
+              <circle cx="12" cy="12" r="11" fill="#1e7ab8" fillOpacity="0.12" />
+              <path
+                d="M8 12.5L11 15.5L16.5 9.5"
+                stroke="#1e7ab8"
+                strokeWidth="2.25"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
 
       <div style={{ display: "flex", justifyContent: "center" }}>
         {href ? (

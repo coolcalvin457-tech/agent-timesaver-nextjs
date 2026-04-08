@@ -1077,8 +1077,12 @@ export default function CompetitiveDossierTool({
           </button>
           <CrossSellBlock
             productName="AGENT: Workflow"
-            descriptionLines={["Turn any recurring task into a step-by-step workflow with AI prompts, time estimates, and a ready-to-use playbook.", "Built for real jobs. Not demos."]}
-            buttonLabel="Try AGENT: Workflow"
+            checklistItems={[
+              "Workflow Playbook",
+              "AI Setup",
+              "Key Insights",
+            ]}
+            buttonLabel="Try Now"
             href="/workflow"
           />
         </div>

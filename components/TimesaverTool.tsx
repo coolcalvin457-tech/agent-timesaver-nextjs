@@ -602,9 +602,9 @@ export default function TimesaverTool() {
           <CrossSellBlock
             productName="AGENT: Prompts"
             checklistItems={[
-              "12 Personalized Prompts",
-              "AI Profile",
               "AI Workspace Setup",
+              "AI Profile",
+              "12 Personalized Prompts",
             ]}
             buttonLabel="Try Now"
             href="/prompts"

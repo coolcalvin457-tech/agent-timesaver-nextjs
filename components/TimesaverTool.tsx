@@ -9,6 +9,7 @@ import ToolLoadingScreen from "@/components/shared/ToolLoadingScreen";
 import ToolEmailGate from "@/components/shared/ToolEmailGate";
 import BackButton from "@/components/shared/BackButton";
 import CrossSellBlock from "@/components/shared/CrossSellBlock";
+import MultiChoiceQuestionCard from "@/components/shared/MultiChoiceQuestionCard";
 import { useAuth } from "@/components/AuthProvider";
 
 // ─── State Types ───────────────────────────────────────────────────────────────
@@ -30,9 +31,6 @@ interface AppState {
   jobDescription: string;
   questions: Question[];
   questionIndex: number;
-  selectedChoice: string | null;
-  writeInValue: string;
-  showWriteIn: boolean;
   answers: string[];
   timeSavers: TimeSaver[];
   roi: ROI | null;
@@ -71,9 +69,6 @@ export default function TimesaverTool() {
     jobDescription: "",
     questions: [],
     questionIndex: 0,
-    selectedChoice: null,
-    writeInValue: "",
-    showWriteIn: false,
     answers: [],
     timeSavers: [],
     roi: null,
@@ -174,9 +169,6 @@ export default function TimesaverTool() {
           ...s,
           questions: sanitizedQuestions,
           questionIndex: 0,
-          selectedChoice: null,
-          writeInValue: "",
-          showWriteIn: false,
           answers: [],
           screen: "question",
         }));
@@ -287,54 +279,15 @@ export default function TimesaverTool() {
     loadQuestions(state.jobTitle, "A", jd);
   };
 
-  const handleChoiceSelect = (choice: string) => {
-    setState((s) => ({
-      ...s,
-      selectedChoice: choice,
-      showWriteIn: false,
-      writeInValue: "",
-    }));
-
-    // Auto-advance after brief visual feedback (matches AGENT: Prompts)
-    setTimeout(() => {
-      const newAnswers = [...state.answers, choice];
-      const nextIndex = state.questionIndex + 1;
-
-      if (nextIndex >= state.questions.length) {
-        track("questions_completed", { path: state.path ?? "none", jobTitle: state.jobTitle });
-        loadTimeSavers(state.jobTitle, newAnswers, state.path, state.jobDescription);
-      } else {
-        setState((s) => ({
-          ...s,
-          answers: newAnswers,
-          questionIndex: nextIndex,
-          selectedChoice: null,
-          writeInValue: "",
-          showWriteIn: false,
-        }));
-      }
-    }, 180);
-  };
-
-  const toggleWriteIn = () => {
-    setState((s) => ({
-      ...s,
-      showWriteIn: !s.showWriteIn,
-      selectedChoice: null,
-    }));
-  };
-
-  const handleNextQuestion = () => {
-    const answer = state.showWriteIn
-      ? state.writeInValue.trim()
-      : state.selectedChoice;
-    if (!answer) return;
-
+  // S120-F34: Single answer handler — the MultiChoiceQuestionCard component
+  // owns tile-selection + write-in state internally and calls this with the
+  // committed answer string (either the chosen tile label or the trimmed
+  // write-in value).
+  const handleAnswer = (answer: string) => {
     const newAnswers = [...state.answers, answer];
     const nextIndex = state.questionIndex + 1;
 
     if (nextIndex >= state.questions.length) {
-      // All questions answered — load time-savers
       track("questions_completed", { path: state.path ?? "none", jobTitle: state.jobTitle });
       loadTimeSavers(state.jobTitle, newAnswers, state.path, state.jobDescription);
     } else {
@@ -342,9 +295,6 @@ export default function TimesaverTool() {
         ...s,
         answers: newAnswers,
         questionIndex: nextIndex,
-        selectedChoice: null,
-        writeInValue: "",
-        showWriteIn: false,
       }));
     }
   };
@@ -381,10 +331,6 @@ export default function TimesaverTool() {
 
   const canContinueJobTitle =
     jobTitleInput.trim().length > 1 && state.path !== null;
-  const canContinueQuestion =
-    state.showWriteIn
-      ? state.writeInValue.trim().length > 0
-      : state.selectedChoice !== null;
 
   const flipClass = flipStage === "in" ? "screen-flip-in" : "";
 
@@ -564,6 +510,10 @@ export default function TimesaverTool() {
       )}
 
       {/* ── Question Screens ──────────────────────────────────────────────── */}
+      {/* S120-F34: Peer Write-in Rule. Tile grid + write-in are owned by the
+          shared MultiChoiceQuestionCard component. The write-in tile is the
+          co-equal 4th tile and swaps in place into a textarea — no layout
+          shift, no footer link. */}
       {state.screen === "question" && currentQuestion && (
         <div className="screen">
           <div className="tool-tag">AGENT: Timesaver</div>
@@ -586,61 +536,13 @@ export default function TimesaverTool() {
             ))}
           </div>
 
-          {/* Question counter label and "Almost there." filler removed (S112-F14).
-              Progress bar alone communicates position. */}
-
-          <p className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25, overflowWrap: "break-word", wordBreak: "break-word", maxWidth: "100%", marginBottom: "20px" }}>{currentQuestion.stem}</p>
-
-          <div className="choices">
-            {currentQuestion.choices.map((choice, i) => (
-              <button
-                key={i}
-                className={`choice ${state.selectedChoice === choice ? "selected" : ""}`}
-                onClick={() => handleChoiceSelect(choice)}
-                type="button"
-              >
-                <span className="choice-dot" />
-                {choice}
-              </button>
-            ))}
-          </div>
-
-          {state.showWriteIn ? (
-            <input
-              className="input"
-              style={{ marginBottom: "16px" }}
-              type="text"
-              placeholder="Type your answer..."
-              autoFocus
-              value={state.writeInValue}
-              onChange={(e) =>
-                setState((s) => ({ ...s, writeInValue: e.target.value }))
-              }
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && state.writeInValue.trim())
-                  handleNextQuestion();
-              }}
-            />
-          ) : (
-            <button
-              className="write-in-toggle"
-              onClick={toggleWriteIn}
-              type="button"
-            >
-              <span>+</span> Something else? Write it in.
-            </button>
-          )}
-
-          {state.showWriteIn && (
-            <button
-              className="btn btn-primary btn-full"
-              style={{ marginTop: "8px" }}
-              disabled={!canContinueQuestion}
-              onClick={handleNextQuestion}
-            >
-              {isLastQuestion ? "Start Saving Time" : "Continue"}
-            </button>
-          )}
+          <MultiChoiceQuestionCard
+            key={`q-${state.questionIndex}`}
+            stem={currentQuestion.stem}
+            choices={currentQuestion.choices}
+            onAnswer={handleAnswer}
+            writeInCommitLabel={isLastQuestion ? "Start Saving Time" : "Continue"}
+          />
         </div>
       )}
 

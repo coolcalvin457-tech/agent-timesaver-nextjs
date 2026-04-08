@@ -24,24 +24,23 @@ const FIXED_QUESTION_STEMS: readonly [string, string, string] = [
 
 // ─── Mock choices (used when ANTHROPIC_API_KEY is not set) ────────────────────
 // Default noun-phrase answer options, 7 words max, per S111 rule.
+// S120-F34: Exactly 3 AI-generated options per stem. The write-in tile
+// renders as the co-equal 4th tile on the client (Peer Write-in Rule).
 const MOCK_CHOICES: [string[], string[], string[]] = [
   [
     "Writing emails, docs, and reports",
     "Research and information gathering",
     "Coordinating people and tracking progress",
-    "Analysis, decisions, and meeting prep",
   ],
   [
     "Late nights and missed deadlines",
     "Quality drops across everything",
     "Constant context-switching and dropped balls",
-    "Strategic work gets deprioritized first",
   ],
   [
     "Faster first drafts and writing",
     "Automated research and summaries",
     "Cleaner handoffs and status updates",
-    "Better meeting prep and follow-ups",
   ],
 ];
 
@@ -53,8 +52,10 @@ function getMockQuestions(): Question[] {
 }
 
 // ─── Claude API Call ──────────────────────────────────────────────────────────
-// Stems are locked. Claude generates 4 noun-phrase answer options per stem,
+// Stems are locked. Claude generates 3 noun-phrase answer options per stem,
 // tailored to the job title. Options: noun phrases, 7 words max, parallel structure.
+// S120-F34: Count dropped from 4 to 3 so the client-side "Write your own." tile
+// can render as the visible 4th tile (Peer Write-in Rule).
 async function generateQuestionsWithClaude(
   jobTitle: string,
   jobDescription?: string
@@ -72,24 +73,25 @@ async function generateQuestionsWithClaude(
 
   const prompt = `Job Title: "${jobTitle}"${contextSection}
 
-For each of the three fixed questions below, generate exactly 4 answer options tailored to this job title.
+For each of the three fixed questions below, generate exactly 3 answer options tailored to this job title.
 
 ${stemsList}
 
 Answer option rules (strict):
 - Every option is a NOUN PHRASE. No sentences. No verbs in first position. No "I" or "we" statements.
 - Maximum 7 words per option. Count every word.
-- Parallel structure within a question: if one option starts with a gerund, all four start with a gerund. If one starts with an adjective, all four do.
+- Parallel structure within a question: if one option starts with a gerund, all three start with a gerund. If one starts with an adjective, all three do.
 - Options must read as specific to a "${jobTitle}". A finance director and a marketing manager should see completely different options.
 - No em dashes. No jargon. No generic filler like "other" or "something else".
 - Do not reference specific AI tool names (ChatGPT, Claude, Gemini, etc.) in any option.
+- Do NOT include a write-in or "other" option. The client renders a peer write-in tile as the visible 4th choice automatically.
 
 Return ONLY valid JSON in this exact format, no explanation. Use the exact stem text provided above:
 {
   "questions": [
-    { "stem": "${FIXED_QUESTION_STEMS[0]}", "choices": ["...", "...", "...", "..."] },
-    { "stem": "${FIXED_QUESTION_STEMS[1]}", "choices": ["...", "...", "...", "..."] },
-    { "stem": "${FIXED_QUESTION_STEMS[2]}", "choices": ["...", "...", "...", "..."] }
+    { "stem": "${FIXED_QUESTION_STEMS[0]}", "choices": ["...", "...", "..."] },
+    { "stem": "${FIXED_QUESTION_STEMS[1]}", "choices": ["...", "...", "..."] },
+    { "stem": "${FIXED_QUESTION_STEMS[2]}", "choices": ["...", "...", "..."] }
   ]
 }`;
 
@@ -108,10 +110,10 @@ Return ONLY valid JSON in this exact format, no explanation. Use the exact stem 
 
   const parsed = JSON.parse(cleanJsonResponse(text)) as QuestionsResponse;
 
-  // Defensive: force the locked stems regardless of what Claude returned.
+  // Defensive: force the locked stems and cap choices at 3 (S120-F34).
   return parsed.questions.slice(0, 3).map((q, i) => ({
     stem: FIXED_QUESTION_STEMS[i],
-    choices: q.choices.slice(0, 4),
+    choices: q.choices.slice(0, 3),
   }));
 }
 

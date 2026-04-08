@@ -899,6 +899,146 @@ input, textarea {
   color: var(--cta);
 }
 
+/* ── MultiChoiceQuestionCard — 2x2 peer tile grid (S120-F34) ─────────
+   4 co-equal tiles: 3 AI-generated options + 1 write-in tile as the
+   visible 4th. Write-in swaps in place into a textarea — no layout shift.
+   Paired with F35: 60-char soft cap on write-in input, wrap to 2 rows.
+   Dark-frame variant below in `.hero-tool-dark` cascade. */
+.mc-tile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 480px) {
+  .mc-tile-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mc-tile {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: left;
+  min-height: 76px;
+  padding: 16px 18px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-input);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, transform 0.15s;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.35;
+}
+
+.mc-tile:hover:not(:disabled) {
+  border-color: var(--cta);
+  background: rgba(30,122,184,0.03);
+}
+
+.mc-tile.selected {
+  border-color: var(--cta);
+  background: rgba(30,122,184,0.06);
+}
+
+.mc-tile:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.mc-tile-label {
+  display: block;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Write-in tile — idle state */
+.mc-tile-writein {
+  color: var(--text-secondary);
+}
+
+.mc-tile-writein-label::before {
+  content: "+ ";
+  font-weight: 600;
+  color: var(--cta);
+}
+
+/* Write-in tile — editing state (swap-in-place) */
+.mc-tile-writein.editing {
+  border-color: var(--cta);
+  background: rgba(30,122,184,0.06);
+  cursor: text;
+  align-items: stretch;
+  padding: 12px 14px;
+}
+
+.mc-tile-writein-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.mc-tile-writein-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.35;
+  padding: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.mc-tile-writein-input::placeholder {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.mc-tile-writein-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.mc-tile-writein-count {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+}
+
+.mc-tile-writein-commit {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #fff;
+  background: var(--cta);
+  border: none;
+  border-radius: var(--radius-btn);
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.mc-tile-writein-commit:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 /* ── Path Indicator ───────────────────────────────────────── */
 .path-indicator {
   display: inline-flex;
@@ -1911,6 +2051,49 @@ input, textarea {
 
 .hero-tool-dark .write-in-toggle:hover {
   color: var(--cta);
+}
+
+/* MultiChoiceQuestionCard — dark variant (S120-F34) */
+.hero-tool-dark .mc-tile {
+  background: var(--dark-surface);
+  border-color: var(--dark-border);
+  color: rgba(255,255,255,0.88);
+}
+
+.hero-tool-dark .mc-tile:hover:not(:disabled) {
+  border-color: var(--cta);
+  background: rgba(30,122,184,0.12);
+}
+
+.hero-tool-dark .mc-tile.selected {
+  border-color: var(--cta);
+  background: rgba(30,122,184,0.15);
+}
+
+.hero-tool-dark .mc-tile-writein {
+  color: rgba(255,255,255,0.6);
+}
+
+.hero-tool-dark .mc-tile-writein.editing {
+  border-color: var(--cta);
+  background: rgba(30,122,184,0.15);
+}
+
+.hero-tool-dark .mc-tile-writein-input {
+  color: rgba(255,255,255,0.92);
+}
+
+.hero-tool-dark .mc-tile-writein-input::placeholder {
+  color: rgba(255,255,255,0.35);
+}
+
+.hero-tool-dark .mc-tile-writein-count {
+  color: rgba(255,255,255,0.4);
+}
+
+.hero-tool-dark .mc-tile-writein-commit {
+  background: var(--cta);
+  color: #fff;
 }
 
 /* Loading screen */

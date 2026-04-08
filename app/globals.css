@@ -899,22 +899,21 @@ input, textarea {
   color: var(--cta);
 }
 
-/* ── MultiChoiceQuestionCard — 2x2 peer tile grid (S120-F34) ─────────
-   4 co-equal tiles: 3 AI-generated options + 1 write-in tile as the
+/* ── MultiChoiceQuestionCard — 1x4 peer list (S121 revert from S120 2x2) ─────────
+   4 co-equal stacked rows: 3 AI-generated options + 1 write-in row as the
    visible 4th. Write-in swaps in place into a textarea — no layout shift.
+   Calvin's call in S121 after seeing the 2x2 tile grid live: the vertical
+   list reads cleaner and scans faster than the grid, especially when
+   AI-generated options run long. Write-in is still a peer, NOT a footer
+   link — same row height, same border treatment, same hover/selected
+   states as the three options above it.
    Paired with F35: 60-char soft cap on write-in input, wrap to 2 rows.
    Dark-frame variant below in `.hero-tool-dark` cascade. */
 .mc-tile-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 10px;
   margin-bottom: 16px;
-}
-
-@media (max-width: 480px) {
-  .mc-tile-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 .mc-tile {

@@ -1,17 +1,23 @@
 "use client";
 
 /**
- * MultiChoiceQuestionCard (S120-F34)
+ * MultiChoiceQuestionCard (S120-F34, layout reverted to 1x4 list in S121)
  *
  * Shared component for every multi-choice question card across tools.
- * Renders exactly 4 peer tiles: 3 AI-generated noun-phrase options plus
- * 1 "Write your own." write-in tile as the co-equal 4th choice.
+ * Renders exactly 4 peer rows stacked vertically: 3 AI-generated noun-phrase
+ * options plus 1 "Write your own." write-in row as the co-equal 4th choice.
  *
  * Peer Write-in Rule (master spec Layer 1 §1.4): the write-in is never a
- * footer link. It is a full tile that matches the dimensions, styling, and
- * selected-state treatment of the other three tiles. Clicking it swaps the
- * tile in place into a text input — the card footprint does not change and
- * the surrounding grid does not reflow.
+ * footer link. It is a full row that matches the dimensions, styling, and
+ * selected-state treatment of the other three rows. Clicking it swaps the
+ * row in place into a text input — the card footprint does not change and
+ * the surrounding list does not reflow.
+ *
+ * Layout note (S121): initial S120 ship used a 2x2 tile grid. Reverted to a
+ * single-column vertical list after Calvin's live review — the list reads
+ * cleaner and scans faster, especially when AI-generated options run long.
+ * Write-in remains a co-equal row; the prior "footer link" variant is NOT
+ * being reintroduced.
  *
  * F35 (paired): write-in input enforces a 60-character soft cap. Overflow
  * wraps within the tile; never mid-word truncated.

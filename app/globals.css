@@ -917,12 +917,14 @@ input, textarea {
 }
 
 .mc-tile {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   text-align: left;
-  min-height: 76px;
-  padding: 16px 18px;
+  min-height: 72px;
+  /* Extra left padding reserves space for the radio indicator pseudo-element. */
+  padding: 16px 18px 16px 52px;
   background: var(--surface);
   border: 1.5px solid var(--border);
   border-radius: var(--radius-input);
@@ -935,14 +937,60 @@ input, textarea {
   line-height: 1.35;
 }
 
+/* Radio indicator (S121): hollow outer ring, centered vertically on the left
+   side of the row. Standard multi-choice affordance. Dark-frame cascade below
+   supplies light colors for the dark tool frame. */
+.mc-tile::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  margin-top: -9px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  box-sizing: border-box;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+/* Inner dot — blue, fades in when the tile is selected or the write-in row
+   is in editing state. */
+.mc-tile::after {
+  content: "";
+  position: absolute;
+  left: 23px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  margin-top: -4px;
+  border-radius: 50%;
+  background: var(--cta);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
 .mc-tile:hover:not(:disabled) {
   border-color: var(--cta);
   background: rgba(30,122,184,0.03);
 }
 
+.mc-tile:hover:not(:disabled)::before {
+  border-color: var(--cta);
+}
+
 .mc-tile.selected {
   border-color: var(--cta);
   background: rgba(30,122,184,0.06);
+}
+
+.mc-tile.selected::before {
+  border-color: var(--cta);
+}
+
+.mc-tile.selected::after {
+  opacity: 1;
 }
 
 .mc-tile:disabled {
@@ -961,19 +1009,21 @@ input, textarea {
   color: var(--text-secondary);
 }
 
-.mc-tile-writein-label::before {
-  content: "+ ";
-  font-weight: 600;
-  color: var(--cta);
-}
-
 /* Write-in tile — editing state (swap-in-place) */
 .mc-tile-writein.editing {
   border-color: var(--cta);
   background: rgba(30,122,184,0.06);
   cursor: text;
   align-items: stretch;
-  padding: 12px 14px;
+  padding: 12px 14px 12px 52px;
+}
+
+.mc-tile-writein.editing::before {
+  border-color: var(--cta);
+}
+
+.mc-tile-writein.editing::after {
+  opacity: 1;
 }
 
 .mc-tile-writein-editor {
@@ -2052,11 +2102,16 @@ input, textarea {
   color: var(--cta);
 }
 
-/* MultiChoiceQuestionCard — dark variant (S120-F34) */
+/* MultiChoiceQuestionCard — dark variant (S120-F34, radio indicator S121) */
 .hero-tool-dark .mc-tile {
   background: var(--dark-surface);
   border-color: var(--dark-border);
   color: rgba(255,255,255,0.88);
+}
+
+/* Radio ring — light outline on dark surface at rest. */
+.hero-tool-dark .mc-tile::before {
+  border-color: rgba(255,255,255,0.3);
 }
 
 .hero-tool-dark .mc-tile:hover:not(:disabled) {
@@ -2064,9 +2119,17 @@ input, textarea {
   background: rgba(30,122,184,0.12);
 }
 
+.hero-tool-dark .mc-tile:hover:not(:disabled)::before {
+  border-color: var(--cta);
+}
+
 .hero-tool-dark .mc-tile.selected {
   border-color: var(--cta);
   background: rgba(30,122,184,0.15);
+}
+
+.hero-tool-dark .mc-tile.selected::before {
+  border-color: var(--cta);
 }
 
 .hero-tool-dark .mc-tile-writein {
@@ -2076,6 +2139,10 @@ input, textarea {
 .hero-tool-dark .mc-tile-writein.editing {
   border-color: var(--cta);
   background: rgba(30,122,184,0.15);
+}
+
+.hero-tool-dark .mc-tile-writein.editing::before {
+  border-color: var(--cta);
 }
 
 .hero-tool-dark .mc-tile-writein-input {

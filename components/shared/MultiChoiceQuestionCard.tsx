@@ -29,7 +29,9 @@
 import { useEffect, useRef, useState } from "react";
 
 export const WRITE_IN_MAX_LENGTH = 60;
-export const WRITE_IN_LABEL = "Write your own.";
+// No terminal period. Noun-phrase options never take periods, same family as
+// the F56 pre-header rule. Keeps write-in consistent with the three AI tiles.
+export const WRITE_IN_LABEL = "Write your own";
 
 export interface MultiChoiceQuestionCardProps {
   /** The question stem (displayed above the tile grid). */

@@ -4254,6 +4254,10 @@ input, textarea {
   top: 0;
   margin-left: 4px;
   letter-spacing: 1px;
+  /* F49 regression fix (S121): absolute positioning with left:100% gives
+     shrink-to-fit zero available width, which was wrapping each dot span
+     onto its own line. Force a single line. */
+  white-space: nowrap;
 }
 .thinking-dots span {
   display: inline-block;

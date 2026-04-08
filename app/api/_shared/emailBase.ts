@@ -56,6 +56,98 @@ interface BaseEmailOptions {
   heroContent: string;
 }
 
+// ─── Cross-sell block HTML helper (S118, F51-F53) ─────────────────────────────
+
+interface CrossSellBlockHTMLOptions {
+  /** Product name heading. e.g. "AGENT: Prompts" */
+  productName: string;
+  /**
+   * Deliverables shown as a blue checkmark list, one item per line.
+   * Mirrors the `checklistItems` prop on the React CrossSellBlock component.
+   */
+  checklistItems: string[];
+  /** Button destination URL (absolute, e.g. "https://promptaiagents.com/prompts") */
+  href: string;
+  /**
+   * Button label. Canonical platform-wide is "Try Now" (S111, F53 S118).
+   * Defaults to "Try Now" — callers should omit this unless they have a
+   * deliberate exception.
+   */
+  buttonLabel?: string;
+}
+
+/**
+ * Builds the bottom-of-email cross-sell block HTML.
+ *
+ * Enforces the S118 Walkthrough 4 rules:
+ *   - F51 — Checklist pattern (blue checkmark list, one deliverable per line)
+ *   - F52 — "Built for real jobs. Not demos." is NOT rendered here
+ *     (that line lives in the email footer only, via `buildBaseEmailHTML`)
+ *   - F53 — Default button label is "Try Now"
+ *   - Blue inline SVG checkmark, solid-fill brand-blue CTA (F45 cross-sell exception)
+ *   - Reference treatment: AGENT: Prompts landing page "What's included" section
+ *
+ * This helper returns HTML that should be embedded inside the hero card `heroContent`
+ * block, directly after the tool-specific results content.
+ */
+export function buildCrossSellBlockHTML({
+  productName,
+  checklistItems,
+  href,
+  buttonLabel = "Try Now",
+}: CrossSellBlockHTMLOptions): string {
+  const itemRows = checklistItems
+    .map(
+      (item) => `
+      <tr>
+        <td style="padding: 0 0 10px 0;" valign="top">
+          <table cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td width="22" valign="middle" style="padding-right: 12px;">
+                <!-- Blue checkmark icon -->
+                <div style="width:20px; height:20px; border-radius:10px; background:#e8f1f8; text-align:center; line-height:20px;">
+                  <span style="color:#1e7ab8; font-size:12px; font-weight:700; font-family:Arial,sans-serif;">✓</span>
+                </div>
+              </td>
+              <td valign="middle" style="font-size:15px; color:#555553; line-height:1.5;">
+                ${item}
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>`
+    )
+    .join("");
+
+  return `
+    <!-- Cross-sell separator (S118, F51-F53) -->
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:32px; border-top:1px solid #e4e4e2;">
+      <tr>
+        <td style="padding: 32px 0 0 0;">
+          <p style="font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:600; letter-spacing:0.06em; color:#1e7ab8; text-transform:uppercase; margin:0 0 12px;">
+            YOUR NEXT STEP
+          </p>
+          <h3 style="font-family:Georgia,serif; font-size:24px; font-weight:400; color:#161618; margin:0 0 20px; line-height:1.2;">
+            ${productName}
+          </h3>
+
+          <!-- Checklist -->
+          <table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 28px;">
+            ${itemRows}
+          </table>
+
+          <!-- CTA button -->
+          <div style="text-align:center;">
+            <a href="${href}" style="display:inline-block; background:#1e7ab8; color:#ffffff; font-size:15px; font-weight:600; padding:14px 28px; border-radius:10px; text-decoration:none;">
+              ${buttonLabel}
+            </a>
+          </div>
+        </td>
+      </tr>
+    </table>
+  `;
+}
+
 /**
  * Builds the full HTML email string.
  *

@@ -105,7 +105,12 @@ export default function MultiChoiceQuestionCard({
     }
   };
 
-  const writeInCommitDisabled = writeInValue.trim().length === 0;
+  // Standalone Continue button is always rendered below the list, but it
+  // is only enabled once the write-in row is active AND the user has typed
+  // at least one non-whitespace character. Clicks on the three AI tiles
+  // auto-advance and never need the button.
+  const writeInCommitDisabled =
+    !writeInActive || writeInValue.trim().length === 0;
 
   return (
     <>
@@ -182,21 +187,20 @@ export default function MultiChoiceQuestionCard({
         </div>
       </div>
 
-      {/* Standalone commit button — only rendered while the write-in row is
-          in editing state. Tile clicks on the three AI options auto-advance
-          and never see this button. */}
-      {writeInActive && (
-        <div className="mc-writein-action">
-          <button
-            type="button"
-            className="btn btn-primary mc-writein-commit-button"
-            onClick={handleWriteInCommit}
-            disabled={writeInCommitDisabled}
-          >
-            {writeInCommitLabel}
-          </button>
-        </div>
-      )}
+      {/* Standalone commit button — always rendered below the list. Disabled
+          by default; enables only when the user activates the write-in row
+          and types at least one non-whitespace character. Clicks on the
+          three AI tiles auto-advance and never engage this button. */}
+      <div className="mc-writein-action">
+        <button
+          type="button"
+          className="btn btn-primary mc-writein-commit-button"
+          onClick={handleWriteInCommit}
+          disabled={writeInCommitDisabled}
+        >
+          {writeInCommitLabel}
+        </button>
+      </div>
     </>
   );
 }

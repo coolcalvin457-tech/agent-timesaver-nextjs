@@ -1054,14 +1054,9 @@ input, textarea {
   font-weight: 400;
 }
 
-.mc-tile-writein-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-
 .mc-tile-writein-count {
+  display: block;
+  text-align: right;
   font-family: var(--font-mono);
   font-size: 0.6875rem;
   font-weight: 500;
@@ -1069,23 +1064,19 @@ input, textarea {
   color: var(--text-muted);
 }
 
-.mc-tile-writein-commit {
-  font-family: var(--font-sans);
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: #fff;
-  background: var(--cta);
-  border: none;
-  border-radius: var(--radius-btn);
-  padding: 6px 14px;
-  cursor: pointer;
-  transition: opacity 0.15s;
+/* Standalone commit button wrapper (S121).
+   The write-in commit button used to live inside the row footer. It now
+   renders as a separate primary button below the list, visible only while
+   the write-in row is in editing state. Auto-advance on the three AI tiles
+   never exposes this button. */
+.mc-writein-action {
+  margin-top: 12px;
+  display: flex;
+  justify-content: stretch;
 }
 
-.mc-tile-writein-commit:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
+.mc-writein-commit-button {
+  width: 100%;
 }
 
 /* ── Path Indicator ───────────────────────────────────────── */

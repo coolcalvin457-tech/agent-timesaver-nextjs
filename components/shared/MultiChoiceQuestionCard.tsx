@@ -138,22 +138,31 @@ export default function MultiChoiceQuestionCard({
           </button>
         ))}
 
-        {/* Write-in tile — peer to the three choice tiles (F34). */}
-        <button
-          type="button"
+        {/* Write-in row — peer to the three choice rows (F34).
+            S121: commit button moved OUT of the row and rendered standalone
+            below the list. Row now holds only the label (idle) or the
+            textarea + character counter (editing). */}
+        <div
           className={`mc-tile mc-tile-writein ${writeInActive ? "editing" : ""}`}
-          onClick={handleWriteInTileClick}
+          onClick={!writeInActive ? handleWriteInTileClick : undefined}
+          role={!writeInActive ? "button" : undefined}
+          tabIndex={!writeInActive ? 0 : undefined}
+          onKeyDown={
+            !writeInActive
+              ? (e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    handleWriteInTileClick();
+                  }
+                }
+              : undefined
+          }
           aria-expanded={writeInActive}
         >
           {!writeInActive ? (
-            <span className="mc-tile-label mc-tile-writein-label">
-              {WRITE_IN_LABEL}
-            </span>
+            <span className="mc-tile-label">{WRITE_IN_LABEL}</span>
           ) : (
-            <span
-              className="mc-tile-writein-editor"
-              onClick={(e) => e.stopPropagation()}
-            >
+            <span className="mc-tile-writein-editor">
               <textarea
                 ref={writeInInputRef}
                 className="mc-tile-writein-input"
@@ -165,23 +174,29 @@ export default function MultiChoiceQuestionCard({
                 onKeyDown={handleWriteInKeyDown}
                 aria-label="Write your own answer"
               />
-              <span className="mc-tile-writein-footer">
-                <span className="mc-tile-writein-count">
-                  {writeInValue.length}/{WRITE_IN_MAX_LENGTH}
-                </span>
-                <button
-                  type="button"
-                  className="mc-tile-writein-commit"
-                  onClick={handleWriteInCommit}
-                  disabled={writeInCommitDisabled}
-                >
-                  {writeInCommitLabel}
-                </button>
+              <span className="mc-tile-writein-count">
+                {writeInValue.length}/{WRITE_IN_MAX_LENGTH}
               </span>
             </span>
           )}
-        </button>
+        </div>
       </div>
+
+      {/* Standalone commit button — only rendered while the write-in row is
+          in editing state. Tile clicks on the three AI options auto-advance
+          and never see this button. */}
+      {writeInActive && (
+        <div className="mc-writein-action">
+          <button
+            type="button"
+            className="btn btn-primary mc-writein-commit-button"
+            onClick={handleWriteInCommit}
+            disabled={writeInCommitDisabled}
+          >
+            {writeInCommitLabel}
+          </button>
+        </div>
+      )}
     </>
   );
 }

@@ -1010,9 +1010,14 @@ input, textarea {
 }
 
 /* Write-in tile — editing state (swap-in-place).
-   S121 (500-char update): auto-growing textarea from 1 line up to 4 lines,
-   scrolls internally past the 4-line cap. Counter sits bottom-right below
-   the textarea and shifts amber in the last 50 chars as a soft heads-up. */
+   S121 (500-char update, revised): auto-growing textarea from 1 line up to
+   4 lines, scrolls internally past the 4-line cap. Counter is absolutely
+   positioned at the bottom-right corner of the tile so it sits OUTSIDE the
+   flex flow — that keeps the textarea as the only flex child, which means
+   the single-line textarea inherits the tile's `align-items: center` and
+   aligns vertically with the radio circle exactly the way the idle label
+   does. When the textarea grows, it fills top-down; the counter stays
+   pinned bottom-right. Amber shift in last 50 chars. */
 .mc-tile-writein.editing {
   border-color: var(--cta);
   background: rgba(30,122,184,0.06);
@@ -1028,11 +1033,11 @@ input, textarea {
 }
 
 .mc-tile-writein-editor {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 6px;
+  display: block;
   width: 100%;
+  /* Reserve space on the right so the textarea doesn't run under the
+     absolutely-positioned counter. */
+  padding-right: 48px;
 }
 
 .mc-tile-writein-input {
@@ -1059,13 +1064,16 @@ input, textarea {
 }
 
 .mc-tile-writein-count {
-  align-self: flex-end;
+  position: absolute;
+  right: 14px;
+  bottom: 8px;
   font-family: var(--font-mono);
   font-size: 0.6875rem;
   font-weight: 500;
   letter-spacing: 0.03em;
   color: var(--text-muted);
   transition: color 0.2s ease;
+  pointer-events: none;
 }
 
 /* Amber heads-up in the final 50 characters. Soft signal, not an error. */
@@ -4311,19 +4319,23 @@ input, textarea {
    consuming horizontal layout width. This keeps the word "Thinking" visually
    centered under the h2 (which uses text-align: center). The wrapper is an
    inline-block with position: relative; the dots attach at left: 100%. */
+/* S121 revision: Calvin's live review showed absolutely-positioned dots
+   looked off-balance because `text-align: center` only centered the word
+   "Thinking" — the dots floated in the dead space to the right, and the
+   whole phrase read as left-shifted. Fix: put the dots back in the normal
+   flow as inline-block. The three dot spans always occupy their full inline
+   width (they animate opacity, not content), so the rendered width of
+   "Thinking..." is constant and the parent h2's `text-align: center` now
+   centers the whole phrase as a single unit with zero layout shift.
+   `.thinking-word` wrapper is no longer needed but kept as a no-op so the
+   component JSX doesn't need a matching revert. */
 .thinking-word {
-  position: relative;
-  display: inline-block;
+  display: inline;
 }
 .thinking-dots {
-  position: absolute;
-  left: 100%;
-  top: 0;
+  display: inline-block;
   margin-left: 4px;
   letter-spacing: 1px;
-  /* F49 regression fix (S121): absolute positioning with left:100% gives
-     shrink-to-fit zero available width, which was wrapping each dot span
-     onto its own line. Force a single line. */
   white-space: nowrap;
 }
 .thinking-dots span {

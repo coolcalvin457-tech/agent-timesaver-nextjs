@@ -11,16 +11,6 @@ import BackButton from "@/components/shared/BackButton";
 import CrossSellBlock from "@/components/shared/CrossSellBlock";
 import { useAuth } from "@/components/AuthProvider";
 
-// ─── Constants ────────────────────────────────────────────────────────────────
-// Time-savers-stage animated checklist (S112-F10, renamed S115-F46).
-// Locked steps per Layer 3 (master-tool-spec-category-free.md). Advances on
-// a timer synced to the ~60s API call.
-const TIME_SAVER_LOADING_STEPS = [
-  "Analyzing role",
-  "Building time-savers",
-  "Calculating hours saved",
-] as const;
-
 // ─── State Types ───────────────────────────────────────────────────────────────
 type Screen =
   | "intro"
@@ -95,8 +85,6 @@ export default function TimesaverTool() {
   const [isDragOver, setIsDragOver] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [loadingType, setLoadingType] = useState<"questions" | "timeSavers">("questions");
-  const [loadingStep, setLoadingStep] = useState(0);
   const [gateSending, setGateSending] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
@@ -120,25 +108,6 @@ export default function TimesaverTool() {
       return () => clearTimeout(t);
     }
   }, [flipStage]);
-
-  // ── Time-savers-stage checklist advance (S112-F10, renamed S115-F46) ─────
-  // Advance the loading checklist on a timer while the /api/workflows call is
-  // in-flight. ~60s total budget split across 3 steps. Resets when the stage
-  // starts. Does NOT run on the questions (Thinking) stage. (Route path still
-  // "/api/workflows" as an intentional non-migration — see S115 code notes.)
-  useEffect(() => {
-    if (state.screen !== "loading" || loadingType !== "timeSavers") {
-      setLoadingStep(0);
-      return;
-    }
-    setLoadingStep(0);
-    const t1 = setTimeout(() => setLoadingStep(1), 18000);
-    const t2 = setTimeout(() => setLoadingStep(2), 40000);
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-    };
-  }, [state.screen, loadingType]);
 
   // ── Scroll to tool on first entry only (free tool pattern: flip animation handles subsequent transitions) ────────
   useEffect(() => {
@@ -182,7 +151,6 @@ export default function TimesaverTool() {
     ) => {
       setIsLoading(true);
       setError(null);
-      setLoadingType("questions");
       go("loading");
 
       try {
@@ -228,7 +196,6 @@ export default function TimesaverTool() {
     async (jobTitle: string, answers: string[], path: Path, jobDescription?: string) => {
       setIsLoading(true);
       setError(null);
-      setLoadingType("timeSavers");
       go("loading");
 
       try {
@@ -585,21 +552,14 @@ export default function TimesaverTool() {
       )}
 
       {/* ── Loading Screen ─────────────────────────────────────────────────── */}
+      {/* Both stages use the calm "Thinking" screen (S116-F48). Observed p50
+          generation time on Timesaver is well under 60s on both stages, so the
+          animated checklist would never advance through its steps in a real
+          run. Per master spec Layer 1 §1.3, sub-60s tools use the Thinking dots
+          loader. Stage 1 already used Thinking (S112); Stage 2 now matches. */}
       {state.screen === "loading" && (
         <div className="loading-screen" style={{ minHeight: "320px" }}>
-          {loadingType === "questions" ? (
-            // Stage 1: calm intermediate "Thinking" screen (S112, Layer 1 §1.3).
-            // No timing line, no eyebrow, no checklist — animated ellipsis only.
-            <ToolLoadingScreen headingText="Thinking" />
-          ) : (
-            // Stage 2: animated checklist (S112-F10, renamed S115-F46).
-            <ToolLoadingScreen
-              headingText="Building your time-savers."
-              timeEstimate="About 1 minute."
-              steps={[...TIME_SAVER_LOADING_STEPS]}
-              activeStep={loadingStep}
-            />
-          )}
+          <ToolLoadingScreen headingText="Thinking" />
         </div>
       )}
 

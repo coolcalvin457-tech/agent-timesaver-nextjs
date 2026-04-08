@@ -180,16 +180,21 @@ export default function ToolLoadingScreen({
           textAlign: "center",
         }}
       >
-        {headingText}
-        {isIntermediate && (
-          <>
+        {isIntermediate ? (
+          // F49 (S119): wrap the headline word in .thinking-word so the
+          // .thinking-dots can be absolutely positioned at its right edge
+          // without consuming layout width. Keeps the word visually centered.
+          <span className="thinking-word">
+            {headingText}
             <span className="thinking-dots" aria-hidden="true">
               <span>.</span>
               <span>.</span>
               <span>.</span>
             </span>
             <span className="sr-only"> (loading)</span>
-          </>
+          </span>
+        ) : (
+          headingText
         )}
       </h2>
       {subLine && (

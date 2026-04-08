@@ -112,12 +112,14 @@ async function sendResultsEmail(
   `;
 
   const html = buildBaseEmailHTML({
-    // S117: Universal one-sentence pre-header rule (master spec Layer 1 §1.2).
-    // Pattern: `[count?] [output noun] for [primary input].` Single sentence,
-    // period at end, no filler bridge phrases. Premium and clean. The
-    // buildBaseEmailHTML helper handles &nbsp;&zwnj; padding to prevent body
-    // bleed in Gmail's inbox preview.
-    preHeaderText: `5 AI time-savers for ${jobTitle}.`,
+    // S117/S119: Universal one-sentence pre-header rule (master spec Layer 1 §1.2).
+    // Pattern: `[count?] [output noun] for [primary input]` — no trailing period
+    // (S119 update: pre-headers are UI labels, not prose, and the period read as
+    // typo-like in the Gmail preview slot). No filler bridge phrases. Premium and
+    // clean. The buildBaseEmailHTML helper handles &nbsp;&zwnj; padding to prevent
+    // body bleed in Gmail's inbox preview. The body eyebrow was also removed in
+    // S119 so the pre-header actually wins the preview slot.
+    preHeaderText: `5 AI time-savers for ${jobTitle}`,
     eyebrowLabel: "AGENT: Timesaver",
     heroContent,
   });

@@ -45,8 +45,14 @@ interface BaseEmailOptions {
    */
   preHeaderText: string;
   /**
-   * Monospace eyebrow label shown at the top of the email and in the footer.
-   * e.g. "AGENT: Prompts"
+   * Product identifier used in the footer receiving line.
+   * e.g. "AGENT: Timesaver"
+   *
+   * Note (S119): As of Walkthrough 4 closure, the top-of-email eyebrow tag
+   * is no longer rendered. The subject line carries the product identifier
+   * (locked ALL CAPS, per Layer 1 §1.2), and the user already saw the eyebrow
+   * on every tool screen during the flow. This prop is still used in the
+   * footer "You're receiving this because you used X" receiving line.
    */
   eyebrowLabel: string;
   /**
@@ -154,9 +160,10 @@ export function buildCrossSellBlockHTML({
  * Enforces:
  *   - Hidden pre-header span with &nbsp;&zwnj; padding
  *   - Consistent outer wrapper, background color (#f0f0ee), and font stack
- *   - Monospace eyebrow header at the top
  *   - White hero card (16px border-radius, 40px padding)
- *   - "Built for real jobs. Not demos." in the footer
+ *   - Footer receiving line + "Built for real jobs. Not demos." tagline
+ *   - No top-of-email eyebrow tag (removed S119 — redundant with subject line,
+ *     was hijacking the Gmail inbox preview slot from the pre-header)
  */
 export function buildBaseEmailHTML({
   preHeaderText,
@@ -179,15 +186,6 @@ export function buildBaseEmailHTML({
     <tr>
       <td align="center">
         <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;">
-
-          <!-- Header -->
-          <tr>
-            <td style="padding: 0 0 32px 0;">
-              <p style="margin:0; font-family:monospace; font-size:13px; font-weight:600; letter-spacing:0.06em; color:#1e7ab8;">
-                ${eyebrowLabel.toUpperCase()}
-              </p>
-            </td>
-          </tr>
 
           <!-- Hero card -->
           <tr>

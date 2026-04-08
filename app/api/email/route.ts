@@ -121,7 +121,12 @@ async function sendResultsEmail(
   `;
 
   const html = buildBaseEmailHTML({
-    preHeaderText: `Your ${jobTitle} time-savers are ready. Here's what you could save.`,
+    // S117: Universal one-sentence pre-header rule (master spec Layer 1 §1.2).
+    // Pattern: `[count?] [output noun] for [primary input].` Single sentence,
+    // period at end, no filler bridge phrases. Premium and clean. The
+    // buildBaseEmailHTML helper handles &nbsp;&zwnj; padding to prevent body
+    // bleed in Gmail's inbox preview.
+    preHeaderText: `5 AI time-savers for ${jobTitle}.`,
     eyebrowLabel: "AGENT: Timesaver",
     heroContent,
   });

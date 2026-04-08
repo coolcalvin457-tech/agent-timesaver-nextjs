@@ -104,7 +104,16 @@ export default function MultiChoiceQuestionCard({
   }, [writeInActive]);
 
   const handleTileClick = (choice: string, i: number) => {
-    if (writeInActive) return;
+    // If the write-in row is currently in editing state, clicking an AI tile
+    // cancels the write-in (discards any typed value) and commits the tile
+    // choice instead. Tile clicks always win — the user has clearly changed
+    // their mind and picked one of the pre-generated options. Fix for S122
+    // lockout bug: prior versions guarded with `if (writeInActive) return`
+    // and rendered the tiles as `disabled`, which silently swallowed clicks.
+    if (writeInActive) {
+      setWriteInActive(false);
+      setWriteInValue("");
+    }
     setSelectedIndex(i);
     window.setTimeout(() => onAnswer(choice), autoAdvanceDelayMs);
   };
@@ -171,7 +180,6 @@ export default function MultiChoiceQuestionCard({
             type="button"
             className={`mc-tile ${selectedIndex === i ? "selected" : ""}`}
             onClick={() => handleTileClick(choice, i)}
-            disabled={writeInActive}
           >
             <span className="mc-tile-label">{choice}</span>
           </button>

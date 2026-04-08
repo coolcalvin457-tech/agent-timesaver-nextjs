@@ -19,17 +19,32 @@
  * Write-in remains a co-equal row; the prior "footer link" variant is NOT
  * being reintroduced.
  *
- * F35 (paired): write-in input enforces a 60-character soft cap. Overflow
- * wraps within the tile; never mid-word truncated.
+ * F35 (updated S121): write-in input caps at 500 characters universally,
+ * applied identically across every tool on the site. The original S114 cap
+ * was 60 characters, driven by visual parallelism with the three AI tiles.
+ * Beta feedback showed users were choosing the write-in on two of three
+ * screens per session, which meant the 60-char cap was actively blocking
+ * the specific, detailed answers that produce the best time-saver output.
+ * 500 characters gives room for roughly four to five sentences — enough
+ * for real specificity without inviting essays. Latency and cost impact
+ * is negligible; this was never a performance decision. Exported as a
+ * component constant so every tool adopting MultiChoiceQuestionCard during
+ * F47 Bucket B inherits the same behavior automatically.
+ *
+ * Input grows vertically from one line to a maximum of four visible lines
+ * as the user types, then scrolls internally past four lines. Character
+ * counter color shifts to amber in the last 50 characters as a soft
+ * heads-up, hard-stops at 500 via the maxLength attribute.
  *
  * Reference implementation: TimesaverTool.tsx. Other multi-choice tools
  * adopt this component during the F47 Bucket B sweep.
  */
 
 import { useEffect, useRef, useState } from "react";
-import type { KeyboardEvent as ReactKeyboardEvent } from "react";
+import type { ChangeEvent, KeyboardEvent as ReactKeyboardEvent } from "react";
 
-export const WRITE_IN_MAX_LENGTH = 60;
+export const WRITE_IN_MAX_LENGTH = 500;
+export const WRITE_IN_NEAR_LIMIT = 450; // last 50 chars → amber counter
 // No terminal period. Noun-phrase options never take periods, same family as
 // the F56 pre-header rule. Keeps write-in consistent with the three AI tiles.
 export const WRITE_IN_LABEL = "Write your own";
@@ -61,7 +76,17 @@ export default function MultiChoiceQuestionCard({
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [writeInActive, setWriteInActive] = useState(false);
   const [writeInValue, setWriteInValue] = useState("");
-  const writeInInputRef = useRef<HTMLInputElement>(null);
+  const writeInInputRef = useRef<HTMLTextAreaElement>(null);
+
+  // Auto-resize the textarea to fit its content, capped at CSS max-height
+  // (which enforces the 4-line maximum). Runs on every input change and on
+  // initial activation so the textarea opens at exactly one line.
+  const resizeWriteInTextarea = () => {
+    const ta = writeInInputRef.current;
+    if (!ta) return;
+    ta.style.height = "auto";
+    ta.style.height = `${ta.scrollHeight}px`;
+  };
 
   // Reset internal state whenever the question changes.
   useEffect(() => {
@@ -70,10 +95,11 @@ export default function MultiChoiceQuestionCard({
     setWriteInValue("");
   }, [stem]);
 
-  // Focus the write-in textarea when it swaps in.
+  // Focus and size the write-in textarea when it swaps in.
   useEffect(() => {
     if (writeInActive) {
       writeInInputRef.current?.focus();
+      resizeWriteInTextarea();
     }
   }, [writeInActive]);
 
@@ -95,8 +121,15 @@ export default function MultiChoiceQuestionCard({
     onAnswer(trimmed);
   };
 
-  const handleWriteInKeyDown = (e: ReactKeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+  const handleWriteInChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setWriteInValue(e.target.value);
+    // Resize on next frame so React has committed the new value to the DOM.
+    requestAnimationFrame(resizeWriteInTextarea);
+  };
+
+  const handleWriteInKeyDown = (e: ReactKeyboardEvent<HTMLTextAreaElement>) => {
+    // Enter alone commits. Shift+Enter inserts a newline (standard textarea).
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleWriteInCommit();
     } else if (e.key === "Escape") {
@@ -169,18 +202,22 @@ export default function MultiChoiceQuestionCard({
             <span className="mc-tile-label">{WRITE_IN_LABEL}</span>
           ) : (
             <span className="mc-tile-writein-editor">
-              <input
+              <textarea
                 ref={writeInInputRef}
-                type="text"
                 className="mc-tile-writein-input"
                 placeholder="Type your answer"
                 value={writeInValue}
                 maxLength={WRITE_IN_MAX_LENGTH}
-                onChange={(e) => setWriteInValue(e.target.value)}
+                rows={1}
+                onChange={handleWriteInChange}
                 onKeyDown={handleWriteInKeyDown}
                 aria-label="Write your own answer"
               />
-              <span className="mc-tile-writein-count">
+              <span
+                className={`mc-tile-writein-count${
+                  writeInValue.length >= WRITE_IN_NEAR_LIMIT ? " near-limit" : ""
+                }`}
+              >
                 {writeInValue.length}/{WRITE_IN_MAX_LENGTH}
               </span>
             </span>

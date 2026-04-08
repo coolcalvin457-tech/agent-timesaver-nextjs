@@ -1010,15 +1010,13 @@ input, textarea {
 }
 
 /* Write-in tile — editing state (swap-in-place).
-   S121: switched from 2-row textarea to single-line input so the first (and
-   only) line of text aligns vertically with the radio circle on the left,
-   matching the idle label row exactly. Count renders inline on the right. */
+   S121 (500-char update): auto-growing textarea from 1 line up to 4 lines,
+   scrolls internally past the 4-line cap. Counter sits bottom-right below
+   the textarea and shifts amber in the last 50 chars as a soft heads-up. */
 .mc-tile-writein.editing {
   border-color: var(--cta);
   background: rgba(30,122,184,0.06);
   cursor: text;
-  /* Match the base .mc-tile padding + min-height so the row doesn't jump
-     vertically when swapping from idle label to input. */
 }
 
 .mc-tile-writein.editing::before {
@@ -1031,24 +1029,28 @@ input, textarea {
 
 .mc-tile-writein-editor {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
   width: 100%;
 }
 
 .mc-tile-writein-input {
-  flex: 1;
-  min-width: 0;
+  display: block;
+  width: 100%;
   background: transparent;
   border: none;
   outline: none;
+  resize: none;
   font-family: var(--font-sans);
   font-size: 0.9375rem;
   font-weight: 500;
   color: var(--text-primary);
   line-height: 1.35;
   padding: 0;
+  /* 4 lines max: 1.35 line-height × 4 = 5.4em. Scrolls internally after. */
+  max-height: 5.4em;
+  overflow-y: auto;
 }
 
 .mc-tile-writein-input::placeholder {
@@ -1057,12 +1059,18 @@ input, textarea {
 }
 
 .mc-tile-writein-count {
-  flex-shrink: 0;
+  align-self: flex-end;
   font-family: var(--font-mono);
   font-size: 0.6875rem;
   font-weight: 500;
   letter-spacing: 0.03em;
   color: var(--text-muted);
+  transition: color 0.2s ease;
+}
+
+/* Amber heads-up in the final 50 characters. Soft signal, not an error. */
+.mc-tile-writein-count.near-limit {
+  color: #d97706;
 }
 
 /* Standalone commit button wrapper (S121).
@@ -2149,9 +2157,9 @@ input, textarea {
   color: rgba(255,255,255,0.4);
 }
 
-.hero-tool-dark .mc-tile-writein-commit {
-  background: var(--cta);
-  color: #fff;
+/* Amber heads-up on dark frame — lighter tone for sufficient contrast. */
+.hero-tool-dark .mc-tile-writein-count.near-limit {
+  color: #fbbf24;
 }
 
 /* Loading screen */

@@ -596,7 +596,7 @@ export default function TimesaverTool() {
             <div className="roi-divider" />
             <div className="roi-label">Value at average {state.roi.industry} salary</div>
             <div className="roi-value">{state.roi.valueAtSalary} / year</div>
-            <div className="roi-sub">Based on publicly available industry data</div>
+            <div className="roi-sub">Source: BLS OEWS {state.roi.industry} median, 2024</div>
           </div>
 
           <CrossSellBlock

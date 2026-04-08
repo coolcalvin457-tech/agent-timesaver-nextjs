@@ -135,7 +135,14 @@ async function sendResultsEmail(
     body: JSON.stringify({
       from: getFromAddress(),
       to: [email],
-      subject: `Your 5 AI time-savers for ${jobTitle}`,
+      // S117: Universal email subject rule (master spec Layer 1 §1.7).
+      // Subject is the product identifier only — no personalization, no count,
+      // no role echo. The pre-header + body headline carry the personalization.
+      // Inbox reads as: sender ("Prompt AI Agents") → product ("AGENT: Timesaver")
+      // → personalized hook ("Your Finance Director time-savers are ready..."),
+      // a clean three-tier flow that also sidesteps the F46 lowercase-vs-titlecase
+      // mix that the old "Your 5 AI time-savers for {jobTitle}" subject created.
+      subject: "AGENT: Timesaver",
       html,
     }),
   });

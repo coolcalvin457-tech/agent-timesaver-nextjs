@@ -1009,13 +1009,16 @@ input, textarea {
   color: var(--text-secondary);
 }
 
-/* Write-in tile — editing state (swap-in-place) */
+/* Write-in tile — editing state (swap-in-place).
+   S121: switched from 2-row textarea to single-line input so the first (and
+   only) line of text aligns vertically with the radio circle on the left,
+   matching the idle label row exactly. Count renders inline on the right. */
 .mc-tile-writein.editing {
   border-color: var(--cta);
   background: rgba(30,122,184,0.06);
   cursor: text;
-  align-items: stretch;
-  padding: 12px 14px 12px 52px;
+  /* Match the base .mc-tile padding + min-height so the row doesn't jump
+     vertically when swapping from idle label to input. */
 }
 
 .mc-tile-writein.editing::before {
@@ -1028,25 +1031,24 @@ input, textarea {
 
 .mc-tile-writein-editor {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
   width: 100%;
 }
 
 .mc-tile-writein-input {
-  width: 100%;
+  flex: 1;
+  min-width: 0;
   background: transparent;
   border: none;
   outline: none;
-  resize: none;
   font-family: var(--font-sans);
   font-size: 0.9375rem;
   font-weight: 500;
   color: var(--text-primary);
   line-height: 1.35;
   padding: 0;
-  overflow-wrap: break-word;
-  word-break: break-word;
 }
 
 .mc-tile-writein-input::placeholder {
@@ -1055,8 +1057,7 @@ input, textarea {
 }
 
 .mc-tile-writein-count {
-  display: block;
-  text-align: right;
+  flex-shrink: 0;
   font-family: var(--font-mono);
   font-size: 0.6875rem;
   font-weight: 500;

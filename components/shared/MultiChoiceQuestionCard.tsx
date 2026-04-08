@@ -27,6 +27,7 @@
  */
 
 import { useEffect, useRef, useState } from "react";
+import type { KeyboardEvent as ReactKeyboardEvent } from "react";
 
 export const WRITE_IN_MAX_LENGTH = 60;
 // No terminal period. Noun-phrase options never take periods, same family as
@@ -60,7 +61,7 @@ export default function MultiChoiceQuestionCard({
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [writeInActive, setWriteInActive] = useState(false);
   const [writeInValue, setWriteInValue] = useState("");
-  const writeInInputRef = useRef<HTMLTextAreaElement>(null);
+  const writeInInputRef = useRef<HTMLInputElement>(null);
 
   // Reset internal state whenever the question changes.
   useEffect(() => {
@@ -94,8 +95,8 @@ export default function MultiChoiceQuestionCard({
     onAnswer(trimmed);
   };
 
-  const handleWriteInKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+  const handleWriteInKeyDown = (e: ReactKeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
       e.preventDefault();
       handleWriteInCommit();
     } else if (e.key === "Escape") {
@@ -168,13 +169,13 @@ export default function MultiChoiceQuestionCard({
             <span className="mc-tile-label">{WRITE_IN_LABEL}</span>
           ) : (
             <span className="mc-tile-writein-editor">
-              <textarea
+              <input
                 ref={writeInInputRef}
+                type="text"
                 className="mc-tile-writein-input"
-                placeholder="Type your answer."
+                placeholder="Type your answer"
                 value={writeInValue}
                 maxLength={WRITE_IN_MAX_LENGTH}
-                rows={2}
                 onChange={(e) => setWriteInValue(e.target.value)}
                 onKeyDown={handleWriteInKeyDown}
                 aria-label="Write your own answer"

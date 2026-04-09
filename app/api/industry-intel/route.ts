@@ -229,6 +229,23 @@ const MOCK_INTEL: IndustryIntelData = {
   ],
 };
 
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+function isOverloadedError(err: unknown): boolean {
+  if (err && typeof err === "object" && "status" in err) {
+    return (err as { status: number }).status === 529;
+  }
+  return false;
+}
+
+function parseAndSanitize(raw: string): IndustryIntelData {
+  const parsed = JSON.parse(cleanJsonResponse(raw)) as IndustryIntelData;
+  parsed.insight = stripEmDashes(parsed.insight);
+  parsed.connection = stripEmDashes(parsed.connection);
+  parsed.strategy = parsed.strategy.map(stripEmDashes);
+  return parsed;
+}
+
 // ─── Claude API Call ──────────────────────────────────────────────────────────
 
 async function generateIndustryIntel(inputs: IndustryIntelInputs): Promise<IndustryIntelData> {
@@ -252,14 +269,33 @@ async function generateIndustryIntel(inputs: IndustryIntelInputs): Promise<Indus
     .map((block) => block.text!)
     .join("");
 
-  const parsed = JSON.parse(cleanJsonResponse(text)) as IndustryIntelData;
+  return parseAndSanitize(text);
+}
 
-  // Server-side em dash strip on all text fields before delivery
-  parsed.insight = stripEmDashes(parsed.insight);
-  parsed.connection = stripEmDashes(parsed.connection);
-  parsed.strategy = parsed.strategy.map(stripEmDashes);
+/**
+ * Fallback: generate without web search when Anthropic returns 529 overloaded.
+ * Uses training knowledge instead of live search. The system prompt already
+ * handles this case ("based on general industry knowledge rather than current news").
+ */
+async function generateIndustryIntelFallback(inputs: IndustryIntelInputs): Promise<IndustryIntelData> {
+  const Anthropic = (await import("@anthropic-ai/sdk")).default;
+  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
-  return parsed;
+  const userPrompt = buildUserPrompt(inputs);
+
+  const message = await client.messages.create({
+    model: process.env.CLAUDE_MODEL || "claude-sonnet-4-6",
+    max_tokens: 16000,
+    system: SYSTEM_PROMPT,
+    messages: [{ role: "user", content: userPrompt }],
+  });
+
+  const text = (message.content as Array<{ type: string; text?: string }>)
+    .filter((block) => block.type === "text" && block.text)
+    .map((block) => block.text!)
+    .join("");
+
+  return parseAndSanitize(text);
 }
 
 // ─── Route Handler ────────────────────────────────────────────────────────────
@@ -300,8 +336,13 @@ export async function POST(req: NextRequest) {
       try {
         intelData = await generateIndustryIntel(inputs);
       } catch (firstErr) {
-        if (firstErr instanceof SyntaxError || (firstErr instanceof Error && firstErr.message.includes("No JSON found"))) {
-          console.warn("[industry-intel] First attempt failed, retrying with assistant prefill:", firstErr instanceof Error ? firstErr.message : String(firstErr));
+        // ── 529 overloaded: retry without web search (training knowledge fallback) ──
+        if (isOverloadedError(firstErr)) {
+          console.warn("[industry-intel] Anthropic 529 overloaded. Retrying without web search.");
+          intelData = await generateIndustryIntelFallback(inputs);
+        // ── JSON parse failure: retry with assistant prefill ──
+        } else if (firstErr instanceof SyntaxError || (firstErr instanceof Error && firstErr.message.includes("No JSON found"))) {
+          console.warn("[industry-intel] JSON parse failed, retrying with assistant prefill:", firstErr instanceof Error ? firstErr.message : String(firstErr));
           const Anthropic = (await import("@anthropic-ai/sdk")).default;
           const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
           const userPrompt = buildUserPrompt(inputs);
@@ -320,11 +361,7 @@ export async function POST(req: NextRequest) {
             .filter((block: { type: string }) => block.type === "text")
             .map((block: { text?: string }) => block.text!)
             .join("");
-          const parsed = JSON.parse(cleanJsonResponse("{" + retryText)) as IndustryIntelData;
-          parsed.insight = stripEmDashes(parsed.insight);
-          parsed.connection = stripEmDashes(parsed.connection);
-          parsed.strategy = parsed.strategy.map(stripEmDashes);
-          intelData = parsed;
+          intelData = parseAndSanitize("{" + retryText);
         } else {
           throw firstErr;
         }

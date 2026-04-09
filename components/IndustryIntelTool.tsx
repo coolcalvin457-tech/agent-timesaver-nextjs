@@ -567,14 +567,23 @@ export default function IndustryIntelTool() {
             fontSize: "clamp(1.5rem, 3.25vw, 2rem)",
             lineHeight: 1.25,
             color: "#FFFFFF",
-            margin: "0 0 32px",
+            margin: "0 0 8px",
           }}>
-            Your intel is in your inbox.
+            Sent to your inbox. File downloaded automatically.
           </h2>
+
+          <p style={{
+            fontSize: "0.9375rem",
+            color: "rgba(255,255,255,0.55)",
+            margin: "0 0 32px",
+            lineHeight: 1.5,
+          }}>
+            Open in Word, Google Docs, or Pages.
+          </p>
 
           {/* Primary CTA */}
           <button className="btn btn-primary btn-lg btn-full" onClick={handleReset}>
-            Get Free Intel
+            Build Another Report
           </button>
 
           {/* Cross-sell — Workflow */}

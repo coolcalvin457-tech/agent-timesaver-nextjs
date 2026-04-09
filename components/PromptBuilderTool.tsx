@@ -270,7 +270,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, autoF
           <input
             type="text"
             className="input"
-            placeholder="e.g. Marketing Manager, Account Executive, Nurse Practitioner..."
+            placeholder="e.g. Senior Marketing Manager, Account Executive"
             value={jobTitle}
             onChange={(e) => setJobTitle(e.target.value)}
             onKeyDown={(e) => {

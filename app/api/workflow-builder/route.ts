@@ -483,67 +483,44 @@ function fieldLabel(text: string): Paragraph {
 }
 
 // Prompt block — monospace, visually distinct "copy this" treatment
-function promptBlock(text: string): Table {
-  const borderStyle = { style: BorderStyle.SINGLE, size: 4, color: "D0E8F5" };
-  return new Table({
-    width: { size: 9360, type: WidthType.DXA },
-    rows: [
-      new TableRow({
-        children: [
-          new TableCell({
-            children: [
-              new Paragraph({
-                children: [new TextRun({ text, font: "Courier New", size: 20, color: "1A3A4A" })],
-                spacing: { after: 0 },
-              }),
-            ],
-            shading: { type: ShadingType.CLEAR, fill: "EEF6FB" },
-            borders: {
-              top: borderStyle,
-              bottom: borderStyle,
-              left: { style: BorderStyle.SINGLE, size: 12, color: "1E7AB8" },
-              right: borderStyle,
-            },
-            margins: { top: 120, bottom: 120, left: 160, right: 160 },
-          }),
-        ],
-      }),
-    ],
+function promptBlock(text: string): Paragraph {
+  // Styled paragraph with left border + shading. Renders reliably in both
+  // Microsoft Word and Google Docs (single-cell tables collapse in GDocs).
+  return new Paragraph({
+    children: [new TextRun({ text, font: "Courier New", size: 20, color: "1A3A4A" })],
+    border: {
+      left: { style: BorderStyle.SINGLE, size: 12, color: "1E7AB8", space: 8 },
+    },
+    shading: { type: ShadingType.CLEAR, fill: "EEF6FB" },
+    indent: { left: 120, right: 120 },
+    spacing: { before: 80, after: 80, line: 300 },
   });
 }
 
-// Checkpoint callout — visually boxed so it doesn't get skipped
-function checkpointBlock(text: string): Table {
-  const borderStyle = { style: BorderStyle.SINGLE, size: 4, color: "F5A623" };
-  return new Table({
-    width: { size: 9360, type: WidthType.DXA },
-    rows: [
-      new TableRow({
-        children: [
-          new TableCell({
-            children: [
-              new Paragraph({
-                children: [new TextRun({ text: "CHECKPOINT", font: "Calibri", size: 17, bold: true, color: "B87A00", allCaps: true })],
-                spacing: { after: 40 },
-              }),
-              new Paragraph({
-                children: [new TextRun({ text, font: "Calibri", size: 20, color: "5C3D00" })],
-                spacing: { after: 0 },
-              }),
-            ],
-            shading: { type: ShadingType.CLEAR, fill: "FDF8EE" },
-            borders: {
-              top: borderStyle,
-              bottom: borderStyle,
-              left: { style: BorderStyle.SINGLE, size: 12, color: "F5A623" },
-              right: borderStyle,
-            },
-            margins: { top: 100, bottom: 100, left: 160, right: 160 },
-          }),
-        ],
-      }),
-    ],
-  });
+// Checkpoint callout — styled paragraphs with left border + shading.
+// Switched from single-cell table (collapsed in Google Docs) to paragraph
+// borders for cross-app compatibility (same rationale as promptBlock).
+function checkpointBlock(text: string): Paragraph[] {
+  return [
+    new Paragraph({
+      children: [new TextRun({ text: "CHECKPOINT", font: "Calibri", size: 17, bold: true, color: "B87A00" })],
+      border: {
+        left: { style: BorderStyle.SINGLE, size: 12, color: "F5A623", space: 8 },
+      },
+      shading: { type: ShadingType.CLEAR, fill: "FDF8EE" },
+      indent: { left: 120, right: 120 },
+      spacing: { before: 80, after: 0 },
+    }),
+    new Paragraph({
+      children: [new TextRun({ text, font: "Calibri", size: 20, color: "5C3D00" })],
+      border: {
+        left: { style: BorderStyle.SINGLE, size: 12, color: "F5A623", space: 8 },
+      },
+      shading: { type: ShadingType.CLEAR, fill: "FDF8EE" },
+      indent: { left: 120, right: 120 },
+      spacing: { before: 0, after: 80, line: 300 },
+    }),
+  ];
 }
 
 // ─── Build .docx ──────────────────────────────────────────────────────────────
@@ -650,7 +627,7 @@ async function buildDocxFile(workflow: WorkflowData, jobTitle?: string): Promise
     // Checkpoint callout (small/big team only)
     if (step.checkpoint) {
       children.push(spacer());
-      children.push(checkpointBlock(step.checkpoint));
+      children.push(...checkpointBlock(step.checkpoint));
     }
 
     children.push(divider());

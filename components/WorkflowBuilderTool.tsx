@@ -196,6 +196,7 @@ export default function WorkflowBuilderTool({
 
   // ── Loading animation ─────────────────────────────────────
   const [loadingStep, setLoadingStep] = useState(0);
+  const [buildDone, setBuildDone] = useState(false);
 
   // ── Email (auto-send after build) ─────────────────────────
   const [email, setEmail] = useState("");
@@ -208,16 +209,45 @@ export default function WorkflowBuilderTool({
   const [resultFrequency, setResultFrequency] = useState("");
 
   // ── Loading animation ─────────────────────────────────────
+  // Normal cadence: spread steps across ~3-minute build.
+  // When buildDone fires, fast-forward remaining steps (400ms each)
+  // then transition to "sent".
+  const loadingTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+
   useEffect(() => {
     if (screen !== "loading") return;
     setLoadingStep(0);
+    setBuildDone(false);
     // Spread steps across ~3-minute build: 0s, 30s, 70s, 120s, 155s
     const delays = [0, 30000, 70000, 120000, 155000];
     const timers = LOADING_STEPS.map((_, i) =>
       setTimeout(() => setLoadingStep(i), delays[i])
     );
+    loadingTimersRef.current = timers;
     return () => timers.forEach(clearTimeout);
   }, [screen]);
+
+  // Fast-forward remaining checklist steps when build completes
+  useEffect(() => {
+    if (!buildDone || screen !== "loading") return;
+    // Cancel the slow cadence timers
+    loadingTimersRef.current.forEach(clearTimeout);
+    loadingTimersRef.current = [];
+
+    // Walk remaining steps at 400ms each, then show "sent"
+    const totalSteps = LOADING_STEPS.length;
+    const fastForwardTimers: ReturnType<typeof setTimeout>[] = [];
+    for (let i = 0; i < totalSteps; i++) {
+      fastForwardTimers.push(
+        setTimeout(() => setLoadingStep(i + 1), (i + 1) * 400)
+      );
+    }
+    // Transition to sent after all steps complete + brief pause
+    fastForwardTimers.push(
+      setTimeout(() => setScreen("sent"), (totalSteps + 1) * 400)
+    );
+    return () => fastForwardTimers.forEach(clearTimeout);
+  }, [buildDone, screen]);
 
   // ── Auth: pre-fill email (paid tool — do NOT auto-skip) ──
   useEffect(() => {
@@ -381,7 +411,9 @@ export default function WorkflowBuilderTool({
         }).catch(() => {});
       }
 
-      setScreen("sent");
+      // Signal build complete — the fast-forward effect will walk
+      // remaining checklist steps and then transition to "sent".
+      setBuildDone(true);
     } catch (err) {
       setErrorMsg(
         err instanceof Error

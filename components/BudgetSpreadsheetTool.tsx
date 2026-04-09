@@ -422,9 +422,24 @@ export default function BudgetSpreadsheetTool() {
             onChange={(e) => setDescription(e.target.value)}
             autoFocus
           />
+          {/* Deliverables preview — universal on every Q1 surface */}
+          <div style={{ marginTop: "28px", paddingTop: "20px", borderTop: "1px solid rgba(255,255,255,0.07)" }}>
+            <p style={{ fontSize: "0.6875rem", fontFamily: "var(--font-mono)", letterSpacing: "0.08em", color: "rgba(255,255,255,0.3)", textTransform: "uppercase", marginBottom: "14px" }}>
+              What&apos;s included
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+              {["Custom Budget", "Built-In Formulas", "Scenario Modeling"].map((item) => (
+                <div key={item} className="prompt-builder-kit-pill">
+                  <span className="kit-item-check" style={{ fontSize: "0.75rem" }}>&#10003;</span>
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
           <button
             className="btn btn-primary btn-full"
-            style={{ marginTop: "8px" }}
+            style={{ marginTop: "24px" }}
             onClick={() => {
               track("q1_completed");
               go("q2");

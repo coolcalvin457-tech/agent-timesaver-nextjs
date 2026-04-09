@@ -38,7 +38,7 @@ export default function IndustryIntelPage() {
               }}
             >
               <span style={{ display: "block" }}>Every Industry is Evolving.</span>
-              <span style={{ display: "block" }}>Read AGENT: Industry.</span>
+              <span style={{ display: "block" }}>Find Relevant Insights.</span>
             </h1>
           </div>
         </section>

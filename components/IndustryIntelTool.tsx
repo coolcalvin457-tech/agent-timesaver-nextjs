@@ -20,7 +20,7 @@ const COMPANY_SIZE_OPTIONS = [
 ];
 
 const DECISION_SCOPE_OPTIONS = [
-  "I am a freelancer, or oversee less than 3 people",
+  "I'm an individual contributor or freelancer",
   "I set the direction for an entire team",
   "I manage multiple teams and numerous projects",
 ];
@@ -517,10 +517,7 @@ export default function IndustryIntelTool() {
     return (
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <ToolLoadingScreen
-          headingText="Building your intel."
-          timeEstimate="About 1 minute."
-          steps={LOADING_STEPS}
-          activeStep={loadingStep}
+          headingText="Thinking"
         />
       </div>
     );
@@ -554,7 +551,7 @@ export default function IndustryIntelTool() {
         <div className="screen" style={{ textAlign: "center" }}>
 
           {/* Checkmark */}
-          <div style={{ display: "inline-block", marginBottom: "16px" }}>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: "16px" }}>
             <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect width="56" height="56" rx="12" fill="#22C55E" fillOpacity="0.12" />
               <path d="M18 28.5L24.5 35L38 21" stroke="#22C55E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />

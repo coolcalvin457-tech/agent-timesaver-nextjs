@@ -126,7 +126,6 @@ async function generatePromptKit(
   workType: string,
   aiUsage: string,
   challenge: string,
-  jobDescription?: string,
   retryWithPrefill = false
 ): Promise<PromptKitResponse> {
   const Anthropic = (await import("@anthropic-ai/sdk")).default;
@@ -160,7 +159,7 @@ Tool name rule: Never name a specific AI tool (ChatGPT, Claude, Gemini, Perplexi
 Job Title: "${jobTitle}"
 Main work type: "${workType}"
 Current AI usage: "${aiUsage}"
-Biggest challenge with AI: "${challenge}"${jobDescription ? `\n\nJob description — mine this actively:\n${jobDescription.substring(0, 2000)}\nPull 2-3 specific responsibilities, deliverables, or terms directly from this job description and use their actual language in at least 3 prompts. If they call it a "talent review," the prompt says "talent review." If they manage "HRIS reporting," the prompt uses that exact term. Do not paraphrase their job into generic language.` : ""}
+Biggest challenge with AI: "${challenge}"
 
 Pre-generation step — do this before writing any prompts:
 Identify 8 specific work situations that are real and recurring for a ${jobTitle}. Think: what are the actual deliverables, meetings, decisions, and tasks that come up in this job week after week? Not generic work activities — situations specific enough that a different job title would not face them in the same way. Write these out internally, then build your 12 prompts from this list. Do not start generating prompts until you have grounded yourself in this person's actual job.
@@ -251,12 +250,11 @@ Return ONLY valid JSON in this exact format:
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { jobTitle, workType, aiUsage, challenge, jobDescription } = body as {
+    const { jobTitle, workType, aiUsage, challenge } = body as {
       jobTitle: string;
       workType: string;
       aiUsage: string;
       challenge: string;
-      jobDescription?: string;
     };
 
     if (!jobTitle || !workType || !aiUsage || !challenge) {
@@ -272,13 +270,13 @@ export async function POST(req: NextRequest) {
       result = MOCK_KIT;
     } else {
       try {
-        result = await generatePromptKit(jobTitle, workType, aiUsage, challenge, jobDescription);
+        result = await generatePromptKit(jobTitle, workType, aiUsage, challenge);
       } catch (firstError) {
         const firstMsg = firstError instanceof Error ? firstError.message : String(firstError);
         // Retry once on JSON parse failures with assistant prefill to force JSON continuation
         if (firstMsg.includes("JSON") || firstMsg.includes("Expected")) {
           console.warn("[prompt-kit] First attempt failed with JSON error, retrying with prefill:", firstMsg);
-          result = await generatePromptKit(jobTitle, workType, aiUsage, challenge, jobDescription, true);
+          result = await generatePromptKit(jobTitle, workType, aiUsage, challenge, true);
         } else {
           throw firstError;
         }

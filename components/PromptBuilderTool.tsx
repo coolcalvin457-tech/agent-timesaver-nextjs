@@ -76,11 +76,9 @@ const PREV_SCREEN: Partial<Record<Screen, Screen>> = {
 interface PromptBuilderToolProps {
   initialJobTitle?: string;
   onQ1Complete?: (jobTitle: string) => void;
-  hideFileUpload?: boolean;
-  showDeliverables?: boolean;
 }
 
-export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideFileUpload, showDeliverables }: PromptBuilderToolProps) {
+export default function PromptBuilderTool({ initialJobTitle, onQ1Complete }: PromptBuilderToolProps) {
   const { user } = useAuth();
   const [screen, setScreen] = useState<Screen>("q1");
   const [jobTitle, setJobTitle] = useState(initialJobTitle?.trim() || "");
@@ -96,10 +94,6 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
   const [writeInValue, setWriteInValue] = useState("");
   const [flipStage, setFlipStage] = useState<"idle" | "in">("idle");
   const [expandedWhys, setExpandedWhys] = useState<Set<string>>(new Set());
-
-  // File upload state
-  const [jobDescFile, setJobDescFile] = useState<File | null>(null);
-  const [jobDescText, setJobDescText] = useState("");
 
   const topRef = useRef<HTMLDivElement>(null);
   const isFirstRender = useRef(true);
@@ -191,21 +185,8 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
     setPromptKit(null);
     setEmail("");
     setError("");
-    setJobDescFile(null);
-    setJobDescText("");
     resetWriteIn();
     go("q1");
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setJobDescFile(file);
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      setJobDescText((ev.target?.result as string) || "");
-    };
-    reader.readAsText(file);
   };
 
   const handleGenerate = async (finalChallenge: string) => {
@@ -220,7 +201,6 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
           workType,
           aiUsage,
           challenge: finalChallenge,
-          jobDescription: jobDescText || undefined,
         }),
       });
       if (!res.ok) throw new Error("API error");
@@ -292,72 +272,23 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
                 go("q2");
               }
             }}
-            autoFocus={!hideFileUpload}
+            autoFocus
           />
 
-          {/* Optional file upload — hidden when embedded on homepage */}
-          {!hideFileUpload && <div style={{ marginTop: "28px", display: "flex", width: "100%", boxSizing: "border-box", alignItems: "center" }}>
-            <label
-              className="choose-file-btn"
-              style={{
-                display: "flex",
-                flex: 1,
-                width: "100%",
-                boxSizing: "border-box",
-                alignItems: "center",
-                gap: "8px",
-                cursor: "pointer",
-                fontSize: "0.875rem",
-                color: jobDescFile ? "var(--cta, #1E7AB8)" : "rgba(255,255,255,0.55)",
-                background: "rgba(255,255,255,0.05)",
-                border: "1px solid rgba(255,255,255,0.1)",
-                borderRadius: "8px",
-                padding: "8px 14px",
-              }}
-            >
-              <input
-                type="file"
-                accept=".txt,.md"
-                style={{ display: "none" }}
-                onChange={handleFileChange}
-              />
-              {jobDescFile ? `✓ ${jobDescFile.name}` : "Upload job description (optional)"}
-            </label>
-            {jobDescFile && (
-              <button
-                type="button"
-                onClick={() => { setJobDescFile(null); setJobDescText(""); }}
-                style={{
-                  background: "none",
-                  border: "none",
-                  color: "rgba(255,255,255,0.35)",
-                  fontSize: "0.8125rem",
-                  cursor: "pointer",
-                  marginLeft: "10px",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                Remove
-              </button>
-            )}
-          </div>}
-
-          {/* Deliverables preview — shown when embedded on homepage */}
-          {showDeliverables && (
-            <div style={{ marginTop: "28px", paddingTop: "20px", borderTop: "1px solid rgba(255,255,255,0.07)" }}>
-              <p style={{ fontSize: "0.6875rem", fontFamily: "var(--font-mono)", letterSpacing: "0.08em", color: "rgba(255,255,255,0.3)", textTransform: "uppercase", marginBottom: "14px" }}>
-                What&apos;s included
-              </p>
-              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                {["AI Workspace Setup", "AI Profile", "12 Personalized Prompts"].map((item) => (
-                  <div key={item} className="prompt-builder-kit-pill">
-                    <span className="kit-item-check" style={{ fontSize: "0.75rem" }}>✓</span>
-                    <span>{item}</span>
-                  </div>
-                ))}
-              </div>
+          {/* Deliverables preview — universal on every Q1 surface */}
+          <div style={{ marginTop: "28px", paddingTop: "20px", borderTop: "1px solid rgba(255,255,255,0.07)" }}>
+            <p style={{ fontSize: "0.6875rem", fontFamily: "var(--font-mono)", letterSpacing: "0.08em", color: "rgba(255,255,255,0.3)", textTransform: "uppercase", marginBottom: "14px" }}>
+              What&apos;s included
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+              {["AI Workspace Setup", "AI Profile", "12 Personalized Prompts"].map((item) => (
+                <div key={item} className="prompt-builder-kit-pill">
+                  <span className="kit-item-check" style={{ fontSize: "0.75rem" }}>✓</span>
+                  <span>{item}</span>
+                </div>
+              ))}
             </div>
-          )}
+          </div>
 
           <button
             className="btn btn-primary btn-full"

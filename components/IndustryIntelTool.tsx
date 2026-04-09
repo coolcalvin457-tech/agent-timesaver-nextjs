@@ -36,7 +36,7 @@ const FOCUS_AREA_OPTIONS = [
 
 const LOADING_STEPS = ["The Insight", "The Connection", "The Strategy", "The Sources"];
 
-type Screen = "s1" | "s2" | "s3" | "loading" | "email-gate" | "sent";
+type Screen = "s1" | "s2" | "s3" | "s4" | "loading" | "email-gate" | "sent";
 
 // ─── Screen 3 config per focus area ──────────────────────────────────────────
 
@@ -211,7 +211,7 @@ export default function IndustryIntelTool() {
       go("email-gate");
     } catch {
       setError("Something went wrong building your intel. Please try again.");
-      go("s3");
+      go("s4");
     }
   };
 
@@ -272,12 +272,12 @@ export default function IndustryIntelTool() {
 
   // ─── Screen: S1 — Your Industry ──────────────────────────────────
   if (screen === "s1") {
-    const canAdvance = jobTitle.trim() && industry.trim() && companySize && decisionScope;
+    const canAdvance = jobTitle.trim();
 
     return (
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
-          <StepIndicator total={3} current={1} />
+          <StepIndicator total={4} current={1} />
           <h2 style={headlineStyle}>Your Industry</h2>
 
           {/* Job title */}
@@ -293,6 +293,48 @@ export default function IndustryIntelTool() {
             />
           </div>
 
+          {/* Deliverables preview */}
+          <div style={{ marginTop: "28px", paddingTop: "20px", borderTop: "1px solid rgba(255,255,255,0.07)" }}>
+            <p style={{ fontSize: "0.6875rem", fontFamily: "var(--font-mono)", letterSpacing: "0.08em", color: "rgba(255,255,255,0.3)", textTransform: "uppercase", marginBottom: "14px" }}>
+              What&apos;s included
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+              {["Intel Report", "Relevant Insights", "Role-Specific Analysis"].map((item) => (
+                <div key={item} className="prompt-builder-kit-pill">
+                  <span className="kit-item-check" style={{ fontSize: "0.75rem" }}>&#10003;</span>
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <button
+            className="btn btn-primary btn-full"
+            style={{ marginTop: "28px" }}
+            onClick={() => {
+              track("industry_intel_s1_complete");
+              go("s2");
+            }}
+            disabled={!canAdvance}
+          >
+            Continue
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // ─── Screen: S2 — Your Company ──────────────────────────────────
+  if (screen === "s2") {
+    const canAdvance = industry.trim() && companySize && decisionScope;
+
+    return (
+      <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
+        <div className="screen">
+          <BackButton onClick={() => go("s1")} />
+          <StepIndicator total={4} current={2} />
+          <h2 style={headlineStyle}>Your Company</h2>
+
           {/* Company name (optional) */}
           <div style={fieldGroupStyle}>
             <label style={labelStyle}>
@@ -304,6 +346,7 @@ export default function IndustryIntelTool() {
               placeholder="e.g. Deloitte, Regional Medical Center"
               value={companyName}
               onChange={(e) => setCompanyName(e.target.value)}
+              autoFocus
             />
           </div>
 
@@ -353,27 +396,12 @@ export default function IndustryIntelTool() {
             </div>
           </div>
 
-          {/* Deliverables preview — universal on every Q1 surface */}
-          <div style={{ marginTop: "28px", paddingTop: "20px", borderTop: "1px solid rgba(255,255,255,0.07)" }}>
-            <p style={{ fontSize: "0.6875rem", fontFamily: "var(--font-mono)", letterSpacing: "0.08em", color: "rgba(255,255,255,0.3)", textTransform: "uppercase", marginBottom: "14px" }}>
-              What&apos;s included
-            </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-              {["Intel Report", "Relevant Insights", "Role-Specific Analysis"].map((item) => (
-                <div key={item} className="prompt-builder-kit-pill">
-                  <span className="kit-item-check" style={{ fontSize: "0.75rem" }}>&#10003;</span>
-                  <span>{item}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
           <button
             className="btn btn-primary btn-full"
             style={{ marginTop: "28px" }}
             onClick={() => {
-              track("industry_intel_s1_complete");
-              go("s2");
+              track("industry_intel_s2_complete");
+              go("s3");
             }}
             disabled={!canAdvance}
           >
@@ -384,13 +412,13 @@ export default function IndustryIntelTool() {
     );
   }
 
-  // ─── Screen: S2 — Type of Intel ──────────────────────────────────
-  if (screen === "s2") {
+  // ─── Screen: S3 — Type of Intel ──────────────────────────────────
+  if (screen === "s3") {
     return (
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
-          <BackButton onClick={() => go("s1")} />
-          <StepIndicator total={3} current={2} />
+          <BackButton onClick={() => go("s2")} />
+          <StepIndicator total={4} current={3} />
           <h2 style={headlineStyle}>Type of Intel</h2>
           <div className="choices">
             {FOCUS_AREA_OPTIONS.map((option) => (
@@ -400,8 +428,8 @@ export default function IndustryIntelTool() {
                 onClick={() => {
                   setFocusArea(option);
                   setTimeout(() => {
-                    track("industry_intel_s2_complete", { focusArea: option });
-                    go("s3");
+                    track("industry_intel_s3_complete", { focusArea: option });
+                    go("s4");
                   }, 180);
                 }}
               >
@@ -414,8 +442,8 @@ export default function IndustryIntelTool() {
             className="btn btn-primary btn-full"
             style={{ marginTop: "28px" }}
             onClick={() => {
-              track("industry_intel_s2_complete", { focusArea });
-              go("s3");
+              track("industry_intel_s3_complete", { focusArea });
+              go("s4");
             }}
             disabled={!focusArea}
           >
@@ -426,16 +454,16 @@ export default function IndustryIntelTool() {
     );
   }
 
-  // ─── Screen: S3 — Sharpen Focus ──────────────────────────────────
-  if (screen === "s3") {
-    const s3Config = getScreen3Config(focusArea);
+  // ─── Screen: S4 — Sharpen Focus ──────────────────────────────────
+  if (screen === "s4") {
+    const s4Config = getScreen3Config(focusArea);
     const isCompetitor = focusArea === "Competitor activity";
 
     return (
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
-          <BackButton onClick={() => go("s2")} />
-          <StepIndicator total={3} current={3} />
+          <BackButton onClick={() => go("s3")} />
+          <StepIndicator total={4} current={4} />
           <h2 style={headlineStyle}>Sharpen Focus</h2>
 
           {error && (
@@ -457,13 +485,13 @@ export default function IndustryIntelTool() {
               {/* Competitor name fields */}
               <div style={fieldGroupStyle}>
                 <label style={labelStyle}>
-                  {s3Config.headline} <span style={optionalStyle}>(optional)</span>
+                  {s4Config.headline} <span style={optionalStyle}>(optional)</span>
                 </label>
                 <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "4px" }}>
                   <input
                     type="text"
                     className="input"
-                    placeholder={s3Config.placeholder}
+                    placeholder={s4Config.placeholder}
                     value={competitor1}
                     onChange={(e) => setCompetitor1(e.target.value)}
                     autoFocus
@@ -501,11 +529,11 @@ export default function IndustryIntelTool() {
           ) : (
             <div style={{ ...fieldGroupStyle, marginBottom: "8px" }}>
               <label style={labelStyle}>
-                {s3Config.headline} <span style={optionalStyle}>(optional)</span>
+                {s4Config.headline} <span style={optionalStyle}>(optional)</span>
               </label>
               <textarea
                 className="input"
-                placeholder={s3Config.placeholder}
+                placeholder={s4Config.placeholder}
                 value={screen3Input}
                 onChange={(e) => setScreen3Input(e.target.value)}
                 autoFocus

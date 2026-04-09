@@ -76,9 +76,16 @@ const PREV_SCREEN: Partial<Record<Screen, Screen>> = {
 interface PromptBuilderToolProps {
   initialJobTitle?: string;
   onQ1Complete?: (jobTitle: string) => void;
+  /**
+   * Whether to autofocus the Q1 job-title input on mount.
+   * Default `true` for standalone `/prompts` page.
+   * Homepage embed (`PromptBuilderHomepageWrap`) passes `false` to prevent
+   * the browser from scrolling the below-the-fold input into view on page load.
+   */
+  autoFocusJobTitle?: boolean;
 }
 
-export default function PromptBuilderTool({ initialJobTitle, onQ1Complete }: PromptBuilderToolProps) {
+export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, autoFocusJobTitle = true }: PromptBuilderToolProps) {
   const { user } = useAuth();
   const [screen, setScreen] = useState<Screen>("q1");
   const [jobTitle, setJobTitle] = useState(initialJobTitle?.trim() || "");
@@ -272,7 +279,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete }: Pro
                 go("q2");
               }
             }}
-            autoFocus
+            autoFocus={autoFocusJobTitle}
           />
 
           {/* Deliverables preview — universal on every Q1 surface */}

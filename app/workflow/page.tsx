@@ -60,7 +60,7 @@ export default function WorkflowBuilderPage({
             >
               <span style={{ fontWeight: 800, color: "var(--cta)", fontSize: "1.125rem" }}>$49</span>
               {" · "}
-              <span style={{ fontWeight: 400, color: "rgba(255,255,255,0.65)" }}>Annual subscription.</span>
+              <span style={{ fontWeight: 400, color: "rgba(255,255,255,0.65)" }}>Annual subscription</span>
             </p>
 
             <a

@@ -557,7 +557,7 @@ export default function WorkflowBuilderTool({
 
       {/* ── Screen 1: The Task ────────────────────────────── */}
       {screen === "s1" && (
-        <>
+        <div className="screen">
           <StepIndicator total={3} current={1} />
           <h2
             style={{
@@ -690,12 +690,12 @@ export default function WorkflowBuilderTool({
           >
             Continue
           </button>
-        </>
+        </div>
       )}
 
       {/* ── Screen 2: The Context ─────────────────────────── */}
       {screen === "s2" && (
-        <>
+        <div className="screen">
           <BackButton onClick={() => setScreen("s1")} />
           <StepIndicator total={3} current={2} />
           <h2
@@ -773,12 +773,12 @@ export default function WorkflowBuilderTool({
           >
             Continue
           </button>
-        </>
+        </div>
       )}
 
       {/* ── Screen 3: Reference material ──────────────────── */}
       {screen === "s3" && (
-        <>
+        <div className="screen">
           <BackButton onClick={() => setScreen("s2")} />
           <StepIndicator total={3} current={3} />
           <h2
@@ -851,12 +851,13 @@ export default function WorkflowBuilderTool({
           >
             Build My Workflow
           </button>
-        </>
+        </div>
       )}
 
       {/* ── Paywall ───────────────────────────────────────── */}
       {screen === "paywall" && (
-        <>
+        <div className="screen">
+          <BackButton onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} />
           <h2
             style={{
               fontSize: "clamp(1.35rem, 2.5vw, 1.625rem)",
@@ -1088,7 +1089,7 @@ export default function WorkflowBuilderTool({
               )}
             </div>
           )}
-        </>
+        </div>
       )}
 
       {/* ── Sent (auto-delivered) ────────────────────────── */}

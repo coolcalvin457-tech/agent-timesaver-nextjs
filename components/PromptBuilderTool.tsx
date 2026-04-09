@@ -42,13 +42,6 @@ const NOT_STARTED_BARRIERS = [
   "I haven't made time to try it yet",
 ];
 
-const LOADING_STEPS = [
-  "Job Role Analysis",
-  "Prompt Library",
-  "AI Profile",
-  "AI Workspace Setup",
-];
-
 // ─── Em Dash Sanitizer ────────────────────────────────────────────────────────
 // Defensive strip: the API prompt instructs Claude to avoid em dashes, but this
 // client-side pass catches any that slip through and replaces them with a hyphen.
@@ -102,7 +95,6 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
   const [showWriteIn, setShowWriteIn] = useState(false);
   const [writeInValue, setWriteInValue] = useState("");
   const [flipStage, setFlipStage] = useState<"idle" | "in">("idle");
-  const [loadingStep, setLoadingStep] = useState(0);
   const [expandedWhys, setExpandedWhys] = useState<Set<string>>(new Set());
 
   // File upload state
@@ -168,16 +160,6 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
       return;
     }
     topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, [screen]);
-
-  // ── Loading step advancement ─────────────────────────────────────
-  useEffect(() => {
-    if (screen !== "loading") return;
-    setLoadingStep(0);
-    const timers = LOADING_STEPS.map((_, i) =>
-      setTimeout(() => setLoadingStep(i), i * 14000)
-    );
-    return () => timers.forEach(clearTimeout);
   }, [screen]);
 
   const flipClass = flipStage === "in" ? "screen-flip-in" : "";
@@ -641,15 +623,16 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
   }
 
   // ── Screen: Loading ────────────────────────────────────────────
+  // S126 F48 (Prompt Builder): retired the 4-step animated checklist in favor
+  // of the Thinking dots loader. Observed p50 latency is ~25-45s on a single
+  // claude-sonnet-4-6 call, comfortably below the §1.3 60-second threshold.
+  // Matches Timesaver for a consistent free-tool waiting experience.
   if (screen === "loading") {
     return (
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
-        <ToolLoadingScreen
-          headingText="Building your prompt kit."
-          timeEstimate="About 1 minute."
-          steps={LOADING_STEPS}
-          activeStep={loadingStep}
-        />
+        <div className="loading-screen" style={{ minHeight: "320px" }}>
+          <ToolLoadingScreen headingText="Thinking" />
+        </div>
       </div>
     );
   }
@@ -676,11 +659,6 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
 
   // ── Screen: Results ────────────────────────────────────────────
   if (screen === "results" && promptKit) {
-    const totalPrompts = promptKit.categories.reduce(
-      (sum, cat) => sum + cat.prompts.length,
-      0
-    );
-
     return (
       <div className={`tool-container pb-results-dark${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
@@ -698,96 +676,15 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
           {/* Header */}
           <p className="pb-system-eyebrow" style={{ marginBottom: "8px" }}>Step 1</p>
           <h2 className="results-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, marginBottom: "6px" }}>
-            12 prompts built for {jobTitle}.
+            Your AI Workspace Setup.
           </h2>
           <p className="screen-subheadline" style={{ marginBottom: "36px" }}>
-            Copy and paste into your AI tool of choice.
+            Set this up once. AI will know who you are every time.
           </p>
 
-          {/* Prompt categories */}
-          {promptKit.categories.map((category, catIndex) => (
-            <div key={catIndex} className="pb-category">
-              <p className="pb-category-label">
-                <span className="pb-category-num">
-                  {String(catIndex + 1).padStart(2, "0")}
-                </span>
-                {category.name}
-              </p>
-
-              {category.prompts.map((prompt, promptIndex) => {
-                const id = `${catIndex}-${promptIndex}`;
-                return (
-                  <div key={id} className="pb-prompt-card">
-                    <p className="pb-prompt-title">{prompt.title}</p>
-                    <div className="pb-prompt-text-wrapper" style={{ flexDirection: "column", alignItems: "stretch" }}>
-                      <p className="pb-prompt-text">{prompt.prompt}</p>
-                      <button
-                        className={`pb-copy-btn ${
-                          copiedId === id ? "copied" : ""
-                        }`}
-                        onClick={() => handleCopy(id, prompt.prompt)}
-                        style={{ alignSelf: "flex-end", marginTop: "10px" }}
-                      >
-                        {copiedId === id ? "✓ Copied" : "Copy"}
-                      </button>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => toggleWhy(id)}
-                      style={{
-                        background: "none",
-                        border: "none",
-                        color: "rgba(255,255,255,0.3)",
-                        fontSize: "0.75rem",
-                        cursor: "pointer",
-                        padding: "10px 0 0 0",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "4px",
-                        letterSpacing: "0.01em",
-                      }}
-                    >
-                      {expandedWhys.has(id) ? "▲ Hide explanation" : "▼ Why this works"}
-                    </button>
-                    {expandedWhys.has(id) && (
-                      <p className="pb-prompt-why" style={{ marginTop: "8px" }}>{prompt.why}</p>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          ))}
-
-          {/* ── Step 2: AI Profile ─────────── */}
+          {/* ── Step 1: AI Workspace Setup ─────────── */}
           <div className="pb-system-section">
-            <p className="pb-system-eyebrow">Step 2</p>
-            <h3 className="pb-system-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}>Your AI Profile.</h3>
             <p className="pb-system-step-body">
-              Paste this into AI once. No need to re-introduce yourself or start from scratch ever again.
-            </p>
-            <div className="pb-prompt-text-wrapper" style={{ marginBottom: "12px", flexDirection: "column", alignItems: "stretch" }}>
-              <p className="pb-prompt-text">{promptKit.aiProfile}</p>
-              <button
-                className={`pb-copy-btn ${copiedId === "aiProfile" ? "copied" : ""}`}
-                onClick={() => handleCopy("aiProfile", promptKit.aiProfile)}
-                style={{ alignSelf: "flex-end", marginTop: "10px" }}
-              >
-                {copiedId === "aiProfile" ? "✓ Copied" : "Copy"}
-              </button>
-            </div>
-            <p className="pb-system-step-body">
-              Tell AI to save its response as <strong>AI Profile.md</strong>
-            </p>
-          </div>
-
-          {/* ── Step 3: AI Workspace Setup ─────────── */}
-          <div className="pb-system-section">
-            <p className="pb-system-eyebrow">Step 3</p>
-            <h3 className="pb-system-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}>Your AI Workspace Setup.</h3>
-            <p className="pb-system-step-body">
-              Set this up once. AI will know who you are every time.
-            </p>
-            <p className="pb-system-step-body" style={{ marginTop: "16px" }}>
               Paste this into your AI tool to get everything set up:
             </p>
             <div className="pb-prompt-text-wrapper" style={{ marginTop: "12px", flexDirection: "column", alignItems: "stretch" }}>
@@ -816,6 +713,93 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, hideF
             <p className="pb-system-step-body" style={{ marginTop: "12px" }}>
               When AI gives you something worth keeping, ask it to save as an .md file. AI will now remember your info between chats.
             </p>
+          </div>
+
+          {/* ── Step 2: AI Profile ─────────── */}
+          <div className="pb-system-section">
+            <p className="pb-system-eyebrow">Step 2</p>
+            <h3 className="pb-system-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}>Your AI Profile.</h3>
+            <p className="pb-system-step-body">
+              Paste this into AI once. No need to re-introduce yourself or start from scratch ever again.
+            </p>
+            <div className="pb-prompt-text-wrapper" style={{ marginBottom: "12px", flexDirection: "column", alignItems: "stretch" }}>
+              <p className="pb-prompt-text">{promptKit.aiProfile}</p>
+              <button
+                className={`pb-copy-btn ${copiedId === "aiProfile" ? "copied" : ""}`}
+                onClick={() => handleCopy("aiProfile", promptKit.aiProfile)}
+                style={{ alignSelf: "flex-end", marginTop: "10px" }}
+              >
+                {copiedId === "aiProfile" ? "✓ Copied" : "Copy"}
+              </button>
+            </div>
+            <p className="pb-system-step-body">
+              Tell AI to save its response as <strong>AI Profile.md</strong>
+            </p>
+          </div>
+
+          {/* ── Step 3: 12 Personalized Prompts ─────────── */}
+          <div className="pb-system-section">
+            <p className="pb-system-eyebrow">Step 3</p>
+            <h3 className="pb-system-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}>
+              12 prompts built for {jobTitle}.
+            </h3>
+            <p className="pb-system-step-body" style={{ marginBottom: "24px" }}>
+              Copy and paste into your AI tool of choice.
+            </p>
+
+            {/* Prompt categories */}
+            {promptKit.categories.map((category, catIndex) => (
+              <div key={catIndex} className="pb-category">
+                <p className="pb-category-label">
+                  <span className="pb-category-num">
+                    {String(catIndex + 1).padStart(2, "0")}
+                  </span>
+                  {category.name}
+                </p>
+
+                {category.prompts.map((prompt, promptIndex) => {
+                  const id = `${catIndex}-${promptIndex}`;
+                  return (
+                    <div key={id} className="pb-prompt-card">
+                      <p className="pb-prompt-title">{prompt.title}</p>
+                      <div className="pb-prompt-text-wrapper" style={{ flexDirection: "column", alignItems: "stretch" }}>
+                        <p className="pb-prompt-text">{prompt.prompt}</p>
+                        <button
+                          className={`pb-copy-btn ${
+                            copiedId === id ? "copied" : ""
+                          }`}
+                          onClick={() => handleCopy(id, prompt.prompt)}
+                          style={{ alignSelf: "flex-end", marginTop: "10px" }}
+                        >
+                          {copiedId === id ? "✓ Copied" : "Copy"}
+                        </button>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => toggleWhy(id)}
+                        style={{
+                          background: "none",
+                          border: "none",
+                          color: "rgba(255,255,255,0.3)",
+                          fontSize: "0.75rem",
+                          cursor: "pointer",
+                          padding: "10px 0 0 0",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "4px",
+                          letterSpacing: "0.01em",
+                        }}
+                      >
+                        {expandedWhys.has(id) ? "▲ Hide explanation" : "▼ Why this works"}
+                      </button>
+                      {expandedWhys.has(id) && (
+                        <p className="pb-prompt-why" style={{ marginTop: "8px" }}>{prompt.why}</p>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
           </div>
 
           {/* Cross-sell — AGENT: Workflow */}

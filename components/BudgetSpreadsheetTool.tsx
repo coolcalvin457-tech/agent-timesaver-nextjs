@@ -19,13 +19,6 @@ interface BudgetSection {
   rowCount: number;
 }
 
-const LOADING_STEPS = [
-  "Budget Categories",
-  "Line Items",
-  "Formulas",
-  "Formatting",
-];
-
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 const CONTENT_TYPES = [".xlsx", ".csv", ".txt"];
 const TEMPLATE_TYPES = [".xlsx"];
@@ -213,7 +206,6 @@ export default function BudgetSpreadsheetTool() {
   const [emailSubmitting, setEmailSubmitting] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [flipStage, setFlipStage] = useState<"idle" | "in">("idle");
-  const [loadingStep, setLoadingStep] = useState(0);
 
   const topRef = useRef<HTMLDivElement>(null);
   const isFirstRender = useRef(true);
@@ -243,18 +235,6 @@ export default function BudgetSpreadsheetTool() {
       return;
     }
     topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, [screen]);
-
-  // ── Advance checklist step during loading ───────────────────────
-  useEffect(() => {
-    if (screen !== "loading") {
-      setLoadingStep(0);
-      return;
-    }
-    const interval = setInterval(() => {
-      setLoadingStep((prev) => Math.min(prev + 1, LOADING_STEPS.length - 1));
-    }, 4000);
-    return () => clearInterval(interval);
   }, [screen]);
 
   // ── Auth: skip email gate if logged in ─────────────────────────
@@ -404,7 +384,6 @@ export default function BudgetSpreadsheetTool() {
     setEmailError("");
     setEmailSubmitting(false);
     setFlipStage("idle");
-    setLoadingStep(0);
   }
 
   // ─── Render ───────────────────────────────────────────────────
@@ -557,12 +536,7 @@ export default function BudgetSpreadsheetTool() {
         ref={topRef}
       >
         <div className="loading-screen" style={{ minHeight: "320px" }}>
-          <ToolLoadingScreen
-            headingText="Building your spreadsheet."
-            timeEstimate="About 20 seconds."
-            steps={LOADING_STEPS}
-            activeStep={loadingStep}
-          />
+          <ToolLoadingScreen headingText="Thinking" />
         </div>
       </div>
     );

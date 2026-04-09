@@ -623,22 +623,9 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, autoF
           {/* ── Step 1: AI Workspace Setup ─────────── */}
           <div className="pb-system-section">
             <p className="pb-system-step-body">
-              Paste this into your AI tool to get everything set up:
+              Build this folder structure on your desktop:
             </p>
-            <div className="pb-prompt-text-wrapper" style={{ marginTop: "12px", flexDirection: "column", alignItems: "stretch" }}>
-              <p className="pb-prompt-text">{`I just created my AI Profile and I want to set up my workspace properly. Help me with two things: (1) Tell me exactly where and how to save my AI Profile as custom instructions in this tool, so you always know who I am without me having to re-explain myself. (2) Walk me through setting up a folder on my desktop to save my AI work going forward. Here's my profile:\n\n${promptKit.aiProfile}`}</p>
-              <button
-                className={`pb-copy-btn ${copiedId === "starterPrompt" ? "copied" : ""}`}
-                onClick={() => handleCopy("starterPrompt", `I just created my AI Profile and I want to set up my workspace properly. Help me with two things: (1) Tell me exactly where and how to save my AI Profile as custom instructions in this tool, so you always know who I am without me having to re-explain myself. (2) Walk me through setting up a folder on my desktop to save my AI work going forward. Here's my profile:\n\n${promptKit.aiProfile}`)}
-                style={{ alignSelf: "flex-end", marginTop: "10px" }}
-              >
-                {copiedId === "starterPrompt" ? "✓ Copied" : "Copy"}
-              </button>
-            </div>
-            <p className="pb-system-step-body" style={{ marginTop: "24px" }}>
-              Then build your folder structure on your desktop:
-            </p>
-            <div className="pb-folder-tree">
+            <div className="pb-folder-tree" style={{ marginTop: "12px" }}>
               <p className="pb-folder-tree-item pb-folder-root">🗂️ [YourName]&apos;s AI Workspace</p>
               <p className="pb-folder-tree-item pb-folder-indent" style={{ color: "#fff" }}>📄 AI Profile.md</p>
               <p className="pb-folder-tree-item pb-folder-indent">🗂️ Prompt Library</p>
@@ -651,6 +638,19 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, autoF
             <p className="pb-system-step-body" style={{ marginTop: "12px" }}>
               When AI gives you something worth keeping, ask it to save as an .md file. AI will now remember your info between chats.
             </p>
+            <p className="pb-system-step-body" style={{ marginTop: "24px" }}>
+              Paste this into your AI tool to get everything set up:
+            </p>
+            <div className="pb-prompt-text-wrapper" style={{ marginTop: "12px", flexDirection: "column", alignItems: "stretch" }}>
+              <p className="pb-prompt-text">{`I want to set up my AI workspace properly. Help me with two things: (1) Tell me exactly where and how to save my AI Profile (from Step 2 below) as custom instructions in this tool, so you always know who I am without me having to re-explain myself. (2) Walk me through setting up a folder on my desktop to save my AI work going forward. Here's my profile:\n\n${promptKit.aiProfile}`}</p>
+              <button
+                className={`pb-copy-btn ${copiedId === "starterPrompt" ? "copied" : ""}`}
+                onClick={() => handleCopy("starterPrompt", `I want to set up my AI workspace properly. Help me with two things: (1) Tell me exactly where and how to save my AI Profile (from Step 2 below) as custom instructions in this tool, so you always know who I am without me having to re-explain myself. (2) Walk me through setting up a folder on my desktop to save my AI work going forward. Here's my profile:\n\n${promptKit.aiProfile}`)}
+                style={{ alignSelf: "flex-end", marginTop: "10px" }}
+              >
+                {copiedId === "starterPrompt" ? "✓ Copied" : "Copy"}
+              </button>
+            </div>
           </div>
 
           {/* ── Step 2: AI Profile ─────────── */}

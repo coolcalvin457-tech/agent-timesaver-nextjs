@@ -774,7 +774,7 @@ export default function CompetitiveDossierTool({
               lineHeight: 1.3,
             }}
           >
-            Competitive intelligence on any company, tailored to your role.
+            Deep AI Research in Minutes.
           </h2>
 
           {paymentCancelled && (
@@ -907,10 +907,6 @@ export default function CompetitiveDossierTool({
               </p>
             )}
 
-            <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.35)", textAlign: "center", margin: "12px 0 0" }}>
-              Annual subscription. Cancel anytime.
-            </p>
-
             {/* Sign-in link — only shown when NOT logged in */}
             {!user && (
               <p style={{ fontSize: "0.8125rem", textAlign: "center", margin: "10px 0 0" }}>
@@ -934,49 +930,6 @@ export default function CompetitiveDossierTool({
             )}
           </div>
 
-          {/* Returning purchaser check */}
-          {!subscriptionVerified && (
-            <div style={{ marginTop: "4px" }}>
-              {!showReturningCheck ? (
-                <button
-                  type="button"
-                  onClick={() => setShowReturningCheck(true)}
-                  style={{
-                    background: "none",
-                    border: "none",
-                    padding: 0,
-                    fontSize: "0.8125rem",
-                    color: "rgba(255,255,255,0.45)",
-                    textDecoration: "underline",
-                    cursor: "pointer",
-                  }}
-                >
-                  Problems with access?
-                </button>
-              ) : (
-                <div style={{ marginTop: "8px", textAlign: "left" }}>
-                  <label style={{ ...labelStyle, fontSize: "0.8125rem" }}>Enter your subscription email</label>
-                  <input
-                    type="email"
-                    value={returningEmail}
-                    onChange={(e) => setReturningEmail(e.target.value)}
-                    placeholder="your@email.com"
-                    style={{ ...inputStyle, marginBottom: "10px" }}
-                    onKeyDown={(e) => e.key === "Enter" && handleReturningCheck()}
-                  />
-                  {returningCheckError && <p style={errorStyle}>{returningCheckError}</p>}
-                  <button
-                    onClick={handleReturningCheck}
-                    disabled={returningCheckLoading}
-                    className="btn btn-dark-cta"
-                    style={{ width: "100%", opacity: returningCheckLoading ? 0.7 : 1 }}
-                  >
-                    {returningCheckLoading ? "Checking..." : "Verify Access"}
-                  </button>
-                </div>
-              )}
-            </div>
-          )}
         </>
       )}
 

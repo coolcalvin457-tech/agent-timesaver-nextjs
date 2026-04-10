@@ -1072,7 +1072,7 @@ export default function PIPBuilderTool({
 
         <div style={{ marginBottom: "24px" }}>
           <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: 0 }}>
-            Build a complete performance improvement plan.
+            Performance Improvement Plans.
           </h2>
         </div>
 
@@ -1211,13 +1211,9 @@ export default function PIPBuilderTool({
                 </p>
               )}
 
-              <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.4)", margin: 0, textAlign: "center" }}>
-                Annual subscription. Cancel anytime.
-              </p>
-
-              {/* Sign-in link for users who forgot to log in before starting */}
+              {/* Sign-in link — only shown when NOT logged in */}
               {!user && (
-                <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.5)", margin: "14px 0 0", textAlign: "center" }}>
+                <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.5)", margin: "12px 0 0", textAlign: "center" }}>
                   Already have an account?{" "}
                   <button
                     type="button"
@@ -1235,53 +1231,7 @@ export default function PIPBuilderTool({
                 </p>
               )}
             </div>
-
-            {/* Legacy returning purchaser (fallback) */}
-            <div style={{ textAlign: "center", marginBottom: "16px" }}>
-              {!showReturningCheck ? (
-                <button
-                  type="button"
-                  onClick={() => setShowReturningCheck(true)}
-                  style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "0.8125rem", cursor: "pointer", padding: 0, textDecoration: "underline" }}
-                >
-                  Problems with access? Check here.
-                </button>
-              ) : (
-                <div style={{ background: "var(--bg-alt, #F8F8F6)", border: "1px solid var(--border, #E4E4E2)", borderRadius: "8px", padding: "14px 16px", textAlign: "left" }}>
-                  <p style={{ margin: "0 0 10px", fontSize: "0.875rem", fontWeight: 600, color: "var(--text-primary)" }}>
-                    Enter the email you purchased with:
-                  </p>
-                  <div style={{ display: "flex", gap: "8px" }}>
-                    <input
-                      type="email"
-                      value={returningEmail}
-                      onChange={(e) => setReturningEmail(e.target.value)}
-                      onKeyDown={(e) => e.key === "Enter" && handleReturningEmailCheck()}
-                      placeholder="your@email.com"
-                      style={{ ...inputStyle, flex: 1 }}
-                    />
-                    <button
-                      type="button"
-                      onClick={handleReturningEmailCheck}
-                      disabled={returningCheckLoading || !returningEmail.trim()}
-                      style={{
-                        padding: "10px 16px", fontSize: "0.875rem", fontWeight: 600,
-                        background: "var(--dark, #161618)", color: "#FFFFFF",
-                        border: "none", borderRadius: "6px",
-                        cursor: returningCheckLoading || !returningEmail.trim() ? "not-allowed" : "pointer",
-                        opacity: returningCheckLoading || !returningEmail.trim() ? 0.5 : 1,
-                        flexShrink: 0, whiteSpace: "nowrap" as const,
-                      }}
-                    >
-                      {returningCheckLoading ? "Checking..." : "Check access"}
-                    </button>
-                  </div>
-                  {returningCheckError && (
-                    <p style={{ ...errorStyle, marginTop: "8px" }}>{returningCheckError}</p>
-                  )}
-                </div>
-              )}
-            </div>
+            {/* Legacy returning purchaser block removed S142 — Sign in link handles returning users */}
           </>
         )}
 

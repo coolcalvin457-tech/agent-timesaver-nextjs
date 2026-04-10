@@ -906,7 +906,6 @@ export default function WorkflowBuilderTool({
       {/* ── Paywall ───────────────────────────────────────── */}
       {screen === "paywall" && (
         <div className="screen">
-          <BackButton onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} />
           <h2
             style={{
               fontSize: "clamp(1.35rem, 2.5vw, 1.625rem)",
@@ -917,7 +916,7 @@ export default function WorkflowBuilderTool({
               lineHeight: 1.3,
             }}
           >
-            Turn any recurring task into a step-by-step workflow.
+            Turn Recurring Tasks into AI Workflows.
           </h2>
 
           {paymentCancelled && (
@@ -1061,13 +1060,9 @@ export default function WorkflowBuilderTool({
               </p>
             )}
 
-            <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.35)", textAlign: "center", margin: "12px 0 0" }}>
-              Annual subscription. Cancel anytime.
-            </p>
-
             {/* Sign-in link — only shown when NOT logged in */}
             {!user && (
-              <p style={{ fontSize: "0.8125rem", textAlign: "center", margin: "10px 0 0" }}>
+              <p style={{ fontSize: "0.8125rem", textAlign: "center", margin: "12px 0 0" }}>
                 <span style={{ color: "rgba(255,255,255,0.5)" }}>Already have an account? </span>
                 <button
                   type="button"
@@ -1087,57 +1082,6 @@ export default function WorkflowBuilderTool({
               </p>
             )}
           </div>
-
-          {/* Returning purchaser check */}
-          {!subscriptionVerified && (
-            <div style={{ marginTop: "4px" }}>
-              {!showReturningCheck ? (
-                <button
-                  type="button"
-                  onClick={() => setShowReturningCheck(true)}
-                  style={{
-                    background: "none",
-                    border: "none",
-                    padding: 0,
-                    fontSize: "0.8125rem",
-                    color: "rgba(255,255,255,0.45)",
-                    textDecoration: "underline",
-                    cursor: "pointer",
-                    display: "block",
-                    margin: "0 auto",
-                  }}
-                >
-                  Already have access? Enter your email.
-                </button>
-              ) : (
-                <div style={{ padding: "16px", background: "var(--surface-secondary, #F9F9F7)", border: "1px solid var(--border)", borderRadius: "10px" }}>
-                  <label htmlFor="wf-returning-email" style={{ ...labelStyle, marginBottom: "8px" }}>
-                    Enter your email to verify access
-                  </label>
-                  <div style={{ display: "flex", gap: "8px" }}>
-                    <input
-                      id="wf-returning-email"
-                      type="email"
-                      style={{ ...inputStyle, flex: 1 }}
-                      value={returningEmail}
-                      onChange={(e) => setReturningEmail(e.target.value)}
-                      placeholder="your@email.com"
-                    />
-                    <button
-                      type="button"
-                      className="btn btn-dark-cta"
-                      style={{ whiteSpace: "nowrap" as const, padding: "10px 16px", fontSize: "0.875rem" }}
-                      onClick={handleReturningCheck}
-                      disabled={returningCheckLoading}
-                    >
-                      {returningCheckLoading ? "Checking..." : "Verify"}
-                    </button>
-                  </div>
-                  {returningCheckError && <p style={errorStyle}>{returningCheckError}</p>}
-                </div>
-              )}
-            </div>
-          )}
         </div>
       )}
 

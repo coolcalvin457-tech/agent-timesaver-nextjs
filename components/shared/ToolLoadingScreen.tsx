@@ -161,11 +161,12 @@ export default function ToolLoadingScreen({
   }
 
   // ── Spinner variant (no icon above heading per Layer 1 §1.3, S111) ────────
-  // S137: animated dots render whenever there's no subLine (spinner mode without
-  // a rotating status message). Previously gated on !subLine && !timeEstimate,
-  // which killed the dots when a time estimate was added. The dots and time
-  // estimate are independent: dots animate the heading, time estimate sits below.
-  const showDots = !subLine;
+  // S139: replaced animated dots with a shimmer glow effect on the heading text.
+  // A subtle light gradient sweeps across the word "Thinking" continuously,
+  // similar to Claude's thinking indicator. Cleaner and more polished than
+  // bouncing dots. The shimmer is CSS-only via background-clip: text on
+  // .thinking-shimmer in globals.css.
+  const useShimmer = !subLine;
 
   return (
     <div style={{ paddingTop: "40px" }}>
@@ -180,17 +181,9 @@ export default function ToolLoadingScreen({
           textAlign: "center",
         }}
       >
-        {showDots ? (
-          // F49 (S119): wrap the headline word in .thinking-word so the
-          // .thinking-dots can be absolutely positioned at its right edge
-          // without consuming layout width. Keeps the word visually centered.
-          <span className="thinking-word">
+        {useShimmer ? (
+          <span className="thinking-shimmer">
             {headingText}
-            <span className="thinking-dots" aria-hidden="true">
-              <span>.</span>
-              <span>.</span>
-              <span>.</span>
-            </span>
             <span className="sr-only"> (loading)</span>
           </span>
         ) : (

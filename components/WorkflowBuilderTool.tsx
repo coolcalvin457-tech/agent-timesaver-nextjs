@@ -916,7 +916,7 @@ export default function WorkflowBuilderTool({
               lineHeight: 1.2,
             }}
           >
-            Long Tasks → AI Workflows.
+            Turn Long Tasks into AI Workflows.
           </h2>
 
           {paymentCancelled && (
@@ -934,6 +934,7 @@ export default function WorkflowBuilderTool({
               padding: "18px 20px",
               marginBottom: "12px",
               maxWidth: "88%",
+              margin: "0 auto",
             }}
           >
             <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "rgba(255,255,255,0.45)", margin: "0 0 12px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
@@ -1045,7 +1046,7 @@ export default function WorkflowBuilderTool({
               </div>
 
               {/* Divider */}
-              <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", margin: "0 0 20px" }} />
+              <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", margin: "0 0 28px" }} />
 
               {/* CTA */}
               <button

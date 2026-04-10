@@ -161,11 +161,11 @@ export default function ToolLoadingScreen({
   }
 
   // ── Spinner variant (no icon above heading per Layer 1 §1.3, S111) ────────
-  // Intermediate "Thinking" state: when no subLine and no timeEstimate are
-  // provided, the headline is rendered as a calm one-word loader with animated
-  // ellipsis dots cycling 0→3 every ~400ms. Borrows the universal "Claude is
-  // thinking…" / "ChatGPT is thinking…" language. Locked in Layer 1 §1.3 (S112).
-  const isIntermediate = !subLine && !timeEstimate;
+  // S137: animated dots render whenever there's no subLine (spinner mode without
+  // a rotating status message). Previously gated on !subLine && !timeEstimate,
+  // which killed the dots when a time estimate was added. The dots and time
+  // estimate are independent: dots animate the heading, time estimate sits below.
+  const showDots = !subLine;
 
   return (
     <div style={{ paddingTop: "40px" }}>
@@ -180,7 +180,7 @@ export default function ToolLoadingScreen({
           textAlign: "center",
         }}
       >
-        {isIntermediate ? (
+        {showDots ? (
           // F49 (S119): wrap the headline word in .thinking-word so the
           // .thinking-dots can be absolutely positioned at its right edge
           // without consuming layout width. Keeps the word visually centered.

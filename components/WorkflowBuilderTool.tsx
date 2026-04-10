@@ -912,7 +912,7 @@ export default function WorkflowBuilderTool({
               fontWeight: 400,
               fontFamily: "var(--font-display)",
               color: "#FFFFFF",
-              margin: "0 0 20px",
+              margin: "0 0 28px",
               lineHeight: 1.3,
             }}
           >
@@ -925,18 +925,18 @@ export default function WorkflowBuilderTool({
             </p>
           )}
 
-          {/* What's included — card style matching Onboarding template */}
+          {/* What's included */}
           <div
             style={{
-              background: "var(--bg-alt, #F8F8F6)",
-              border: "1px solid var(--border, #E4E4E2)",
+              background: "rgba(255,255,255,0.04)",
+              border: "1px solid rgba(255,255,255,0.10)",
               borderRadius: "10px",
               padding: "18px 20px",
               marginBottom: "20px",
             }}
           >
-            <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", margin: "0 0 12px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-              Includes
+            <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "rgba(255,255,255,0.45)", margin: "0 0 12px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+              What&apos;s Included
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
               {DELIVERABLES.map((item) => (
@@ -945,13 +945,13 @@ export default function WorkflowBuilderTool({
                     <path d="M2.5 1.5h6l3 3v8h-9v-11z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" fill="none"/>
                     <path d="M8.5 1.5v3h3" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/>
                   </svg>
-                  <span style={{ fontSize: "0.875rem", color: "var(--text-secondary)", fontWeight: 500 }}>{item}</span>
+                  <span style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.75)", fontWeight: 500 }}>{item}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Pricing card — matching Onboarding template */}
+          {/* Pricing card */}
           {subscriptionVerified ? (
             <div
               style={{

@@ -1082,24 +1082,24 @@ export default function OnboardingKitBuilderTool({
           </div>
         )}
 
-        <div style={{ marginBottom: "24px" }}>
+        <div style={{ marginBottom: "28px" }}>
           <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: 0 }}>
             Onboarding Kit for Every New Hire.
           </h2>
         </div>
 
-        {/* Kit contents preview */}
+        {/* What's included */}
         <div
           style={{
-            background: "var(--bg-alt, #F8F8F6)",
-            border: "1px solid var(--border, #E4E4E2)",
+            background: "rgba(255,255,255,0.04)",
+            border: "1px solid rgba(255,255,255,0.10)",
             borderRadius: "10px",
             padding: "18px 20px",
             marginBottom: "20px",
           }}
         >
-          <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", margin: "0 0 12px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-            Includes
+          <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "rgba(255,255,255,0.45)", margin: "0 0 12px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+            What&apos;s Included
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             {[
@@ -1114,7 +1114,7 @@ export default function OnboardingKitBuilderTool({
                   <path d="M2.5 1.5h6l3 3v8h-9v-11z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" fill="none"/>
                   <path d="M8.5 1.5v3h3" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/>
                 </svg>
-                <span style={{ fontSize: "0.875rem", color: "var(--text-secondary)", fontWeight: 500 }}>{item}</span>
+                <span style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.75)", fontWeight: 500 }}>{item}</span>
               </div>
             ))}
           </div>

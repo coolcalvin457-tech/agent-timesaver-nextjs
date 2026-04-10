@@ -293,8 +293,14 @@ export default function CompetitiveDossierTool({
   }, [initialPaymentStatus, initialSessionId]);
 
   // ── Scroll to tool on screen change ──────────────────────────────────────────
+  // S139: also skip scroll when auto-advancing from paywall to s1 (subscriber
+  // auto-check). User should land at page top, not be scrolled to the tool.
+  const prevScreenRef = useRef<string>(screen);
   useEffect(() => {
+    const prev = prevScreenRef.current;
+    prevScreenRef.current = screen;
     if (isFirstRender.current) { isFirstRender.current = false; return; }
+    if (prev === "paywall" && screen === "s1") return;
     toolContainerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [screen]);
 

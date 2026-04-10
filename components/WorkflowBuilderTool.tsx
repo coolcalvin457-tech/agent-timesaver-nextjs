@@ -281,11 +281,20 @@ export default function WorkflowBuilderTool({
   }, [screen, user?.email, initialPaymentStatus]);
 
   // ── Scroll to tool container on screen change ────────────
+  // S139: skip scroll when auto-advancing from paywall to s1 (subscriber
+  // auto-check). The user just landed on the page and expects to see the
+  // hero and landing content, not be yanked down to the tool. Only scroll
+  // on explicit user-driven screen transitions (Continue button, etc.).
+  const prevScreenRef = useRef<string>(screen);
   useEffect(() => {
+    const prev = prevScreenRef.current;
+    prevScreenRef.current = screen;
     if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
     }
+    // Auto-advance from paywall: don't scroll
+    if (prev === "paywall" && screen === "s1") return;
     toolContainerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [screen]);
 

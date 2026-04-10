@@ -928,12 +928,11 @@ export default function WorkflowBuilderTool({
           {/* What's included */}
           <div
             style={{
-              background: "radial-gradient(ellipse 90% 100% at center, rgba(30,122,184,0.14) 0%, transparent 60%)",
+              background: "radial-gradient(ellipse 80% 90% at center, rgba(30,122,184,0.14) 0%, transparent 65%)",
               border: "1px solid rgba(255,255,255,0.10)",
               borderRadius: "10px",
               padding: "18px 20px",
               marginBottom: "12px",
-              margin: "0 auto",
             }}
           >
             <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "rgba(255,255,255,0.45)", margin: "0 0 12px", textTransform: "uppercase", letterSpacing: "0.05em" }}>

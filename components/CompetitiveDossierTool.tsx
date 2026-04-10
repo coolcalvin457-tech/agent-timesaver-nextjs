@@ -1046,6 +1046,11 @@ export default function CompetitiveDossierTool({
           <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", color: "#FFFFFF", margin: "0 0 8px", lineHeight: 1.25 }}>
             Your dossier is ready.
           </h2>
+          {resultJobTitle && (
+            <p style={{ fontSize: "0.9375rem", color: "rgba(255,255,255,0.55)", margin: "0 0 8px", textAlign: "center" }}>
+              {resultJobTitle}{resultCompanyName ? `, ${resultCompanyName}` : ""}
+            </p>
+          )}
           <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.5)", margin: "0 0 24px" }}>
             Downloaded to your device and sent to {email || "your inbox"}.
           </p>

@@ -560,28 +560,49 @@ export default function TimesaverTool() {
             <span style={{ color: "#FFFFFF" }}>✓</span> Sent to your inbox.
           </div>
 
-          <div className="results-tag" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25, color: "#FFFFFF", marginBottom: "28px" }}>
+          <div className="results-tag" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25, color: "#FFFFFF", marginBottom: "8px" }}>
             You could save {state.roi.totalHoursPerWeek} hours every week.
           </div>
+          {state.jobTitle && (
+            <p style={{ fontSize: "0.9375rem", color: "rgba(255,255,255,0.55)", margin: "0 0 28px", textAlign: "center" }}>
+              {state.jobTitle}
+            </p>
+          )}
 
-          {/* Time-saver Cards (S115-F46: plain "01" label, no prefix) */}
+          {/* Time-saver Cards (S115-F46: plain "01" label, no prefix; F41: three-part structure) */}
           <div className="time-saver-cards">
             {state.timeSavers.map((ts, i) => {
               const cardId = `ts-${i}`;
+              // F41: Prefer three-part fields; fall back to description for backwards compat
+              const hasThreePart = ts.trigger && ts.prompt && ts.outcome;
+              const copyText = hasThreePart
+                ? `${ts.trigger} ${ts.prompt} ${ts.outcome}`
+                : ts.description;
               return (
                 <div key={i} className="time-saver-card" style={{ position: "relative" }}>
                   <button
                     className={`pb-copy-btn ${copiedId === cardId ? "copied" : ""}`}
-                    onClick={() => handleCopy(cardId, ts.description)}
+                    onClick={() => handleCopy(cardId, copyText)}
                     style={{ position: "absolute", top: "12px", right: "12px" }}
                   >
                     {copiedId === cardId ? "✓ Copied" : "Copy"}
                   </button>
                   <div className="time-saver-label">0{i + 1}</div>
                   <div className="time-saver-title">{ts.title}</div>
-                  <div className="time-saver-desc">{ts.description}</div>
+                  {hasThreePart ? (
+                    <div className="time-saver-desc">
+                      <p style={{ margin: "0 0 6px", color: "rgba(255,255,255,0.75)", fontSize: "0.8125rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.04em" }}>When</p>
+                      <p style={{ margin: "0 0 12px" }}>{ts.trigger}</p>
+                      <p style={{ margin: "0 0 6px", color: "rgba(255,255,255,0.75)", fontSize: "0.8125rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.04em" }}>Prompt</p>
+                      <p style={{ margin: "0 0 12px" }}>{ts.prompt}</p>
+                      <p style={{ margin: "0 0 6px", color: "rgba(255,255,255,0.75)", fontSize: "0.8125rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.04em" }}>Result</p>
+                      <p style={{ margin: 0 }}>{ts.outcome}</p>
+                    </div>
+                  ) : (
+                    <div className="time-saver-desc">{ts.description}</div>
+                  )}
                   <div className="time-saver-time">
-                    ⏱ Saves ~{ts.timeSavedPerWeek}h/week
+                    Saves ~{ts.timeSavedPerWeek}h/week
                   </div>
                 </div>
               );
@@ -596,7 +617,7 @@ export default function TimesaverTool() {
             <div className="roi-divider" />
             <div className="roi-label">Value at average {state.roi.industry} salary</div>
             <div className="roi-value">{state.roi.valueAtSalary} / year</div>
-            <div className="roi-sub">Source: BLS OEWS {state.roi.industry} median, 2024</div>
+            <div className="roi-sub">Source: BLS {state.roi.salarySourceRole || state.roi.industry} median, {state.roi.salarySourceYear || 2024}</div>
           </div>
 
           <CrossSellBlock

@@ -612,6 +612,18 @@ export default function IndustryIntelTool() {
             Sent to your inbox. File downloaded automatically.
           </h2>
 
+          {/* F38: Job title echo */}
+          {(jobTitle || industry) && (
+            <p style={{
+              fontSize: "0.9375rem",
+              color: "rgba(255,255,255,0.55)",
+              margin: "0 0 12px",
+              lineHeight: 1.5,
+            }}>
+              {[jobTitle, industry].filter(Boolean).join(", ")}
+            </p>
+          )}
+
           <p style={{
             fontSize: "0.9375rem",
             color: "rgba(255,255,255,0.55)",

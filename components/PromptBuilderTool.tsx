@@ -424,6 +424,13 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, autoF
             <span style={{ color: "var(--cta)" }}>✓</span> Sent to your inbox.
           </div>
 
+          {/* F38: Job title echo */}
+          {jobTitle && (
+            <p style={{ fontSize: "0.9375rem", color: "rgba(255,255,255,0.55)", margin: "0 0 20px", textAlign: "center" }}>
+              {jobTitle}
+            </p>
+          )}
+
           {/* Header */}
           <p className="pb-system-eyebrow" style={{ marginBottom: "8px" }}>Step 1</p>
           <h2 className="results-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, marginBottom: "6px" }}>

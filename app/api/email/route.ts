@@ -93,7 +93,7 @@ async function sendResultsEmail(
             ${stripEmDashes(roi.valueAtSalary)} / year
           </p>
           <p style="margin:0; font-size:13px; color:rgba(255,255,255,0.5);">
-            Source: BLS OEWS ${stripEmDashes(roi.industry)} median, 2024
+            Source: BLS ${stripEmDashes(roi.salarySourceRole || roi.industry)} median, ${roi.salarySourceYear || 2024}
           </p>
         </td>
       </tr>

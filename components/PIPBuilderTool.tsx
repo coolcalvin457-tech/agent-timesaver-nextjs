@@ -1338,6 +1338,11 @@ export default function PIPBuilderTool({
           <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: "0 0 8px" }}>
             {employeeName ? `${employeeName}'s` : "Your"} PIP is ready.
           </h2>
+          {employeeRole && (
+            <p style={{ fontSize: "0.9375rem", color: "rgba(255,255,255,0.55)", margin: "0 0 8px", textAlign: "center" }}>
+              {employeeRole}
+            </p>
+          )}
           <p style={{ fontSize: "0.875rem", color: "var(--text-muted)", margin: "0 0 32px" }}>
             Downloaded to your device and sent to {email || "your inbox"}.
           </p>

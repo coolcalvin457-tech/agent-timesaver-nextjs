@@ -665,11 +665,16 @@ export default function BudgetSpreadsheetTool() {
             style={{
               fontFamily: "var(--font-display)",
               fontWeight: 400,
-              marginBottom: "10px",
+              marginBottom: budgetTitle ? "8px" : "10px",
             }}
           >
             Your spreadsheet is ready.
           </h2>
+          {budgetTitle && (
+            <p style={{ fontSize: "0.9375rem", color: "rgba(255,255,255,0.55)", margin: "0 0 10px", textAlign: "center" }}>
+              {budgetTitle}
+            </p>
+          )}
           <p
             className="screen-subheadline"
             style={{ marginTop: 0, marginBottom: "28px" }}

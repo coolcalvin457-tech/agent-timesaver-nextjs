@@ -1163,6 +1163,11 @@ export default function WorkflowBuilderTool({
           >
             Your workflow is ready.
           </h2>
+          {resultTaskTitle && (
+            <p style={{ fontSize: "0.9375rem", color: "rgba(255,255,255,0.55)", margin: "0 0 8px", textAlign: "center" }}>
+              {resultTaskTitle}
+            </p>
+          )}
           <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.5)", margin: "0 0 32px" }}>
             Downloaded to your device and sent to {email || "your inbox"}.
           </p>

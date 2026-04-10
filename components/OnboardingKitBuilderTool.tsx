@@ -1185,8 +1185,8 @@ export default function OnboardingKitBuilderTool({
               style={{
                 background: "var(--dark, #161618)",
                 borderRadius: "12px",
-                padding: "24px 26px",
-                marginBottom: "8px",
+                padding: "24px 26px 16px",
+                marginBottom: "0",
               }}
             >
               {/* Header row */}

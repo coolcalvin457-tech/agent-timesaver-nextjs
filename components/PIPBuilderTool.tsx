@@ -1146,7 +1146,7 @@ export default function PIPBuilderTool({
         ) : (
           <>
             {/* ── Bundle / price card (non-subscriber) ── */}
-            <div style={{ background: "var(--dark, #161618)", borderRadius: "12px", padding: "24px 26px", marginBottom: "8px" }}>
+            <div style={{ background: "var(--dark, #161618)", borderRadius: "12px", padding: "24px 26px 16px", marginBottom: "0" }}>
               {/* Header row */}
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px", flexWrap: "wrap", gap: "8px" }}>
                 <span style={{ fontSize: "0.9375rem", fontWeight: 700, color: "#FFFFFF" }}>

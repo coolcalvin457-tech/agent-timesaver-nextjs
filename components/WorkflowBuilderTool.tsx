@@ -933,7 +933,6 @@ export default function WorkflowBuilderTool({
               borderRadius: "10px",
               padding: "18px 20px",
               marginBottom: "12px",
-              maxWidth: "88%",
               margin: "0 auto",
             }}
           >

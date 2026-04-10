@@ -68,11 +68,6 @@ async function sendPromptKitEmail(
     .map((cat, i) => buildCategoryHTML(cat, i))
     .join("");
 
-  const totalPrompts = promptKit.categories.reduce(
-    (sum, cat) => sum + cat.prompts.length,
-    0
-  );
-
   const heroContent = `
     <!-- Step 1: AI Workspace Setup -->
     <p style="margin:0 0 6px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
@@ -84,7 +79,8 @@ async function sendPromptKitEmail(
     <p style="margin:0 0 16px 0; font-size:15px; color:#555553; line-height:1.6;">
       Set this up once. AI will know who you are every time.
     </p>
-    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:8px;">
+    <!-- F61 (S137): folder tree only, no explanatory sentences. Matches website. -->
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
       <tr>
         <td style="background:#f8f8f6; border:1px solid #e4e4e2; border-radius:8px; padding:14px 16px; font-size:13px; color:#333331; line-height:1.5; font-family:monospace;">
           Build this folder structure on your desktop:<br/><br/>
@@ -96,12 +92,6 @@ async function sendPromptKitEmail(
         </td>
       </tr>
     </table>
-    <p style="margin:0 0 8px 0; font-size:13px; color:#888886; line-height:1.6;">
-      AI Profile.md is what your AI will reference. Update as you go.
-    </p>
-    <p style="margin:0 0 32px 0; font-size:13px; color:#888886; line-height:1.6;">
-      When AI gives you something worth keeping, ask it to save as an .md file. AI will now remember your info between chats.
-    </p>
 
     <!-- Step 2: AI Profile -->
     <p style="margin:0 0 6px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
@@ -111,7 +101,7 @@ async function sendPromptKitEmail(
       Your AI Profile.
     </p>
     <p style="margin:0 0 16px 0; font-size:15px; color:#555553; line-height:1.6;">
-      Paste this into your AI once. Every output after will gradually get better over time, as AI learns who you are.
+      Paste this into AI once. No need to re-introduce yourself or start from scratch ever again.
     </p>
     <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
       <tr>
@@ -126,7 +116,7 @@ async function sendPromptKitEmail(
       STEP 3
     </p>
     <p style="margin:0 0 8px 0; font-family:Georgia,'Times New Roman',serif; font-size:28px; font-weight:400; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
-      ${totalPrompts} prompts built for ${jobTitle}.
+      12 Prompts for ${jobTitle}.
     </p>
     <p style="margin:0 0 24px 0; font-size:15px; color:#555553; line-height:1.6;">
       Copy any prompt below and paste it directly into your AI tool of choice.

@@ -8,38 +8,29 @@ import ToolLoadingScreen from "@/components/shared/ToolLoadingScreen";
 import CrossSellBlock from "@/components/shared/CrossSellBlock";
 import StepIndicator from "@/components/shared/StepIndicator";
 import BackButton from "@/components/shared/BackButton";
+import MultiChoiceQuestionCard from "@/components/shared/MultiChoiceQuestionCard";
 import { useAuth } from "@/components/AuthProvider";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
+// F53 (S137): reduced to 3 options for MultiChoiceQuestionCard + peer write-in.
 const WORK_TYPES = [
   "Writing & Communication",
   "Analysis & Research",
   "Planning & Managing Projects",
-  "Customer or Client-Facing Work",
-  "Managing or Leading a Team",
 ];
 
+// F54 (S137): reduced to 3 options for MultiChoiceQuestionCard + peer write-in.
 const AI_USAGE_OPTIONS = [
-  "No, I haven't started yet",
-  "I've tried it, but results feel hit or miss",
-  "Yes, I use it a few times a week",
-  "Yes, I use it daily, but want better results",
+  "No, not yet",
+  "Yes, but only to help draft emails or docs",
+  "Yes, I'm familiar, but want better results",
 ];
 
+// F55 (S137): single universal set of 3 options. NOT_STARTED_BARRIERS removed.
 const CHALLENGES = [
-  "I don't know what to ask it",
-  "The results feel too generic for my job",
-  "Too much back-and-forth to get what I need",
-  "I don't know how to give AI enough context",
-];
-
-// Shown when the user selected "No, I haven't started yet" on q3.
-// Options and question heading are reframed to not assume past experience.
-const NOT_STARTED_BARRIERS = [
-  "I'm not sure what to use it for in my job",
-  "I'm not sure how to get useful results",
-  "It feels too technical or time-consuming to learn",
-  "I haven't made time to try it yet",
+  "I don't know what to use it for at my job",
+  "I'm not sure how to effectively prompt",
+  "I feel like I'm constantly re-explaining things",
 ];
 
 // ─── Em Dash Sanitizer ────────────────────────────────────────────────────────
@@ -97,8 +88,6 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, autoF
   const [emailLoading, setEmailLoading] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [error, setError] = useState("");
-  const [showWriteIn, setShowWriteIn] = useState(false);
-  const [writeInValue, setWriteInValue] = useState("");
   const [flipStage, setFlipStage] = useState<"idle" | "in">("idle");
   const [expandedWhys, setExpandedWhys] = useState<Set<string>>(new Set());
 
@@ -166,20 +155,9 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, autoF
   const flipClass = flipStage === "in" ? "screen-flip-in" : "";
 
   // ── Helpers ────────────────────────────────────────────────────
-  const resetWriteIn = () => {
-    setShowWriteIn(false);
-    setWriteInValue("");
-  };
-
-  const toggleWriteIn = () => {
-    setShowWriteIn((prev) => !prev);
-    setWriteInValue("");
-  };
-
   const goBack = (from: Screen) => {
     const prev = PREV_SCREEN[from];
     if (prev) {
-      resetWriteIn();
       go(prev);
     }
   };
@@ -192,7 +170,6 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, autoF
     setPromptKit(null);
     setEmail("");
     setError("");
-    resetWriteIn();
     go("q1");
   };
 
@@ -317,179 +294,56 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, autoF
     );
   }
 
-  // ── Screen: Q2 — Work Type ─────────────────────────────────────
+  // ── Screen: Q2 — Work Type (F53: MultiChoiceQuestionCard, S137) ─
   if (screen === "q2") {
-    const canAdvanceQ2 = showWriteIn ? writeInValue.trim().length > 0 : workType !== "";
-    const advanceQ2 = (value: string) => {
-      setWorkType(value);
-      resetWriteIn();
-      track("q2_completed", { workType: value });
-      go("q3");
-    };
-
     return (
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
           <BackButton onClick={() => goBack("q2")} />
           <StepIndicator total={4} current={2} />
-          <p className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25 }}>
-            What best describes most of your work?
-          </p>
-          <div className="choices">
-            {WORK_TYPES.map((option) => (
-              <button
-                key={option}
-                className={`choice ${workType === option && !showWriteIn ? "selected" : ""}`}
-                onClick={() => {
-                  resetWriteIn();
-                  setWorkType(option);
-                  setTimeout(() => advanceQ2(option), 180);
-                }}
-              >
-                <span className="choice-dot" />
-                {option}
-              </button>
-            ))}
-          </div>
-          {showWriteIn ? (
-            <>
-              <textarea
-                className="input"
-                rows={4}
-                style={{ marginBottom: "12px", resize: "vertical" }}
-                placeholder="Describe your work in a few words..."
-                value={writeInValue}
-                onChange={(e) => setWriteInValue(e.target.value)}
-                autoFocus
-              />
-              <button
-                className="btn btn-primary btn-full"
-                onClick={() => advanceQ2(writeInValue.trim())}
-                disabled={!canAdvanceQ2}
-              >
-                Continue
-              </button>
-            </>
-          ) : (
-            <>
-              <button className="write-in-toggle" onClick={toggleWriteIn} type="button">
-                <span>+</span> Something else? Write it in.
-              </button>
-              <button
-                className="btn btn-primary btn-full"
-                style={{ marginTop: "8px" }}
-                onClick={() => advanceQ2(workType)}
-                disabled={!workType}
-              >
-                Continue
-              </button>
-            </>
-          )}
+          <MultiChoiceQuestionCard
+            stem="What best describes most of your work?"
+            choices={WORK_TYPES}
+            onAnswer={(value) => {
+              setWorkType(value);
+              track("q2_completed", { workType: value });
+              go("q3");
+            }}
+          />
         </div>
       </div>
     );
   }
 
-  // ── Screen: Q3 — AI Usage ──────────────────────────────────────
+  // ── Screen: Q3 — AI Usage (F54: MultiChoiceQuestionCard, S137) ──
   if (screen === "q3") {
-    const canAdvanceQ3 = showWriteIn ? writeInValue.trim().length > 0 : aiUsage !== "";
-    const advanceQ3 = (value: string) => {
-      setAiUsage(value);
-      resetWriteIn();
-      track("q3_completed", { aiUsage: value });
-      go("q4");
-    };
-
     return (
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
           <BackButton onClick={() => goBack("q3")} />
           <StepIndicator total={4} current={3} />
-          <p className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25 }}>
-            Have you used ChatGPT, Claude, or Gemini?
-          </p>
-          <div className="choices">
-            {AI_USAGE_OPTIONS.map((option) => (
-              <button
-                key={option}
-                className={`choice ${aiUsage === option && !showWriteIn ? "selected" : ""}`}
-                onClick={() => {
-                  resetWriteIn();
-                  setAiUsage(option);
-                  setTimeout(() => advanceQ3(option), 180);
-                }}
-              >
-                <span className="choice-dot" />
-                {option}
-              </button>
-            ))}
-          </div>
-          {showWriteIn ? (
-            <>
-              <textarea
-                className="input"
-                rows={4}
-                style={{ marginBottom: "12px", resize: "vertical" }}
-                placeholder="Describe your current AI usage..."
-                value={writeInValue}
-                onChange={(e) => setWriteInValue(e.target.value)}
-                autoFocus
-              />
-              <button
-                className="btn btn-primary btn-full"
-                onClick={() => advanceQ3(writeInValue.trim())}
-                disabled={!canAdvanceQ3}
-              >
-                Continue
-              </button>
-            </>
-          ) : (
-            <>
-              <button className="write-in-toggle" onClick={toggleWriteIn} type="button">
-                <span>+</span> Something else? Write it in.
-              </button>
-              <button
-                className="btn btn-primary btn-full"
-                style={{ marginTop: "8px" }}
-                onClick={() => advanceQ3(aiUsage)}
-                disabled={!aiUsage}
-              >
-                Continue
-              </button>
-            </>
-          )}
+          <MultiChoiceQuestionCard
+            stem="Have you used ChatGPT, Claude, or Gemini?"
+            choices={AI_USAGE_OPTIONS}
+            onAnswer={(value) => {
+              setAiUsage(value);
+              track("q3_completed", { aiUsage: value });
+              go("q4");
+            }}
+          />
         </div>
       </div>
     );
   }
 
-  // ── Screen: Q4 — Biggest Challenge ────────────────────────────
+  // ── Screen: Q4 — Biggest Challenge (F55: MultiChoiceQuestionCard, S137) ──
+  // NOT_STARTED_BARRIERS branch removed. Single universal question + options.
   if (screen === "q4") {
-    const notStarted = aiUsage === "No, I haven't started yet";
-    const q4Heading = notStarted
-      ? "What\u2019s made it hard to get started with AI?"
-      : "What\u2019s been most challenging about using AI?";
-    const q4Options = notStarted ? NOT_STARTED_BARRIERS : CHALLENGES;
-    const q4Placeholder = notStarted
-      ? "Describe what\u2019s been holding you back..."
-      : "Describe your biggest challenge with AI...";
-
-    const canAdvanceQ4 = showWriteIn ? writeInValue.trim().length > 0 : challenge !== "";
-    const advanceQ4 = (value: string) => {
-      setChallenge(value);
-      resetWriteIn();
-      track("q4_completed", { challenge: value });
-      handleGenerate(value);
-    };
-
     return (
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="screen">
           <BackButton onClick={() => goBack("q4")} />
           <StepIndicator total={4} current={4} />
-          <p className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25 }}>
-            {q4Heading}
-          </p>
           {error && (
             <div
               style={{
@@ -505,71 +359,30 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, autoF
               {error}
             </div>
           )}
-          <div className="choices">
-            {q4Options.map((option) => (
-              <button
-                key={option}
-                className={`choice ${challenge === option && !showWriteIn ? "selected" : ""}`}
-                onClick={() => {
-                  resetWriteIn();
-                  setChallenge(option);
-                  setTimeout(() => advanceQ4(option), 180);
-                }}
-              >
-                <span className="choice-dot" />
-                {option}
-              </button>
-            ))}
-          </div>
-          {showWriteIn ? (
-            <>
-              <textarea
-                className="input"
-                rows={4}
-                style={{ marginBottom: "12px", resize: "vertical" }}
-                placeholder={q4Placeholder}
-                value={writeInValue}
-                onChange={(e) => setWriteInValue(e.target.value)}
-                autoFocus
-              />
-              <button
-                className="btn btn-primary btn-full"
-                onClick={() => advanceQ4(writeInValue.trim())}
-                disabled={!canAdvanceQ4}
-              >
-                Build My Prompt Kit
-              </button>
-            </>
-          ) : (
-            <>
-              <button className="write-in-toggle" onClick={toggleWriteIn} type="button">
-                <span>+</span> Something else? Write it in.
-              </button>
-              <button
-                className="btn btn-primary btn-full"
-                style={{ marginTop: "8px" }}
-                onClick={() => advanceQ4(challenge)}
-                disabled={!challenge}
-              >
-                Build My Prompt Kit
-              </button>
-            </>
-          )}
+          <MultiChoiceQuestionCard
+            stem="What's been most challenging about using AI?"
+            choices={CHALLENGES}
+            writeInCommitLabel="Build My Prompt Kit"
+            onAnswer={(value) => {
+              setChallenge(value);
+              track("q4_completed", { challenge: value });
+              handleGenerate(value);
+            }}
+          />
         </div>
       </div>
     );
   }
 
   // ── Screen: Loading ────────────────────────────────────────────
-  // S126 F48 (Prompt Builder): retired the 4-step animated checklist in favor
-  // of the Thinking dots loader. Observed p50 latency is ~25-45s on a single
-  // claude-sonnet-4-6 call, comfortably below the §1.3 60-second threshold.
-  // Matches Timesaver for a consistent free-tool waiting experience.
+  // S126 F48: Thinking dots loader. F56 (S137): added time estimate.
+  // Observed p50 ~25-45s, can approach 60s under load. No adaptive thinking
+  // (free tool spec). Time estimate sets user expectations honestly.
   if (screen === "loading") {
     return (
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="loading-screen" style={{ minHeight: "320px" }}>
-          <ToolLoadingScreen headingText="Thinking" />
+          <ToolLoadingScreen headingText="Thinking" timeEstimate="About 1 minute" />
         </div>
       </div>
     );
@@ -616,11 +429,11 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, autoF
           <h2 className="results-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, marginBottom: "6px" }}>
             Your AI Workspace Setup.
           </h2>
-          <p className="screen-subheadline" style={{ marginBottom: "36px" }}>
+          <p className="screen-subheadline" style={{ marginBottom: "24px" }}>
             Set this up once. AI will know who you are every time.
           </p>
 
-          {/* ── Step 1: AI Workspace Setup ─────────── */}
+          {/* ── Step 1: AI Workspace Setup (F61 S137: folder tree only) ── */}
           <div className="pb-system-section">
             <p className="pb-system-step-body">
               Build this folder structure on your desktop:
@@ -631,25 +444,6 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, autoF
               <p className="pb-folder-tree-item pb-folder-indent">🗂️ Prompt Library</p>
               <p className="pb-folder-tree-item pb-folder-indent">🗂️ Saved Results</p>
               <p className="pb-folder-tree-item pb-folder-indent">🗂️ Reference Files</p>
-            </div>
-            <p className="pb-system-step-body" style={{ marginTop: "16px" }}>
-              AI Profile.md is what your AI will reference. Update as you go.
-            </p>
-            <p className="pb-system-step-body" style={{ marginTop: "12px" }}>
-              When AI gives you something worth keeping, ask it to save as an .md file. AI will now remember your info between chats.
-            </p>
-            <p className="pb-system-step-body" style={{ marginTop: "24px" }}>
-              Paste this into your AI tool to get everything set up:
-            </p>
-            <div className="pb-prompt-text-wrapper" style={{ marginTop: "12px", flexDirection: "column", alignItems: "stretch" }}>
-              <p className="pb-prompt-text">{`I want to set up my AI workspace properly. Help me with two things: (1) Tell me exactly where and how to save my AI Profile (from Step 2 below) as custom instructions in this tool, so you always know who I am without me having to re-explain myself. (2) Walk me through setting up a folder on my desktop to save my AI work going forward. Here's my profile:\n\n${promptKit.aiProfile}`}</p>
-              <button
-                className={`pb-copy-btn ${copiedId === "starterPrompt" ? "copied" : ""}`}
-                onClick={() => handleCopy("starterPrompt", `I want to set up my AI workspace properly. Help me with two things: (1) Tell me exactly where and how to save my AI Profile (from Step 2 below) as custom instructions in this tool, so you always know who I am without me having to re-explain myself. (2) Walk me through setting up a folder on my desktop to save my AI work going forward. Here's my profile:\n\n${promptKit.aiProfile}`)}
-                style={{ alignSelf: "flex-end", marginTop: "10px" }}
-              >
-                {copiedId === "starterPrompt" ? "✓ Copied" : "Copy"}
-              </button>
             </div>
           </div>
 
@@ -679,7 +473,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, autoF
           <div className="pb-system-section">
             <p className="pb-system-eyebrow">Step 3</p>
             <h3 className="pb-system-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}>
-              12 prompts built for {jobTitle}.
+              12 Prompts for {jobTitle}.
             </h3>
             <p className="pb-system-step-body" style={{ marginBottom: "24px" }}>
               Copy and paste into your AI tool of choice.

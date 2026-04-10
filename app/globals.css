@@ -2499,6 +2499,26 @@ input, textarea {
   border-top: 2px solid var(--border);
 }
 
+/* F59 (S137): Extend section dividers edge-to-edge so the horizontal
+   border-top visually connects to the tool-container's vertical border.
+   Negative margin cancels the .screen padding; re-applied as padding
+   so content stays in the same position. */
+.pb-results-dark .pb-system-section {
+  margin-left: -44px;
+  margin-right: -44px;
+  padding-left: 44px;
+  padding-right: 44px;
+}
+
+@media (max-width: 640px) {
+  .pb-results-dark .pb-system-section {
+    margin-left: -20px;
+    margin-right: -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
 /* When a system section follows a category, reduce margin to compensate
    for the category's 32px margin-bottom (32 + 8 + 40 = 80px = same as Step 2→3) */
 .pb-category + .pb-system-section {

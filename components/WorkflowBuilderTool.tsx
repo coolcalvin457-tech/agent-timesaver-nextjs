@@ -908,12 +908,12 @@ export default function WorkflowBuilderTool({
         <div className="screen">
           <h2
             style={{
-              fontSize: "clamp(1.35rem, 2.5vw, 1.625rem)",
+              fontSize: "clamp(1.75rem, 3.5vw, 2.25rem)",
               fontWeight: 400,
               fontFamily: "var(--font-display)",
               color: "#FFFFFF",
               margin: "0 0 28px",
-              lineHeight: 1.3,
+              lineHeight: 1.2,
             }}
           >
             Turn Recurring Tasks into AI Workflows.
@@ -928,11 +928,11 @@ export default function WorkflowBuilderTool({
           {/* What's included */}
           <div
             style={{
-              background: "rgba(255,255,255,0.04)",
-              border: "1px solid rgba(255,255,255,0.10)",
+              background: "#1C1C1E",
+              border: "1px solid rgba(255,255,255,0.08)",
               borderRadius: "10px",
               padding: "18px 20px",
-              marginBottom: "20px",
+              marginBottom: "24px",
             }}
           >
             <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "rgba(255,255,255,0.45)", margin: "0 0 12px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
@@ -1011,31 +1011,31 @@ export default function WorkflowBuilderTool({
               style={{
                 background: "var(--dark, #161618)",
                 borderRadius: "12px",
-                padding: "24px 26px 16px",
+                padding: "24px 26px 10px",
                 marginBottom: "0",
               }}
             >
-              {/* Header row */}
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px", flexWrap: "wrap", gap: "8px" }}>
-                <span style={{ fontSize: "0.9375rem", fontWeight: 700, color: "#FFFFFF" }}>
-                  Workflow Builder
-                </span>
-                <span
-                  style={{
-                    fontSize: "0.6875rem",
-                    fontWeight: 700,
-                    letterSpacing: "0.06em",
-                    textTransform: "uppercase",
-                    padding: "3px 10px",
-                    borderRadius: "20px",
-                    background: "rgba(30,122,184,0.25)",
-                    color: "#60B4F0",
-                    border: "1px solid rgba(30,122,184,0.20)",
-                  }}
-                >
-                  Annual Subscription
-                </span>
-              </div>
+              {/* Tool name */}
+              <p style={{ fontSize: "0.9375rem", fontWeight: 700, color: "#FFFFFF", margin: "0 0 6px" }}>
+                Workflow Builder
+              </p>
+              <span
+                style={{
+                  display: "inline-block",
+                  fontSize: "0.6875rem",
+                  fontWeight: 700,
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                  padding: "3px 10px",
+                  borderRadius: "20px",
+                  background: "rgba(30,122,184,0.25)",
+                  color: "#60B4F0",
+                  border: "1px solid rgba(30,122,184,0.20)",
+                  marginBottom: "16px",
+                }}
+              >
+                Annual Subscription
+              </span>
 
               {/* Price */}
               <div style={{ display: "flex", alignItems: "baseline", gap: "8px", marginBottom: "20px" }}>
@@ -1044,7 +1044,7 @@ export default function WorkflowBuilderTool({
               </div>
 
               {/* Divider */}
-              <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", margin: "0 0 20px" }} />
+              <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", margin: "0 0 16px" }} />
 
               {/* CTA */}
               <button
@@ -1080,7 +1080,7 @@ export default function WorkflowBuilderTool({
 
           {/* Sign-in link — only shown when NOT logged in, outside pricing card */}
           {!user && (
-            <p style={{ fontSize: "0.8125rem", textAlign: "center", margin: "4px 0 0" }}>
+            <p style={{ fontSize: "0.8125rem", textAlign: "center", margin: "10px 0 0" }}>
               <span style={{ color: "rgba(255,255,255,0.5)" }}>Already have an account? </span>
               <button
                 type="button"

@@ -137,11 +137,11 @@ const radioOptionStyle = (selected: boolean): React.CSSProperties => ({
   alignItems: "flex-start",
   gap: "10px",
   padding: "10px 14px",
-  border: `1px solid ${selected ? "var(--cta, #1E7AB8)" : "rgba(255,255,255,0.14)"}`,
+  border: `1.5px solid ${selected ? "var(--cta, #1E7AB8)" : "rgba(255,255,255,0.35)"}`,
   borderRadius: "8px",
   cursor: "pointer",
-  background: selected ? "rgba(30,122,184,0.18)" : "rgba(255,255,255,0.05)",
-  transition: "border-color 0.15s ease, background 0.15s ease",
+  background: "transparent", /* F07/F13: border only, no background tint */
+  transition: "border-color 0.15s ease",
 });
 
 // ─── Component ──────────────────────────────────────────────────────────────────

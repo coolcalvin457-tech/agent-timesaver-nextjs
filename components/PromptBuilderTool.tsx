@@ -382,7 +382,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, autoF
     return (
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
         <div className="loading-screen" style={{ minHeight: "320px" }}>
-          <ToolLoadingScreen headingText="Thinking" timeEstimate="About 1 minute" />
+          <ToolLoadingScreen headingText="Thinking" timeEstimate="About 90 seconds" />
         </div>
       </div>
     );

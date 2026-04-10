@@ -429,7 +429,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, autoF
           <h2 className="results-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, marginBottom: "6px" }}>
             Your AI Workspace Setup.
           </h2>
-          <p className="screen-subheadline" style={{ marginBottom: "20px" }}>
+          <p className="pb-system-step-body" style={{ marginBottom: "20px", fontSize: "0.8125rem" }}>
             Set this up once. AI will know who you are every time.
           </p>
 
@@ -456,7 +456,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, autoF
           <div className="pb-system-section">
             <p className="pb-system-eyebrow">Step 2</p>
             <h3 className="pb-system-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}>Your AI Profile.</h3>
-            <p className="pb-system-step-body">
+            <p className="pb-system-step-body" style={{ fontSize: "0.8125rem" }}>
               Paste this into AI once. No need to re-introduce yourself or start from scratch ever again.
             </p>
             <div className="pb-prompt-text-wrapper" style={{ marginBottom: "12px", flexDirection: "column", alignItems: "stretch" }}>
@@ -469,7 +469,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, autoF
                 {copiedId === "aiProfile" ? "✓ Copied" : "Copy"}
               </button>
             </div>
-            <p className="pb-system-step-body">
+            <p className="pb-system-step-body" style={{ fontSize: "0.8125rem" }}>
               Tell AI to save its response as <strong>AI Profile.md</strong>
             </p>
           </div>
@@ -480,7 +480,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, autoF
             <h3 className="pb-system-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}>
               12 Prompts for {jobTitle}.
             </h3>
-            <p className="pb-system-step-body" style={{ marginBottom: "24px" }}>
+            <p className="pb-system-step-body" style={{ marginBottom: "24px", fontSize: "0.8125rem" }}>
               Copy and paste into your AI tool of choice.
             </p>
 

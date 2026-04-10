@@ -76,7 +76,7 @@ async function sendPromptKitEmail(
     <h1 style="margin:0 0 8px 0; font-family:Georgia,'Times New Roman',serif; font-size:28px; font-weight:700; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
       Your AI Workspace Setup.
     </h1>
-    <p style="margin:0 0 16px 0; font-size:15px; color:#555553; line-height:1.6;">
+    <p style="margin:0 0 16px 0; font-size:13px; color:#888886; line-height:1.6;">
       Set this up once. AI will know who you are every time.
     </p>
     <!-- S137: Styled folder tree card. Matches website redesign. -->
@@ -109,7 +109,7 @@ async function sendPromptKitEmail(
     <p style="margin:0 0 8px 0; font-family:Georgia,'Times New Roman',serif; font-size:28px; font-weight:400; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
       Your AI Profile.
     </p>
-    <p style="margin:0 0 16px 0; font-size:15px; color:#555553; line-height:1.6;">
+    <p style="margin:0 0 16px 0; font-size:13px; color:#888886; line-height:1.6;">
       Paste this into AI once. No need to re-introduce yourself or start from scratch ever again.
     </p>
     <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
@@ -127,7 +127,7 @@ async function sendPromptKitEmail(
     <p style="margin:0 0 8px 0; font-family:Georgia,'Times New Roman',serif; font-size:28px; font-weight:400; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
       12 Prompts for ${jobTitle}.
     </p>
-    <p style="margin:0 0 24px 0; font-size:15px; color:#555553; line-height:1.6;">
+    <p style="margin:0 0 24px 0; font-size:13px; color:#888886; line-height:1.6;">
       Copy any prompt below and paste it directly into your AI tool of choice.
     </p>
     <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">

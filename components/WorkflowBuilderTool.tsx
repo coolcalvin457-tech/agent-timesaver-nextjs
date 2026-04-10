@@ -1052,17 +1052,19 @@ export default function WorkflowBuilderTool({
                 onClick={handleCheckout}
                 disabled={checkoutLoading}
                 style={{
+                  maxWidth: "320px",
                   width: "100%",
+                  margin: "0 auto",
+                  display: "block",
                   padding: "11px 20px",
                   fontSize: "0.9375rem",
-                  fontWeight: 700,
+                  fontWeight: 600,
                   background: checkoutLoading ? "rgba(30,122,184,0.5)" : "#1E7AB8",
                   color: "#FFFFFF",
                   border: "none",
                   borderRadius: "8px",
                   cursor: checkoutLoading ? "not-allowed" : "pointer",
                   transition: "background 0.15s ease",
-                  marginBottom: "12px",
                 }}
               >
                 {checkoutLoading ? "Redirecting to checkout..." : "Get Access"}
@@ -1078,7 +1080,7 @@ export default function WorkflowBuilderTool({
 
           {/* Sign-in link — only shown when NOT logged in, outside pricing card */}
           {!user && (
-            <p style={{ fontSize: "0.8125rem", textAlign: "center", margin: "6px 0 0" }}>
+            <p style={{ fontSize: "0.8125rem", textAlign: "center", margin: "4px 0 0" }}>
               <span style={{ color: "rgba(255,255,255,0.5)" }}>Already have an account? </span>
               <button
                 type="button"

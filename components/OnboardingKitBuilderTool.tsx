@@ -1226,17 +1226,19 @@ export default function OnboardingKitBuilderTool({
                 onClick={handleGetAccess}
                 disabled={checkoutLoading || subCheckLoading}
                 style={{
+                  maxWidth: "320px",
                   width: "100%",
+                  margin: "0 auto",
+                  display: "block",
                   padding: "11px 20px",
                   fontSize: "0.9375rem",
-                  fontWeight: 700,
+                  fontWeight: 600,
                   background: (checkoutLoading || subCheckLoading) ? "rgba(30,122,184,0.5)" : "#1E7AB8",
                   color: "#FFFFFF",
                   border: "none",
                   borderRadius: "8px",
                   cursor: (checkoutLoading || subCheckLoading) ? "not-allowed" : "pointer",
                   transition: "background 0.15s ease",
-                  marginBottom: "12px",
                 }}
               >
                 {subCheckLoading ? "Checking subscription..." : checkoutLoading ? "Checking..." : "Get Access"}
@@ -1252,7 +1254,7 @@ export default function OnboardingKitBuilderTool({
 
             {/* Sign-in link — only shown when NOT logged in, outside pricing card */}
             {!user && (
-              <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.5)", margin: "6px 0 0", textAlign: "center" }}>
+              <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.5)", margin: "4px 0 0", textAlign: "center" }}>
                 Already have an account?{" "}
                 <button
                   type="button"

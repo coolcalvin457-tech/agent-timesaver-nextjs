@@ -916,7 +916,7 @@ export default function WorkflowBuilderTool({
               lineHeight: 1.2,
             }}
           >
-            Turn Recurring Tasks into AI Workflows.
+            Turn Tasks into AI Workflows.
           </h2>
 
           {paymentCancelled && (
@@ -928,8 +928,8 @@ export default function WorkflowBuilderTool({
           {/* What's included */}
           <div
             style={{
-              background: "#1C1C1E",
-              border: "1px solid rgba(255,255,255,0.08)",
+              background: "transparent",
+              border: "1px solid rgba(255,255,255,0.10)",
               borderRadius: "10px",
               padding: "18px 20px",
               marginBottom: "24px",
@@ -1011,40 +1011,40 @@ export default function WorkflowBuilderTool({
               style={{
                 background: "var(--dark, #161618)",
                 borderRadius: "12px",
-                padding: "24px 26px 10px",
+                padding: "24px 26px 24px",
                 marginBottom: "0",
               }}
             >
-              {/* Tool name */}
-              <p style={{ fontSize: "0.9375rem", fontWeight: 700, color: "#FFFFFF", margin: "0 0 6px" }}>
-                Workflow Builder
-              </p>
-              <span
-                style={{
-                  display: "inline-block",
-                  fontSize: "0.6875rem",
-                  fontWeight: 700,
-                  letterSpacing: "0.06em",
-                  textTransform: "uppercase",
-                  padding: "3px 10px",
-                  borderRadius: "20px",
-                  background: "rgba(30,122,184,0.25)",
-                  color: "#60B4F0",
-                  border: "1px solid rgba(30,122,184,0.20)",
-                  marginBottom: "16px",
-                }}
-              >
-                Annual Subscription
-              </span>
+              {/* Header row: tool name left, badge right */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px" }}>
+                <p style={{ fontSize: "0.9375rem", fontWeight: 700, color: "#FFFFFF", margin: 0 }}>
+                  Workflow Builder
+                </p>
+                <span
+                  style={{
+                    fontSize: "0.6875rem",
+                    fontWeight: 700,
+                    letterSpacing: "0.06em",
+                    textTransform: "uppercase",
+                    padding: "3px 10px",
+                    borderRadius: "20px",
+                    background: "rgba(30,122,184,0.25)",
+                    color: "#60B4F0",
+                    border: "1px solid rgba(30,122,184,0.20)",
+                  }}
+                >
+                  Annual Subscription
+                </span>
+              </div>
 
               {/* Price */}
-              <div style={{ display: "flex", alignItems: "baseline", gap: "8px", marginBottom: "20px" }}>
+              <div style={{ display: "flex", alignItems: "baseline", gap: "8px", marginBottom: "24px" }}>
                 <span style={{ fontSize: "2rem", fontWeight: 800, color: "#FFFFFF", lineHeight: 1 }}>$49</span>
                 <span style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.5)" }}>/year</span>
               </div>
 
               {/* Divider */}
-              <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", margin: "0 0 16px" }} />
+              <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", margin: "0 0 20px" }} />
 
               {/* CTA */}
               <button
@@ -1071,33 +1071,33 @@ export default function WorkflowBuilderTool({
               </button>
 
               {checkoutError && (
-                <p style={{ fontSize: "0.8125rem", color: "#F87171", margin: "0 0 8px" }}>
+                <p style={{ fontSize: "0.8125rem", color: "#F87171", margin: "12px 0 0" }}>
                   {checkoutError}
                 </p>
               )}
-            </div>
-          )}
 
-          {/* Sign-in link — only shown when NOT logged in, outside pricing card */}
-          {!user && (
-            <p style={{ fontSize: "0.8125rem", textAlign: "center", margin: "10px 0 0" }}>
-              <span style={{ color: "rgba(255,255,255,0.5)" }}>Already have an account? </span>
-              <button
-                type="button"
-                onClick={handleSignIn}
-                style={{
-                  background: "none",
-                  border: "none",
-                  padding: 0,
-                  fontSize: "0.8125rem",
-                  color: "#60B4F0",
-                  textDecoration: "underline",
-                  cursor: "pointer",
-                }}
-              >
-                Sign in
-              </button>
-            </p>
+              {/* Sign-in link — inside pricing card */}
+              {!user && (
+                <p style={{ fontSize: "0.8125rem", textAlign: "center", margin: "16px 0 0" }}>
+                  <span style={{ color: "rgba(255,255,255,0.5)" }}>Already have an account? </span>
+                  <button
+                    type="button"
+                    onClick={handleSignIn}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      padding: 0,
+                      fontSize: "0.8125rem",
+                      color: "#60B4F0",
+                      textDecoration: "underline",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Sign in
+                  </button>
+                </p>
+              )}
+            </div>
           )}
         </div>
       )}

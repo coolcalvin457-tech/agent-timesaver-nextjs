@@ -1146,7 +1146,7 @@ export default function PIPBuilderTool({
         ) : (
           <>
             {/* ── Bundle / price card (non-subscriber) ── */}
-            <div style={{ background: "var(--dark, #161618)", borderRadius: "12px", padding: "24px 26px", marginBottom: "16px" }}>
+            <div style={{ background: "var(--dark, #161618)", borderRadius: "12px", padding: "24px 26px", marginBottom: "8px" }}>
               {/* Header row */}
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px", flexWrap: "wrap", gap: "8px" }}>
                 <span style={{ fontSize: "0.9375rem", fontWeight: 700, color: "#FFFFFF" }}>
@@ -1156,17 +1156,20 @@ export default function PIPBuilderTool({
                   fontSize: "0.6875rem", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase",
                   padding: "3px 10px", borderRadius: "20px",
                   background: "rgba(30,122,184,0.25)", color: "#60B4F0",
-                  border: "1px solid rgba(30,122,184,0.35)",
+                  border: "1px solid rgba(30,122,184,0.20)",
                 }}>
                   Annual Subscription
                 </span>
               </div>
 
               {/* Price */}
-              <div style={{ display: "flex", alignItems: "baseline", gap: "8px", marginBottom: "12px" }}>
+              <div style={{ display: "flex", alignItems: "baseline", gap: "8px", marginBottom: "20px" }}>
                 <span style={{ fontSize: "2rem", fontWeight: 800, color: "#FFFFFF", lineHeight: 1 }}>$99</span>
                 <span style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.5)" }}>/year</span>
               </div>
+
+              {/* Divider */}
+              <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", margin: "0 0 20px" }} />
 
               {/* CTA */}
               <button
@@ -1174,7 +1177,7 @@ export default function PIPBuilderTool({
                 onClick={handleGetAccess}
                 disabled={checkoutLoading || subCheckLoading}
                 style={{
-                  width: "100%", padding: "13px 20px", fontSize: "0.9375rem", fontWeight: 700,
+                  width: "100%", padding: "11px 20px", fontSize: "0.9375rem", fontWeight: 700,
                   background: (checkoutLoading || subCheckLoading) ? "rgba(30,122,184,0.5)" : "#1E7AB8",
                   color: "#FFFFFF", border: "none", borderRadius: "8px",
                   cursor: (checkoutLoading || subCheckLoading) ? "not-allowed" : "pointer",
@@ -1193,7 +1196,7 @@ export default function PIPBuilderTool({
             </div>
             {/* Sign-in link — only shown when NOT logged in, outside pricing card */}
             {!user && (
-              <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.5)", margin: "12px 0 0", textAlign: "center" }}>
+              <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.5)", margin: "6px 0 0", textAlign: "center" }}>
                 Already have an account?{" "}
                 <button
                   type="button"

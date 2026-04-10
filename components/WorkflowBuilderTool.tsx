@@ -1012,7 +1012,7 @@ export default function WorkflowBuilderTool({
                 background: "var(--dark, #161618)",
                 borderRadius: "12px",
                 padding: "24px 26px",
-                marginBottom: "16px",
+                marginBottom: "8px",
               }}
             >
               {/* Header row */}
@@ -1030,7 +1030,7 @@ export default function WorkflowBuilderTool({
                     borderRadius: "20px",
                     background: "rgba(30,122,184,0.25)",
                     color: "#60B4F0",
-                    border: "1px solid rgba(30,122,184,0.35)",
+                    border: "1px solid rgba(30,122,184,0.20)",
                   }}
                 >
                   Annual Subscription
@@ -1038,10 +1038,13 @@ export default function WorkflowBuilderTool({
               </div>
 
               {/* Price */}
-              <div style={{ display: "flex", alignItems: "baseline", gap: "8px", marginBottom: "12px" }}>
+              <div style={{ display: "flex", alignItems: "baseline", gap: "8px", marginBottom: "20px" }}>
                 <span style={{ fontSize: "2rem", fontWeight: 800, color: "#FFFFFF", lineHeight: 1 }}>$49</span>
                 <span style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.5)" }}>/year</span>
               </div>
+
+              {/* Divider */}
+              <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", margin: "0 0 20px" }} />
 
               {/* CTA */}
               <button
@@ -1050,7 +1053,7 @@ export default function WorkflowBuilderTool({
                 disabled={checkoutLoading}
                 style={{
                   width: "100%",
-                  padding: "13px 20px",
+                  padding: "11px 20px",
                   fontSize: "0.9375rem",
                   fontWeight: 700,
                   background: checkoutLoading ? "rgba(30,122,184,0.5)" : "#1E7AB8",
@@ -1075,7 +1078,7 @@ export default function WorkflowBuilderTool({
 
           {/* Sign-in link — only shown when NOT logged in, outside pricing card */}
           {!user && (
-            <p style={{ fontSize: "0.8125rem", textAlign: "center", margin: "12px 0 0" }}>
+            <p style={{ fontSize: "0.8125rem", textAlign: "center", margin: "6px 0 0" }}>
               <span style={{ color: "rgba(255,255,255,0.5)" }}>Already have an account? </span>
               <button
                 type="button"

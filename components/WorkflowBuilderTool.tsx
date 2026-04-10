@@ -916,7 +916,7 @@ export default function WorkflowBuilderTool({
               lineHeight: 1.2,
             }}
           >
-            Turn Tasks into AI Workflows.
+            Long Tasks → AI Workflows.
           </h2>
 
           {paymentCancelled && (
@@ -928,11 +928,12 @@ export default function WorkflowBuilderTool({
           {/* What's included */}
           <div
             style={{
-              background: "radial-gradient(ellipse 80% 90% at center, rgba(30,122,184,0.14) 0%, transparent 65%)",
+              background: "radial-gradient(ellipse 90% 100% at center, rgba(30,122,184,0.14) 0%, transparent 60%)",
               border: "1px solid rgba(255,255,255,0.10)",
               borderRadius: "10px",
               padding: "18px 20px",
               marginBottom: "12px",
+              maxWidth: "88%",
             }}
           >
             <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "rgba(255,255,255,0.45)", margin: "0 0 12px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
@@ -1016,7 +1017,7 @@ export default function WorkflowBuilderTool({
               }}
             >
               {/* Header row: tool name left, badge right */}
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px" }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px" }}>
                 <p style={{ fontSize: "0.9375rem", fontWeight: 700, color: "#FFFFFF", margin: 0 }}>
                   Workflow Builder
                 </p>

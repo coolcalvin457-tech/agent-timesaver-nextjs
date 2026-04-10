@@ -2499,11 +2499,9 @@ input, textarea {
   border-top: 2px solid var(--border);
 }
 
-/* F59 (S137): Extend section dividers edge-to-edge inside the tool-container.
-   Uses a positioned pseudo-element with oversized left/right values. The
-   tool-container's overflow:hidden clips it exactly to the container edges,
-   so the horizontal line connects to the vertical border on both sides.
-   Works at all breakpoints without knowing the exact .screen padding. */
+/* F59 (S137): Extend section dividers edge-to-edge inside the inner
+   tool-container box. Uses the known .screen padding (44px, 24px mobile)
+   to position the pseudo-element exactly at the container edges. */
 .pb-results-dark .pb-system-section {
   position: relative;
   border-top-color: transparent;
@@ -2513,10 +2511,29 @@ input, textarea {
   content: "";
   position: absolute;
   top: 0;
-  left: -999px;
-  right: -999px;
+  left: -44px;
+  right: -44px;
   border-top: 2px solid rgba(255, 255, 255, 0.12);
   pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  .pb-results-dark .pb-system-section::before {
+    left: -24px;
+    right: -24px;
+  }
+}
+
+/* First .pb-system-section inside results (Step 1 content area) should
+   NOT have a divider. The divider only appears between steps. */
+.pb-results-dark .screen > .pb-system-section:first-of-type {
+  border-top: none;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.pb-results-dark .screen > .pb-system-section:first-of-type::before {
+  display: none;
 }
 
 /* When a system section follows a category, reduce margin to compensate
@@ -2654,9 +2671,24 @@ input, textarea {
   border: none;
 }
 
-/* File items get a subtle highlight */
+/* File items: no triangle, brighter text to signal "this is the one you'll edit" */
 .pb-tree-file {
   color: rgba(255, 255, 255, 0.85);
+}
+
+/* Folder items: blue triangle matches the root, signals "this is a folder" */
+.pb-tree-folder {
+  padding-left: 28px;
+}
+
+.pb-tree-folder::after {
+  content: "▸";
+  position: absolute;
+  left: 16px;
+  color: var(--cta);
+  font-size: 0.6875rem;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 /* Legacy classes — keep for email template compatibility */

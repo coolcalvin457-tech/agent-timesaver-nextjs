@@ -429,7 +429,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, autoF
           <h2 className="results-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, marginBottom: "6px" }}>
             Your AI Workspace Setup.
           </h2>
-          <p className="screen-subheadline" style={{ marginBottom: "24px" }}>
+          <p className="screen-subheadline" style={{ marginBottom: "20px" }}>
             Set this up once. AI will know who you are every time.
           </p>
 
@@ -441,14 +441,14 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, autoF
                 <p className="pb-tree-root">[YourName]&apos;s AI Workspace</p>
                 <div className="pb-tree-children">
                   <p className="pb-tree-item pb-tree-file">AI Profile.md</p>
-                  <p className="pb-tree-item">Prompt Library</p>
-                  <p className="pb-tree-item">Saved Results</p>
-                  <p className="pb-tree-item pb-tree-last">Reference Files</p>
+                  <p className="pb-tree-item pb-tree-folder">Prompt Library</p>
+                  <p className="pb-tree-item pb-tree-folder">Saved Results</p>
+                  <p className="pb-tree-item pb-tree-folder pb-tree-last">Reference Files</p>
                 </div>
               </div>
             </div>
             <p className="pb-system-step-body" style={{ marginTop: "16px", fontSize: "0.8125rem" }}>
-              Create this once on your desktop. Your AI tools will reference it going forward.
+              Add this on your desktop so AI can reference it going forward.
             </p>
           </div>
 

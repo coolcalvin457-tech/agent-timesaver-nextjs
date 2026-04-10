@@ -91,15 +91,15 @@ async function sendPromptKitEmail(
           </p>
           <table cellpadding="0" cellspacing="0" style="margin-left:8px; border-left:1px solid #e4e4e2;">
             <tr><td style="padding:4px 0 4px 14px; font-family:monospace; font-size:13px; color:#444442;">AI Profile.md</td></tr>
-            <tr><td style="padding:4px 0 4px 14px; font-family:monospace; font-size:13px; color:#777775;">Prompt Library</td></tr>
-            <tr><td style="padding:4px 0 4px 14px; font-family:monospace; font-size:13px; color:#777775;">Saved Results</td></tr>
-            <tr><td style="padding:4px 0 4px 14px; font-family:monospace; font-size:13px; color:#777775;">Reference Files</td></tr>
+            <tr><td style="padding:4px 0 4px 14px; font-family:monospace; font-size:13px; color:#777775;"><span style="color:#1e7ab8; font-size:11px;">&#9656;</span> Prompt Library</td></tr>
+            <tr><td style="padding:4px 0 4px 14px; font-family:monospace; font-size:13px; color:#777775;"><span style="color:#1e7ab8; font-size:11px;">&#9656;</span> Saved Results</td></tr>
+            <tr><td style="padding:4px 0 4px 14px; font-family:monospace; font-size:13px; color:#777775;"><span style="color:#1e7ab8; font-size:11px;">&#9656;</span> Reference Files</td></tr>
           </table>
         </td>
       </tr>
     </table>
     <p style="margin:0 0 32px 0; font-size:13px; color:#888886; line-height:1.6;">
-      Create this once on your desktop. Your AI tools will reference it going forward.
+      Add this on your desktop so AI can reference it going forward.
     </p>
 
     <!-- Step 2: AI Profile -->

@@ -2499,24 +2499,24 @@ input, textarea {
   border-top: 2px solid var(--border);
 }
 
-/* F59 (S137): Extend section dividers edge-to-edge so the horizontal
-   border-top visually connects to the tool-container's vertical border.
-   Negative margin cancels the .screen padding; re-applied as padding
-   so content stays in the same position. */
+/* F59 (S137): Extend section dividers edge-to-edge inside the tool-container.
+   Uses a positioned pseudo-element with oversized left/right values. The
+   tool-container's overflow:hidden clips it exactly to the container edges,
+   so the horizontal line connects to the vertical border on both sides.
+   Works at all breakpoints without knowing the exact .screen padding. */
 .pb-results-dark .pb-system-section {
-  margin-left: -44px;
-  margin-right: -44px;
-  padding-left: 44px;
-  padding-right: 44px;
+  position: relative;
+  border-top-color: transparent;
 }
 
-@media (max-width: 640px) {
-  .pb-results-dark .pb-system-section {
-    margin-left: -20px;
-    margin-right: -20px;
-    padding-left: 20px;
-    padding-right: 20px;
-  }
+.pb-results-dark .pb-system-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -999px;
+  right: -999px;
+  border-top: 2px solid rgba(255, 255, 255, 0.12);
+  pointer-events: none;
 }
 
 /* When a system section follows a category, reduce margin to compensate

@@ -79,19 +79,28 @@ async function sendPromptKitEmail(
     <p style="margin:0 0 16px 0; font-size:15px; color:#555553; line-height:1.6;">
       Set this up once. AI will know who you are every time.
     </p>
-    <!-- F61 (S137): folder tree only, no explanatory sentences. Matches website. -->
-    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
+    <!-- S137: Styled folder tree card. Matches website redesign. -->
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:16px;">
       <tr>
-        <td style="background:#f8f8f6; border:1px solid #e4e4e2; border-radius:8px; padding:14px 16px; font-size:13px; color:#333331; line-height:1.5; font-family:monospace;">
-          Build this folder structure on your desktop:<br/><br/>
-          &#128450; [YourName]'s AI Workspace<br/>
-          &nbsp;&nbsp;&#128196; AI Profile.md<br/>
-          &nbsp;&nbsp;&#128450; Prompt Library<br/>
-          &nbsp;&nbsp;&#128450; Saved Results<br/>
-          &nbsp;&nbsp;&#128450; Reference Files
+        <td style="background:#f8f8f6; border:1px solid #e4e4e2; border-radius:8px; padding:20px 24px;">
+          <p style="margin:0 0 14px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#aaaaaa;">
+            Folder structure
+          </p>
+          <p style="margin:0 0 6px 0; font-family:monospace; font-size:13px; font-weight:600; color:#161618;">
+            &#9656; [YourName]'s AI Workspace
+          </p>
+          <table cellpadding="0" cellspacing="0" style="margin-left:8px; border-left:1px solid #e4e4e2;">
+            <tr><td style="padding:4px 0 4px 14px; font-family:monospace; font-size:13px; color:#444442;">AI Profile.md</td></tr>
+            <tr><td style="padding:4px 0 4px 14px; font-family:monospace; font-size:13px; color:#777775;">Prompt Library</td></tr>
+            <tr><td style="padding:4px 0 4px 14px; font-family:monospace; font-size:13px; color:#777775;">Saved Results</td></tr>
+            <tr><td style="padding:4px 0 4px 14px; font-family:monospace; font-size:13px; color:#777775;">Reference Files</td></tr>
+          </table>
         </td>
       </tr>
     </table>
+    <p style="margin:0 0 32px 0; font-size:13px; color:#888886; line-height:1.6;">
+      Create this once on your desktop. Your AI tools will reference it going forward.
+    </p>
 
     <!-- Step 2: AI Profile -->
     <p style="margin:0 0 6px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">

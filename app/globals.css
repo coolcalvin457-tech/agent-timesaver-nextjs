@@ -2585,6 +2585,81 @@ input, textarea {
 }
 
 /* Folder tree */
+/* ── Step 1 Workspace Card (S137 redesign) ──────────────────────── */
+/* Matches .pb-prompt-text-wrapper treatment from Steps 2/3 so all
+   three steps feel like parts of the same design system.            */
+.pb-workspace-card {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-input);
+  padding: 20px 24px;
+}
+
+.pb-workspace-card-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.3);
+  margin-bottom: 16px;
+}
+
+.pb-workspace-tree {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+.pb-tree-root {
+  color: #ffffff;
+  font-weight: 600;
+  padding-left: 20px;
+  position: relative;
+  margin-bottom: 4px;
+}
+
+.pb-tree-root::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--cta);
+  font-size: 0.75rem;
+}
+
+.pb-tree-children {
+  padding-left: 20px;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  margin-left: 5px;
+}
+
+.pb-tree-item {
+  color: rgba(255, 255, 255, 0.6);
+  padding: 5px 0 5px 16px;
+  position: relative;
+}
+
+/* Horizontal connector from the vertical line to the item text */
+.pb-tree-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Last item uses an L-connector instead of a T-connector */
+.pb-tree-last {
+  border: none;
+}
+
+/* File items get a subtle highlight */
+.pb-tree-file {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Legacy classes — keep for email template compatibility */
 .pb-folder-tree {
   background: var(--dark);
   border-radius: 10px;

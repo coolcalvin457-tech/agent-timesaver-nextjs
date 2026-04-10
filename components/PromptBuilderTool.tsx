@@ -433,18 +433,23 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, autoF
             Set this up once. AI will know who you are every time.
           </p>
 
-          {/* ── Step 1: AI Workspace Setup (F61 S137: folder tree only) ── */}
+          {/* ── Step 1: AI Workspace Setup (S137 redesign) ── */}
           <div className="pb-system-section">
-            <p className="pb-system-step-body">
-              Build this folder structure on your desktop:
-            </p>
-            <div className="pb-folder-tree" style={{ marginTop: "12px" }}>
-              <p className="pb-folder-tree-item pb-folder-root">🗂️ [YourName]&apos;s AI Workspace</p>
-              <p className="pb-folder-tree-item pb-folder-indent" style={{ color: "#fff" }}>📄 AI Profile.md</p>
-              <p className="pb-folder-tree-item pb-folder-indent">🗂️ Prompt Library</p>
-              <p className="pb-folder-tree-item pb-folder-indent">🗂️ Saved Results</p>
-              <p className="pb-folder-tree-item pb-folder-indent">🗂️ Reference Files</p>
+            <div className="pb-workspace-card">
+              <p className="pb-workspace-card-label">Folder structure</p>
+              <div className="pb-workspace-tree">
+                <p className="pb-tree-root">[YourName]&apos;s AI Workspace</p>
+                <div className="pb-tree-children">
+                  <p className="pb-tree-item pb-tree-file">AI Profile.md</p>
+                  <p className="pb-tree-item">Prompt Library</p>
+                  <p className="pb-tree-item">Saved Results</p>
+                  <p className="pb-tree-item pb-tree-last">Reference Files</p>
+                </div>
+              </div>
             </div>
+            <p className="pb-system-step-body" style={{ marginTop: "16px", fontSize: "0.8125rem" }}>
+              Create this once on your desktop. Your AI tools will reference it going forward.
+            </p>
           </div>
 
           {/* ── Step 2: AI Profile ─────────── */}

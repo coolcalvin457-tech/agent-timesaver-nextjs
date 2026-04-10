@@ -783,131 +783,153 @@ export default function CompetitiveDossierTool({
             </p>
           )}
 
-          {/* What's included */}
-          <div style={{ marginBottom: "24px", padding: "0 4px" }}>
-            <p
-              style={{
-                fontSize: "0.6875rem",
-                fontWeight: 700,
-                letterSpacing: "0.1em",
-                textTransform: "uppercase" as const,
-                color: "rgba(255,255,255,0.45)",
-                marginBottom: "12px",
-              }}
-            >
-              Includes
-            </p>
-            <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-              {DOSSIER_SECTIONS.map((item) => (
-                <li
-                  key={item}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "10px",
-                    padding: "7px 0",
-                    borderBottom: "1px solid rgba(255,255,255,0.12)",
-                    fontSize: "0.9rem",
-                    color: "rgba(255,255,255,0.85)",
-                  }}
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--cta, #1E7AB8)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                    <polyline points="14 2 14 8 20 8" />
-                  </svg>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Pricing card */}
+          {/* What's included — card style matching Onboarding */}
           <div
             style={{
-              background: "var(--dark, #161618)",
-              border: "1px solid rgba(255,255,255,0.12)",
-              borderRadius: "12px",
-              padding: "24px",
-              marginBottom: "16px",
+              background: "var(--bg-alt, #F8F8F6)",
+              border: "1px solid var(--border, #E4E4E2)",
+              borderRadius: "10px",
+              padding: "18px 20px",
+              marginBottom: "20px",
             }}
           >
-            <div style={{ marginBottom: "16px" }}>
-              <p
-                style={{
-                  fontSize: "0.6875rem",
-                  fontWeight: 700,
-                  letterSpacing: "0.1em",
-                  textTransform: "uppercase" as const,
-                  color: "var(--cta, #1E7AB8)",
-                  margin: "0 0 6px",
-                }}
-              >
-                Annual Subscription
-              </p>
-              <p
-                style={{
-                  fontSize: "1.5rem",
-                  fontWeight: 800,
-                  color: "#FFFFFF",
-                  margin: "0 0 4px",
-                  lineHeight: 1.2,
-                }}
-              >
-                $149 <span style={{ fontSize: "0.9rem", fontWeight: 500, color: "rgba(255,255,255,0.55)" }}>/year</span>
-              </p>
+            <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", margin: "0 0 12px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+              Includes
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+              {DOSSIER_SECTIONS.map((item) => (
+                <div key={item} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0, color: "var(--cta, #1E7AB8)" }}>
+                    <path d="M2.5 1.5h6l3 3v8h-9v-11z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" fill="none"/>
+                    <path d="M8.5 1.5v3h3" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/>
+                  </svg>
+                  <span style={{ fontSize: "0.875rem", color: "var(--text-secondary)", fontWeight: 500 }}>{item}</span>
+                </div>
+              ))}
             </div>
+          </div>
 
-            {/* Subscription active badge for verified users */}
-            {subscriptionVerified && (
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  padding: "10px 14px",
-                  background: "rgba(34,197,94,0.12)",
-                  border: "1px solid rgba(34,197,94,0.30)",
-                  borderRadius: "8px",
-                  marginBottom: "16px",
-                }}
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-                <span style={{ fontSize: "0.875rem", color: "#22C55E", fontWeight: 600 }}>
-                  Active subscription confirmed
+          {/* Pricing card — matching Onboarding template */}
+          {subscriptionVerified ? (
+            <div
+              style={{
+                background: "var(--dark, #161618)",
+                borderRadius: "12px",
+                padding: "24px 26px",
+                marginBottom: "16px",
+              }}
+            >
+              {/* Header row */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px", flexWrap: "wrap", gap: "8px" }}>
+                <span style={{ fontSize: "0.9375rem", fontWeight: 700, color: "#FFFFFF" }}>
+                  Competitive Dossier
+                </span>
+                <span
+                  style={{
+                    fontSize: "0.6875rem",
+                    fontWeight: 700,
+                    letterSpacing: "0.06em",
+                    textTransform: "uppercase",
+                    padding: "3px 10px",
+                    borderRadius: "20px",
+                    background: "rgba(34,197,94,0.2)",
+                    color: "#4ADE80",
+                    border: "1px solid rgba(34,197,94,0.35)",
+                  }}
+                >
+                  Active
                 </span>
               </div>
-            )}
 
-            {subscriptionVerified ? (
+              <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.6, margin: "0 0 16px" }}>
+                Your subscription is active. Build as many dossiers as you need.
+              </p>
+
               <button
                 type="button"
-                className="btn btn-dark-cta"
-                style={{ width: "100%" }}
                 onClick={() => setScreen("s1")}
+                style={{
+                  width: "100%",
+                  padding: "13px 20px",
+                  fontSize: "0.9375rem",
+                  fontWeight: 700,
+                  background: "#1E7AB8",
+                  color: "#FFFFFF",
+                  border: "none",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  transition: "background 0.15s ease",
+                }}
               >
                 Get Started
               </button>
-            ) : (
+            </div>
+          ) : (
+            <div
+              style={{
+                background: "var(--dark, #161618)",
+                borderRadius: "12px",
+                padding: "24px 26px",
+                marginBottom: "16px",
+              }}
+            >
+              {/* Header row */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px", flexWrap: "wrap", gap: "8px" }}>
+                <span style={{ fontSize: "0.9375rem", fontWeight: 700, color: "#FFFFFF" }}>
+                  Competitive Dossier
+                </span>
+                <span
+                  style={{
+                    fontSize: "0.6875rem",
+                    fontWeight: 700,
+                    letterSpacing: "0.06em",
+                    textTransform: "uppercase",
+                    padding: "3px 10px",
+                    borderRadius: "20px",
+                    background: "rgba(30,122,184,0.25)",
+                    color: "#60B4F0",
+                    border: "1px solid rgba(30,122,184,0.35)",
+                  }}
+                >
+                  Annual Subscription
+                </span>
+              </div>
+
+              {/* Price */}
+              <div style={{ display: "flex", alignItems: "baseline", gap: "8px", marginBottom: "12px" }}>
+                <span style={{ fontSize: "2rem", fontWeight: 800, color: "#FFFFFF", lineHeight: 1 }}>$149</span>
+                <span style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.5)" }}>/year</span>
+              </div>
+
+              {/* CTA */}
               <button
                 type="button"
-                className="btn btn-dark-cta"
-                style={{ width: "100%", opacity: checkoutLoading ? 0.7 : 1 }}
                 onClick={handleCheckout}
                 disabled={checkoutLoading}
+                style={{
+                  width: "100%",
+                  padding: "13px 20px",
+                  fontSize: "0.9375rem",
+                  fontWeight: 700,
+                  background: checkoutLoading ? "rgba(30,122,184,0.5)" : "#1E7AB8",
+                  color: "#FFFFFF",
+                  border: "none",
+                  borderRadius: "8px",
+                  cursor: checkoutLoading ? "not-allowed" : "pointer",
+                  transition: "background 0.15s ease",
+                  marginBottom: "12px",
+                }}
               >
                 {checkoutLoading ? "Redirecting to checkout..." : "Get Access"}
               </button>
-            )}
 
-            {checkoutError && (
-              <p style={{ ...errorStyle, color: "rgba(255,120,100,0.9)", marginTop: "10px" }}>
-                {checkoutError}
-              </p>
-            )}
-
-          </div>
+              {checkoutError && (
+                <p style={{ fontSize: "0.8125rem", color: "#F87171", margin: "0 0 8px" }}>
+                  {checkoutError}
+                </p>
+              )}
+            </div>
+          )}
 
           {/* Sign-in link — only shown when NOT logged in, outside pricing card */}
           {!user && (

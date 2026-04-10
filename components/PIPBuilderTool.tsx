@@ -1168,22 +1168,6 @@ export default function PIPBuilderTool({
                 <span style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.5)" }}>/year</span>
               </div>
 
-              {/* Email input */}
-              <input
-                type="email"
-                value={paywallEmail}
-                onChange={(e) => setPaywallEmail(e.target.value)}
-                onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleGetAccess(); } }}
-                placeholder="your@email.com"
-                style={{
-                  width: "100%", padding: "11px 14px", fontSize: "0.9375rem",
-                  border: "1px solid rgba(255,255,255,0.15)", borderRadius: "8px",
-                  background: "rgba(255,255,255,0.08)", color: "#FFFFFF",
-                  outline: "none", boxSizing: "border-box" as const, marginBottom: "10px",
-                  fontFamily: "inherit",
-                }}
-              />
-
               {/* CTA */}
               <button
                 type="button"

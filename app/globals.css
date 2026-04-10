@@ -922,9 +922,9 @@ input, textarea {
   align-items: center;
   justify-content: flex-start;
   text-align: left;
-  min-height: 72px;
+  min-height: 56px;
   /* Extra left padding reserves space for the radio indicator pseudo-element. */
-  padding: 16px 18px 16px 52px;
+  padding: 14px 18px 14px 52px;
   background: var(--surface);
   border: 1.5px solid var(--border);
   border-radius: var(--radius-input);

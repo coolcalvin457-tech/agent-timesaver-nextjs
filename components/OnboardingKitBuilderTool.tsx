@@ -1099,7 +1099,7 @@ export default function OnboardingKitBuilderTool({
           }}
         >
           <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", margin: "0 0 12px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-            Your kit includes
+            Includes
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             {[
@@ -1217,11 +1217,6 @@ export default function OnboardingKitBuilderTool({
                 <span style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.5)" }}>/year</span>
               </div>
 
-              {/* Description */}
-              <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.6, margin: "0 0 16px" }}>
-                Includes AGENT: Onboarding, AGENT: PIP, and every HR agent added to the package. One subscription, all agents.
-              </p>
-
               {/* Email input */}
               <input
                 type="email"
@@ -1257,7 +1252,7 @@ export default function OnboardingKitBuilderTool({
                   marginBottom: "12px",
                 }}
               >
-                {subCheckLoading ? "Checking subscription..." : checkoutLoading ? "Checking..." : "Get Access · $99/year"}
+                {subCheckLoading ? "Checking subscription..." : checkoutLoading ? "Checking..." : "Get Access"}
               </button>
 
               {checkoutError && (
@@ -1266,39 +1261,30 @@ export default function OnboardingKitBuilderTool({
                 </p>
               )}
 
-              {/* Sign-in link — only shown when NOT logged in */}
-              {!user && (
-                <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.5)", margin: "12px 0 0", textAlign: "center" }}>
-                  Already have an account?{" "}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      window.location.href = "/login?redirect=/onboarding";
-                    }}
-                    style={{
-                      background: "none", border: "none", color: "#60B4F0",
-                      fontSize: "0.8125rem", cursor: "pointer", padding: 0,
-                      textDecoration: "underline", fontFamily: "inherit",
-                    }}
-                  >
-                    Sign in
-                  </button>
-                </p>
-              )}
             </div>
 
-            {/* Legacy returning purchaser block removed S142 — Sign in link handles returning users */}
+            {/* Sign-in link — only shown when NOT logged in, outside pricing card */}
+            {!user && (
+              <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.5)", margin: "12px 0 0", textAlign: "center" }}>
+                Already have an account?{" "}
+                <button
+                  type="button"
+                  onClick={() => {
+                    window.location.href = "/login?redirect=/onboarding";
+                  }}
+                  style={{
+                    background: "none", border: "none", color: "#60B4F0",
+                    fontSize: "0.8125rem", cursor: "pointer", padding: 0,
+                    textDecoration: "underline", fontFamily: "inherit",
+                  }}
+                >
+                  Sign in
+                </button>
+              </p>
+            )}
           </>
         )}
 
-        {/* Edit inputs link */}
-        <button
-          type="button"
-          onClick={() => { setS3Error(""); setScreen("s3"); }}
-          style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "0.875rem", cursor: "pointer", padding: 0, opacity: 0.7 }}
-        >
-          ← Edit my inputs
-        </button>
       </div>
     );
   }

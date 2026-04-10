@@ -795,7 +795,7 @@ export default function CompetitiveDossierTool({
                 marginBottom: "12px",
               }}
             >
-              Your dossier includes
+              Includes
             </p>
             <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
               {DOSSIER_SECTIONS.map((item) => (
@@ -897,7 +897,7 @@ export default function CompetitiveDossierTool({
                 onClick={handleCheckout}
                 disabled={checkoutLoading}
               >
-                {checkoutLoading ? "Redirecting to checkout..." : "Get Access \u00B7 $149/year"}
+                {checkoutLoading ? "Redirecting to checkout..." : "Get Access"}
               </button>
             )}
 
@@ -907,28 +907,29 @@ export default function CompetitiveDossierTool({
               </p>
             )}
 
-            {/* Sign-in link — only shown when NOT logged in */}
-            {!user && (
-              <p style={{ fontSize: "0.8125rem", textAlign: "center", margin: "10px 0 0" }}>
-                <span style={{ color: "rgba(255,255,255,0.5)" }}>Already have an account? </span>
-                <button
-                  type="button"
-                  onClick={handleSignIn}
-                  style={{
-                    background: "none",
-                    border: "none",
-                    padding: 0,
-                    fontSize: "0.8125rem",
-                    color: "#60B4F0",
-                    textDecoration: "underline",
-                    cursor: "pointer",
-                  }}
-                >
-                  Sign in
-                </button>
-              </p>
-            )}
           </div>
+
+          {/* Sign-in link — only shown when NOT logged in, outside pricing card */}
+          {!user && (
+            <p style={{ fontSize: "0.8125rem", textAlign: "center", margin: "12px 0 0" }}>
+              <span style={{ color: "rgba(255,255,255,0.5)" }}>Already have an account? </span>
+              <button
+                type="button"
+                onClick={handleSignIn}
+                style={{
+                  background: "none",
+                  border: "none",
+                  padding: 0,
+                  fontSize: "0.8125rem",
+                  color: "#60B4F0",
+                  textDecoration: "underline",
+                  cursor: "pointer",
+                }}
+              >
+                Sign in
+              </button>
+            </p>
+          )}
 
         </>
       )}

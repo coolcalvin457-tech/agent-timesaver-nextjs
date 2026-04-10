@@ -809,7 +809,11 @@ export default function PIPBuilderTool({
             onChange={(e) => setDeficiencies(e.target.value)}
             placeholder={`e.g. Failed to meet Q1 outbound call quota (50 calls/week) for three consecutive months, averaging 28 calls/week. Missed client follow-up deadlines on 6 of 8 tracked accounts in February, measured via CRM activity log.`}
             style={{ ...textareaStyle, minHeight: "120px" }}
+            maxLength={500}
           />
+          <div style={{ textAlign: "right", fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "4px" }}>
+            {deficiencies.length}/500
+          </div>
           <p style={helperStyle}>
             Include dates, frequencies, and how it was measured. Vague language is the most common reason PIPs don't hold up.
           </p>
@@ -827,7 +831,11 @@ export default function PIPBuilderTool({
             onChange={(e) => setPerformanceStandard(e.target.value)}
             placeholder="e.g. The role requires 50 outbound calls per week and client follow-up within 24 hours of contact, per the Sales Handbook (updated Jan 2026)."
             style={textareaStyle}
+            maxLength={500}
           />
+          <div style={{ textAlign: "right", fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "4px" }}>
+            {performanceStandard.length}/500
+          </div>
           <p style={helperStyle}>
             If you have a documented standard (handbook, job description, offer letter), include it here. It strengthens the document. If you don't, leave it blank.
           </p>
@@ -842,7 +850,11 @@ export default function PIPBuilderTool({
             onChange={(e) => setImprovementTargets(e.target.value)}
             placeholder="e.g. Meet weekly call quota of 50 for 4 consecutive weeks. All client follow-ups logged within 24 hours, with zero exceptions over the plan period. Both tracked via HubSpot."
             style={{ ...textareaStyle, minHeight: "100px" }}
+            maxLength={500}
           />
+          <div style={{ textAlign: "right", fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "4px" }}>
+            {improvementTargets.length}/500
+          </div>
           <QualitySignal value={improvementTargets} message="Good detail. The document will reflect this." />
         </div>
 
@@ -966,7 +978,11 @@ export default function PIPBuilderTool({
             onChange={(e) => setSupportOffered(e.target.value)}
             placeholder="e.g. Weekly 30-minute coaching session with manager. Access to the company's sales training library. Performance dashboard reviewed together at each check-in."
             style={textareaStyle}
+            maxLength={500}
           />
+          <div style={{ textAlign: "right", fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "4px" }}>
+            {supportOffered.length}/500
+          </div>
           <p style={helperStyle}>
             Even a brief line here strengthens the document. It shows the company took a reasonable step before any disciplinary action.
           </p>
@@ -981,7 +997,11 @@ export default function PIPBuilderTool({
             onChange={(e) => setConsequences(e.target.value)}
             placeholder="e.g. Failure to meet the improvement targets outlined in this plan may result in further corrective action, up to and including termination of employment."
             style={textareaStyle}
+            maxLength={500}
           />
+          <div style={{ textAlign: "right", fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "4px" }}>
+            {consequences.length}/500
+          </div>
           <p style={helperStyle}>
             Plain language is fine. State it clearly so there's no ambiguity about what happens next.
           </p>
@@ -1295,7 +1315,7 @@ export default function PIPBuilderTool({
     return (
       <div ref={toolContainerRef} className="okb-tool">
         <ToolLoadingScreen
-          headingText={`Building ${employeeName ? `${employeeName}'s` : "the"} PIP.`}
+          headingText="Building your plan"
           timeEstimate="About 3 minutes."
           steps={LOADING_STEPS}
           activeStep={loadingStep}

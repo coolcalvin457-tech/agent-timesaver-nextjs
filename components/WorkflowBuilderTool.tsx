@@ -592,7 +592,7 @@ export default function WorkflowBuilderTool({
           steps={LOADING_STEPS}
           activeStep={loadingStep}
           timeEstimate="About 3 minutes."
-          headingText="Building your workflow."
+          headingText="Building your workflow"
         />
       )}
 
@@ -625,7 +625,11 @@ export default function WorkflowBuilderTool({
               onChange={(e) => setTaskDescription(e.target.value)}
               placeholder="e.g. Write a competitive analysis for a new product launch."
               rows={3}
+              maxLength={500}
             />
+            <div style={{ textAlign: "right", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", marginTop: "4px" }}>
+              {taskDescription.length}/500
+            </div>
             <QualitySignal value={taskDescription} />
           </div>
 
@@ -863,7 +867,11 @@ export default function WorkflowBuilderTool({
               onChange={(e) => setAudiencePriorities(e.target.value)}
               placeholder="e.g. My director reviews it. She cares about the recovery plan, not the excuses."
               rows={2}
+              maxLength={500}
             />
+            <div style={{ textAlign: "right", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", marginTop: "4px" }}>
+              {audiencePriorities.length}/500
+            </div>
           </div>
 
           {/* Tools (optional) */}

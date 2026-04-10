@@ -642,7 +642,11 @@ export default function CompetitiveDossierTool({
               onChange={(e) => setResearchFocus(e.target.value)}
               placeholder="e.g. I want to understand their pricing strategy and how they're positioning against us in the mid-market."
               style={textareaStyle}
+              maxLength={500}
             />
+            <div style={{ textAlign: "right", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", marginTop: "4px" }}>
+              {researchFocus.length}/500
+            </div>
           </div>
 
           <div style={fieldGroupStyle}>
@@ -684,7 +688,11 @@ export default function CompetitiveDossierTool({
               onChange={(e) => setExistingKnowledge(e.target.value)}
               placeholder="e.g. They just raised a Series B and announced a partnership with Salesforce."
               style={{ ...textareaStyle, minHeight: "72px" }}
+              maxLength={500}
             />
+            <div style={{ textAlign: "right", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", marginTop: "4px" }}>
+              {existingKnowledge.length}/500
+            </div>
             <p style={helperStyle}>We&apos;ll skip what you already know and go deeper on what&apos;s new.</p>
           </div>
 
@@ -737,7 +745,11 @@ export default function CompetitiveDossierTool({
               onChange={(e) => setUserCompanyDescription(e.target.value)}
               placeholder="e.g. We're a 50-person B2B SaaS company selling project management tools to healthcare organizations."
               style={textareaStyle}
+              maxLength={500}
             />
+            <div style={{ textAlign: "right", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", marginTop: "4px" }}>
+              {userCompanyDescription.length}/500
+            </div>
             <p style={helperStyle}>Optional. Enables direct comparison in your dossier.</p>
           </div>
 
@@ -978,7 +990,10 @@ export default function CompetitiveDossierTool({
             color: "#fff",
             margin: "0 0 8px",
           }}>
-            Building your competitive dossier.
+            Building your dossier
+            <span className="building-dots" aria-hidden="true">
+              <span>.</span><span>.</span><span>.</span>
+            </span>
           </h2>
           <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.45)", margin: "0 0 36px" }}>
             About 3 minutes.

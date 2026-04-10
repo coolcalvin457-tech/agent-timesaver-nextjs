@@ -69,6 +69,9 @@ export default function ToolLoadingScreen({
           }}
         >
           {headingText}
+          <span className="building-dots" aria-hidden="true">
+            <span>.</span><span>.</span><span>.</span>
+          </span>
         </h2>
         {timeEstimate && (
           <p

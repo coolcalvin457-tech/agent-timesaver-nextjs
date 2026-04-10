@@ -39,10 +39,6 @@ async function sendBudgetEmail(
       Open in Excel, Google Sheets, or Numbers. The "How to Use" tab walks you through every formula.
     </p>
 
-    <p style="margin:0 0 32px 0; font-size:13px; color:#888886;">
-      📎 ${filename}
-    </p>
-
     <!-- CTA -->
     <a href="https://promptaiagents.com/spreadsheets"
        style="display:inline-block; background:#1e7ab8; color:#ffffff; font-size:15px; font-weight:600; text-decoration:none; padding:14px 28px; border-radius:10px;">

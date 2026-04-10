@@ -29,68 +29,9 @@ async function sendOnboardingKitEmail(
   fileData: string
 ): Promise<void> {
   const heroContent = `
-    <h1 style="margin:0 0 32px 0; font-family:Georgia,serif; font-size:28px; font-weight:700; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
-      ${stripEmDashes(hireName)} · ${stripEmDashes(hireTitle)}
+    <h1 style="margin:0 0 6px 0; font-family:Georgia,serif; font-size:28px; font-weight:700; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
+      ${stripEmDashes(hireName)}'s onboarding kit is ready.
     </h1>
-
-    <!-- Next steps -->
-    <p style="margin:0 0 16px 0; font-size:15px; color:#555553; line-height:1.6;">
-      Before you share this with ${stripEmDashes(hireName)}, three quick steps:
-    </p>
-    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
-      <tr>
-        <td style="padding:0 0 12px 0;">
-          <p style="margin:0; font-size:14px; color:#555553; line-height:1.6;">
-            <strong style="color:#161618;">1.</strong> Have the hiring manager review and sign the Welcome Letter. It's written in their voice and should have their sign-off before it reaches ${stripEmDashes(hireName)}.
-          </p>
-        </td>
-      </tr>
-      <tr>
-        <td style="padding:0 0 12px 0;">
-          <p style="margin:0; font-size:14px; color:#555553; line-height:1.6;">
-            <strong style="color:#161618;">2.</strong> Fill in any specifics the AI couldn't know: calendar invite links, meeting room details, IT setup.
-          </p>
-        </td>
-      </tr>
-      <tr>
-        <td style="padding:0;">
-          <p style="margin:0; font-size:14px; color:#555553; line-height:1.6;">
-            <strong style="color:#161618;">3.</strong> Add your company logo or letterhead to remain on brand.
-          </p>
-        </td>
-      </tr>
-    </table>
-
-    <!-- What's Included card -->
-    <div style="background:#fafaf8; border:1px solid #e4e4e2; border-radius:8px; padding:20px 24px; margin:0 0 32px 0;">
-      <p style="font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#888886; margin:0 0 16px;">
-        WHAT'S INCLUDED
-      </p>
-      <div style="border-bottom:1px solid #e4e4e2; padding:0 0 12px 0; margin:0 0 12px 0;">
-        <p style="font-size:14px; font-weight:700; color:#161618; margin:0 0 2px;">Welcome Letter</p>
-        <p style="font-size:13px; color:#888886; margin:0;">Personalized welcome from the hiring manager, written in their voice.</p>
-      </div>
-      <div style="border-bottom:1px solid #e4e4e2; padding:0 0 12px 0; margin:0 0 12px 0;">
-        <p style="font-size:14px; font-weight:700; color:#161618; margin:0 0 2px;">First-Week Schedule</p>
-        <p style="font-size:13px; color:#888886; margin:0;">Day-by-day plan for the first five days, time-anchored and achievable.</p>
-      </div>
-      <div style="border-bottom:1px solid #e4e4e2; padding:0 0 12px 0; margin:0 0 12px 0;">
-        <p style="font-size:14px; font-weight:700; color:#161618; margin:0 0 2px;">Key Contacts</p>
-        <p style="font-size:13px; color:#888886; margin:0;">The people who matter most in the first 90 days and why.</p>
-      </div>
-      <div style="border-bottom:1px solid #e4e4e2; padding:0 0 12px 0; margin:0 0 12px 0;">
-        <p style="font-size:14px; font-weight:700; color:#161618; margin:0 0 2px;">30-60-90 Day Plan</p>
-        <p style="font-size:13px; color:#888886; margin:0;">Role-specific milestones for the first three months.</p>
-      </div>
-      <div style="padding:0;">
-        <p style="font-size:14px; font-weight:700; color:#161618; margin:0 0 2px;">New Hire Checklist</p>
-        <p style="font-size:13px; color:#888886; margin:0;">Pre-start through Month 1 checklist, ordered by when each item needs to happen.</p>
-      </div>
-    </div>
-
-    <p style="margin:0 0 32px 0; font-size:13px; color:#888886;">
-      📎 ${filename}
-    </p>
 
     <!-- CTA -->
     <a href="https://promptaiagents.com/onboarding"

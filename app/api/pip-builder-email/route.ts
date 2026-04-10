@@ -30,18 +30,8 @@ async function sendPIPEmail(
 ): Promise<void> {
   const heroContent = `
     <h1 style="margin:0 0 6px 0; font-family:Georgia,serif; font-size:28px; font-weight:700; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
-      Your PIP document is ready.
+      Your PIP is ready.
     </h1>
-    <p style="margin:0 0 16px 0; font-size:16px; color:#555553; font-weight:600; line-height:1.3;">
-      ${stripEmDashes(employeeRole)} · ${timeline}-day plan
-    </p>
-    <p style="margin:0 0 32px 0; font-size:15px; color:#555553; line-height:1.6;">
-      Open in Microsoft Word or Google Docs, review with your manager and legal team. Customize before issuing.
-    </p>
-
-    <p style="margin:0 0 32px 0; font-size:13px; color:#888886;">
-      📎 ${filename}
-    </p>
 
     <!-- CTA -->
     <a href="https://promptaiagents.com/pip"

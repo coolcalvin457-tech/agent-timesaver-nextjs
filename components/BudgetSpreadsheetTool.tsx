@@ -668,7 +668,7 @@ export default function BudgetSpreadsheetTool() {
               marginBottom: "10px",
             }}
           >
-            Your file is on its way.
+            Your spreadsheet is ready.
           </h2>
           <p
             className="screen-subheadline"

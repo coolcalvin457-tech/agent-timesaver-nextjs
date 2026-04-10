@@ -874,7 +874,11 @@ export default function OnboardingKitBuilderTool({
             value={whyHired}
             onChange={(e) => setWhyHired(e.target.value)}
             placeholder={`e.g. We're scaling our outbound motion and ${hireName || "Jordan"} was hired to build the top-of-funnel function from scratch. This role didn't exist before. They're creating the playbook.`}
+            maxLength={500}
           />
+          <div style={{ textAlign: "right", fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "4px" }}>
+            {whyHired.length}/500
+          </div>
           <QualitySignal value={whyHired} message="Good detail. The kit will reflect this." />
         </div>
 
@@ -886,7 +890,11 @@ export default function OnboardingKitBuilderTool({
             value={weekOnePriorities}
             onChange={(e) => setWeekOnePriorities(e.target.value)}
             placeholder={`e.g. Meet the full sales team, get access to HubSpot, shadow two customer calls, understand how deals move through the pipeline.`}
+            maxLength={500}
           />
+          <div style={{ textAlign: "right", fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "4px" }}>
+            {weekOnePriorities.length}/500
+          </div>
         </div>
 
         {/* Key tools */}
@@ -946,7 +954,11 @@ export default function OnboardingKitBuilderTool({
             value={howTeamWorks}
             onChange={(e) => setHowTeamWorks(e.target.value)}
             placeholder="e.g. Small team, moves fast. Slack is primary. Email is rare. Decisions go through the manager but everyone's input is expected. Weekly standup Mondays at 9."
+            maxLength={500}
           />
+          <div style={{ textAlign: "right", fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "4px" }}>
+            {howTeamWorks.length}/500
+          </div>
         </div>
 
         {/* 30/60/90 */}
@@ -957,7 +969,11 @@ export default function OnboardingKitBuilderTool({
             value={thirtyToNinety}
             onChange={(e) => setThirtyToNinety(e.target.value)}
             placeholder="e.g. 30 days: understands all key accounts and has first prospecting list built. 60 days: first outbound sequence live. 90 days: pipeline contribution visible in HubSpot."
+            maxLength={500}
           />
+          <div style={{ textAlign: "right", fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "4px" }}>
+            {thirtyToNinety.length}/500
+          </div>
           <p style={helperStyle}>Write in plain language. You don't need three separate fields. Just describe all three milestones in one response.</p>
           <QualitySignal value={thirtyToNinety} message="Good detail. The kit will reflect this." />
         </div>
@@ -1008,7 +1024,11 @@ export default function OnboardingKitBuilderTool({
             value={teamNotes}
             onChange={(e) => setTeamNotes(e.target.value)}
             placeholder="e.g. Sarah is the go-to for tool access, even though IT technically owns it."
+            maxLength={500}
           />
+          <div style={{ textAlign: "right", fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "4px" }}>
+            {teamNotes.length}/500
+          </div>
         </div>
 
         {/* Feedback cadence */}
@@ -1375,7 +1395,7 @@ export default function OnboardingKitBuilderTool({
     return (
       <div ref={toolContainerRef} className="okb-tool">
         <ToolLoadingScreen
-          headingText={`Building ${hireName ? `${hireName}'s` : "the"} onboarding kit.`}
+          headingText="Building your kit"
           timeEstimate="About 3 minutes."
           steps={LOADING_STEPS}
           activeStep={loadingStep}

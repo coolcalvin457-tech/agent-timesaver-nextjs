@@ -37,56 +37,6 @@ async function sendWorkflowEmail(
     <h1 style="margin:0 0 6px 0; font-family:Georgia,serif; font-size:28px; font-weight:700; color:#161618; line-height:1.15; letter-spacing:-0.025em;">
       Your workflow is ready.
     </h1>
-    <p style="margin:0 0 28px 0; font-size:16px; color:#555553; font-weight:600; line-height:1.3;">
-      ${cleanTitle}
-    </p>
-
-    <!-- What's included card -->
-    <table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 20px 0; border:1px solid #e4e4e2; border-radius:8px; overflow:hidden;">
-      <tr>
-        <td style="padding:20px 24px; background:#fafaf8;">
-          <p style="font-family:'JetBrains Mono',monospace; font-size:10px; font-weight:600; letter-spacing:0.1em; color:#1e7ab8; text-transform:uppercase; margin:0 0 16px;">
-            Your workflow includes
-          </p>
-          <table width="100%" cellpadding="0" cellspacing="0">
-            <tr>
-              <td style="padding:6px 0 10px; border-bottom:1px solid #e4e4e2; vertical-align:top;">
-                <p style="margin:0 0 2px; font-size:14px; font-weight:600; color:#161618; line-height:1.4;">Workflow Playbook</p>
-                <p style="margin:0; font-size:13px; color:#888886; line-height:1.5;">Your full step-by-step process, start to finish.</p>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding:10px 0; border-bottom:1px solid #e4e4e2; vertical-align:top;">
-                <p style="margin:0 0 2px; font-size:14px; font-weight:600; color:#161618; line-height:1.4;">AI Setup</p>
-                <p style="margin:0; font-size:13px; color:#888886; line-height:1.5;">Which tools to open at each step.</p>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding:10px 0; border-bottom:1px solid #e4e4e2; vertical-align:top;">
-                <p style="margin:0 0 2px; font-size:14px; font-weight:600; color:#161618; line-height:1.4;">AI Prompts</p>
-                <p style="margin:0; font-size:13px; color:#888886; line-height:1.5;">Copy-pasteable prompts, ready to run.</p>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding:10px 0; border-bottom:1px solid #e4e4e2; vertical-align:top;">
-                <p style="margin:0 0 2px; font-size:14px; font-weight:600; color:#161618; line-height:1.4;">Time Estimates</p>
-                <p style="margin:0; font-size:13px; color:#888886; line-height:1.5;">How long each step takes, and the total.</p>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding:10px 0 6px; vertical-align:top;">
-                <p style="margin:0 0 2px; font-size:14px; font-weight:600; color:#161618; line-height:1.4;">Key Insights</p>
-                <p style="margin:0; font-size:13px; color:#888886; line-height:1.5;">Specific tips for this workflow.</p>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
-
-    <p style="margin:0 0 32px 0; font-size:13px; color:#888886;">
-      📎 ${filename} · ${stepLabel} · ${frequency}
-    </p>
 
     <!-- CTA -->
     <a href="https://promptaiagents.com/workflow"

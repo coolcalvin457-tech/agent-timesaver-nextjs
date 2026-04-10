@@ -119,6 +119,9 @@ async function sendPromptKitEmail(
         </td>
       </tr>
     </table>
+    <p style="margin:0 0 32px 0; font-size:13px; color:#888886; line-height:1.6;">
+      Tell AI to save its response as <strong>AI Profile.md</strong>
+    </p>
 
     <!-- Step 3: Prompts by category -->
     <p style="margin:0 0 6px 0; font-family:monospace; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#1e7ab8;">
@@ -128,7 +131,7 @@ async function sendPromptKitEmail(
       12 Prompts for ${jobTitle}.
     </p>
     <p style="margin:0 0 24px 0; font-size:13px; color:#888886; line-height:1.6;">
-      Copy any prompt below and paste it directly into your AI tool of choice.
+      Copy and paste into your AI tool of choice.
     </p>
     <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
       ${categoryRows}

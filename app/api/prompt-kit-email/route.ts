@@ -110,7 +110,7 @@ async function sendPromptKitEmail(
       Your AI Profile.
     </p>
     <p style="margin:0 0 16px 0; font-size:13px; color:#888886; line-height:1.6;">
-      Paste this into AI once. No need to re-introduce yourself or start from scratch ever again.
+      Paste this into AI once. No need to keep re-introducing yourself.
     </p>
     <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
       <tr>

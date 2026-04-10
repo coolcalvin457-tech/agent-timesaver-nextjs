@@ -434,7 +434,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, autoF
           </p>
 
           {/* ── Step 1: AI Workspace Setup (S137 redesign) ── */}
-          <div className="pb-system-section">
+          <div className="pb-system-section pb-section-first">
             <div className="pb-workspace-card">
               <p className="pb-workspace-card-label">Folder structure</p>
               <div className="pb-workspace-tree">
@@ -457,7 +457,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, autoF
             <p className="pb-system-eyebrow">Step 2</p>
             <h3 className="pb-system-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}>Your AI Profile.</h3>
             <p className="pb-system-step-body" style={{ fontSize: "0.8125rem" }}>
-              Paste this into AI once. No need to re-introduce yourself or start from scratch ever again.
+              Paste this into AI once. No need to keep re-introducing yourself.
             </p>
             <div className="pb-prompt-text-wrapper" style={{ marginBottom: "12px", flexDirection: "column", alignItems: "stretch" }}>
               <p className="pb-prompt-text">{promptKit.aiProfile}</p>

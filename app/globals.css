@@ -2525,14 +2525,17 @@ input, textarea {
 }
 
 /* First .pb-system-section inside results (Step 1 content area) should
-   NOT have a divider. The divider only appears between steps. */
-.pb-results-dark .screen > .pb-system-section:first-of-type {
+   NOT have a divider. The divider only appears between steps.
+   Uses explicit class instead of :first-of-type because the "Sent to
+   your inbox" div is also a div child of .screen, which breaks
+   :first-of-type matching (it selects by element type, not class). */
+.pb-results-dark .pb-section-first {
   border-top: none;
   margin-top: 0;
   padding-top: 0;
 }
 
-.pb-results-dark .screen > .pb-system-section:first-of-type::before {
+.pb-results-dark .pb-section-first::before {
   display: none;
 }
 

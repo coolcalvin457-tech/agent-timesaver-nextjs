@@ -905,7 +905,7 @@ export default function WorkflowBuilderTool({
 
       {/* ── Paywall ───────────────────────────────────────── */}
       {screen === "paywall" && (
-        <div className="screen">
+        <div className="screen" style={{ background: "#161618", paddingTop: "32px", paddingBottom: "20px" }}>
           <h2
             style={{
               fontSize: "clamp(1.75rem, 3.5vw, 2.25rem)",
@@ -928,11 +928,11 @@ export default function WorkflowBuilderTool({
           {/* What's included */}
           <div
             style={{
-              background: "transparent",
+              background: "radial-gradient(ellipse at center, rgba(30,122,184,0.12) 0%, transparent 70%)",
               border: "1px solid rgba(255,255,255,0.10)",
               borderRadius: "10px",
               padding: "18px 20px",
-              marginBottom: "24px",
+              marginBottom: "16px",
             }}
           >
             <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "rgba(255,255,255,0.45)", margin: "0 0 12px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
@@ -1038,7 +1038,7 @@ export default function WorkflowBuilderTool({
               </div>
 
               {/* Price */}
-              <div style={{ display: "flex", alignItems: "baseline", gap: "8px", marginBottom: "24px" }}>
+              <div style={{ display: "flex", alignItems: "baseline", marginBottom: "24px" }}>
                 <span style={{ fontSize: "2rem", fontWeight: 800, color: "#FFFFFF", lineHeight: 1 }}>$49</span>
                 <span style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.5)" }}>/year</span>
               </div>

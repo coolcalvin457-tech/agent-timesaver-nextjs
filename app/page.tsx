@@ -49,7 +49,7 @@ export default function Home() {
                 You don&apos;t have to be technical to be good with AI.<br />
                 We make individualized agents accessible.<br />
                 Start prompting and customizing.<br />
-                Your team of AI coworkers.
+                Your team of <span style={{ color: "#FFFFFF" }}>AI coworkers</span>.
               </p>
             </div>
           </div>

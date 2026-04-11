@@ -60,6 +60,7 @@ export default function PIPSectionCards() {
             if (e.key === "Enter" || e.key === " ") openPreview();
           }}
           aria-label="Preview example PIP output"
+          style={{ position: "relative" }}
         >
           {/* Real document thumbnail */}
           <div className="kit-list-thumb">
@@ -77,9 +78,11 @@ export default function PIPSectionCards() {
             />
           </div>
 
-          <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
-            <span className="kit-list-badge">Example</span>
-          </div>
+          {/* Badge absolutely centered in the card */}
+          <span className="kit-list-badge" style={{ position: "absolute", left: "50%", transform: "translateX(-50%)" }}>Example</span>
+
+          {/* Spacer to keep icons pushed right */}
+          <div style={{ flex: 1 }} />
 
           {/* Preview + Download */}
           <div

@@ -64,6 +64,7 @@ export default function WorkflowSectionCards() {
             if (e.key === "Enter" || e.key === " ") openPreview();
           }}
           aria-label="Preview example Workflow output"
+          style={{ position: "relative" }}
         >
           {/* Document thumbnail */}
           <div className="kit-list-thumb">
@@ -81,9 +82,11 @@ export default function WorkflowSectionCards() {
             />
           </div>
 
-          <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
-            <span className="kit-list-badge">Example</span>
-          </div>
+          {/* Badge absolutely centered in the card */}
+          <span className="kit-list-badge" style={{ position: "absolute", left: "50%", transform: "translateX(-50%)" }}>Example</span>
+
+          {/* Spacer to keep icons pushed right */}
+          <div style={{ flex: 1 }} />
 
           {/* Preview + Download */}
           <div

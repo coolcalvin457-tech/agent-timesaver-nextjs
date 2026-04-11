@@ -1072,11 +1072,8 @@ export default function WorkflowBuilderTool({
         {resultSections.length > 0 && (
           <div style={{ marginTop: "40px", textAlign: "left" }}>
             {resultSections.map((section, idx) => (
-              <div
-                key={idx}
-                className="result-section-card"
-              >
-                {/* Step eyebrow — standalone number, matches Prompts */}
+              <div key={idx} style={{ marginBottom: "32px" }}>
+                {/* Step eyebrow + headline — outside the card, on dark background */}
                 <p className="result-eyebrow">
                   Step {idx + 1}
                 </p>
@@ -1091,7 +1088,7 @@ export default function WorkflowBuilderTool({
                   {section.title}.
                 </h3>
 
-                {/* Content wrapper — dark inset, matches Prompts pb-prompt-text-wrapper */}
+                {/* Content wrapper — dark inset card, matches Prompts pb-prompt-text-wrapper */}
                 <div className="result-content-wrapper" style={{ flexDirection: "column", alignItems: "stretch", position: "relative" }}>
                   {/* Copy button — top-right inside wrapper, matches Prompts */}
                   <button

@@ -1304,7 +1304,7 @@ export default function PIPBuilderTool({
             {resultSections.map((section, idx) => (
               <div
                 key={idx}
-                className="result-section-card"
+                style={{ marginBottom: "32px" }}
               >
                 <p className="result-eyebrow">
                   Step {idx + 1}

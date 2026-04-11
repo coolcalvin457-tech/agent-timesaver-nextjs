@@ -1136,7 +1136,13 @@ export default function WorkflowBuilderTool({
           >
             Your workflow is ready.
           </h2>
-          {resultTaskTitle && (
+          {/* F38: Job title echo */}
+          {jobTitle && (
+            <p style={{ fontSize: "0.9375rem", color: "rgba(255,255,255,0.55)", margin: "0 0 8px", textAlign: "center" }}>
+              {jobTitle}{resultTaskTitle ? ` · ${resultTaskTitle}` : ""}
+            </p>
+          )}
+          {!jobTitle && resultTaskTitle && (
             <p style={{ fontSize: "0.9375rem", color: "rgba(255,255,255,0.55)", margin: "0 0 8px", textAlign: "center" }}>
               {resultTaskTitle}
             </p>

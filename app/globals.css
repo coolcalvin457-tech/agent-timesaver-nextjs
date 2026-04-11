@@ -4218,8 +4218,8 @@ input, textarea {
 }
 
 .kit-list-thumb {
-  width: 26px;
-  height: 34px;
+  width: 36px;
+  height: 46px;
   border-radius: 3px;
   overflow: hidden;
   flex-shrink: 0;
@@ -4269,8 +4269,9 @@ input, textarea {
 }
 
 .dark-kit-section .kit-list-thumb {
-  border-color: rgba(255,255,255,0.10);
+  border-color: rgba(255,255,255,0.18);
   background: #1C1C1F;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.06);
 }
 
 .dark-kit-section .kit-list-title {

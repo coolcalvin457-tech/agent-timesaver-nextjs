@@ -157,6 +157,7 @@ export default function WorkflowBuilderTool({
 }: WorkflowBuilderToolProps) {
   const { user } = useAuth();
   const toolContainerRef = useRef<HTMLDivElement>(null);
+  const paywallRef = useRef<HTMLDivElement>(null);
   const isFirstRender = useRef(true);
 
   // ── Screen ───────────────────────────────────────────────
@@ -295,6 +296,11 @@ export default function WorkflowBuilderTool({
     }
     // Auto-advance from paywall: don't scroll
     if (prev === "paywall" && screen === "s1") return;
+    // Scroll to paywall screen itself (not the tool container) so headline is visible
+    if (screen === "paywall" && paywallRef.current) {
+      paywallRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
     toolContainerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [screen]);
 
@@ -905,7 +911,7 @@ export default function WorkflowBuilderTool({
 
       {/* ── Paywall ───────────────────────────────────────── */}
       {screen === "paywall" && (
-        <div className="screen" style={{ background: "#161618", paddingTop: "32px", paddingBottom: "20px" }}>
+        <div ref={paywallRef} className="screen" style={{ background: "#161618", paddingTop: "32px", paddingBottom: "20px", scrollMarginTop: "100px" }}>
           <h2
             style={{
               fontSize: "clamp(1.75rem, 3.5vw, 2.25rem)",

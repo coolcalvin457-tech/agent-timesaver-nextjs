@@ -935,6 +935,8 @@ export default function WorkflowBuilderTool({
               marginLeft: "26px",
               marginRight: "26px",
               marginBottom: "12px",
+              animation: "fadeUp 0.4s ease both",
+              animationDelay: "0.1s",
             }}
           >
             <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "rgba(255,255,255,0.45)", margin: "0 0 12px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
@@ -1015,10 +1017,12 @@ export default function WorkflowBuilderTool({
                 borderRadius: "12px",
                 padding: "24px 28px 24px 37px",
                 marginBottom: "0",
+                animation: "fadeUp 0.4s ease both",
+                animationDelay: "0.2s",
               }}
             >
               {/* Header row: tool name left, badge right */}
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px" }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px", flexWrap: "wrap", gap: "8px" }}>
                 <p style={{ fontSize: "0.9375rem", fontWeight: 700, color: "#FFFFFF", margin: 0 }}>
                   Workflow Builder
                 </p>
@@ -1046,11 +1050,12 @@ export default function WorkflowBuilderTool({
               </div>
 
               {/* Divider */}
-              <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", margin: "0 0 28px" }} />
+              <div style={{ borderTop: "1px solid rgba(255,255,255,0.12)", margin: "0 0 28px" }} />
 
               {/* CTA */}
               <button
                 type="button"
+                className="btn-paywall-cta"
                 onClick={handleCheckout}
                 disabled={checkoutLoading}
                 style={{
@@ -1066,7 +1071,6 @@ export default function WorkflowBuilderTool({
                   border: "none",
                   borderRadius: "8px",
                   cursor: checkoutLoading ? "not-allowed" : "pointer",
-                  transition: "background 0.15s ease",
                 }}
               >
                 {checkoutLoading ? "Redirecting to checkout..." : "Get Access"}

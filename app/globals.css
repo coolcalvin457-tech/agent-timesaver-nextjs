@@ -4294,6 +4294,16 @@ input, textarea {
   box-shadow: none;
 }
 
+/* Paywall CTA — solid blue with hover lift */
+.btn-paywall-cta {
+  transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+.btn-paywall-cta:hover:not(:disabled) {
+  transform: scale(1.02);
+  box-shadow: 0 4px 16px rgba(30,122,184,0.35);
+  background: #1a6da5;
+}
+
 .dark-kit-section {
   background: transparent !important;
   /* Fix: var(--text-primary) used as inline style on h3 resolves here */

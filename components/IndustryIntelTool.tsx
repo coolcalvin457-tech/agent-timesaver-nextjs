@@ -365,15 +365,15 @@ export default function IndustryIntelTool() {
           {/* Company size */}
           <div style={{ ...fieldGroupStyle, marginBottom: "28px" }}>
             <label style={labelStyle}>Company size</label>
-            <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "10px" }}>
+            <div className="mc-tile-grid" style={{ marginTop: "10px" }}>
               {COMPANY_SIZE_OPTIONS.map((option) => (
                 <button
                   key={option}
-                  className={`choice ${companySize === option ? "selected" : ""}`}
+                  type="button"
+                  className={`mc-tile${companySize === option ? " selected" : ""}`}
                   onClick={() => setCompanySize(option)}
                 >
-                  <span className="choice-dot" />
-                  {option}
+                  <span className="mc-tile-label">{option}</span>
                 </button>
               ))}
             </div>
@@ -382,15 +382,15 @@ export default function IndustryIntelTool() {
           {/* Decision scope */}
           <div style={{ ...fieldGroupStyle, marginBottom: "8px" }}>
             <label style={labelStyle}>Decision scope</label>
-            <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "10px" }}>
+            <div className="mc-tile-grid" style={{ marginTop: "10px" }}>
               {DECISION_SCOPE_OPTIONS.map((option) => (
                 <button
                   key={option}
-                  className={`choice ${decisionScope === option ? "selected" : ""}`}
+                  type="button"
+                  className={`mc-tile${decisionScope === option ? " selected" : ""}`}
                   onClick={() => setDecisionScope(option)}
                 >
-                  <span className="choice-dot" />
-                  {option}
+                  <span className="mc-tile-label">{option}</span>
                 </button>
               ))}
             </div>

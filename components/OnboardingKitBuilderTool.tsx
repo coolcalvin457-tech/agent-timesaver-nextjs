@@ -832,7 +832,7 @@ export default function OnboardingKitBuilderTool({
         {/* Role type toggle */}
         <div style={fieldWrapStyle}>
           <label style={labelStyle}>Role type <span style={{ fontWeight: 400, color: "var(--text-muted, #999)" }}>(Required)</span></label>
-          <div style={{ display: "flex", gap: "10px" }}>
+          <div className="mc-tile-grid" style={{ marginTop: "4px" }}>
             {(
               [
                 { value: "individual_contributor", label: "Individual contributor" },
@@ -842,25 +842,15 @@ export default function OnboardingKitBuilderTool({
               <button
                 key={opt.value}
                 type="button"
+                className={`mc-tile${roleType === opt.value ? " selected" : ""}`}
                 onClick={() => {
                   setRoleType(opt.value);
                   if (hireName.trim() && hireTitle.trim() && startDate.trim() && managerName.trim()) {
                     setTimeout(() => goToS2(), 180);
                   }
                 }}
-                style={{
-                  padding: "9px 16px",
-                  fontSize: "0.875rem",
-                  fontWeight: roleType === opt.value ? 600 : 400,
-                  border: `1px solid ${roleType === opt.value ? "var(--cta, #1E7AB8)" : "var(--border, #E4E4E2)"}`,
-                  borderRadius: "8px",
-                  background: roleType === opt.value ? "rgba(30,122,184,0.07)" : "transparent",
-                  color: roleType === opt.value ? "var(--cta, #1E7AB8)" : "var(--text-secondary, #555553)",
-                  cursor: "pointer",
-                  transition: "all 0.15s ease",
-                }}
               >
-                {opt.label}
+                <span className="mc-tile-label">{opt.label}</span>
               </button>
             ))}
           </div>

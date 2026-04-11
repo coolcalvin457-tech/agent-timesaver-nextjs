@@ -145,24 +145,6 @@ const fieldGroupStyle: React.CSSProperties = {
   marginBottom: "20px",
 };
 
-const radioGroupStyle: React.CSSProperties = {
-  display: "flex",
-  flexDirection: "column" as const,
-  gap: "8px",
-  marginTop: "4px",
-};
-
-const radioOptionStyle = (selected: boolean): React.CSSProperties => ({
-  display: "flex",
-  alignItems: "flex-start",
-  gap: "10px",
-  padding: "10px 14px",
-  border: `1.5px solid ${selected ? "var(--cta, #1E7AB8)" : "rgba(255,255,255,0.35)"}`,
-  borderRadius: "8px",
-  cursor: "pointer",
-  background: "transparent", /* F07/F13: border only, no background tint */
-  transition: "border-color 0.15s ease",
-});
 
 // ─── Component ─────────────────────────────────────────────────────────────────
 
@@ -736,37 +718,23 @@ export default function PIPBuilderTool({
         <div style={fieldGroupStyle}>
           <label style={labelStyle}>
             Issue type          </label>
-          <div style={radioGroupStyle}>
+          <div className="mc-tile-grid" style={{ marginTop: "4px" }}>
             {(["performance", "behavioral"] as IssueType[]).map((type) => (
-              <div
+              <button
                 key={type}
-                style={radioOptionStyle(issueType === type)}
+                type="button"
+                className={`mc-tile${issueType === type ? " selected" : ""}`}
                 onClick={() => setIssueType(type)}
               >
-                <div
-                  style={{
-                    width: "16px", height: "16px", borderRadius: "50%", flexShrink: 0, marginTop: "2px",
-                    border: `2px solid ${issueType === type ? "var(--cta, #1E7AB8)" : "var(--border, #E4E4E2)"}`,
-                    background: issueType === type ? "var(--cta, #1E7AB8)" : "transparent",
-                    transition: "all 0.15s ease",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                  }}
-                >
-                  {issueType === type && (
-                    <div style={{ width: "5px", height: "5px", borderRadius: "50%", background: "#FFFFFF" }} />
-                  )}
-                </div>
-                <div>
-                  <p style={{ margin: 0, fontSize: "0.875rem", fontWeight: 600, color: "var(--text-primary)", textTransform: "capitalize" }}>
-                    {type}
-                  </p>
-                  <p style={{ margin: "2px 0 0", fontSize: "0.8125rem", color: "var(--text-muted)" }}>
+                <span className="mc-tile-label">
+                  <span style={{ textTransform: "capitalize", fontWeight: 600 }}>{type}</span>
+                  <span style={{ display: "block", fontSize: "0.8125rem", fontWeight: 400, color: "var(--text-muted)", marginTop: "2px" }}>
                     {type === "performance"
                       ? "Missed deadlines, quotas, error rates"
                       : "Conduct, communication, professionalism"}
-                  </p>
-                </div>
-              </div>
+                  </span>
+                </span>
+              </button>
             ))}
           </div>
         </div>
@@ -775,15 +743,12 @@ export default function PIPBuilderTool({
         <div style={fieldGroupStyle}>
           <label style={labelStyle}>
             Prior coaching or feedback given?          </label>
-          <div style={{ display: "flex", gap: "10px" }}>
+          <div className="mc-tile-grid" style={{ marginTop: "4px" }}>
             {([true, false] as const).map((val) => (
-              <div
+              <button
                 key={String(val)}
-                style={{
-                  ...radioOptionStyle(priorCoaching === val),
-                  flex: 1,
-                  justifyContent: "center",
-                }}
+                type="button"
+                className={`mc-tile${priorCoaching === val ? " selected" : ""}`}
                 onClick={() => {
                   setPriorCoaching(val);
                   if (employeeRole.trim() && department.trim() && tenure.trim() && managerName.trim() && issueType) {
@@ -791,10 +756,8 @@ export default function PIPBuilderTool({
                   }
                 }}
               >
-                <span style={{ fontSize: "0.875rem", fontWeight: 600, color: priorCoaching === val ? "var(--cta, #1E7AB8)" : "var(--text-primary)" }}>
-                  {val ? "Yes" : "No"}
-                </span>
-              </div>
+                <span className="mc-tile-label">{val ? "Yes" : "No"}</span>
+              </button>
             ))}
           </div>
         </div>
@@ -888,18 +851,12 @@ export default function PIPBuilderTool({
         <div style={fieldGroupStyle}>
           <label style={labelStyle}>
             Plan duration          </label>
-          <div style={{ display: "flex", gap: "10px" }}>
+          <div className="mc-tile-grid" style={{ marginTop: "4px" }}>
             {(["30", "60", "90"] as Timeline[]).map((t) => (
-              <div
+              <button
                 key={t}
-                style={{
-                  ...radioOptionStyle(timeline === t),
-                  flex: 1,
-                  justifyContent: "center",
-                  flexDirection: "column" as const,
-                  alignItems: "center",
-                  padding: "12px 8px",
-                }}
+                type="button"
+                className={`mc-tile${timeline === t ? " selected" : ""}`}
                 onClick={() => {
                   setTimeline(t);
                   if (deficiencies.trim().length >= 80 && improvementTargets.trim().length >= 50) {
@@ -907,11 +864,8 @@ export default function PIPBuilderTool({
                   }
                 }}
               >
-                <span style={{ fontSize: "1rem", fontWeight: 700, color: "var(--text-primary)" }}>
-                  {t}
-                </span>
-                <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>days</span>
-              </div>
+                <span className="mc-tile-label">{t} days</span>
+              </button>
             ))}
           </div>
           <p style={helperStyle}>
@@ -964,22 +918,18 @@ export default function PIPBuilderTool({
         <div style={fieldGroupStyle}>
           <label style={labelStyle}>
             Check-in schedule          </label>
-          <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
+          <div className="mc-tile-grid" style={{ marginTop: "4px", marginBottom: "10px" }}>
             {(["weekly", "biweekly", "custom"] as CheckinSchedule[]).map((opt) => (
-              <div
+              <button
                 key={opt}
-                style={{
-                  ...radioOptionStyle(checkinSchedule === opt),
-                  flex: 1,
-                  justifyContent: "center",
-                  padding: "10px 8px",
-                }}
+                type="button"
+                className={`mc-tile${checkinSchedule === opt ? " selected" : ""}`}
                 onClick={() => setCheckinSchedule(opt)}
               >
-                <span style={{ fontSize: "0.875rem", fontWeight: 600, color: "var(--text-primary)", textAlign: "center" as const }}>
+                <span className="mc-tile-label">
                   {opt === "biweekly" ? "Bi-weekly" : opt.charAt(0).toUpperCase() + opt.slice(1)}
                 </span>
-              </div>
+              </button>
             ))}
           </div>
           {checkinSchedule === "custom" && (

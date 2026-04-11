@@ -1990,6 +1990,25 @@ input, textarea {
   border-color: var(--dark-border);
 }
 
+/* Autofill override: cascade for inline-styled inputs in paid tools (S152) */
+.hero-tool-dark .tool-container input:-webkit-autofill,
+.hero-tool-dark .tool-container input:-webkit-autofill:hover,
+.hero-tool-dark .tool-container input:-webkit-autofill:focus,
+.hero-tool-dark .tool-container textarea:-webkit-autofill,
+.hero-tool-dark .tool-container textarea:-webkit-autofill:hover,
+.hero-tool-dark .tool-container textarea:-webkit-autofill:focus,
+.hero-tool-dark .okb-tool input:-webkit-autofill,
+.hero-tool-dark .okb-tool input:-webkit-autofill:hover,
+.hero-tool-dark .okb-tool input:-webkit-autofill:focus,
+.hero-tool-dark .okb-tool textarea:-webkit-autofill,
+.hero-tool-dark .okb-tool textarea:-webkit-autofill:hover,
+.hero-tool-dark .okb-tool textarea:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #1E1E20 inset !important;
+  -webkit-text-fill-color: rgba(255,255,255,0.9) !important;
+  transition: background-color 5000s ease-in-out 0s;
+  border-color: var(--dark-border) !important;
+}
+
 /* Textarea — darker than single-line inputs so it sits flush in the dark frame */
 /* Covers both .input (Budget Spreadsheets, Prompt Builder) and .textarea (Timesaver) */
 .hero-tool-dark textarea.input,

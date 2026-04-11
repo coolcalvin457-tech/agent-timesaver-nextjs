@@ -4167,6 +4167,39 @@ input, textarea {
   animation: fadeUp 0.3s ease;
 }
 
+/* Section dividers between steps — matches Prompts pb-system-section pattern */
+.result-step-section {
+  margin-top: 40px;
+  padding-top: 40px;
+  position: relative;
+}
+
+.result-step-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -44px;
+  right: -44px;
+  border-top: 2px solid rgba(255, 255, 255, 0.12);
+  pointer-events: none;
+}
+
+.result-step-section-first {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.result-step-section-first::before {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .result-step-section::before {
+    left: -24px;
+    right: -24px;
+  }
+}
+
 /* Inner dark wrapper — matches Prompts pb-prompt-text-wrapper */
 .result-content-wrapper {
   display: flex;
@@ -4176,7 +4209,7 @@ input, textarea {
   padding: 14px 16px;
 }
 
-.result-section-card .result-copy-btn {
+.result-copy-btn {
   padding: 5px 12px;
   background: var(--dark, #161618);
   color: #fff;
@@ -4190,15 +4223,15 @@ input, textarea {
   white-space: nowrap;
 }
 
-.result-section-card .result-copy-btn:hover {
+.result-copy-btn:hover {
   background: #2A2A2C;
 }
 
-.result-section-card .result-copy-btn.copied {
+.result-copy-btn.copied {
   background: var(--success, #1A7A4A);
 }
 
-.result-section-card .result-eyebrow {
+.result-eyebrow {
   font-family: var(--font-mono);
   font-size: 0.75rem;
   font-weight: 600;

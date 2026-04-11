@@ -1287,7 +1287,6 @@ export default function PIPBuilderTool({
           background: "rgba(30,122,184,0.06)", border: "1px solid rgba(30,122,184,0.15)",
           borderRadius: "8px", padding: "10px 14px", marginBottom: "20px",
           fontSize: "0.875rem", color: "rgba(255,255,255,0.6)",
-          width: "fit-content", margin: "0 auto",
         }}>
           <span style={{ color: "var(--cta)" }}>✓</span> Sent to your inbox.
         </div>
@@ -1304,6 +1303,7 @@ export default function PIPBuilderTool({
             {resultSections.map((section, idx) => (
               <div
                 key={idx}
+                className={`result-step-section${idx === 0 ? " result-step-section-first" : ""}`}
                 style={{ marginBottom: "32px" }}
               >
                 <p className="result-eyebrow">

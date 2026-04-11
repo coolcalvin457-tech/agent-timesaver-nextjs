@@ -1051,7 +1051,6 @@ export default function WorkflowBuilderTool({
           background: "rgba(30,122,184,0.06)", border: "1px solid rgba(30,122,184,0.15)",
           borderRadius: "8px", padding: "10px 14px", marginBottom: "20px",
           fontSize: "0.875rem", color: "rgba(255,255,255,0.6)",
-          alignSelf: "center", width: "fit-content",
         }}>
           <span style={{ color: "var(--cta)" }}>✓</span> Sent to your inbox.
         </div>
@@ -1072,7 +1071,7 @@ export default function WorkflowBuilderTool({
         {resultSections.length > 0 && (
           <div style={{ marginTop: "40px", textAlign: "left" }}>
             {resultSections.map((section, idx) => (
-              <div key={idx} style={{ marginBottom: "32px" }}>
+              <div key={idx} className={`result-step-section${idx === 0 ? " result-step-section-first" : ""}`} style={{ marginBottom: "32px" }}>
                 {/* Step eyebrow + headline — outside the card, on dark background */}
                 <p className="result-eyebrow">
                   Step {idx + 1}

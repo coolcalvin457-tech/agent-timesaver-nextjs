@@ -546,8 +546,8 @@ export default function WorkflowBuilderTool({
     setAudiencePriorities("");
     setJobTitle("");
     setUserTools("");
-    setProcessFile(null);
     setExampleFile(null);
+    setFileError("");
     setFileBlob(null);
     setFilename("workflow.docx");
     setResultTaskTitle("");

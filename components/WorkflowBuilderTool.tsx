@@ -639,96 +639,99 @@ export default function WorkflowBuilderTool({
             <QualitySignal value={taskDescription} />
           </div>
 
-          {/* Upload zone 1 — compact bar */}
-          <div style={{ marginTop: "4px", marginBottom: "16px", display: "flex", alignItems: "center" }}>
-            <label
-              className="choose-file-btn"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                cursor: "pointer",
-                fontSize: "0.875rem",
-                color: processFile ? "var(--cta, #1E7AB8)" : "rgba(255,255,255,0.55)",
-                background: "rgba(255,255,255,0.05)",
-                border: "1px solid rgba(255,255,255,0.1)",
-                borderRadius: "8px",
-                padding: "8px 14px",
-                width: "100%",
-                boxSizing: "border-box",
-              }}
-            >
-              <input
-                type="file"
-                accept=".txt,.md,.pdf,.docx"
-                style={{ display: "none" }}
-                onChange={(e) => setProcessFile(e.target.files?.[0] ?? null)}
-              />
-              {processFile ? `✓ ${processFile.name}` : "Upload workflow example (optional)"}
-            </label>
-            {processFile && (
-              <button
-                type="button"
-                onClick={() => setProcessFile(null)}
+          {/* Upload zones — narrower, centered to signal optional/secondary */}
+          <div style={{ marginTop: "4px", marginBottom: "20px", width: "70%", marginLeft: "auto", marginRight: "auto", display: "flex", flexDirection: "column" as const, gap: "10px" }}>
+            {/* Upload zone 1 */}
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <label
+                className="choose-file-btn"
                 style={{
-                  background: "none",
-                  border: "none",
-                  color: "rgba(255,255,255,0.35)",
-                  fontSize: "0.8125rem",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
                   cursor: "pointer",
-                  marginLeft: "10px",
-                  whiteSpace: "nowrap" as const,
+                  fontSize: "0.875rem",
+                  color: processFile ? "var(--cta, #1E7AB8)" : "rgba(255,255,255,0.55)",
+                  background: "rgba(255,255,255,0.05)",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  borderRadius: "8px",
+                  padding: "8px 14px",
+                  width: "100%",
+                  boxSizing: "border-box",
                 }}
               >
-                Remove
-              </button>
-            )}
-          </div>
+                <input
+                  type="file"
+                  accept=".txt,.md,.pdf,.docx"
+                  style={{ display: "none" }}
+                  onChange={(e) => setProcessFile(e.target.files?.[0] ?? null)}
+                />
+                {processFile ? `✓ ${processFile.name}` : "Upload workflow example (optional)"}
+              </label>
+              {processFile && (
+                <button
+                  type="button"
+                  onClick={() => setProcessFile(null)}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    color: "rgba(255,255,255,0.35)",
+                    fontSize: "0.8125rem",
+                    cursor: "pointer",
+                    marginLeft: "10px",
+                    whiteSpace: "nowrap" as const,
+                  }}
+                >
+                  Remove
+                </button>
+              )}
+            </div>
 
-          {/* Upload zone 2 — compact bar */}
-          <div style={{ marginBottom: "20px", display: "flex", alignItems: "center" }}>
-            <label
-              className="choose-file-btn"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                cursor: "pointer",
-                fontSize: "0.875rem",
-                color: exampleFile ? "var(--cta, #1E7AB8)" : "rgba(255,255,255,0.55)",
-                background: "rgba(255,255,255,0.05)",
-                border: "1px solid rgba(255,255,255,0.1)",
-                borderRadius: "8px",
-                padding: "8px 14px",
-                width: "100%",
-                boxSizing: "border-box",
-              }}
-            >
-              <input
-                type="file"
-                accept=".txt,.md,.pdf,.docx"
-                style={{ display: "none" }}
-                onChange={(e) => setExampleFile(e.target.files?.[0] ?? null)}
-              />
-              {exampleFile ? `✓ ${exampleFile.name}` : "Upload finished product example (optional)"}
-            </label>
-            {exampleFile && (
-              <button
-                type="button"
-                onClick={() => setExampleFile(null)}
+            {/* Upload zone 2 */}
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <label
+                className="choose-file-btn"
                 style={{
-                  background: "none",
-                  border: "none",
-                  color: "rgba(255,255,255,0.35)",
-                  fontSize: "0.8125rem",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
                   cursor: "pointer",
-                  marginLeft: "10px",
-                  whiteSpace: "nowrap" as const,
+                  fontSize: "0.875rem",
+                  color: exampleFile ? "var(--cta, #1E7AB8)" : "rgba(255,255,255,0.55)",
+                  background: "rgba(255,255,255,0.05)",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  borderRadius: "8px",
+                  padding: "8px 14px",
+                  width: "100%",
+                  boxSizing: "border-box",
                 }}
               >
-                Remove
-              </button>
-            )}
+                <input
+                  type="file"
+                  accept=".txt,.md,.pdf,.docx"
+                  style={{ display: "none" }}
+                  onChange={(e) => setExampleFile(e.target.files?.[0] ?? null)}
+                />
+                {exampleFile ? `✓ ${exampleFile.name}` : "Upload finished product example (optional)"}
+              </label>
+              {exampleFile && (
+                <button
+                  type="button"
+                  onClick={() => setExampleFile(null)}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    color: "rgba(255,255,255,0.35)",
+                    fontSize: "0.8125rem",
+                    cursor: "pointer",
+                    marginLeft: "10px",
+                    whiteSpace: "nowrap" as const,
+                  }}
+                >
+                  Remove
+                </button>
+              )}
+            </div>
           </div>
 
           {s1Error && <p style={errorStyle}>{s1Error}</p>}

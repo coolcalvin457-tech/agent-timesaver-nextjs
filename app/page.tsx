@@ -39,16 +39,17 @@ export default function Home() {
         </section>
 
         {/* ── Section 2: Dream / Aspiration ───────────────────────────── */}
-        <section className="section section-dark" id="dream" style={{ paddingTop: "112px", paddingBottom: "112px" }}>
+        <section className="section section-dark" id="dream" style={{ paddingTop: "128px", paddingBottom: "128px" }}>
           <div className="container">
             <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center" }}>
               <h2 className="heading-1" style={{ color: "#fff", marginBottom: "var(--section-head-gap)", lineHeight: "var(--section-headline-lh)", fontSize: "var(--section-headline-size)", letterSpacing: "var(--section-headline-ls)" }}>
                 Imagine getting 5-10 hours back<br />every week.
               </h2>
               <p className="dream-body">
-                Personalized AI time-savers are now within reach.<br />
-                Reports, meeting preps, follow-ups, you name it.<br />
-                In fact, you&apos;re closer than you think.
+                You don&apos;t have to be technical to be good with AI.<br />
+                We make individualized agents accessible.<br />
+                Start prompting and customizing.<br />
+                Your team of AI coworkers.
               </p>
             </div>
           </div>

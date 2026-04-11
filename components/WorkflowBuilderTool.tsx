@@ -932,8 +932,8 @@ export default function WorkflowBuilderTool({
               border: "1px solid rgba(255,255,255,0.10)",
               borderRadius: "10px",
               padding: "18px 20px",
-              marginLeft: "7px",
-              marginRight: "7px",
+              marginLeft: "26px",
+              marginRight: "26px",
               marginBottom: "12px",
             }}
           >
@@ -1013,7 +1013,7 @@ export default function WorkflowBuilderTool({
               style={{
                 background: "var(--dark, #161618)",
                 borderRadius: "12px",
-                padding: "24px 28px 24px",
+                padding: "24px 28px 24px 47px",
                 marginBottom: "0",
               }}
             >

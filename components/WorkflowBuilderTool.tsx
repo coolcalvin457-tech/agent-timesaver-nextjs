@@ -621,7 +621,7 @@ export default function WorkflowBuilderTool({
             <div style={{ position: "relative" }}>
               <textarea
                 id="wf-task"
-                style={{ ...textareaStyle, minHeight: "130px", paddingBottom: "24px" }}
+                style={{ ...textareaStyle, minHeight: "170px", paddingBottom: "28px" }}
                 value={taskDescription}
                 onChange={(e) => setTaskDescription(e.target.value)}
                 placeholder={"e.g. Onboard new clients from signed contract to first deliverable. This means sending them a welcome packet, scheduling the kickoff call, collecting brand assets and logins, assigning the internal team, and setting up the project in our tracking system. I'd rather spend that time building the actual relationship with the client and talking through their goals.\n"}

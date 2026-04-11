@@ -225,8 +225,9 @@ export default function WorkflowBuilderTool({
     if (screen !== "loading") return;
     setLoadingStep(0);
     setBuildDone(false);
-    // Spread steps across ~90s build: 0s, 12s, 28s, 50s, 72s
-    const delays = [0, 12000, 28000, 50000, 72000];
+    // Spread steps across ~90s build, front-loaded for 60s fast case:
+    // 4 of 5 steps done by 55s; step 5 at 75s for natural finish at ~90s
+    const delays = [0, 10000, 25000, 42000, 75000];
     const timers = LOADING_STEPS.map((_, i) =>
       setTimeout(() => setLoadingStep(i), delays[i])
     );

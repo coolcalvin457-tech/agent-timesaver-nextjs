@@ -1353,7 +1353,7 @@ export default function OnboardingKitBuilderTool({
   // ── Sent screen (auto-delivered) ──────────────────────────
   if (screen === "sent") {
     return (
-      <div ref={toolContainerRef} className="okb-tool">
+      <div ref={toolContainerRef} className="okb-tool result-screen-enter">
         <div style={{ textAlign: "center", padding: "8px 0" }}>
           <div style={{ display: "inline-block", marginBottom: "16px" }}>
             <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
@@ -1395,7 +1395,7 @@ export default function OnboardingKitBuilderTool({
                     }).catch(() => {});
                   }}
                 >
-                  {copiedSectionIdx === idx ? "Copied" : "Copy"}
+                  {copiedSectionIdx === idx ? "\u2713 Copied" : "Copy"}
                 </button>
                 {section.content && (
                   <div style={{ marginBottom: section.items?.length ? "16px" : "0" }}>

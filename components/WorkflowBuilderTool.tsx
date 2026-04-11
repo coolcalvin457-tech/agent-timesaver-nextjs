@@ -1042,7 +1042,7 @@ export default function WorkflowBuilderTool({
 
       {/* ── Sent (auto-delivered) ────────────────────────── */}
       {screen === "sent" && (
-        <>
+        <div className="result-screen-enter">
         <div style={{ textAlign: "center", padding: "8px 0" }}>
           <div style={{ display: "inline-block", marginBottom: "16px" }}>
             <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
@@ -1102,7 +1102,7 @@ export default function WorkflowBuilderTool({
                     }).catch(() => {});
                   }}
                 >
-                  {copiedSectionIdx === idx ? "Copied" : "Copy"}
+                  {copiedSectionIdx === idx ? "\u2713 Copied" : "Copy"}
                 </button>
 
                 {/* Section body: overview / content prose */}
@@ -1189,7 +1189,7 @@ export default function WorkflowBuilderTool({
           buttonLabel="Try Now"
           href="/industry"
         />
-        </>
+        </div>
       )}
 
       {/* ── Error ─────────────────────────────────────────── */}

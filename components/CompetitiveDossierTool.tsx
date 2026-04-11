@@ -1026,7 +1026,7 @@ export default function CompetitiveDossierTool({
 
       {/* ── Sent screen (auto-delivered) ────────────────────────────────────── */}
       {screen === "sent" && (
-        <div style={{ textAlign: "center" }}>
+        <div className="result-screen-enter" style={{ textAlign: "center" }}>
           <div style={{ display: "inline-block", marginBottom: "16px" }}>
             <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
               <rect width="56" height="56" rx="12" fill="#22C55E" fillOpacity="0.12" />
@@ -1066,7 +1066,7 @@ export default function CompetitiveDossierTool({
                       }).catch(() => {});
                     }}
                   >
-                    {copiedSectionIdx === idx ? "Copied" : "Copy"}
+                    {copiedSectionIdx === idx ? "\u2713 Copied" : "Copy"}
                   </button>
                   {section.content && (
                     <div style={{ marginBottom: section.items?.length ? "16px" : "0" }}>

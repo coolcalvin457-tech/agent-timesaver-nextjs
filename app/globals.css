@@ -4156,6 +4156,15 @@ input, textarea {
   margin-bottom: 16px;
   position: relative;
   text-align: left;
+  transition: border-color 0.15s;
+}
+
+.result-section-card:hover {
+  border-color: rgba(30, 122, 184, 0.5);
+}
+
+.result-screen-enter {
+  animation: fadeUp 0.3s ease;
 }
 
 .result-section-card .result-copy-btn {
@@ -4180,13 +4189,14 @@ input, textarea {
 }
 
 .result-section-card .result-copy-btn.copied {
-  background: var(--success, #22C55E);
+  background: var(--success, #1A7A4A);
 }
 
 .result-section-card .result-eyebrow {
+  font-family: var(--font-mono);
   font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   color: var(--cta, #1E7AB8);
   text-transform: uppercase;
   margin: 0 0 12px;

@@ -624,17 +624,19 @@ export default function WorkflowBuilderTool({
             <label htmlFor="wf-task" style={labelStyle}>
               What task do you want a workflow for?
             </label>
-            <textarea
-              id="wf-task"
-              style={{ ...textareaStyle, minHeight: "90px" }}
-              value={taskDescription}
-              onChange={(e) => setTaskDescription(e.target.value)}
-              placeholder="e.g. Write a competitive analysis for a new product launch."
-              rows={3}
-              maxLength={500}
-            />
-            <div style={{ textAlign: "right", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", marginTop: "4px" }}>
-              {taskDescription.length}/500
+            <div style={{ position: "relative" }}>
+              <textarea
+                id="wf-task"
+                style={{ ...textareaStyle, minHeight: "90px", paddingBottom: "24px" }}
+                value={taskDescription}
+                onChange={(e) => setTaskDescription(e.target.value)}
+                placeholder="e.g. Write a competitive analysis for a new product launch."
+                rows={3}
+                maxLength={500}
+              />
+              <span style={{ position: "absolute", bottom: "8px", right: "12px", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", pointerEvents: "none" }}>
+                {taskDescription.length}/500
+              </span>
             </div>
             <QualitySignal value={taskDescription} />
           </div>
@@ -648,6 +650,7 @@ export default function WorkflowBuilderTool({
                 style={{
                   display: "flex",
                   alignItems: "center",
+                  justifyContent: "center",
                   gap: "8px",
                   cursor: "pointer",
                   fontSize: "0.875rem",
@@ -694,6 +697,7 @@ export default function WorkflowBuilderTool({
                 style={{
                   display: "flex",
                   alignItems: "center",
+                  justifyContent: "center",
                   gap: "8px",
                   cursor: "pointer",
                   fontSize: "0.875rem",
@@ -869,17 +873,19 @@ export default function WorkflowBuilderTool({
               Who sees the finished result, and what matters most to them?
               <span style={optionalStyle}>(optional)</span>
             </label>
-            <textarea
-              id="wf-audience"
-              style={{ ...textareaStyle, minHeight: "70px" }}
-              value={audiencePriorities}
-              onChange={(e) => setAudiencePriorities(e.target.value)}
-              placeholder="e.g. My director reviews it. She cares about the recovery plan, not the excuses."
-              rows={2}
-              maxLength={500}
-            />
-            <div style={{ textAlign: "right", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", marginTop: "4px" }}>
-              {audiencePriorities.length}/500
+            <div style={{ position: "relative" }}>
+              <textarea
+                id="wf-audience"
+                style={{ ...textareaStyle, minHeight: "70px", paddingBottom: "24px" }}
+                value={audiencePriorities}
+                onChange={(e) => setAudiencePriorities(e.target.value)}
+                placeholder="e.g. My director reviews it. She cares about the recovery plan, not the excuses."
+                rows={2}
+                maxLength={500}
+              />
+              <span style={{ position: "absolute", bottom: "8px", right: "12px", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", pointerEvents: "none" }}>
+                {audiencePriorities.length}/500
+              </span>
             </div>
           </div>
 

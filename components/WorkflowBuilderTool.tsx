@@ -630,7 +630,7 @@ export default function WorkflowBuilderTool({
                 style={{ ...textareaStyle, minHeight: "90px", paddingBottom: "24px" }}
                 value={taskDescription}
                 onChange={(e) => setTaskDescription(e.target.value)}
-                placeholder="e.g. Write a competitive analysis for a new product launch."
+                placeholder="e.g. Onboard new clients from signed contract to first deliverable. This means sending them a welcome packet, scheduling the kickoff call, collecting brand assets and logins, assigning the internal team, and setting up the project in our tracking system. I'd rather spend that time building the actual relationship with the client and talking through their goals."
                 rows={3}
                 maxLength={500}
               />

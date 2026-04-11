@@ -461,6 +461,10 @@ export default function WorkflowBuilderTool({
       setS3Error("Please enter your job title so we can personalize your workflow.");
       return;
     }
+    if (!userTools.trim()) {
+      setS3Error("Please list the software you use so we can tailor your workflow.");
+      return;
+    }
     setS3Error("");
     buildFromData(currentFormData);
   }
@@ -797,6 +801,21 @@ export default function WorkflowBuilderTool({
             />
           </div>
 
+          {/* Tools (required) */}
+          <div style={fieldGroupStyle}>
+            <label htmlFor="wf-tools" style={labelStyle}>
+              What software do you use for this task?
+            </label>
+            <input
+              id="wf-tools"
+              type="text"
+              style={inputStyle}
+              value={userTools}
+              onChange={(e) => setUserTools(e.target.value)}
+              placeholder="e.g. Google Workspace, Microsoft Copilot, Slack"
+            />
+          </div>
+
           {/* Audience and priorities (optional) */}
           <div style={fieldGroupStyle}>
             <label htmlFor="wf-audience" style={labelStyle}>
@@ -809,30 +828,14 @@ export default function WorkflowBuilderTool({
                 style={{ ...textareaStyle, minHeight: "70px", paddingBottom: "24px" }}
                 value={audiencePriorities}
                 onChange={(e) => setAudiencePriorities(e.target.value)}
-                placeholder="e.g. My director reviews it. She cares about the recovery plan, not the excuses."
+                placeholder="e.g. Our VP reviews it. She likes clear bullet point summaries, next steps outlined below, and no fluff or long paragraphs."
                 rows={2}
                 maxLength={500}
               />
               <span style={{ position: "absolute", bottom: "8px", right: "12px", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", pointerEvents: "none" }}>
-                {audiencePriorities.length}/500
+                {audiencePriorities.length === 0 ? "120" : audiencePriorities.length}/500
               </span>
             </div>
-          </div>
-
-          {/* Tools (optional) */}
-          <div style={fieldGroupStyle}>
-            <label htmlFor="wf-tools" style={labelStyle}>
-              What software do you use for this task?
-              <span style={optionalStyle}>(optional)</span>
-            </label>
-            <input
-              id="wf-tools"
-              type="text"
-              style={inputStyle}
-              value={userTools}
-              onChange={(e) => setUserTools(e.target.value)}
-              placeholder="e.g. Google Workspace, Slack, Notion"
-            />
           </div>
 
           {s3Error && <p style={errorStyle}>{s3Error}</p>}

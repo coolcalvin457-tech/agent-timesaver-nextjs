@@ -1112,14 +1112,7 @@ export default function WorkflowBuilderTool({
             {resultSections.map((section, idx) => (
               <div
                 key={idx}
-                style={{
-                  background: "rgba(255,255,255,0.04)",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  borderRadius: "var(--radius-card, 12px)",
-                  padding: "24px",
-                  marginBottom: "16px",
-                  position: "relative",
-                }}
+                className="result-section-card"
               >
                 {/* Section eyebrow */}
                 <p
@@ -1129,7 +1122,6 @@ export default function WorkflowBuilderTool({
                     letterSpacing: "0.05em",
                     color: "rgba(255,255,255,0.40)",
                     textTransform: "uppercase",
-                    marginBottom: "12px",
                     margin: "0 0 12px",
                   }}
                 >
@@ -1139,6 +1131,7 @@ export default function WorkflowBuilderTool({
                 {/* Copy button — top-right */}
                 <button
                   type="button"
+                  className={`result-copy-btn${copiedSectionIdx === idx ? " copied" : ""}`}
                   onClick={() => {
                     const text = section.items
                       ? section.content + "\n\n" + section.items.map((it) => `${it.label}\n${it.detail}`).join("\n\n")
@@ -1147,18 +1140,6 @@ export default function WorkflowBuilderTool({
                       setCopiedSectionIdx(idx);
                       setTimeout(() => setCopiedSectionIdx(null), 2000);
                     }).catch(() => {});
-                  }}
-                  style={{
-                    position: "absolute",
-                    top: "20px",
-                    right: "20px",
-                    background: "none",
-                    border: "none",
-                    padding: "4px 8px",
-                    fontSize: "0.8125rem",
-                    color: copiedSectionIdx === idx ? "#22C55E" : "var(--cta, #1E7AB8)",
-                    cursor: "pointer",
-                    transition: "color 0.15s ease",
                   }}
                 >
                   {copiedSectionIdx === idx ? "\u2713 Copied" : "Copy"}

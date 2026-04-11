@@ -4143,6 +4143,48 @@ input, textarea {
   }
 }
 
+/* ── Results Section Cards (All Tools with In-Browser Results) ────────── */
+/* Shared class for sent-screen results section cards (S153).               */
+/* Replaces inline padding: "24px" with responsive values that match the    */
+/* breathing room of AGENT: Prompts' nested card + text-wrapper pattern.    */
+
+.result-section-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-card, 12px);
+  padding: 32px;
+  margin-bottom: 16px;
+  position: relative;
+  text-align: left;
+}
+
+.result-section-card .result-copy-btn {
+  position: absolute;
+  top: 28px;
+  right: 28px;
+  background: none;
+  border: none;
+  padding: 4px 8px;
+  font-size: 0.8125rem;
+  color: var(--cta, #1E7AB8);
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.result-section-card .result-copy-btn.copied {
+  color: #22C55E;
+}
+
+@media (max-width: 640px) {
+  .result-section-card {
+    padding: 24px;
+  }
+  .result-section-card .result-copy-btn {
+    top: 20px;
+    right: 20px;
+  }
+}
+
 /* ── HR Tools — Dark Mode (inside .hero-tool-dark frame) ──────────────── */
 /* Same pattern for .okb-tool used by Onboarding Kit, PIP Builder,          */
 /* and all future HR tools.                                                  */

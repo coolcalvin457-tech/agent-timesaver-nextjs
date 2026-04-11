@@ -1408,14 +1408,7 @@ export default function OnboardingKitBuilderTool({
             {resultSections.map((section, idx) => (
               <div
                 key={idx}
-                style={{
-                  background: "rgba(255,255,255,0.04)",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  borderRadius: "var(--radius-card, 12px)",
-                  padding: "24px",
-                  marginBottom: "16px",
-                  position: "relative",
-                }}
+                className="result-section-card"
               >
                 <p
                   style={{
@@ -1431,6 +1424,7 @@ export default function OnboardingKitBuilderTool({
                 </p>
                 <button
                   type="button"
+                  className={`result-copy-btn${copiedSectionIdx === idx ? " copied" : ""}`}
                   onClick={() => {
                     const text = section.items
                       ? (section.content ? section.content + "\n\n" : "") + section.items.map((it) => `${it.label}\n${it.detail}`).join("\n\n")
@@ -1439,18 +1433,6 @@ export default function OnboardingKitBuilderTool({
                       setCopiedSectionIdx(idx);
                       setTimeout(() => setCopiedSectionIdx(null), 2000);
                     }).catch(() => {});
-                  }}
-                  style={{
-                    position: "absolute",
-                    top: "20px",
-                    right: "20px",
-                    background: "none",
-                    border: "none",
-                    padding: "4px 8px",
-                    fontSize: "0.8125rem",
-                    color: copiedSectionIdx === idx ? "#22C55E" : "var(--cta, #1E7AB8)",
-                    cursor: "pointer",
-                    transition: "color 0.15s ease",
                   }}
                 >
                   {copiedSectionIdx === idx ? "\u2713 Copied" : "Copy"}

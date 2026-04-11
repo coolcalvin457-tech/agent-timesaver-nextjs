@@ -216,7 +216,7 @@ export default function WorkflowBuilderTool({
   const [copiedSectionIdx, setCopiedSectionIdx] = useState<number | null>(null);
 
   // ── Loading animation ─────────────────────────────────────
-  // Normal cadence: spread steps across ~3-minute build.
+  // Normal cadence: spread steps across ~90-second build (S152).
   // When buildDone fires, fast-forward remaining steps (400ms each)
   // then transition to "sent".
   const loadingTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
@@ -225,8 +225,8 @@ export default function WorkflowBuilderTool({
     if (screen !== "loading") return;
     setLoadingStep(0);
     setBuildDone(false);
-    // Spread steps across ~3-minute build: 0s, 30s, 70s, 120s, 155s
-    const delays = [0, 30000, 70000, 120000, 155000];
+    // Spread steps across ~90s build: 0s, 12s, 28s, 50s, 72s
+    const delays = [0, 12000, 28000, 50000, 72000];
     const timers = LOADING_STEPS.map((_, i) =>
       setTimeout(() => setLoadingStep(i), delays[i])
     );
@@ -613,7 +613,7 @@ export default function WorkflowBuilderTool({
         <ToolLoadingScreen
           steps={LOADING_STEPS}
           activeStep={loadingStep}
-          timeEstimate="About 3 minutes"
+          timeEstimate="About 90 seconds"
           headingText="Building your workflow"
         />
       )}

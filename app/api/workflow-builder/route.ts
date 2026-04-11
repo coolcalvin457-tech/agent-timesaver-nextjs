@@ -13,7 +13,7 @@ import {
 } from "docx";
 import { cleanJsonResponse } from "@/app/api/_shared/cleanJson";
 
-export const maxDuration = 300; // Vercel Pro max; adaptive thinking can exceed 120s
+export const maxDuration = 300; // Vercel Pro max
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -354,18 +354,16 @@ async function generateWorkflow(
   const systemPrompt = buildSystemPrompt(input);
   const userMessage = await buildUserMessage(input, processText, exampleText);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const message = await (client.messages.create as any)({
+  const message = await client.messages.create({
     model: process.env.CLAUDE_MODEL || "claude-sonnet-4-6",
     max_tokens: 16000,
-    thinking: { type: "adaptive" },
     system: systemPrompt,
     messages: [{ role: "user", content: userMessage }],
   });
 
-  const text = (message.content as Array<{ type: string; text?: string }>)
-    .filter((block) => block.type === "text" && block.text)
-    .map((block) => block.text!)
+  const text = message.content
+    .filter((block) => block.type === "text")
+    .map((block) => block.type === "text" ? block.text : "")
     .join("");
 
   const cleaned = cleanJsonResponse(text);
@@ -374,20 +372,18 @@ async function generateWorkflow(
     workflow = JSON.parse(cleaned) as WorkflowData;
   } catch {
     // Retry with assistant prefill to force JSON continuation
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const retryMsg = await (client.messages.create as any)({
+    const retryMsg = await client.messages.create({
       model: process.env.CLAUDE_MODEL || "claude-sonnet-4-6",
       max_tokens: 16000,
-      thinking: { type: "adaptive" },
       system: systemPrompt,
       messages: [
         { role: "user", content: userMessage },
         { role: "assistant", content: "{" },
       ],
     });
-    const retryText = (retryMsg.content as Array<{ type: string; text?: string }>)
-      .filter((block: { type: string; text?: string }) => block.type === "text" && block.text)
-      .map((block: { type: string; text?: string }) => block.text!)
+    const retryText = retryMsg.content
+      .filter((block) => block.type === "text")
+      .map((block) => block.type === "text" ? block.text : "")
       .join("");
     workflow = JSON.parse(cleanJsonResponse("{" + retryText)) as WorkflowData;
   }

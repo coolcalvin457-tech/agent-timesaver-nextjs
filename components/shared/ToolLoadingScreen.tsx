@@ -19,7 +19,10 @@ interface ToolLoadingScreenProps {
   /** Currently active step index (0-based). All prior indices are shown as done. */
   activeStep?: number;
 
-  // ── Spinner variant (free tools: AGENT: Spreadsheets, Timesaver) ──────────
+  // ── Spinner variant (free tools + sub-60s paid tools) ─────────────────────
+  /** If true, render animated trailing dots instead of shimmer on the heading.
+   *  Used by paid tools that dropped below the 60s checklist threshold (S152). */
+  useBuildingDots?: boolean;
   /** Optional secondary line shown below the heading and before timeEstimate.
    *  Spinner variant only. e.g. "Calculating hours saved..." or a rotating status message. */
   subLine?: string;
@@ -50,6 +53,7 @@ export default function ToolLoadingScreen({
   timeEstimate,
   steps = [],
   activeStep = 0,
+  useBuildingDots = false,
   subLine,
   subLineKey,
 }: ToolLoadingScreenProps) {
@@ -169,7 +173,8 @@ export default function ToolLoadingScreen({
   // similar to Claude's thinking indicator. Cleaner and more polished than
   // bouncing dots. The shimmer is CSS-only via background-clip: text on
   // .thinking-shimmer in globals.css.
-  const useShimmer = !subLine;
+  // useBuildingDots: paid tools below the 60s checklist threshold (S152).
+  const useShimmer = !subLine && !useBuildingDots;
 
   return (
     <div style={{ paddingTop: "40px" }}>
@@ -184,7 +189,14 @@ export default function ToolLoadingScreen({
           textAlign: "center",
         }}
       >
-        {useShimmer ? (
+        {useBuildingDots ? (
+          <>
+            {headingText}
+            <span className="building-dots" aria-hidden="true">
+              <span>.</span><span>.</span><span>.</span>
+            </span>
+          </>
+        ) : useShimmer ? (
           <span className="thinking-shimmer">
             {headingText}
             <span className="sr-only"> (loading)</span>

@@ -56,14 +56,6 @@ interface ResultSection {
 
 const WF_STORAGE_KEY = "wf_form_data";
 
-const LOADING_STEPS = [
-  "Workflow Playbook",
-  "AI Setup",
-  "AI Prompts",
-  "Time Estimates",
-  "Key Insights",
-];
-
 const DELIVERABLES = [
   "Workflow Playbook",
   "AI Setup",
@@ -199,8 +191,7 @@ export default function WorkflowBuilderTool({
   const [returningCheckLoading, setReturningCheckLoading] = useState(false);
   const [returningCheckError, setReturningCheckError] = useState("");
 
-  // ── Loading animation ─────────────────────────────────────
-  const [loadingStep, setLoadingStep] = useState(0);
+  // ── Build completion flag ─────────────────────────────────
   const [buildDone, setBuildDone] = useState(false);
 
   // ── Email (auto-send after build) ─────────────────────────
@@ -215,46 +206,12 @@ export default function WorkflowBuilderTool({
   const [resultSections, setResultSections] = useState<ResultSection[]>([]);
   const [copiedSectionIdx, setCopiedSectionIdx] = useState<number | null>(null);
 
-  // ── Loading animation ─────────────────────────────────────
-  // Normal cadence: spread steps across ~90-second build (S152).
-  // When buildDone fires, fast-forward remaining steps (400ms each)
-  // then transition to "sent".
-  const loadingTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
-
-  useEffect(() => {
-    if (screen !== "loading") return;
-    setLoadingStep(0);
-    setBuildDone(false);
-    // Spread steps across ~90s build, front-loaded for 45s fast case:
-    // 4 of 5 steps done by 34s; step 5 at 55s. Fast-forward catches at most 1 step.
-    const delays = [0, 8000, 18000, 34000, 55000];
-    const timers = LOADING_STEPS.map((_, i) =>
-      setTimeout(() => setLoadingStep(i), delays[i])
-    );
-    loadingTimersRef.current = timers;
-    return () => timers.forEach(clearTimeout);
-  }, [screen]);
-
-  // Fast-forward remaining checklist steps when build completes
+  // ── Transition to sent when build completes (S152: no checklist) ──
   useEffect(() => {
     if (!buildDone || screen !== "loading") return;
-    // Cancel the slow cadence timers
-    loadingTimersRef.current.forEach(clearTimeout);
-    loadingTimersRef.current = [];
-
-    // Walk remaining steps at 400ms each, then show "sent"
-    const totalSteps = LOADING_STEPS.length;
-    const fastForwardTimers: ReturnType<typeof setTimeout>[] = [];
-    for (let i = 0; i < totalSteps; i++) {
-      fastForwardTimers.push(
-        setTimeout(() => setLoadingStep(i + 1), (i + 1) * 400)
-      );
-    }
-    // Transition to sent after all steps complete + brief pause
-    fastForwardTimers.push(
-      setTimeout(() => setScreen("sent"), (totalSteps + 1) * 400)
-    );
-    return () => fastForwardTimers.forEach(clearTimeout);
+    // Brief pause so the user sees the loading screen resolve, then transition
+    const timer = setTimeout(() => setScreen("sent"), 600);
+    return () => clearTimeout(timer);
   }, [buildDone, screen]);
 
   // ── Auth: pre-fill email (paid tool — do NOT auto-skip) ──
@@ -609,13 +566,12 @@ export default function WorkflowBuilderTool({
         </div>
       )}
 
-      {/* ── Loading screen ────────────────────────────────── */}
+      {/* ── Loading screen (S152: sub-60s, no checklist) ──── */}
       {screen === "loading" && (
         <ToolLoadingScreen
-          steps={LOADING_STEPS}
-          activeStep={loadingStep}
-          timeEstimate="About 60 seconds"
           headingText="Building your workflow"
+          timeEstimate="About 60 seconds"
+          useBuildingDots
         />
       )}
 

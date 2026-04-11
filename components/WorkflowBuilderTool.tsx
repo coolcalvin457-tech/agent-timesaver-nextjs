@@ -21,7 +21,7 @@ type Screen =
   | "sent"
   | "error";
 
-type Frequency = "Daily" | "Weekly" | "Monthly" | "1x Project";
+type Frequency = "Daily" | "Weekly" | "Quarterly" | "1x Project";
 type Collaboration = "Just me" | "Small team" | "Big team";
 
 interface UploadedFile {
@@ -132,17 +132,8 @@ const fieldGroupStyle: React.CSSProperties = {
   marginBottom: "20px",
 };
 
-const radioOptionStyle = (selected: boolean): React.CSSProperties => ({
-  display: "flex",
-  alignItems: "flex-start",
-  gap: "10px",
-  padding: "10px 14px",
-  border: `1.5px solid ${selected ? "var(--cta, #1E7AB8)" : "rgba(255,255,255,0.35)"}`,
-  borderRadius: "8px",
-  cursor: "pointer",
-  background: "transparent", /* F07/F13: border only, no background tint */
-  transition: "border-color 0.15s ease",
-});
+/* radioOptionStyle removed (S148): Workflow S2 radio groups now use the shared
+   .mc-tile CSS class for visual consistency with Prompts and Timesaver. */
 
 // ─── Component ──────────────────────────────────────────────────────────────────
 
@@ -729,25 +720,16 @@ export default function WorkflowBuilderTool({
           {/* Frequency */}
           <div style={{ ...fieldGroupStyle, marginBottom: "36px" }}>
             <label style={labelStyle}>How often do you do this?</label>
-            <div style={{ display: "flex", flexDirection: "column" as const, gap: "8px", marginTop: "4px" }}>
-              {(["Daily", "Weekly", "Monthly", "1x Project"] as Frequency[]).map((opt) => (
-                <label
+            <div className="mc-tile-grid" style={{ marginTop: "4px" }}>
+              {(["Daily", "Weekly", "Quarterly", "1x Project"] as Frequency[]).map((opt) => (
+                <button
                   key={opt}
-                  style={radioOptionStyle(frequency === opt)}
+                  type="button"
+                  className={`mc-tile${frequency === opt ? " selected" : ""}`}
                   onClick={() => setFrequency(opt)}
                 >
-                  <input
-                    type="radio"
-                    name="frequency"
-                    value={opt}
-                    checked={frequency === opt}
-                    onChange={() => setFrequency(opt)}
-                    style={{ marginTop: "2px", accentColor: "var(--cta, #1E7AB8)", flexShrink: 0 }}
-                  />
-                  <span style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.85)", lineHeight: 1.4 }}>
-                    {opt}
-                  </span>
-                </label>
+                  <span className="mc-tile-label">{opt}</span>
+                </button>
               ))}
             </div>
           </div>
@@ -755,25 +737,16 @@ export default function WorkflowBuilderTool({
           {/* Collaboration */}
           <div style={fieldGroupStyle}>
             <label style={labelStyle}>Who works on this with you?</label>
-            <div style={{ display: "flex", flexDirection: "column" as const, gap: "8px", marginTop: "4px" }}>
+            <div className="mc-tile-grid" style={{ marginTop: "4px" }}>
               {(["Just me", "Small team", "Big team"] as Collaboration[]).map((opt) => (
-                <label
+                <button
                   key={opt}
-                  style={radioOptionStyle(collaboration === opt)}
+                  type="button"
+                  className={`mc-tile${collaboration === opt ? " selected" : ""}`}
                   onClick={() => handleCollaborationSelect(opt)}
                 >
-                  <input
-                    type="radio"
-                    name="collaboration"
-                    value={opt}
-                    checked={collaboration === opt}
-                    onChange={() => handleCollaborationSelect(opt)}
-                    style={{ marginTop: "2px", accentColor: "var(--cta, #1E7AB8)", flexShrink: 0 }}
-                  />
-                  <span style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.85)", lineHeight: 1.4 }}>
-                    {opt}
-                  </span>
-                </label>
+                  <span className="mc-tile-label">{opt}</span>
+                </button>
               ))}
             </div>
           </div>

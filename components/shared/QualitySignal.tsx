@@ -13,7 +13,7 @@ interface QualitySignalProps {
  */
 export default function QualitySignal({
   value,
-  message = "Good detail. The output will reflect this.",
+  message = "Good detail. Your results will reflect this.",
 }: QualitySignalProps) {
   if (value.trim().length < 150) return null;
 

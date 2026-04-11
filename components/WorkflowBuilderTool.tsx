@@ -635,25 +635,23 @@ export default function WorkflowBuilderTool({
             <QualitySignal value={taskDescription} />
           </div>
 
-          {/* Single upload — narrower, centered to signal optional/secondary */}
-          <div style={{ marginTop: "4px", marginBottom: "20px", width: "70%", marginLeft: "auto", marginRight: "auto" }}>
+          {/* Single upload — compact, centered */}
+          <div style={{ marginTop: "4px", marginBottom: "20px", display: "flex", flexDirection: "column" as const, alignItems: "center" }}>
             <div style={{ display: "flex", alignItems: "center" }}>
               <label
                 className="choose-file-btn"
                 style={{
-                  display: "flex",
+                  display: "inline-flex",
                   alignItems: "center",
                   justifyContent: "center",
                   gap: "8px",
                   cursor: "pointer",
-                  fontSize: "0.875rem",
+                  fontSize: "0.8125rem",
                   color: exampleFile ? "var(--cta, #1E7AB8)" : "rgba(255,255,255,0.55)",
                   background: "rgba(255,255,255,0.05)",
                   border: `1px solid ${fileError ? "rgba(239,68,68,0.5)" : "rgba(255,255,255,0.1)"}`,
                   borderRadius: "8px",
-                  padding: "8px 14px",
-                  width: "100%",
-                  boxSizing: "border-box",
+                  padding: "7px 18px",
                 }}
               >
                 <input
@@ -672,7 +670,7 @@ export default function WorkflowBuilderTool({
                     setExampleFile(file);
                   }}
                 />
-                {exampleFile ? `✓ ${exampleFile.name}` : "Upload screenshot of finished product (optional)"}
+                {exampleFile ? `✓ ${exampleFile.name}` : "Upload screenshot (optional)"}
               </label>
               {exampleFile && (
                 <button

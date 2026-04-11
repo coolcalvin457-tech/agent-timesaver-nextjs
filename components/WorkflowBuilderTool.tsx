@@ -568,11 +568,13 @@ export default function WorkflowBuilderTool({
 
       {/* ── Loading screen (S152: sub-60s, no checklist) ──── */}
       {screen === "loading" && (
-        <ToolLoadingScreen
-          headingText="Building your workflow"
-          timeEstimate="About 60 seconds"
-          useBuildingDots
-        />
+        <div className="loading-screen" style={{ minHeight: "320px" }}>
+          <ToolLoadingScreen
+            headingText="Building your workflow"
+            timeEstimate="About 60 seconds"
+            useBuildingDots
+          />
+        </div>
       )}
 
       {/* ── Screen 1: The Task ────────────────────────────── */}

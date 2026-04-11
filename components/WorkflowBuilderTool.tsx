@@ -174,8 +174,8 @@ export default function WorkflowBuilderTool({
   const [userTools, setUserTools] = useState("");
 
   // ── Screen 3: Reference material ────────────────────────
-  const [processFile, setProcessFile] = useState<File | null>(null);
   const [exampleFile, setExampleFile] = useState<File | null>(null);
+  const [fileError, setFileError] = useState<string>("");
 
   // ── Error state ───────────────────────────────────────────
   const [s1Error, setS1Error] = useState("");
@@ -363,13 +363,8 @@ export default function WorkflowBuilderTool({
 
     try {
       // Convert uploaded files to base64
-      let processFileData: { name: string; type: string; data: string } | undefined;
       let exampleFileData: { name: string; type: string; data: string } | undefined;
 
-      if (processFile) {
-        const b64 = await blobToBase64(processFile);
-        processFileData = { name: processFile.name, type: processFile.type, data: b64 };
-      }
       if (exampleFile) {
         const b64 = await blobToBase64(exampleFile);
         exampleFileData = { name: exampleFile.name, type: exampleFile.type, data: b64 };
@@ -385,7 +380,6 @@ export default function WorkflowBuilderTool({
           audiencePriorities: data.audiencePriorities || undefined,
           jobTitle: data.jobTitle || undefined,
           userTools: data.userTools || undefined,
-          processFile: processFileData,
           exampleFile: exampleFileData,
         }),
       });
@@ -622,12 +616,12 @@ export default function WorkflowBuilderTool({
           {/* Task description */}
           <div style={fieldGroupStyle}>
             <label htmlFor="wf-task" style={labelStyle}>
-              What task do you want a workflow for?
+              What would you like a workflow for?
             </label>
             <div style={{ position: "relative" }}>
               <textarea
                 id="wf-task"
-                style={{ ...textareaStyle, minHeight: "90px", paddingBottom: "24px" }}
+                style={{ ...textareaStyle, minHeight: "130px", paddingBottom: "24px" }}
                 value={taskDescription}
                 onChange={(e) => setTaskDescription(e.target.value)}
                 placeholder="e.g. Onboard new clients from signed contract to first deliverable. This means sending them a welcome packet, scheduling the kickoff call, collecting brand assets and logins, assigning the internal team, and setting up the project in our tracking system. I'd rather spend that time building the actual relationship with the client and talking through their goals."
@@ -641,56 +635,8 @@ export default function WorkflowBuilderTool({
             <QualitySignal value={taskDescription} />
           </div>
 
-          {/* Upload zones — narrower, centered to signal optional/secondary */}
-          <div style={{ marginTop: "4px", marginBottom: "20px", width: "70%", marginLeft: "auto", marginRight: "auto", display: "flex", flexDirection: "column" as const, gap: "10px" }}>
-            {/* Upload zone 1 */}
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <label
-                className="choose-file-btn"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "8px",
-                  cursor: "pointer",
-                  fontSize: "0.875rem",
-                  color: processFile ? "var(--cta, #1E7AB8)" : "rgba(255,255,255,0.55)",
-                  background: "rgba(255,255,255,0.05)",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  borderRadius: "8px",
-                  padding: "8px 14px",
-                  width: "100%",
-                  boxSizing: "border-box",
-                }}
-              >
-                <input
-                  type="file"
-                  accept=".txt,.md,.pdf,.docx"
-                  style={{ display: "none" }}
-                  onChange={(e) => setProcessFile(e.target.files?.[0] ?? null)}
-                />
-                {processFile ? `✓ ${processFile.name}` : "Upload workflow example (optional)"}
-              </label>
-              {processFile && (
-                <button
-                  type="button"
-                  onClick={() => setProcessFile(null)}
-                  style={{
-                    background: "none",
-                    border: "none",
-                    color: "rgba(255,255,255,0.35)",
-                    fontSize: "0.8125rem",
-                    cursor: "pointer",
-                    marginLeft: "10px",
-                    whiteSpace: "nowrap" as const,
-                  }}
-                >
-                  Remove
-                </button>
-              )}
-            </div>
-
-            {/* Upload zone 2 */}
+          {/* Single upload — narrower, centered to signal optional/secondary */}
+          <div style={{ marginTop: "4px", marginBottom: "20px", width: "70%", marginLeft: "auto", marginRight: "auto" }}>
             <div style={{ display: "flex", alignItems: "center" }}>
               <label
                 className="choose-file-btn"
@@ -703,7 +649,7 @@ export default function WorkflowBuilderTool({
                   fontSize: "0.875rem",
                   color: exampleFile ? "var(--cta, #1E7AB8)" : "rgba(255,255,255,0.55)",
                   background: "rgba(255,255,255,0.05)",
-                  border: "1px solid rgba(255,255,255,0.1)",
+                  border: `1px solid ${fileError ? "rgba(239,68,68,0.5)" : "rgba(255,255,255,0.1)"}`,
                   borderRadius: "8px",
                   padding: "8px 14px",
                   width: "100%",
@@ -712,16 +658,26 @@ export default function WorkflowBuilderTool({
               >
                 <input
                   type="file"
-                  accept=".txt,.md,.pdf,.docx"
+                  accept=".txt,.md,.pdf,.docx,.png,.jpg,.jpeg"
                   style={{ display: "none" }}
-                  onChange={(e) => setExampleFile(e.target.files?.[0] ?? null)}
+                  onChange={(e) => {
+                    const file = e.target.files?.[0] ?? null;
+                    if (file && file.size > 5 * 1024 * 1024) {
+                      setFileError("File must be under 5MB.");
+                      setExampleFile(null);
+                      e.target.value = "";
+                      return;
+                    }
+                    setFileError("");
+                    setExampleFile(file);
+                  }}
                 />
-                {exampleFile ? `✓ ${exampleFile.name}` : "Upload finished product example (optional)"}
+                {exampleFile ? `✓ ${exampleFile.name}` : "Have a doc, screenshot, or example? Upload it here. (optional)"}
               </label>
               {exampleFile && (
                 <button
                   type="button"
-                  onClick={() => setExampleFile(null)}
+                  onClick={() => { setExampleFile(null); setFileError(""); }}
                   style={{
                     background: "none",
                     border: "none",
@@ -736,6 +692,9 @@ export default function WorkflowBuilderTool({
                 </button>
               )}
             </div>
+            {fileError && (
+              <p style={{ color: "#EF4444", fontSize: "0.8125rem", marginTop: "6px", textAlign: "center" }}>{fileError}</p>
+            )}
           </div>
 
           {s1Error && <p style={errorStyle}>{s1Error}</p>}

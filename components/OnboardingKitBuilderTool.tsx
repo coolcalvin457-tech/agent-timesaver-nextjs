@@ -1369,57 +1369,17 @@ export default function OnboardingKitBuilderTool({
               {hireTitle}
             </p>
           )}
-          <p style={{ fontSize: "0.875rem", color: "var(--text-muted)", margin: "0 0 32px" }}>
-            Downloaded to your device and sent to {email || "your inbox"}.
-          </p>
-          {fileBlob && (
-            <button
-              type="button"
-              onClick={() => triggerDownload(fileBlob, filename)}
-              style={{
-                background: "none",
-                border: "none",
-                padding: 0,
-                fontSize: "0.8125rem",
-                color: "var(--cta, #1E7AB8)",
-                textDecoration: "underline",
-                cursor: "pointer",
-                marginBottom: "24px",
-                display: "block",
-                marginLeft: "auto",
-                marginRight: "auto",
-              }}
-            >
-              Download again
-            </button>
-          )}
-          <button
-            type="button"
-            className="btn btn-primary btn-lg btn-full"
-            onClick={handleReset}
-          >
-            Build another kit
-          </button>
         </div>
 
-        {/* ── In-browser results (S149) ──────────────────────── */}
+        {/* ── In-browser results (S153) ──────────────────────── */}
         {resultSections.length > 0 && (
-          <div style={{ marginTop: "56px", textAlign: "left" }}>
+          <div style={{ marginTop: "40px", textAlign: "left" }}>
             {resultSections.map((section, idx) => (
               <div
                 key={idx}
                 className="result-section-card"
               >
-                <p
-                  style={{
-                    fontSize: "0.75rem",
-                    fontWeight: 700,
-                    letterSpacing: "0.05em",
-                    color: "rgba(255,255,255,0.40)",
-                    textTransform: "uppercase",
-                    margin: "0 0 12px",
-                  }}
-                >
+                <p className="result-eyebrow">
                   {String(idx + 1).padStart(2, "0")} {section.title}
                 </p>
                 <button
@@ -1435,7 +1395,7 @@ export default function OnboardingKitBuilderTool({
                     }).catch(() => {});
                   }}
                 >
-                  {copiedSectionIdx === idx ? "\u2713 Copied" : "Copy"}
+                  {copiedSectionIdx === idx ? "Copied" : "Copy"}
                 </button>
                 {section.content && (
                   <div style={{ marginBottom: section.items?.length ? "16px" : "0" }}>
@@ -1480,6 +1440,17 @@ export default function OnboardingKitBuilderTool({
             ))}
           </div>
         )}
+
+        {/* Build another — after results, before cross-sell */}
+        <div style={{ marginTop: "32px", marginBottom: "16px" }}>
+          <button
+            type="button"
+            className="btn btn-primary btn-lg btn-full"
+            onClick={handleReset}
+          >
+            Build another kit
+          </button>
+        </div>
 
         <CrossSellBlock
           productName="AGENT: PIP"

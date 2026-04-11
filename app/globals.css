@@ -4162,17 +4162,34 @@ input, textarea {
   position: absolute;
   top: 28px;
   right: 28px;
-  background: none;
+  padding: 5px 12px;
+  background: var(--dark, #161618);
+  color: #fff;
   border: none;
-  padding: 4px 8px;
-  font-size: 0.8125rem;
-  color: var(--cta, #1E7AB8);
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: color 0.15s ease;
+  transition: background 0.15s, transform 0.1s;
+  font-family: var(--font-sans);
+  white-space: nowrap;
+}
+
+.result-section-card .result-copy-btn:hover {
+  background: #2A2A2C;
 }
 
 .result-section-card .result-copy-btn.copied {
-  color: #22C55E;
+  background: var(--success, #22C55E);
+}
+
+.result-section-card .result-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--cta, #1E7AB8);
+  text-transform: uppercase;
+  margin: 0 0 12px;
 }
 
 @media (max-width: 640px) {

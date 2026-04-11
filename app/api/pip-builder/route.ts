@@ -53,6 +53,19 @@ interface PIPData {
   };
 }
 
+// ─── In-browser results types (S149) ───────────────────────────────────────────
+
+interface ResultItem {
+  label: string;
+  detail: string;
+}
+
+interface ResultSection {
+  title: string;
+  content: string;
+  items?: ResultItem[];
+}
+
 // ─── Input type ───────────────────────────────────────────────────────────────
 
 interface PIPInput {
@@ -546,6 +559,59 @@ async function buildDocxFile(pip: PIPData): Promise<Buffer> {
   return await Packer.toBuffer(doc);
 }
 
+// ─── Build result sections for in-browser display (S149) ─────────────────────
+
+function buildResultSections(pip: PIPData): ResultSection[] {
+  // 1. Opening Statement
+  const openingSection: ResultSection = {
+    title: "Opening Statement",
+    content: pip.openingStatement,
+  };
+
+  // 2. Performance Deficiencies
+  const deficienciesSection: ResultSection = {
+    title: "Performance Deficiencies",
+    content: "",
+    items: pip.performanceDeficiencies.map((d) => ({
+      label: d.heading,
+      detail: d.description,
+    })),
+  };
+
+  // 3. Improvement Targets
+  const targetsSection: ResultSection = {
+    title: "Improvement Targets",
+    content: "",
+    items: pip.improvementTargets.map((t) => ({
+      label: t.heading,
+      detail: t.description,
+    })),
+  };
+
+  // 4. Support Offered
+  const supportParts = [pip.supportOffered.description];
+  if (pip.supportOffered.eapLine) supportParts.push(pip.supportOffered.eapLine);
+  const supportSection: ResultSection = {
+    title: "Support Offered",
+    content: supportParts.join("\n\n"),
+  };
+
+  // 5. Check-in Schedule
+  const checkinSection: ResultSection = {
+    title: "Check-in Schedule",
+    content: pip.checkinSchedule,
+  };
+
+  // 6. Consequences
+  const consequencesSection: ResultSection = {
+    title: "Consequences",
+    content: pip.consequences,
+  };
+
+  // Signature block excluded from browser display per spec
+  return [openingSection, deficienciesSection, targetsSection, supportSection, checkinSection, consequencesSection];
+}
+
 // ─── Route Handler ────────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
@@ -650,18 +716,18 @@ export async function POST(req: NextRequest) {
     const safeRole = input.employeeRole.replace(/[^a-zA-Z0-9]/g, "-").toLowerCase().replace(/-+/g, "-");
     const filename = `pip-${safeRole}-${input.timeline}day.docx`;
 
-    const fileBlob = new Blob([new Uint8Array(docxBuffer)], {
-      type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    });
+    // Serialize structured sections for in-browser results (S149)
+    const sections = buildResultSections(pipData);
+    const docxBase64 = Buffer.from(docxBuffer).toString("base64");
 
-    return new Response(fileBlob, {
-      status: 200,
-      headers: {
-        "Content-Type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        "Content-Disposition": `attachment; filename="${filename}"`,
-        "X-PIP-Filename": encodeURIComponent(filename),
-        "X-Employee-Role": encodeURIComponent(input.employeeRole),
-        "X-Timeline": input.timeline,
+    return NextResponse.json({
+      docxBase64,
+      filename,
+      sections,
+      metadata: {
+        employeeRole: input.employeeRole,
+        timeline: input.timeline,
+        employeeName: input.employeeName || "",
       },
     });
   } catch (error) {

@@ -753,6 +753,104 @@ function buildMockWorkflow(input: WorkflowBuilderInput): WorkflowData {
   };
 }
 
+// ─── Section serialization for in-browser results (S149) ─────────────────────
+
+interface ResultItem {
+  label: string;
+  detail: string;
+}
+
+interface ResultSection {
+  title: string;
+  content: string;
+  items?: ResultItem[];
+}
+
+function buildResultSections(workflow: WorkflowData): ResultSection[] {
+  // 1. Workflow Playbook: overview + numbered steps
+  const playbookSection: ResultSection = {
+    title: "Workflow Playbook",
+    content: workflow.overview,
+    items: workflow.steps.map((s) => ({
+      label: `Step ${s.stepNumber}: ${s.stepTitle}`,
+      detail: [
+        s.tool ? `Tool: ${s.tool}` : "",
+        s.action || "",
+        s.prompt ? `Prompt: ${s.prompt}` : "",
+        `Expected output: ${s.expectedOutput}`,
+        `Time: ${s.estimatedTime}`,
+        s.who ? `Owner: ${s.who}` : "",
+        s.checkpoint ? `Checkpoint: ${s.checkpoint}` : "",
+        s.whyThisStepMatters || "",
+      ].filter(Boolean).join("\n"),
+    })),
+  };
+
+  // 2. AI Setup: tools referenced across steps
+  const toolSet = new Map<string, string[]>();
+  for (const s of workflow.steps) {
+    if (s.tool) {
+      if (!toolSet.has(s.tool)) toolSet.set(s.tool, []);
+      toolSet.get(s.tool)!.push(`Step ${s.stepNumber}: ${s.stepTitle}`);
+    }
+  }
+  const aiSetupContent = Array.from(toolSet.entries())
+    .map(([tool, steps]) => `${tool}\nUsed in: ${steps.join(", ")}`)
+    .join("\n\n");
+
+  const aiSetupSection: ResultSection = {
+    title: "AI Setup",
+    content: aiSetupContent || "No specific tools referenced.",
+    items: Array.from(toolSet.entries()).map(([tool, steps]) => ({
+      label: tool,
+      detail: `Used in: ${steps.join(", ")}`,
+    })),
+  };
+
+  // 3. AI Prompts: all prompts from steps that have them
+  const promptSteps = workflow.steps.filter((s) => s.prompt);
+  const aiPromptsSection: ResultSection = {
+    title: "AI Prompts",
+    content: promptSteps.length > 0
+      ? promptSteps.map((s) => `Step ${s.stepNumber}: ${s.stepTitle}\n${s.prompt}`).join("\n\n")
+      : "No AI prompts in this workflow.",
+    items: promptSteps.map((s) => ({
+      label: `Step ${s.stepNumber}: ${s.stepTitle}`,
+      detail: s.prompt!,
+    })),
+  };
+
+  // 4. Time Estimates: total + per-step breakdown
+  const timeLines = workflow.steps
+    .map((s) => `Step ${s.stepNumber}: ${s.stepTitle} - ${s.estimatedTime}`)
+    .join("\n");
+
+  const timeEstimatesSection: ResultSection = {
+    title: "Time Estimates",
+    content: `Total estimated time: ${workflow.totalTime}\n\n${timeLines}`,
+    items: workflow.steps.map((s) => ({
+      label: `Step ${s.stepNumber}: ${s.stepTitle}`,
+      detail: s.estimatedTime,
+    })),
+  };
+
+  // 5. Key Insights: tips + collaboration context
+  const insightParts: string[] = [...workflow.tips];
+  if (workflow.collaboration && workflow.collaboration !== "Just me") {
+    insightParts.push(`This is a ${workflow.collaboration.toLowerCase()} workflow. Coordinate handoffs at each checkpoint.`);
+  }
+  if (workflow.frequency && workflow.frequency !== "1x Project") {
+    insightParts.push(`Frequency: ${workflow.frequency}. This workflow is designed to be repeatable.`);
+  }
+
+  const keyInsightsSection: ResultSection = {
+    title: "Key Insights",
+    content: insightParts.join("\n\n"),
+  };
+
+  return [playbookSection, aiSetupSection, aiPromptsSection, timeEstimatesSection, keyInsightsSection];
+}
+
 // ─── Route handler ────────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
@@ -808,19 +906,21 @@ export async function POST(req: NextRequest) {
       .slice(0, 40);
     const filename = `workflow-${safeTitle}.docx`;
 
-    const fileBlob = new Blob([new Uint8Array(docxBuffer)], {
-      type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    });
+    // Serialize structured sections for in-browser results (S149)
+    const sections = buildResultSections(workflow);
 
-    return new Response(fileBlob, {
-      status: 200,
-      headers: {
-        "Content-Type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        "Content-Disposition": `attachment; filename="${filename}"`,
-        "X-WF-Filename": encodeURIComponent(filename),
-        "X-Task-Title": encodeURIComponent(workflow.taskTitle),
-        "X-Step-Count": String(workflow.steps.length),
-        "X-Frequency": encodeURIComponent(workflow.frequency),
+    // Encode .docx as base64 for JSON transport
+    const docxBase64 = Buffer.from(docxBuffer).toString("base64");
+
+    return NextResponse.json({
+      docxBase64,
+      filename,
+      sections,
+      metadata: {
+        taskTitle: workflow.taskTitle,
+        stepCount: String(workflow.steps.length),
+        frequency: workflow.frequency,
+        jobTitle: input.jobTitle || "",
       },
     });
   } catch (error) {

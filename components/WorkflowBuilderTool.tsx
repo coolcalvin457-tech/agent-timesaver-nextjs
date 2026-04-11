@@ -39,6 +39,19 @@ interface SavedFormData {
   userTools: string;
 }
 
+// ─── In-browser results types (S149) ──────────────────────────────────────────
+
+interface ResultItem {
+  label: string;
+  detail: string;
+}
+
+interface ResultSection {
+  title: string;
+  content: string;
+  items?: ResultItem[];
+}
+
 // ─── Constants ─────────────────────────────────────────────────────────────────
 
 const WF_STORAGE_KEY = "wf_form_data";
@@ -199,6 +212,8 @@ export default function WorkflowBuilderTool({
   const [resultTaskTitle, setResultTaskTitle] = useState("");
   const [resultStepCount, setResultStepCount] = useState("");
   const [resultFrequency, setResultFrequency] = useState("");
+  const [resultSections, setResultSections] = useState<ResultSection[]>([]);
+  const [copiedSectionIdx, setCopiedSectionIdx] = useState<number | null>(null);
 
   // ── Loading animation ─────────────────────────────────────
   // Normal cadence: spread steps across ~3-minute build.
@@ -375,39 +390,49 @@ export default function WorkflowBuilderTool({
         }),
       });
 
+      const json = await res.json();
+
       if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.error ?? "Build failed");
+        throw new Error(json.error ?? "Build failed");
       }
 
-      const blob = await res.blob();
-      const wfFilename = decodeURIComponent(res.headers.get("X-WF-Filename") ?? "workflow.docx");
-      const taskTitle = decodeURIComponent(res.headers.get("X-Task-Title") ?? data.taskDescription);
-      const stepCount = res.headers.get("X-Step-Count") ?? "";
-      const freq = decodeURIComponent(res.headers.get("X-Frequency") ?? data.frequency);
+      const { docxBase64, filename: wfFilename, sections, metadata } = json as {
+        docxBase64: string;
+        filename: string;
+        sections: ResultSection[];
+        metadata: { taskTitle: string; stepCount: string; frequency: string; jobTitle: string };
+      };
+
+      // Decode base64 .docx to Blob for download
+      const binaryStr = atob(docxBase64);
+      const bytes = new Uint8Array(binaryStr.length);
+      for (let i = 0; i < binaryStr.length; i++) bytes[i] = binaryStr.charCodeAt(i);
+      const blob = new Blob([bytes], {
+        type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      });
 
       setFileBlob(blob);
       setFilename(wfFilename);
-      setResultTaskTitle(taskTitle);
-      setResultStepCount(stepCount);
-      setResultFrequency(freq);
+      setResultTaskTitle(metadata.taskTitle);
+      setResultStepCount(metadata.stepCount);
+      setResultFrequency(metadata.frequency);
+      setResultSections(sections);
 
       // Auto-deliver: download file + send email in background
       triggerDownload(blob, wfFilename);
       if (email) {
-        blobToBase64(blob).then((fileData) => {
-          fetch("/api/workflow-builder-email", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              email: email.trim(),
-              filename: wfFilename,
-              taskTitle,
-              stepCount,
-              frequency: freq,
-              fileData,
-            }),
-          }).catch(() => {});
+        // Email route still expects base64 fileData
+        fetch("/api/workflow-builder-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: email.trim(),
+            filename: wfFilename,
+            taskTitle: metadata.taskTitle,
+            stepCount: metadata.stepCount,
+            frequency: metadata.frequency,
+            fileData: docxBase64,
+          }),
         }).catch(() => {});
       }
 
@@ -548,6 +573,8 @@ export default function WorkflowBuilderTool({
     setResultTaskTitle("");
     setResultStepCount("");
     setResultFrequency("");
+    setResultSections([]);
+    setCopiedSectionIdx(null);
     setEmail("");
     setS1Error("");
     setS2Error("");
@@ -1121,6 +1148,126 @@ export default function WorkflowBuilderTool({
             Build another workflow
           </button>
         </div>
+
+        {/* ── In-browser results (S149) ──────────────────── */}
+        {resultSections.length > 0 && (
+          <div style={{ marginTop: "56px", textAlign: "left" }}>
+            {resultSections.map((section, idx) => (
+              <div
+                key={idx}
+                style={{
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  borderRadius: "var(--radius-card, 12px)",
+                  padding: "24px",
+                  marginBottom: "16px",
+                  position: "relative",
+                }}
+              >
+                {/* Section eyebrow */}
+                <p
+                  style={{
+                    fontSize: "0.75rem",
+                    fontWeight: 700,
+                    letterSpacing: "0.05em",
+                    color: "rgba(255,255,255,0.40)",
+                    textTransform: "uppercase",
+                    marginBottom: "12px",
+                    margin: "0 0 12px",
+                  }}
+                >
+                  {String(idx + 1).padStart(2, "0")} {section.title}
+                </p>
+
+                {/* Copy button — top-right */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    const text = section.items
+                      ? section.content + "\n\n" + section.items.map((it) => `${it.label}\n${it.detail}`).join("\n\n")
+                      : section.content;
+                    navigator.clipboard.writeText(text).then(() => {
+                      setCopiedSectionIdx(idx);
+                      setTimeout(() => setCopiedSectionIdx(null), 2000);
+                    }).catch(() => {});
+                  }}
+                  style={{
+                    position: "absolute",
+                    top: "20px",
+                    right: "20px",
+                    background: "none",
+                    border: "none",
+                    padding: "4px 8px",
+                    fontSize: "0.8125rem",
+                    color: copiedSectionIdx === idx ? "#22C55E" : "var(--cta, #1E7AB8)",
+                    cursor: "pointer",
+                    transition: "color 0.15s ease",
+                  }}
+                >
+                  {copiedSectionIdx === idx ? "\u2713 Copied" : "Copy"}
+                </button>
+
+                {/* Section body: overview / content prose */}
+                {section.content && (
+                  <div style={{ marginBottom: section.items?.length ? "16px" : "0" }}>
+                    {section.content.split("\n\n").map((para, pIdx) => (
+                      <p
+                        key={pIdx}
+                        style={{
+                          fontSize: "0.9375rem",
+                          lineHeight: 1.7,
+                          color: "rgba(255,255,255,0.80)",
+                          margin: `0 0 ${pIdx < section.content.split("\n\n").length - 1 ? "16px" : "0"}`,
+                          whiteSpace: "pre-line",
+                        }}
+                      >
+                        {para}
+                      </p>
+                    ))}
+                  </div>
+                )}
+
+                {/* Structured sub-items (steps, prompts, time breakdown) */}
+                {section.items && section.items.length > 0 && (
+                  <div>
+                    {section.items.map((item, iIdx) => (
+                      <div
+                        key={iIdx}
+                        style={{
+                          paddingTop: iIdx > 0 ? "12px" : "0",
+                          borderTop: iIdx > 0 ? "1px solid rgba(255,255,255,0.06)" : "none",
+                          marginTop: iIdx > 0 ? "12px" : "0",
+                        }}
+                      >
+                        <p
+                          style={{
+                            fontSize: "0.875rem",
+                            fontWeight: 600,
+                            color: "rgba(255,255,255,0.85)",
+                            margin: "0 0 4px",
+                          }}
+                        >
+                          {item.label}
+                        </p>
+                        <p
+                          style={{
+                            fontSize: "0.875rem",
+                            lineHeight: 1.65,
+                            color: "rgba(255,255,255,0.65)",
+                            margin: 0,
+                            whiteSpace: "pre-line",
+                          }}
+                        >
+                          {item.detail}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Cross-sell: AGENT: Industry */}
         <CrossSellBlock

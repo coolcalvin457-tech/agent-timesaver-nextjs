@@ -68,6 +68,19 @@ const DOSSIER_SECTIONS = [
   "What This Means for You",
 ];
 
+// ─── In-browser results types (S149) ──────────────────────────────────────────
+
+interface ResultItem {
+  label: string;
+  detail: string;
+}
+
+interface ResultSection {
+  title: string;
+  content: string;
+  items?: ResultItem[];
+}
+
 // Loading steps use canonical deliverable names (matches all other tools).
 // Backend sends 6 SSE pipeline events; STEP_MAP spreads them across 8 deliverables.
 const LOADING_STEPS = [
@@ -253,6 +266,8 @@ export default function CompetitiveDossierTool({
   const [resultCompanyName, setResultCompanyName] = useState("");
   const [resultPagesAnalyzed, setResultPagesAnalyzed] = useState(0);
   const [resultJobTitle, setResultJobTitle] = useState("");
+  const [resultSections, setResultSections] = useState<ResultSection[]>([]);
+  const [copiedSectionIdx, setCopiedSectionIdx] = useState<number | null>(null);
 
   // ── Pre-fill email from auth ──────────────────────────────────────────────────
   useEffect(() => {
@@ -448,6 +463,8 @@ export default function CompetitiveDossierTool({
             setResultCompanyName(cName);
             setResultPagesAnalyzed(meta.pagesAnalyzed ?? 0);
             setResultJobTitle(cJobTitle);
+            const secs = data.sections as ResultSection[] ?? [];
+            setResultSections(secs);
 
             // Auto-deliver: download file + send email in background
             const blob = base64ToBlob(b64, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
@@ -1042,21 +1059,6 @@ export default function CompetitiveDossierTool({
             Downloaded to your device and sent to {email || "your inbox"}.
           </p>
 
-          {/* Proof of work preview */}
-          <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: "var(--radius-card, 12px)", border: "1px solid rgba(255,255,255,0.10)", padding: "16px 20px", marginBottom: "24px", textAlign: "left" }}>
-            <p style={{ margin: "0 0 12px", fontSize: "0.875rem", fontWeight: 600, color: "rgba(255,255,255,0.9)" }}>
-              Competitive Intelligence Dossier: {resultCompanyName}
-            </p>
-            <ol style={{ margin: "0 0 12px", paddingLeft: "20px" }}>
-              {DOSSIER_SECTIONS.map((s, i) => (
-                <li key={i} style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.55)", lineHeight: 1.8 }}>{s}</li>
-              ))}
-            </ol>
-            <p style={{ margin: 0, fontSize: "0.8125rem", color: "rgba(255,255,255,0.40)" }}>
-              {resultPagesAnalyzed} pages analyzed · Personalized for {resultJobTitle} · Based on live data
-            </p>
-          </div>
-
           {docxBase64 && (
             <button
               type="button"
@@ -1082,12 +1084,114 @@ export default function CompetitiveDossierTool({
             </button>
           )}
           <button
-            onClick={() => { setScreen("s1"); setCompanyUrl(""); setCompanyName(""); setRelationshipType(""); setResearchFocus(""); setPriorityFocusAreas([]); setExistingKnowledge(""); }}
+            onClick={() => { setScreen("s1"); setCompanyUrl(""); setCompanyName(""); setRelationshipType(""); setResearchFocus(""); setPriorityFocusAreas([]); setExistingKnowledge(""); setResultSections([]); setCopiedSectionIdx(null); }}
             className="btn btn-primary btn-lg btn-full"
             style={{ marginBottom: "32px" }}
           >
             Build another dossier
           </button>
+
+          {/* ── In-browser results (S149) ──────────────────────────────────────────── */}
+          {resultSections.length > 0 && (
+            <div style={{ marginTop: "56px", textAlign: "left" }}>
+              {resultSections.map((section, idx) => (
+                <div
+                  key={idx}
+                  style={{
+                    background: "rgba(255,255,255,0.04)",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    borderRadius: "var(--radius-card, 12px)",
+                    padding: "24px",
+                    marginBottom: "16px",
+                    position: "relative",
+                  }}
+                >
+                  <p
+                    style={{
+                      fontSize: "0.75rem",
+                      fontWeight: 700,
+                      letterSpacing: "0.05em",
+                      color: "rgba(255,255,255,0.40)",
+                      textTransform: "uppercase",
+                      margin: "0 0 12px",
+                    }}
+                  >
+                    {String(idx + 1).padStart(2, "0")} {section.title}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const text = section.items
+                        ? (section.content ? section.content + "\n\n" : "") + section.items.map((it) => `${it.label}\n${it.detail}`).join("\n\n")
+                        : section.content;
+                      navigator.clipboard.writeText(text).then(() => {
+                        setCopiedSectionIdx(idx);
+                        setTimeout(() => setCopiedSectionIdx(null), 2000);
+                      }).catch(() => {});
+                    }}
+                    style={{
+                      position: "absolute",
+                      top: "20px",
+                      right: "20px",
+                      background: "none",
+                      border: "none",
+                      padding: "4px 8px",
+                      fontSize: "0.8125rem",
+                      color: copiedSectionIdx === idx ? "#22C55E" : "var(--cta, #1E7AB8)",
+                      cursor: "pointer",
+                      transition: "color 0.15s ease",
+                    }}
+                  >
+                    {copiedSectionIdx === idx ? "\u2713 Copied" : "Copy"}
+                  </button>
+                  {section.content && (
+                    <div style={{ marginBottom: section.items?.length ? "16px" : "0" }}>
+                      {section.content.split("\n\n").map((para, pIdx) => (
+                        <p
+                          key={pIdx}
+                          style={{
+                            fontSize: "0.9375rem",
+                            lineHeight: 1.7,
+                            color: "rgba(255,255,255,0.80)",
+                            margin: `0 0 ${pIdx < section.content.split("\n\n").length - 1 ? "16px" : "0"}`,
+                            whiteSpace: "pre-line",
+                          }}
+                        >
+                          {para}
+                        </p>
+                      ))}
+                    </div>
+                  )}
+                  {section.items && section.items.length > 0 && (
+                    <div>
+                      {section.items.map((item, iIdx) => (
+                        <div
+                          key={iIdx}
+                          style={{
+                            paddingTop: iIdx > 0 ? "12px" : "0",
+                            borderTop: iIdx > 0 ? "1px solid rgba(255,255,255,0.06)" : "none",
+                            marginTop: iIdx > 0 ? "12px" : "0",
+                          }}
+                        >
+                          <p style={{ fontSize: "0.875rem", fontWeight: 600, color: "rgba(255,255,255,0.85)", margin: "0 0 4px" }}>
+                            {item.label}
+                          </p>
+                          <p style={{ fontSize: "0.875rem", lineHeight: 1.65, color: "rgba(255,255,255,0.65)", margin: 0, whiteSpace: "pre-line" }}>
+                            {item.detail}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+              {/* Metadata footer on last card per spec */}
+              <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.35)", textAlign: "center", margin: "0" }}>
+                {resultPagesAnalyzed} pages analyzed · Personalized for {resultJobTitle} · Based on live data
+              </p>
+            </div>
+          )}
+
           <CrossSellBlock
             productName="AGENT: Workflow"
             checklistItems={[

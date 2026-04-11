@@ -45,6 +45,19 @@ interface SavedFormData {
   includeEAP: boolean;
 }
 
+// ─── In-browser results types (S149) ──────────────────────────────────────────
+
+interface ResultItem {
+  label: string;
+  detail: string;
+}
+
+interface ResultSection {
+  title: string;
+  content: string;
+  items?: ResultItem[];
+}
+
 // ─── Constants ─────────────────────────────────────────────────────────────────
 
 const PIP_STORAGE_KEY = "pip_form_data";
@@ -224,6 +237,8 @@ export default function PIPBuilderTool({
   const [filename, setFilename] = useState("pip-document.docx");
   const [resultRole, setResultRole] = useState("");
   const [resultTimeline, setResultTimeline] = useState("");
+  const [resultSections, setResultSections] = useState<ResultSection[]>([]);
+  const [copiedSectionIdx, setCopiedSectionIdx] = useState<number | null>(null);
 
   // ── Loading animation ─────────────────────────────────────
   useEffect(() => {
@@ -474,38 +489,48 @@ export default function PIPBuilderTool({
         body: JSON.stringify(payload),
       });
 
+      const json = await res.json();
+
       if (!res.ok) {
-        const d = await res.json().catch(() => ({}));
         throw new Error(
-          (d as { error?: string }).error ??
+          (json as { error?: string }).error ??
             "Something went wrong building the document. Your inputs are saved. Try again and it should work."
         );
       }
 
-      const blob = await res.blob();
-      const rawFilename = res.headers.get("X-PIP-Filename");
-      const rawTimeline = res.headers.get("X-Timeline");
-      const pipFilename = rawFilename ? decodeURIComponent(rawFilename) : "pip-document.docx";
+      const { docxBase64, filename: pipFilename, sections, metadata } = json as {
+        docxBase64: string;
+        filename: string;
+        sections: ResultSection[];
+        metadata: { employeeRole: string; timeline: string; employeeName: string };
+      };
+
+      // Decode base64 .docx to Blob for download
+      const binaryStr = atob(docxBase64);
+      const bytes = new Uint8Array(binaryStr.length);
+      for (let i = 0; i < binaryStr.length; i++) bytes[i] = binaryStr.charCodeAt(i);
+      const blob = new Blob([bytes], {
+        type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      });
 
       setFileBlob(blob);
       setFilename(pipFilename);
-      if (rawTimeline) setResultTimeline(rawTimeline);
+      if (metadata.timeline) setResultTimeline(metadata.timeline);
+      setResultSections(sections);
 
       // Auto-deliver: download file + send email in background
       triggerDownload(blob, pipFilename);
       if (email) {
-        blobToBase64(blob).then((base64) => {
-          fetch("/api/pip-builder-email", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              email: email.trim(),
-              filename: pipFilename,
-              employeeRole: data.employeeRole,
-              timeline: rawTimeline || data.timeline || "30",
-              fileData: base64,
-            }),
-          }).catch(() => {});
+        fetch("/api/pip-builder-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: email.trim(),
+            filename: pipFilename,
+            employeeRole: metadata.employeeRole,
+            timeline: metadata.timeline || data.timeline || "30",
+            fileData: docxBase64,
+          }),
         }).catch(() => {});
       }
 
@@ -618,6 +643,7 @@ export default function PIPBuilderTool({
     setDeficiencies(""); setPerformanceStandard(""); setImprovementTargets(""); setTimeline("");
     setCheckinSchedule(""); setCheckinCustom(""); setSupportOffered(""); setConsequences(""); setIncludeEAP(false);
     setEmail(""); setFileBlob(null); setFilename("pip-document.docx");
+    setResultSections([]); setCopiedSectionIdx(null);
     setS1Error(""); setS2Error(""); setS3Error(""); setErrorMsg("");
     setCheckoutError(""); setPaywallEmail(""); setPaymentCancelled(false);
     setShowReturningCheck(false); setReturningEmail(""); setReturningCheckError("");
@@ -1342,6 +1368,103 @@ export default function PIPBuilderTool({
             Build another PIP
           </button>
         </div>
+
+        {/* ── In-browser results (S149) ──────────────────────── */}
+        {resultSections.length > 0 && (
+          <div style={{ marginTop: "56px", textAlign: "left" }}>
+            {resultSections.map((section, idx) => (
+              <div
+                key={idx}
+                style={{
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  borderRadius: "var(--radius-card, 12px)",
+                  padding: "24px",
+                  marginBottom: "16px",
+                  position: "relative",
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: "0.75rem",
+                    fontWeight: 700,
+                    letterSpacing: "0.05em",
+                    color: "rgba(255,255,255,0.40)",
+                    textTransform: "uppercase",
+                    margin: "0 0 12px",
+                  }}
+                >
+                  {String(idx + 1).padStart(2, "0")} {section.title}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const text = section.items
+                      ? (section.content ? section.content + "\n\n" : "") + section.items.map((it) => `${it.label}\n${it.detail}`).join("\n\n")
+                      : section.content;
+                    navigator.clipboard.writeText(text).then(() => {
+                      setCopiedSectionIdx(idx);
+                      setTimeout(() => setCopiedSectionIdx(null), 2000);
+                    }).catch(() => {});
+                  }}
+                  style={{
+                    position: "absolute",
+                    top: "20px",
+                    right: "20px",
+                    background: "none",
+                    border: "none",
+                    padding: "4px 8px",
+                    fontSize: "0.8125rem",
+                    color: copiedSectionIdx === idx ? "#22C55E" : "var(--cta, #1E7AB8)",
+                    cursor: "pointer",
+                    transition: "color 0.15s ease",
+                  }}
+                >
+                  {copiedSectionIdx === idx ? "\u2713 Copied" : "Copy"}
+                </button>
+                {section.content && (
+                  <div style={{ marginBottom: section.items?.length ? "16px" : "0" }}>
+                    {section.content.split("\n\n").map((para, pIdx) => (
+                      <p
+                        key={pIdx}
+                        style={{
+                          fontSize: "0.9375rem",
+                          lineHeight: 1.7,
+                          color: "rgba(255,255,255,0.80)",
+                          margin: `0 0 ${pIdx < section.content.split("\n\n").length - 1 ? "16px" : "0"}`,
+                          whiteSpace: "pre-line",
+                        }}
+                      >
+                        {para}
+                      </p>
+                    ))}
+                  </div>
+                )}
+                {section.items && section.items.length > 0 && (
+                  <div>
+                    {section.items.map((item, iIdx) => (
+                      <div
+                        key={iIdx}
+                        style={{
+                          paddingTop: iIdx > 0 ? "12px" : "0",
+                          borderTop: iIdx > 0 ? "1px solid rgba(255,255,255,0.06)" : "none",
+                          marginTop: iIdx > 0 ? "12px" : "0",
+                        }}
+                      >
+                        <p style={{ fontSize: "0.875rem", fontWeight: 600, color: "rgba(255,255,255,0.85)", margin: "0 0 4px" }}>
+                          {item.label}
+                        </p>
+                        <p style={{ fontSize: "0.875rem", lineHeight: 1.65, color: "rgba(255,255,255,0.65)", margin: 0, whiteSpace: "pre-line" }}>
+                          {item.detail}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
 
         <CrossSellBlock
           productName="AGENT: Onboarding"

@@ -243,6 +243,19 @@ function sseEvent(event: string, data: Record<string, unknown>): Uint8Array {
   return encoder.encode(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`);
 }
 
+// ─── In-browser results types (S149) ──────────────────────────────────────────
+
+interface ResultItem {
+  label: string;
+  detail: string;
+}
+
+interface ResultSection {
+  title: string;
+  content: string;
+  items?: ResultItem[];
+}
+
 // ─── docx builder ─────────────────────────────────────────────────────────────
 
 interface DossierData {
@@ -261,6 +274,32 @@ interface DossierData {
     strengthsGaps: { title: string; content: string };
     forYou: { title: string; content: string; nextSteps: string[] };
   };
+}
+
+function buildResultSections(dossier: DossierData): ResultSection[] {
+  const sectionOrder: (keyof typeof dossier.sections)[] = [
+    "snapshot", "businessModel", "targetMarket", "products",
+    "growthSignals", "publicVoice", "strengthsGaps", "forYou",
+  ];
+
+  return sectionOrder.map((key) => {
+    const section = dossier.sections[key];
+    const result: ResultSection = {
+      title: section.title,
+      content: section.content,
+    };
+    // forYou has nextSteps array
+    if (key === "forYou" && "nextSteps" in section) {
+      const forYouSection = section as { title: string; content: string; nextSteps: string[] };
+      if (forYouSection.nextSteps.length > 0) {
+        result.items = forYouSection.nextSteps.map((step, i) => ({
+          label: `Next Step ${i + 1}`,
+          detail: step,
+        }));
+      }
+    }
+    return result;
+  });
 }
 
 function buildDocx(
@@ -725,8 +764,12 @@ Produce the competitive intelligence dossier as specified. Return only the JSON 
         await logDossierRun(userId, userEmail, companyUrl, dossierData.companyName ?? companyName ?? null);
 
         // ── Send complete event ──────────────────────────────────────────────
+        // Serialize structured sections for in-browser results (S149)
+        const sections = buildResultSections(dossierData);
+
         send("complete", {
           docxBase64,
+          sections,
           metadata: {
             companyName: dossierData.companyName,
             pagesAnalyzed: successfulPages.length,

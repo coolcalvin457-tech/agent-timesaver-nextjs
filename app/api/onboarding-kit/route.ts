@@ -50,6 +50,19 @@ interface OnboardingKitData {
   };
 }
 
+// ─── In-browser results types (S149) ───────────────────────────────────────────
+
+interface ResultItem {
+  label: string;
+  detail: string;
+}
+
+interface ResultSection {
+  title: string;
+  content: string;
+  items?: ResultItem[];
+}
+
 // ─── Mock fallback ─────────────────────────────────────────────────────────────
 
 const MOCK_KIT: OnboardingKitData = {
@@ -776,6 +789,61 @@ async function buildDocxFile(
   return await Packer.toBuffer(doc);
 }
 
+// ─── Build structured results (S149) ──────────────────────────────────────────────
+
+function buildResultSections(kit: OnboardingKitData): ResultSection[] {
+  // 1. Welcome Letter
+  const welcomeSection: ResultSection = {
+    title: "Welcome Letter",
+    content: kit.welcomeLetter.body,
+  };
+
+  // 2. First Week Schedule
+  const scheduleSection: ResultSection = {
+    title: "First Week Schedule",
+    content: "",
+    items: kit.firstWeekSchedule.map((day) => ({
+      label: day.day,
+      detail: day.items.join("\n"),
+    })),
+  };
+
+  // 3. Key Contacts
+  const contactsSection: ResultSection = {
+    title: "Key Contacts",
+    content: "",
+    items: kit.keyContacts.map((c) => ({
+      label: `${c.name}, ${c.title}`,
+      detail: c.why,
+    })),
+  };
+
+  // 4. Role Expectations (30/60/90)
+  const expectationsSection: ResultSection = {
+    title: "Role Expectations",
+    content: kit.roleExpectations.overview,
+    items: [
+      { label: "30-Day Goals", detail: kit.roleExpectations.day30.join("\n") },
+      { label: "60-Day Goals", detail: kit.roleExpectations.day60.join("\n") },
+      { label: "90-Day Goals", detail: kit.roleExpectations.day90.join("\n") },
+    ],
+  };
+
+  // 5. New Hire Checklist
+  const checklistSection: ResultSection = {
+    title: "New Hire Checklist",
+    content: "",
+    items: [
+      { label: "Pre-Start", detail: kit.newHireChecklist.preStart.join("\n") },
+      { label: "Day One", detail: kit.newHireChecklist.dayOne.join("\n") },
+      { label: "Week One", detail: kit.newHireChecklist.weekOne.join("\n") },
+      { label: "Month One", detail: kit.newHireChecklist.monthOne.join("\n") },
+    ],
+  };
+
+  return [welcomeSection, scheduleSection, contactsSection, expectationsSection, checklistSection];
+}
+
 // ─── Route Handler ─────────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
@@ -894,18 +962,17 @@ export async function POST(req: NextRequest) {
     const safeHireName = hireName.replace(/[^a-zA-Z0-9]/g, "-").toLowerCase();
     const filename = `onboarding-kit-${safeHireName}.docx`;
 
-    const fileBlob = new Blob([new Uint8Array(docxBuffer)], {
-      type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    });
+    // Serialize structured sections for in-browser results (S149)
+    const sections = buildResultSections(kitData);
+    const docxBase64 = Buffer.from(docxBuffer).toString("base64");
 
-    return new Response(fileBlob, {
-      status: 200,
-      headers: {
-        "Content-Type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        "Content-Disposition": `attachment; filename="${filename}"`,
-        "X-Kit-Filename": encodeURIComponent(filename),
-        "X-Hire-Name": encodeURIComponent(hireName),
-        "X-Hire-Title": encodeURIComponent(hireTitle),
+    return NextResponse.json({
+      docxBase64,
+      filename,
+      sections,
+      metadata: {
+        hireName,
+        hireTitle,
       },
     });
   } catch (error) {

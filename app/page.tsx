@@ -39,7 +39,7 @@ export default function Home() {
         </section>
 
         {/* ── Section 2: Dream / Aspiration ───────────────────────────── */}
-        <section className="section section-dark" id="dream" style={{ paddingTop: "128px", paddingBottom: "128px" }}>
+        <section className="section section-dark" id="dream" style={{ paddingTop: "128px", paddingBottom: "80px" }}>
           <div className="container">
             <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center" }}>
               <h2 className="heading-1" style={{ color: "#fff", marginBottom: "var(--section-head-gap)", lineHeight: "var(--section-headline-lh)", fontSize: "var(--section-headline-size)", letterSpacing: "var(--section-headline-ls)" }}>
@@ -58,7 +58,7 @@ export default function Home() {
                 height="22"
                 viewBox="0 0 24 24"
                 fill="none"
-                style={{ marginTop: "36px", opacity: 0.3, animation: "gentleBounce 2.4s ease-in-out infinite" }}
+                style={{ display: "block", margin: "36px auto 0", opacity: 0.3, animation: "gentleBounce 2.4s ease-in-out infinite" }}
               >
                 <path d="M6 9l6 6 6-6" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>

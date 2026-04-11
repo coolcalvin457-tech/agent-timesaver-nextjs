@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import CrossSellBlock from "@/components/shared/CrossSellBlock";
 import BackButton from "@/components/shared/BackButton";
 import StepIndicator from "@/components/shared/StepIndicator";
+import QualitySignal from "@/components/shared/QualitySignal";
 import { triggerDownload } from "@/components/shared/fileUtils";
 import { useAuth } from "@/components/AuthProvider";
 
@@ -193,17 +194,7 @@ const errorStyle: React.CSSProperties = {
   marginTop: "6px",
 };
 
-const fieldGroupStyle: React.CSSProperties = { marginBottom: "20px" };
-
-const selectStyle: React.CSSProperties = {
-  ...inputStyle,
-  appearance: "none" as const,
-  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,0.4)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")`,
-  backgroundRepeat: "no-repeat",
-  backgroundPosition: "right 12px center",
-  paddingRight: "36px",
-  cursor: "pointer",
-};
+const fieldGroupStyle: React.CSSProperties = { marginBottom: "28px" };
 
 // ─── Component ──────────────────────────────────────────────────────────────────
 
@@ -618,16 +609,17 @@ export default function CompetitiveDossierTool({
 
           <div style={fieldGroupStyle}>
             <label style={labelStyle}>Your relationship to this company</label>
-            <select
-              value={relationshipType}
-              onChange={(e) => setRelationshipType(e.target.value as RelationshipType)}
-              style={selectStyle}
-            >
-              <option value="" disabled>Select one...</option>
+            <div className="mc-tile-grid" style={{ marginTop: "4px" }}>
               {RELATIONSHIP_OPTIONS.map((opt) => (
-                <option key={opt} value={opt}>{opt}</option>
+                <button
+                  key={opt}
+                  className={`mc-tile${relationshipType === opt ? " selected" : ""}`}
+                  onClick={() => setRelationshipType(relationshipType === opt ? "" : opt)}
+                >
+                  <span className="mc-tile-label">{opt}</span>
+                </button>
               ))}
-            </select>
+            </div>
           </div>
 
           {s1Error && <p style={errorStyle}>{s1Error}</p>}
@@ -654,45 +646,35 @@ export default function CompetitiveDossierTool({
             <label style={labelStyle}>
               What do you most want to learn about this company? <span style={optionalStyle}>(optional)</span>
             </label>
-            <textarea
-              value={researchFocus}
-              onChange={(e) => setResearchFocus(e.target.value)}
-              placeholder="e.g. I want to understand their pricing strategy and how they're positioning against us in the mid-market."
-              style={textareaStyle}
-              maxLength={500}
-            />
-            <div style={{ textAlign: "right", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", marginTop: "4px" }}>
-              {researchFocus.length}/500
+            <div style={{ position: "relative" }}>
+              <textarea
+                value={researchFocus}
+                onChange={(e) => setResearchFocus(e.target.value)}
+                placeholder="e.g. I want to understand their pricing strategy and how they're positioning against us in the mid-market."
+                style={{ ...textareaStyle, paddingBottom: "24px" }}
+                maxLength={500}
+              />
+              <span style={{ position: "absolute", bottom: "8px", right: "12px", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", pointerEvents: "none" }}>
+                {researchFocus.length}/500
+              </span>
             </div>
+            <QualitySignal value={researchFocus} />
           </div>
 
           <div style={fieldGroupStyle}>
             <label style={labelStyle}>
               Priority focus areas <span style={optionalStyle}>(optional)</span>
             </label>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-              {ALL_PRIORITY_FOCUS.map((area) => {
-                const selected = priorityFocusAreas.includes(area);
-                return (
-                  <button
-                    key={area}
-                    onClick={() => toggleFocusArea(area)}
-                    style={{
-                      padding: "6px 14px",
-                      borderRadius: "var(--radius-tag, 6px)",
-                      border: `1px solid ${selected ? "var(--cta, #1E7AB8)" : "rgba(255,255,255,0.18)"}`,
-                      background: selected ? "rgba(30,122,184,0.18)" : "rgba(255,255,255,0.05)",
-                      color: selected ? "#fff" : "rgba(255,255,255,0.65)",
-                      fontSize: "0.8125rem",
-                      fontWeight: selected ? 600 : 400,
-                      cursor: "pointer",
-                      transition: "all 0.15s ease",
-                    }}
-                  >
-                    {area}
-                  </button>
-                );
-              })}
+            <div className="mc-tile-grid" style={{ marginTop: "4px" }}>
+              {ALL_PRIORITY_FOCUS.map((area) => (
+                <button
+                  key={area}
+                  className={`mc-tile${priorityFocusAreas.includes(area) ? " selected" : ""}`}
+                  onClick={() => toggleFocusArea(area)}
+                >
+                  <span className="mc-tile-label">{area}</span>
+                </button>
+              ))}
             </div>
           </div>
 
@@ -700,15 +682,17 @@ export default function CompetitiveDossierTool({
             <label style={labelStyle}>
               Anything you already know? <span style={optionalStyle}>(optional)</span>
             </label>
-            <textarea
-              value={existingKnowledge}
-              onChange={(e) => setExistingKnowledge(e.target.value)}
-              placeholder="e.g. They just raised a Series B and announced a partnership with Salesforce."
-              style={{ ...textareaStyle, minHeight: "72px" }}
-              maxLength={500}
-            />
-            <div style={{ textAlign: "right", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", marginTop: "4px" }}>
-              {existingKnowledge.length}/500
+            <div style={{ position: "relative" }}>
+              <textarea
+                value={existingKnowledge}
+                onChange={(e) => setExistingKnowledge(e.target.value)}
+                placeholder="e.g. They just raised a Series B and announced a partnership with Salesforce."
+                style={{ ...textareaStyle, minHeight: "72px", paddingBottom: "24px" }}
+                maxLength={500}
+              />
+              <span style={{ position: "absolute", bottom: "8px", right: "12px", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", pointerEvents: "none" }}>
+                {existingKnowledge.length}/500
+              </span>
             </div>
             <p style={helperStyle}>We&apos;ll skip what you already know and go deeper on what&apos;s new.</p>
           </div>
@@ -757,15 +741,17 @@ export default function CompetitiveDossierTool({
             <label style={labelStyle}>
               Brief description of your company or product <span style={optionalStyle}>(optional)</span>
             </label>
-            <textarea
-              value={userCompanyDescription}
-              onChange={(e) => setUserCompanyDescription(e.target.value)}
-              placeholder="e.g. We're a 50-person B2B SaaS company selling project management tools to healthcare organizations."
-              style={textareaStyle}
-              maxLength={500}
-            />
-            <div style={{ textAlign: "right", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", marginTop: "4px" }}>
-              {userCompanyDescription.length}/500
+            <div style={{ position: "relative" }}>
+              <textarea
+                value={userCompanyDescription}
+                onChange={(e) => setUserCompanyDescription(e.target.value)}
+                placeholder="e.g. We're a 50-person B2B SaaS company selling project management tools to healthcare organizations."
+                style={{ ...textareaStyle, paddingBottom: "24px" }}
+                maxLength={500}
+              />
+              <span style={{ position: "absolute", bottom: "8px", right: "12px", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", pointerEvents: "none" }}>
+                {userCompanyDescription.length}/500
+              </span>
             </div>
             <p style={helperStyle}>Optional. Enables direct comparison in your dossier.</p>
           </div>

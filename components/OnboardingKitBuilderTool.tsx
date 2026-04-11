@@ -733,7 +733,7 @@ export default function OnboardingKitBuilderTool({
   };
 
   const fieldWrapStyle: React.CSSProperties = {
-    marginBottom: "20px",
+    marginBottom: "28px",
   };
 
   const labelStyle: React.CSSProperties = {
@@ -886,15 +886,17 @@ export default function OnboardingKitBuilderTool({
         {/* Why this hire */}
         <div style={fieldWrapStyle}>
           <label style={labelStyle}>Why this hire, why now</label>
-          <textarea
-            style={{ ...textareaStyle, minHeight: "120px" }}
-            value={whyHired}
-            onChange={(e) => setWhyHired(e.target.value)}
-            placeholder={`e.g. We're scaling our outbound motion and ${hireName || "Jordan"} was hired to build the top-of-funnel function from scratch. This role didn't exist before. They're creating the playbook.`}
-            maxLength={500}
-          />
-          <div style={{ textAlign: "right", fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "4px" }}>
-            {whyHired.length}/500
+          <div style={{ position: "relative" }}>
+            <textarea
+              style={{ ...textareaStyle, minHeight: "120px", paddingBottom: "24px" }}
+              value={whyHired}
+              onChange={(e) => setWhyHired(e.target.value)}
+              placeholder={`e.g. We're scaling our outbound motion and ${hireName || "Jordan"} was hired to build the top-of-funnel function from scratch. This role didn't exist before. They're creating the playbook.`}
+              maxLength={500}
+            />
+            <span style={{ position: "absolute", bottom: "8px", right: "12px", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", pointerEvents: "none" }}>
+              {whyHired.length}/500
+            </span>
           </div>
           <QualitySignal value={whyHired} message="Good detail. The kit will reflect this." />
         </div>
@@ -902,15 +904,17 @@ export default function OnboardingKitBuilderTool({
         {/* Week one priorities */}
         <div style={fieldWrapStyle}>
           <label style={labelStyle}>Week one priorities</label>
-          <textarea
-            style={{ ...textareaStyle, minHeight: "100px" }}
-            value={weekOnePriorities}
-            onChange={(e) => setWeekOnePriorities(e.target.value)}
-            placeholder={`e.g. Meet the full sales team, get access to HubSpot, shadow two customer calls, understand how deals move through the pipeline.`}
-            maxLength={500}
-          />
-          <div style={{ textAlign: "right", fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "4px" }}>
-            {weekOnePriorities.length}/500
+          <div style={{ position: "relative" }}>
+            <textarea
+              style={{ ...textareaStyle, minHeight: "100px", paddingBottom: "24px" }}
+              value={weekOnePriorities}
+              onChange={(e) => setWeekOnePriorities(e.target.value)}
+              placeholder={`e.g. Meet the full sales team, get access to HubSpot, shadow two customer calls, understand how deals move through the pipeline.`}
+              maxLength={500}
+            />
+            <span style={{ position: "absolute", bottom: "8px", right: "12px", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", pointerEvents: "none" }}>
+              {weekOnePriorities.length}/500
+            </span>
           </div>
         </div>
 
@@ -966,30 +970,34 @@ export default function OnboardingKitBuilderTool({
         {/* How the team works */}
         <div style={fieldWrapStyle}>
           <label style={labelStyle}>How the team works</label>
-          <textarea
-            style={{ ...textareaStyle, minHeight: "100px" }}
-            value={howTeamWorks}
-            onChange={(e) => setHowTeamWorks(e.target.value)}
-            placeholder="e.g. Small team, moves fast. Slack is primary. Email is rare. Decisions go through the manager but everyone's input is expected. Weekly standup Mondays at 9."
-            maxLength={500}
-          />
-          <div style={{ textAlign: "right", fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "4px" }}>
-            {howTeamWorks.length}/500
+          <div style={{ position: "relative" }}>
+            <textarea
+              style={{ ...textareaStyle, minHeight: "100px", paddingBottom: "24px" }}
+              value={howTeamWorks}
+              onChange={(e) => setHowTeamWorks(e.target.value)}
+              placeholder="e.g. Small team, moves fast. Slack is primary. Email is rare. Decisions go through the manager but everyone's input is expected. Weekly standup Mondays at 9."
+              maxLength={500}
+            />
+            <span style={{ position: "absolute", bottom: "8px", right: "12px", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", pointerEvents: "none" }}>
+              {howTeamWorks.length}/500
+            </span>
           </div>
         </div>
 
         {/* 30/60/90 */}
         <div style={fieldWrapStyle}>
           <label style={labelStyle}>30/60/90 day expectations</label>
-          <textarea
-            style={{ ...textareaStyle, minHeight: "120px" }}
-            value={thirtyToNinety}
-            onChange={(e) => setThirtyToNinety(e.target.value)}
-            placeholder="e.g. 30 days: understands all key accounts and has first prospecting list built. 60 days: first outbound sequence live. 90 days: pipeline contribution visible in HubSpot."
-            maxLength={500}
-          />
-          <div style={{ textAlign: "right", fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "4px" }}>
-            {thirtyToNinety.length}/500
+          <div style={{ position: "relative" }}>
+            <textarea
+              style={{ ...textareaStyle, minHeight: "120px", paddingBottom: "24px" }}
+              value={thirtyToNinety}
+              onChange={(e) => setThirtyToNinety(e.target.value)}
+              placeholder="e.g. 30 days: understands all key accounts and has first prospecting list built. 60 days: first outbound sequence live. 90 days: pipeline contribution visible in HubSpot."
+              maxLength={500}
+            />
+            <span style={{ position: "absolute", bottom: "8px", right: "12px", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", pointerEvents: "none" }}>
+              {thirtyToNinety.length}/500
+            </span>
           </div>
           <p style={helperStyle}>Write in plain language. You don't need three separate fields. Just describe all three milestones in one response.</p>
           <QualitySignal value={thirtyToNinety} message="Good detail. The kit will reflect this." />
@@ -1036,15 +1044,17 @@ export default function OnboardingKitBuilderTool({
           <label style={{ ...labelStyle, fontWeight: 400, color: "var(--text-muted)" }}>
             Anything else about the team?
           </label>
-          <textarea
-            style={{ ...textareaStyle, minHeight: "72px", fontSize: "0.875rem" }}
-            value={teamNotes}
-            onChange={(e) => setTeamNotes(e.target.value)}
-            placeholder="e.g. Sarah is the go-to for tool access, even though IT technically owns it."
-            maxLength={500}
-          />
-          <div style={{ textAlign: "right", fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "4px" }}>
-            {teamNotes.length}/500
+          <div style={{ position: "relative" }}>
+            <textarea
+              style={{ ...textareaStyle, minHeight: "72px", fontSize: "0.875rem", paddingBottom: "24px" }}
+              value={teamNotes}
+              onChange={(e) => setTeamNotes(e.target.value)}
+              placeholder="e.g. Sarah is the go-to for tool access, even though IT technically owns it."
+              maxLength={500}
+            />
+            <span style={{ position: "absolute", bottom: "8px", right: "12px", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", pointerEvents: "none" }}>
+              {teamNotes.length}/500
+            </span>
           </div>
         </div>
 

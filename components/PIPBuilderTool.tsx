@@ -142,7 +142,7 @@ const errorStyle: React.CSSProperties = {
 };
 
 const fieldGroupStyle: React.CSSProperties = {
-  marginBottom: "20px",
+  marginBottom: "28px",
 };
 
 
@@ -793,15 +793,17 @@ export default function PIPBuilderTool({
         <div style={fieldGroupStyle}>
           <label style={labelStyle}>
             Specific deficiencies          </label>
-          <textarea
-            value={deficiencies}
-            onChange={(e) => setDeficiencies(e.target.value)}
-            placeholder={`e.g. Failed to meet Q1 outbound call quota (50 calls/week) for three consecutive months, averaging 28 calls/week. Missed client follow-up deadlines on 6 of 8 tracked accounts in February, measured via CRM activity log.`}
-            style={{ ...textareaStyle, minHeight: "120px" }}
-            maxLength={500}
-          />
-          <div style={{ textAlign: "right", fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "4px" }}>
-            {deficiencies.length}/500
+          <div style={{ position: "relative" }}>
+            <textarea
+              value={deficiencies}
+              onChange={(e) => setDeficiencies(e.target.value)}
+              placeholder={`e.g. Failed to meet Q1 outbound call quota (50 calls/week) for three consecutive months, averaging 28 calls/week. Missed client follow-up deadlines on 6 of 8 tracked accounts in February, measured via CRM activity log.`}
+              style={{ ...textareaStyle, minHeight: "120px", paddingBottom: "24px" }}
+              maxLength={500}
+            />
+            <span style={{ position: "absolute", bottom: "8px", right: "12px", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", pointerEvents: "none" }}>
+              {deficiencies.length}/500
+            </span>
           </div>
           <p style={helperStyle}>
             Include dates, frequencies, and how it was measured. Vague language is the most common reason PIPs don't hold up.
@@ -815,15 +817,17 @@ export default function PIPBuilderTool({
             Performance standard being missed{" "}
             <span style={{ fontWeight: 400, color: "var(--text-muted)" }}>(optional)</span>
           </label>
-          <textarea
-            value={performanceStandard}
-            onChange={(e) => setPerformanceStandard(e.target.value)}
-            placeholder="e.g. The role requires 50 outbound calls per week and client follow-up within 24 hours of contact, per the Sales Handbook (updated Jan 2026)."
-            style={textareaStyle}
-            maxLength={500}
-          />
-          <div style={{ textAlign: "right", fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "4px" }}>
-            {performanceStandard.length}/500
+          <div style={{ position: "relative" }}>
+            <textarea
+              value={performanceStandard}
+              onChange={(e) => setPerformanceStandard(e.target.value)}
+              placeholder="e.g. The role requires 50 outbound calls per week and client follow-up within 24 hours of contact, per the Sales Handbook (updated Jan 2026)."
+              style={{ ...textareaStyle, paddingBottom: "24px" }}
+              maxLength={500}
+            />
+            <span style={{ position: "absolute", bottom: "8px", right: "12px", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", pointerEvents: "none" }}>
+              {performanceStandard.length}/500
+            </span>
           </div>
           <p style={helperStyle}>
             If you have a documented standard (handbook, job description, offer letter), include it here. It strengthens the document. If you don't, leave it blank.
@@ -834,15 +838,17 @@ export default function PIPBuilderTool({
         <div style={fieldGroupStyle}>
           <label style={labelStyle}>
             Improvement targets          </label>
-          <textarea
-            value={improvementTargets}
-            onChange={(e) => setImprovementTargets(e.target.value)}
-            placeholder="e.g. Meet weekly call quota of 50 for 4 consecutive weeks. All client follow-ups logged within 24 hours, with zero exceptions over the plan period. Both tracked via HubSpot."
-            style={{ ...textareaStyle, minHeight: "100px" }}
-            maxLength={500}
-          />
-          <div style={{ textAlign: "right", fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "4px" }}>
-            {improvementTargets.length}/500
+          <div style={{ position: "relative" }}>
+            <textarea
+              value={improvementTargets}
+              onChange={(e) => setImprovementTargets(e.target.value)}
+              placeholder="e.g. Meet weekly call quota of 50 for 4 consecutive weeks. All client follow-ups logged within 24 hours, with zero exceptions over the plan period. Both tracked via HubSpot."
+              style={{ ...textareaStyle, minHeight: "100px", paddingBottom: "24px" }}
+              maxLength={500}
+            />
+            <span style={{ position: "absolute", bottom: "8px", right: "12px", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", pointerEvents: "none" }}>
+              {improvementTargets.length}/500
+            </span>
           </div>
           <QualitySignal value={improvementTargets} message="Good detail. The document will reflect this." />
         </div>
@@ -949,15 +955,17 @@ export default function PIPBuilderTool({
             Support being offered{" "}
             <span style={{ fontWeight: 400, color: "var(--text-muted)" }}>(optional)</span>
           </label>
-          <textarea
-            value={supportOffered}
-            onChange={(e) => setSupportOffered(e.target.value)}
-            placeholder="e.g. Weekly 30-minute coaching session with manager. Access to the company's sales training library. Performance dashboard reviewed together at each check-in."
-            style={textareaStyle}
-            maxLength={500}
-          />
-          <div style={{ textAlign: "right", fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "4px" }}>
-            {supportOffered.length}/500
+          <div style={{ position: "relative" }}>
+            <textarea
+              value={supportOffered}
+              onChange={(e) => setSupportOffered(e.target.value)}
+              placeholder="e.g. Weekly 30-minute coaching session with manager. Access to the company's sales training library. Performance dashboard reviewed together at each check-in."
+              style={{ ...textareaStyle, paddingBottom: "24px" }}
+              maxLength={500}
+            />
+            <span style={{ position: "absolute", bottom: "8px", right: "12px", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", pointerEvents: "none" }}>
+              {supportOffered.length}/500
+            </span>
           </div>
           <p style={helperStyle}>
             Even a brief line here strengthens the document. It shows the company took a reasonable step before any disciplinary action.
@@ -968,15 +976,17 @@ export default function PIPBuilderTool({
         <div style={fieldGroupStyle}>
           <label style={labelStyle}>
             Consequences if targets are not met          </label>
-          <textarea
-            value={consequences}
-            onChange={(e) => setConsequences(e.target.value)}
-            placeholder="e.g. Failure to meet the improvement targets outlined in this plan may result in further corrective action, up to and including termination of employment."
-            style={textareaStyle}
-            maxLength={500}
-          />
-          <div style={{ textAlign: "right", fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "4px" }}>
-            {consequences.length}/500
+          <div style={{ position: "relative" }}>
+            <textarea
+              value={consequences}
+              onChange={(e) => setConsequences(e.target.value)}
+              placeholder="e.g. Failure to meet the improvement targets outlined in this plan may result in further corrective action, up to and including termination of employment."
+              style={{ ...textareaStyle, paddingBottom: "24px" }}
+              maxLength={500}
+            />
+            <span style={{ position: "absolute", bottom: "8px", right: "12px", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", pointerEvents: "none" }}>
+              {consequences.length}/500
+            </span>
           </div>
           <p style={helperStyle}>
             Plain language is fine. State it clearly so there's no ambiguity about what happens next.

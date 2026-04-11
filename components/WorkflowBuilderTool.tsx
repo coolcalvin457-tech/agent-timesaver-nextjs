@@ -129,7 +129,7 @@ const errorStyle: React.CSSProperties = {
 };
 
 const fieldGroupStyle: React.CSSProperties = {
-  marginBottom: "20px",
+  marginBottom: "28px",
 };
 
 /* radioOptionStyle removed (S148): Workflow S2 radio groups now use the shared
@@ -779,7 +779,7 @@ export default function WorkflowBuilderTool({
               lineHeight: 1.3,
             }}
           >
-            Help us personalize it.
+            A few more details.
           </h2>
 
           {/* Job title (required) */}
@@ -793,14 +793,14 @@ export default function WorkflowBuilderTool({
               style={inputStyle}
               value={jobTitle}
               onChange={(e) => setJobTitle(e.target.value)}
-              placeholder="e.g. Marketing Manager"
+              placeholder="e.g. Client Services Director"
             />
           </div>
 
           {/* Audience and priorities (optional) */}
-          <div style={{ ...fieldGroupStyle, marginBottom: "12px" }}>
+          <div style={fieldGroupStyle}>
             <label htmlFor="wf-audience" style={labelStyle}>
-              Who sees the finished result, and what matters most to them?
+              Who reviews this when it's done?
               <span style={optionalStyle}>(optional)</span>
             </label>
             <div style={{ position: "relative" }}>
@@ -822,7 +822,7 @@ export default function WorkflowBuilderTool({
           {/* Tools (optional) */}
           <div style={fieldGroupStyle}>
             <label htmlFor="wf-tools" style={labelStyle}>
-              Any tools or apps you already use?
+              What software do you use for this task?
               <span style={optionalStyle}>(optional)</span>
             </label>
             <input

@@ -1315,7 +1315,7 @@ export default function OnboardingKitBuilderTool({
       <div ref={toolContainerRef} className="okb-tool">
         <ToolLoadingScreen
           headingText="Building your kit"
-          timeEstimate="About 3 minutes."
+          timeEstimate="About 3 minutes"
           steps={LOADING_STEPS}
           activeStep={loadingStep}
         />

@@ -1283,7 +1283,7 @@ export default function PIPBuilderTool({
       <div ref={toolContainerRef} className="okb-tool">
         <ToolLoadingScreen
           headingText="Building your plan"
-          timeEstimate="About 3 minutes."
+          timeEstimate="About 3 minutes"
           steps={LOADING_STEPS}
           activeStep={loadingStep}
         />

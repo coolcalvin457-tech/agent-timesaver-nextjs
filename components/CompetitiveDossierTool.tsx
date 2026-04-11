@@ -983,7 +983,7 @@ export default function CompetitiveDossierTool({
             </span>
           </h2>
           <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.45)", margin: "0 0 36px" }}>
-            About 3 minutes.
+            About 3 minutes
           </p>
           <div style={{ textAlign: "left", maxWidth: "320px", margin: "0 auto" }}>
             {LOADING_STEPS.map((step, i) => {

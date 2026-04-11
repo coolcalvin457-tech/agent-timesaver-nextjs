@@ -4484,9 +4484,10 @@ input, textarea {
   0%   { background-position: 100% 0; }
   100% { background-position: -100% 0; }
 }
-/* ── Building dots: animated trailing dots for paid tool loading headlines (S134 F07) ── */
+/* ── Building dots: animated trailing dots for paid tool loading headlines (S134 F07, sized S148) ── */
 .building-dots span {
   opacity: 0;
+  font-size: 0.75em;
   animation: building-dot-pulse 1.4s ease-in-out infinite;
 }
 .building-dots span:nth-child(2) { animation-delay: 0.2s; }

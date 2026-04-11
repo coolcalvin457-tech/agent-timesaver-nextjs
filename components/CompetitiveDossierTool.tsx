@@ -1026,18 +1026,19 @@ export default function CompetitiveDossierTool({
 
       {/* ── Sent screen (auto-delivered) ────────────────────────────────────── */}
       {screen === "sent" && (
-        <div className="result-screen-enter" style={{ textAlign: "center" }}>
-          <div style={{ display: "inline-block", marginBottom: "16px" }}>
-            <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
-              <rect width="56" height="56" rx="12" fill="#22C55E" fillOpacity="0.12" />
-              <path d="M18 28.5L24.5 35L38 21" stroke="#22C55E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+        <div className="result-screen-enter">
+          {/* Sent confirmation — matches Prompts pattern */}
+          <div style={{
+            display: "flex", alignItems: "center", gap: "8px",
+            background: "rgba(30,122,184,0.06)", border: "1px solid rgba(30,122,184,0.15)",
+            borderRadius: "8px", padding: "10px 14px", marginBottom: "20px",
+            fontSize: "0.875rem", color: "rgba(255,255,255,0.6)",
+          }}>
+            <span style={{ color: "var(--cta)" }}>✓</span> Sent to your inbox.
           </div>
-          <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", color: "#FFFFFF", margin: "0 0 8px", lineHeight: 1.25 }}>
-            Your dossier is ready.
-          </h2>
+
           {resultJobTitle && (
-            <p style={{ fontSize: "0.9375rem", color: "rgba(255,255,255,0.55)", margin: "0 0 8px", textAlign: "center" }}>
+            <p style={{ fontSize: "0.9375rem", color: "rgba(255,255,255,0.55)", margin: "0 0 20px", textAlign: "center" }}>
               {resultJobTitle}{resultCompanyName ? `, ${resultCompanyName}` : ""}
             </p>
           )}
@@ -1051,62 +1052,75 @@ export default function CompetitiveDossierTool({
                   className="result-section-card"
                 >
                   <p className="result-eyebrow">
-                    {String(idx + 1).padStart(2, "0")} {section.title}
+                    Step {idx + 1}
                   </p>
-                  <button
-                    type="button"
-                    className={`result-copy-btn${copiedSectionIdx === idx ? " copied" : ""}`}
-                    onClick={() => {
-                      const text = section.items
-                        ? (section.content ? section.content + "\n\n" : "") + section.items.map((it) => `${it.label}\n${it.detail}`).join("\n\n")
-                        : section.content;
-                      navigator.clipboard.writeText(text).then(() => {
-                        setCopiedSectionIdx(idx);
-                        setTimeout(() => setCopiedSectionIdx(null), 2000);
-                      }).catch(() => {});
-                    }}
-                  >
-                    {copiedSectionIdx === idx ? "\u2713 Copied" : "Copy"}
-                  </button>
-                  {section.content && (
-                    <div style={{ marginBottom: section.items?.length ? "16px" : "0" }}>
-                      {section.content.split("\n\n").map((para, pIdx) => (
-                        <p
-                          key={pIdx}
-                          style={{
-                            fontSize: "0.9375rem",
-                            lineHeight: 1.7,
-                            color: "rgba(255,255,255,0.80)",
-                            margin: `0 0 ${pIdx < section.content.split("\n\n").length - 1 ? "16px" : "0"}`,
-                            whiteSpace: "pre-line",
-                          }}
-                        >
-                          {para}
-                        </p>
-                      ))}
-                    </div>
-                  )}
-                  {section.items && section.items.length > 0 && (
-                    <div>
-                      {section.items.map((item, iIdx) => (
-                        <div
-                          key={iIdx}
-                          style={{
-                            paddingTop: iIdx > 0 ? "12px" : "0",
-                            borderTop: iIdx > 0 ? "1px solid rgba(255,255,255,0.06)" : "none",
-                            marginTop: iIdx > 0 ? "12px" : "0",
-                          }}
-                        >
-                          <p style={{ fontSize: "0.875rem", fontWeight: 600, color: "rgba(255,255,255,0.85)", margin: "0 0 4px" }}>
-                            {item.label}
+                  <h3 style={{
+                    fontFamily: "var(--font-display)",
+                    fontWeight: 400,
+                    fontSize: "1.375rem",
+                    color: "#FFFFFF",
+                    letterSpacing: "-0.025em",
+                    margin: "0 0 8px",
+                  }}>
+                    {section.title}.
+                  </h3>
+                  <div className="result-content-wrapper" style={{ flexDirection: "column", alignItems: "stretch" }}>
+                    {section.content && (
+                      <div style={{ marginBottom: section.items?.length ? "16px" : "0" }}>
+                        {section.content.split("\n\n").map((para, pIdx) => (
+                          <p
+                            key={pIdx}
+                            style={{
+                              fontSize: "0.875rem",
+                              lineHeight: 1.7,
+                              color: "rgba(255,255,255,0.72)",
+                              margin: `0 0 ${pIdx < section.content.split("\n\n").length - 1 ? "16px" : "0"}`,
+                              whiteSpace: "pre-line",
+                            }}
+                          >
+                            {para}
                           </p>
-                          <p style={{ fontSize: "0.875rem", lineHeight: 1.65, color: "rgba(255,255,255,0.65)", margin: 0, whiteSpace: "pre-line" }}>
-                            {item.detail}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                        ))}
+                      </div>
+                    )}
+                    {section.items && section.items.length > 0 && (
+                      <div>
+                        {section.items.map((item, iIdx) => (
+                          <div
+                            key={iIdx}
+                            style={{
+                              paddingTop: iIdx > 0 ? "12px" : "0",
+                              borderTop: iIdx > 0 ? "1px solid rgba(255,255,255,0.06)" : "none",
+                              marginTop: iIdx > 0 ? "12px" : "0",
+                            }}
+                          >
+                            <p style={{ fontSize: "0.875rem", fontWeight: 600, color: "rgba(255,255,255,0.85)", margin: "0 0 4px" }}>
+                              {item.label}
+                            </p>
+                            <p style={{ fontSize: "0.875rem", lineHeight: 1.65, color: "rgba(255,255,255,0.65)", margin: 0, whiteSpace: "pre-line" }}>
+                              {item.detail}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    <button
+                      type="button"
+                      className={`result-copy-btn${copiedSectionIdx === idx ? " copied" : ""}`}
+                      onClick={() => {
+                        const text = section.items
+                          ? (section.content ? section.content + "\n\n" : "") + section.items.map((it) => `${it.label}\n${it.detail}`).join("\n\n")
+                          : section.content;
+                        navigator.clipboard.writeText(text).then(() => {
+                          setCopiedSectionIdx(idx);
+                          setTimeout(() => setCopiedSectionIdx(null), 2000);
+                        }).catch(() => {});
+                      }}
+                      style={{ alignSelf: "flex-end", marginTop: "10px" }}
+                    >
+                      {copiedSectionIdx === idx ? "\u2713 Copied" : "Copy"}
+                    </button>
+                  </div>
                 </div>
               ))}
               {/* Metadata footer on last card per spec */}

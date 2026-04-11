@@ -624,7 +624,7 @@ export default function WorkflowBuilderTool({
                 style={{ ...textareaStyle, minHeight: "130px", paddingBottom: "24px" }}
                 value={taskDescription}
                 onChange={(e) => setTaskDescription(e.target.value)}
-                placeholder="e.g. Onboard new clients from signed contract to first deliverable. This means sending them a welcome packet, scheduling the kickoff call, collecting brand assets and logins, assigning the internal team, and setting up the project in our tracking system. I'd rather spend that time building the actual relationship with the client and talking through their goals."
+                placeholder={"e.g. Onboard new clients from signed contract to first deliverable. This means sending them a welcome packet, scheduling the kickoff call, collecting brand assets and logins, assigning the internal team, and setting up the project in our tracking system. I'd rather spend that time building the actual relationship with the client and talking through their goals.\n"}
                 rows={3}
                 maxLength={500}
               />
@@ -672,7 +672,7 @@ export default function WorkflowBuilderTool({
                     setExampleFile(file);
                   }}
                 />
-                {exampleFile ? `✓ ${exampleFile.name}` : "Have a doc, screenshot, or example? Upload it here. (optional)"}
+                {exampleFile ? `✓ ${exampleFile.name}` : "Upload a reference doc or screenshot (optional)"}
               </label>
               {exampleFile && (
                 <button

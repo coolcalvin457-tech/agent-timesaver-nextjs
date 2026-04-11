@@ -1013,7 +1013,7 @@ export default function WorkflowBuilderTool({
               style={{
                 background: "var(--dark, #161618)",
                 borderRadius: "12px",
-                padding: "24px 28px 24px 47px",
+                padding: "24px 28px 24px 37px",
                 marginBottom: "0",
               }}
             >

@@ -629,7 +629,7 @@ export default function WorkflowBuilderTool({
                 maxLength={500}
               />
               <span style={{ position: "absolute", bottom: "8px", right: "12px", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", pointerEvents: "none" }}>
-                {taskDescription.length}/500
+                {taskDescription.length === 0 ? "363" : taskDescription.length}/500
               </span>
             </div>
             <QualitySignal value={taskDescription} />

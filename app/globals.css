@@ -547,6 +547,20 @@ input, textarea {
   box-shadow: var(--shadow-focus);
 }
 
+/* ── Input Focus: Cascade for inline-styled inputs (S152) ── */
+.tool-container input[type="text"]:focus,
+.tool-container input[type="email"]:focus,
+.tool-container input[type="url"]:focus,
+.tool-container textarea:focus,
+.okb-tool input[type="text"]:focus,
+.okb-tool input[type="email"]:focus,
+.okb-tool input[type="url"]:focus,
+.okb-tool textarea:focus {
+  border-color: var(--cta) !important;
+  box-shadow: var(--shadow-focus) !important;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
 /* ── Tool Container ───────────────────────────────────────── */
 .tool-container {
   background: var(--surface);

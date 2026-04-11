@@ -1287,6 +1287,7 @@ export default function PIPBuilderTool({
           background: "rgba(30,122,184,0.06)", border: "1px solid rgba(30,122,184,0.15)",
           borderRadius: "8px", padding: "10px 14px", marginBottom: "20px",
           fontSize: "0.875rem", color: "rgba(255,255,255,0.6)",
+          width: "fit-content", margin: "0 auto",
         }}>
           <span style={{ color: "var(--cta)" }}>✓</span> Sent to your inbox.
         </div>
@@ -1318,9 +1319,25 @@ export default function PIPBuilderTool({
                 }}>
                   {section.title}.
                 </h3>
-                <div className="result-content-wrapper" style={{ flexDirection: "column", alignItems: "stretch" }}>
+                <div className="result-content-wrapper" style={{ flexDirection: "column", alignItems: "stretch", position: "relative" }}>
+                  <button
+                    type="button"
+                    className={`result-copy-btn${copiedSectionIdx === idx ? " copied" : ""}`}
+                    onClick={() => {
+                      const text = section.items
+                        ? (section.content ? section.content + "\n\n" : "") + section.items.map((it) => `${it.label}\n${it.detail}`).join("\n\n")
+                        : section.content;
+                      navigator.clipboard.writeText(text).then(() => {
+                        setCopiedSectionIdx(idx);
+                        setTimeout(() => setCopiedSectionIdx(null), 2000);
+                      }).catch(() => {});
+                    }}
+                    style={{ position: "absolute", top: "12px", right: "12px" }}
+                  >
+                    {copiedSectionIdx === idx ? "\u2713 Copied" : "Copy"}
+                  </button>
                   {section.content && (
-                    <div style={{ marginBottom: section.items?.length ? "16px" : "0" }}>
+                    <div style={{ marginBottom: section.items?.length ? "16px" : "0", paddingRight: "60px" }}>
                       {section.content.split("\n\n").map((para, pIdx) => (
                         <p
                           key={pIdx}
@@ -1358,22 +1375,6 @@ export default function PIPBuilderTool({
                       ))}
                     </div>
                   )}
-                  <button
-                    type="button"
-                    className={`result-copy-btn${copiedSectionIdx === idx ? " copied" : ""}`}
-                    onClick={() => {
-                      const text = section.items
-                        ? (section.content ? section.content + "\n\n" : "") + section.items.map((it) => `${it.label}\n${it.detail}`).join("\n\n")
-                        : section.content;
-                      navigator.clipboard.writeText(text).then(() => {
-                        setCopiedSectionIdx(idx);
-                        setTimeout(() => setCopiedSectionIdx(null), 2000);
-                      }).catch(() => {});
-                    }}
-                    style={{ alignSelf: "flex-end", marginTop: "10px" }}
-                  >
-                    {copiedSectionIdx === idx ? "\u2713 Copied" : "Copy"}
-                  </button>
                 </div>
               </div>
             ))}

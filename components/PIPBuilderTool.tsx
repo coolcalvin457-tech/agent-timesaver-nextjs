@@ -1059,32 +1059,43 @@ export default function PIPBuilderTool({
     return (
       <div ref={toolContainerRef} className="okb-tool">
 
-        {/* Payment cancelled banner */}
+        <h2
+          style={{
+            fontSize: "clamp(1.75rem, 3.5vw, 2.25rem)",
+            fontWeight: 400,
+            fontFamily: "var(--font-display)",
+            color: "#FFFFFF",
+            margin: "0 0 28px",
+            lineHeight: 1.2,
+          }}
+        >
+          Performance Improvement Plans.
+        </h2>
+
         {paymentCancelled && (
-          <div style={{
-            background: "rgba(30,122,184,0.06)", border: "1px solid rgba(30,122,184,0.2)",
-            borderRadius: "8px", padding: "12px 16px", marginBottom: "24px",
-            fontSize: "0.875rem", color: "var(--text-secondary)",
-          }}>
-            Payment wasn&apos;t completed. No charge was made. Try again below.
-          </div>
+          <p style={{ fontSize: "0.875rem", color: "rgba(255,200,80,0.9)", marginBottom: "16px" }}>
+            Checkout was cancelled. Your inputs are still here.
+          </p>
         )}
 
-        <div style={{ marginBottom: "28px" }}>
-          <h2 style={{ fontSize: "clamp(1.5rem, 3.25vw, 2rem)", fontWeight: 400, fontFamily: "var(--font-display)", lineHeight: 1.25, color: "var(--text-primary)", margin: 0 }}>
-            Performance Improvement Plans.
-          </h2>
-        </div>
-
         {/* What's included */}
-        <div style={{
-          background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.10)",
-          borderRadius: "10px", padding: "18px 20px", marginBottom: "20px",
-        }}>
+        <div
+          style={{
+            background: "radial-gradient(ellipse 80% 90% at center, rgba(30,122,184,0.14) 0%, transparent 65%)",
+            border: "1px solid rgba(255,255,255,0.10)",
+            borderRadius: "10px",
+            padding: "18px 20px",
+            marginLeft: "26px",
+            marginRight: "26px",
+            marginBottom: "12px",
+            animation: "fadeUp 0.4s ease both",
+            animationDelay: "0.1s",
+          }}
+        >
           <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "rgba(255,255,255,0.45)", margin: "0 0 12px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
             What&apos;s Included
           </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px", paddingLeft: "4px" }}>
             {[
               "Opening Statement",
               "Performance Deficiencies",
@@ -1095,11 +1106,11 @@ export default function PIPBuilderTool({
               "Signature Block",
             ].map((item) => (
               <div key={item} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0, color: "var(--cta, #1E7AB8)" }}>
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0, color: "var(--cta, #1E7AB8)" }}>
                   <path d="M2.5 1.5h6l3 3v8h-9v-11z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" fill="none"/>
                   <path d="M8.5 1.5v3h3" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/>
                 </svg>
-                <span style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.75)", fontWeight: 500 }}>{item}</span>
+                <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.70)", fontWeight: 500 }}>{item}</span>
               </div>
             ))}
           </div>
@@ -1144,77 +1155,101 @@ export default function PIPBuilderTool({
             </button>
           </div>
         ) : (
-          <>
-            {/* ── Bundle / price card (non-subscriber) ── */}
-            <div style={{ background: "var(--dark, #161618)", borderRadius: "12px", padding: "24px 26px 16px", marginBottom: "0" }}>
-              {/* Header row */}
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px", flexWrap: "wrap", gap: "8px" }}>
-                <span style={{ fontSize: "0.9375rem", fontWeight: 700, color: "#FFFFFF" }}>
-                  HR Agents Package
-                </span>
-                <span style={{
-                  fontSize: "0.6875rem", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase",
-                  padding: "3px 10px", borderRadius: "20px",
-                  background: "rgba(30,122,184,0.25)", color: "#60B4F0",
-                  border: "1px solid rgba(30,122,184,0.20)",
-                }}>
-                  Annual Subscription
-                </span>
-              </div>
-
-              {/* Price */}
-              <div style={{ display: "flex", alignItems: "baseline", gap: "8px", marginBottom: "20px" }}>
-                <span style={{ fontSize: "2rem", fontWeight: 800, color: "#FFFFFF", lineHeight: 1 }}>$99</span>
-                <span style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.5)" }}>/year</span>
-              </div>
-
-              {/* Divider */}
-              <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", margin: "0 0 20px" }} />
-
-              {/* CTA */}
-              <button
-                type="button"
-                onClick={handleGetAccess}
-                disabled={checkoutLoading || subCheckLoading}
+          <div
+            style={{
+              background: "var(--dark, #161618)",
+              borderRadius: "12px",
+              padding: "24px 28px 24px 37px",
+              marginBottom: "0",
+              animation: "fadeUp 0.4s ease both",
+              animationDelay: "0.2s",
+            }}
+          >
+            {/* Header row: tool name left, badge right */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px", flexWrap: "wrap", gap: "8px" }}>
+              <p style={{ fontSize: "0.9375rem", fontWeight: 700, color: "#FFFFFF", margin: 0 }}>
+                HR Agents Package
+              </p>
+              <span
                 style={{
-                  maxWidth: "320px", width: "100%", margin: "0 auto", display: "block",
-                  padding: "11px 20px", fontSize: "0.9375rem", fontWeight: 600,
-                  background: (checkoutLoading || subCheckLoading) ? "rgba(30,122,184,0.5)" : "#1E7AB8",
-                  color: "#FFFFFF", border: "none", borderRadius: "8px",
-                  cursor: (checkoutLoading || subCheckLoading) ? "not-allowed" : "pointer",
-                  transition: "background 0.15s ease",
+                  fontSize: "0.6875rem",
+                  fontWeight: 700,
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                  padding: "3px 10px",
+                  borderRadius: "20px",
+                  background: "rgba(30,122,184,0.25)",
+                  color: "#60B4F0",
+                  border: "1px solid rgba(30,122,184,0.20)",
                 }}
               >
-                {subCheckLoading ? "Checking subscription..." : checkoutLoading ? "Checking..." : "Get Access"}
-              </button>
-
-              {checkoutError && (
-                <p style={{ fontSize: "0.8125rem", color: "#F87171", margin: "0 0 8px" }}>
-                  {checkoutError}
-                </p>
-              )}
-
+                Annual Subscription
+              </span>
             </div>
-            {/* Sign-in link — only shown when NOT logged in, outside pricing card */}
+
+            {/* Price */}
+            <div style={{ display: "flex", alignItems: "baseline", marginBottom: "24px" }}>
+              <span style={{ fontSize: "2rem", fontWeight: 800, color: "#FFFFFF", lineHeight: 1 }}>$99</span>
+              <span style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.5)" }}>/year</span>
+            </div>
+
+            {/* Divider */}
+            <div style={{ borderTop: "1px solid rgba(255,255,255,0.12)", margin: "0 0 28px" }} />
+
+            {/* CTA */}
+            <button
+              type="button"
+              className="btn-paywall-cta"
+              onClick={handleGetAccess}
+              disabled={checkoutLoading || subCheckLoading}
+              style={{
+                maxWidth: "320px",
+                width: "100%",
+                margin: "0 auto",
+                display: "block",
+                padding: "11px 20px",
+                fontSize: "0.9375rem",
+                fontWeight: 600,
+                background: (checkoutLoading || subCheckLoading) ? "rgba(30,122,184,0.5)" : "#1E7AB8",
+                color: "#FFFFFF",
+                border: "none",
+                borderRadius: "8px",
+                cursor: (checkoutLoading || subCheckLoading) ? "not-allowed" : "pointer",
+              }}
+            >
+              {subCheckLoading ? "Checking subscription..." : checkoutLoading ? "Checking..." : "Get Access"}
+            </button>
+
+            {checkoutError && (
+              <p style={{ fontSize: "0.8125rem", color: "#F87171", margin: "12px 0 0" }}>
+                {checkoutError}
+              </p>
+            )}
+
+            {/* Sign-in link — inside pricing card */}
             {!user && (
-              <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.5)", margin: "4px 0 0", textAlign: "center" }}>
-                Already have an account?{" "}
+              <p style={{ fontSize: "0.8125rem", textAlign: "center", margin: "16px 0 0" }}>
+                <span style={{ color: "rgba(255,255,255,0.5)" }}>Already have an account? </span>
                 <button
                   type="button"
                   onClick={() => {
                     window.location.href = "/login?redirect=/pip";
                   }}
                   style={{
-                    background: "none", border: "none", color: "#60B4F0",
-                    fontSize: "0.8125rem", cursor: "pointer", padding: 0,
-                    textDecoration: "underline", fontFamily: "inherit",
+                    background: "none",
+                    border: "none",
+                    padding: 0,
+                    fontSize: "0.8125rem",
+                    color: "#60B4F0",
+                    textDecoration: "underline",
+                    cursor: "pointer",
                   }}
                 >
                   Sign in
                 </button>
               </p>
             )}
-          </>
+          </div>
         )}
 
       </div>

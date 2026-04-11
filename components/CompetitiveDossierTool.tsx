@@ -766,12 +766,12 @@ export default function CompetitiveDossierTool({
         <>
           <h2
             style={{
-              fontSize: "clamp(1.35rem, 2.5vw, 1.625rem)",
+              fontSize: "clamp(1.75rem, 3.5vw, 2.25rem)",
               fontWeight: 400,
               fontFamily: "var(--font-display)",
               color: "#FFFFFF",
               margin: "0 0 28px",
-              lineHeight: 1.3,
+              lineHeight: 1.2,
             }}
           >
             Deep AI Research in Minutes.
@@ -779,31 +779,35 @@ export default function CompetitiveDossierTool({
 
           {paymentCancelled && (
             <p style={{ fontSize: "0.875rem", color: "rgba(255,200,80,0.9)", marginBottom: "16px" }}>
-              Checkout was cancelled. No charge was made.
+              Checkout was cancelled. Your inputs are still here.
             </p>
           )}
 
           {/* What's included */}
           <div
             style={{
-              background: "rgba(255,255,255,0.04)",
+              background: "radial-gradient(ellipse 80% 90% at center, rgba(30,122,184,0.14) 0%, transparent 65%)",
               border: "1px solid rgba(255,255,255,0.10)",
               borderRadius: "10px",
               padding: "18px 20px",
-              marginBottom: "20px",
+              marginLeft: "26px",
+              marginRight: "26px",
+              marginBottom: "12px",
+              animation: "fadeUp 0.4s ease both",
+              animationDelay: "0.1s",
             }}
           >
             <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "rgba(255,255,255,0.45)", margin: "0 0 12px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
               What&apos;s Included
             </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px", paddingLeft: "4px" }}>
               {DOSSIER_SECTIONS.map((item) => (
                 <div key={item} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0, color: "var(--cta, #1E7AB8)" }}>
+                  <svg width="13" height="13" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0, color: "var(--cta, #1E7AB8)" }}>
                     <path d="M2.5 1.5h6l3 3v8h-9v-11z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" fill="none"/>
                     <path d="M8.5 1.5v3h3" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/>
                   </svg>
-                  <span style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.75)", fontWeight: 500 }}>{item}</span>
+                  <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.70)", fontWeight: 500 }}>{item}</span>
                 </div>
               ))}
             </div>
@@ -869,15 +873,17 @@ export default function CompetitiveDossierTool({
               style={{
                 background: "var(--dark, #161618)",
                 borderRadius: "12px",
-                padding: "24px 26px 16px",
+                padding: "24px 28px 24px 37px",
                 marginBottom: "0",
+                animation: "fadeUp 0.4s ease both",
+                animationDelay: "0.2s",
               }}
             >
-              {/* Header row */}
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px", flexWrap: "wrap", gap: "8px" }}>
-                <span style={{ fontSize: "0.9375rem", fontWeight: 700, color: "#FFFFFF" }}>
+              {/* Header row: tool name left, badge right */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px", flexWrap: "wrap", gap: "8px" }}>
+                <p style={{ fontSize: "0.9375rem", fontWeight: 700, color: "#FFFFFF", margin: 0 }}>
                   Competitive Dossier
-                </span>
+                </p>
                 <span
                   style={{
                     fontSize: "0.6875rem",
@@ -896,17 +902,18 @@ export default function CompetitiveDossierTool({
               </div>
 
               {/* Price */}
-              <div style={{ display: "flex", alignItems: "baseline", gap: "8px", marginBottom: "20px" }}>
+              <div style={{ display: "flex", alignItems: "baseline", marginBottom: "24px" }}>
                 <span style={{ fontSize: "2rem", fontWeight: 800, color: "#FFFFFF", lineHeight: 1 }}>$149</span>
                 <span style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.5)" }}>/year</span>
               </div>
 
               {/* Divider */}
-              <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", margin: "0 0 20px" }} />
+              <div style={{ borderTop: "1px solid rgba(255,255,255,0.12)", margin: "0 0 28px" }} />
 
               {/* CTA */}
               <button
                 type="button"
+                className="btn-paywall-cta"
                 onClick={handleCheckout}
                 disabled={checkoutLoading}
                 style={{
@@ -922,40 +929,39 @@ export default function CompetitiveDossierTool({
                   border: "none",
                   borderRadius: "8px",
                   cursor: checkoutLoading ? "not-allowed" : "pointer",
-                  transition: "background 0.15s ease",
                 }}
               >
                 {checkoutLoading ? "Redirecting to checkout..." : "Get Access"}
               </button>
 
               {checkoutError && (
-                <p style={{ fontSize: "0.8125rem", color: "#F87171", margin: "0 0 8px" }}>
+                <p style={{ fontSize: "0.8125rem", color: "#F87171", margin: "12px 0 0" }}>
                   {checkoutError}
                 </p>
               )}
-            </div>
-          )}
 
-          {/* Sign-in link — only shown when NOT logged in, outside pricing card */}
-          {!user && (
-            <p style={{ fontSize: "0.8125rem", textAlign: "center", margin: "4px 0 0" }}>
-              <span style={{ color: "rgba(255,255,255,0.5)" }}>Already have an account? </span>
-              <button
-                type="button"
-                onClick={handleSignIn}
-                style={{
-                  background: "none",
-                  border: "none",
-                  padding: 0,
-                  fontSize: "0.8125rem",
-                  color: "#60B4F0",
-                  textDecoration: "underline",
-                  cursor: "pointer",
-                }}
-              >
-                Sign in
-              </button>
-            </p>
+              {/* Sign-in link — inside pricing card */}
+              {!user && (
+                <p style={{ fontSize: "0.8125rem", textAlign: "center", margin: "16px 0 0" }}>
+                  <span style={{ color: "rgba(255,255,255,0.5)" }}>Already have an account? </span>
+                  <button
+                    type="button"
+                    onClick={handleSignIn}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      padding: 0,
+                      fontSize: "0.8125rem",
+                      color: "#60B4F0",
+                      textDecoration: "underline",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Sign in
+                  </button>
+                </p>
+              )}
+            </div>
           )}
 
         </>

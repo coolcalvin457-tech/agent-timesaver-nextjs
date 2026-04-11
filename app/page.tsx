@@ -51,6 +51,17 @@ export default function Home() {
                 Start prompting and customizing.<br />
                 Your team of <span style={{ color: "#FFFFFF" }}>AI coworkers</span>.
               </p>
+
+              {/* Scroll hint chevron */}
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                style={{ marginTop: "36px", opacity: 0.3, animation: "gentleBounce 2.4s ease-in-out infinite" }}
+              >
+                <path d="M6 9l6 6 6-6" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
             </div>
           </div>
         </section>

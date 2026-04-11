@@ -570,6 +570,11 @@ input, textarea {
   to   { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes gentleBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
 .tool-tag {
   font-family: var(--font-mono);
   font-size: 0.75rem;

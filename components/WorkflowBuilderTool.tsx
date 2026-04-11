@@ -672,7 +672,7 @@ export default function WorkflowBuilderTool({
                     setExampleFile(file);
                   }}
                 />
-                {exampleFile ? `✓ ${exampleFile.name}` : "Upload a reference doc or screenshot (optional)"}
+                {exampleFile ? `✓ ${exampleFile.name}` : "Upload screenshot of finished product (optional)"}
               </label>
               {exampleFile && (
                 <button

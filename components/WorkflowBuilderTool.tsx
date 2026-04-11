@@ -22,7 +22,7 @@ type Screen =
   | "error";
 
 type Frequency = "Daily" | "Weekly" | "Quarterly" | "1x Project";
-type Collaboration = "Just me" | "Small team" | "Big team";
+type Collaboration = "Just me" | "Small team" | "Large team";
 
 interface UploadedFile {
   name: string;
@@ -661,7 +661,7 @@ export default function WorkflowBuilderTool({
                     setExampleFile(file);
                   }}
                 />
-                {exampleFile ? `✓ ${exampleFile.name}` : "Upload screenshot (optional)"}
+                {exampleFile ? `✓ ${exampleFile.name}` : "Upload file (optional)"}
               </label>
               {exampleFile && (
                 <button
@@ -738,7 +738,7 @@ export default function WorkflowBuilderTool({
           <div style={fieldGroupStyle}>
             <label style={labelStyle}>Who works on this with you?</label>
             <div className="mc-tile-grid" style={{ marginTop: "4px" }}>
-              {(["Just me", "Small team", "Big team"] as Collaboration[]).map((opt) => (
+              {(["Just me", "Small team", "Large team"] as Collaboration[]).map((opt) => (
                 <button
                   key={opt}
                   type="button"

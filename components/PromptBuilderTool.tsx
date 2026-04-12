@@ -74,9 +74,14 @@ interface PromptBuilderToolProps {
    * the browser from scrolling the below-the-fold input into view on page load.
    */
   autoFocusJobTitle?: boolean;
+  /**
+   * Compact mode hides helper text to save vertical space.
+   * Used by the homepage embed to fit deliverables in one viewport.
+   */
+  compact?: boolean;
 }
 
-export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, autoFocusJobTitle = true }: PromptBuilderToolProps) {
+export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, autoFocusJobTitle = true, compact = false }: PromptBuilderToolProps) {
   const { user } = useAuth();
   const [screen, setScreen] = useState<Screen>("q1");
   const [jobTitle, setJobTitle] = useState(initialJobTitle?.trim() || "");
@@ -241,9 +246,11 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, autoF
         <div className="screen">
           <StepIndicator total={4} current={1} />
           <p className="screen-headline" style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.5rem, 3.25vw, 2rem)", lineHeight: 1.25 }}>What&apos;s your job title?</p>
-          <p className="screen-subheadline">
-            Be specific. &ldquo;Senior HR Business Partner&rdquo; is better than &ldquo;HR.&rdquo;
-          </p>
+          {!compact && (
+            <p className="screen-subheadline">
+              Be specific. &ldquo;Senior HR Business Partner&rdquo; is better than &ldquo;HR.&rdquo;
+            </p>
+          )}
           <input
             type="text"
             className="input"
@@ -260,7 +267,7 @@ export default function PromptBuilderTool({ initialJobTitle, onQ1Complete, autoF
           />
 
           {/* Deliverables preview — universal on every Q1 surface */}
-          <div style={{ marginTop: "28px", paddingTop: "20px", borderTop: "1px solid rgba(255,255,255,0.07)" }}>
+          <div style={{ marginTop: compact ? "20px" : "28px", paddingTop: compact ? "16px" : "20px", borderTop: "1px solid rgba(255,255,255,0.07)" }}>
             <p style={{ fontSize: "0.6875rem", fontFamily: "var(--font-mono)", letterSpacing: "0.08em", color: "rgba(255,255,255,0.3)", textTransform: "uppercase", marginBottom: "14px" }}>
               What&apos;s included
             </p>

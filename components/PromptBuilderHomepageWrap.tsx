@@ -15,7 +15,7 @@ export default function PromptBuilderHomepageWrap() {
       <div className="pb-frame hero-tool-dark">
         <span className="pb-frame-label">AGENT: Prompts</span>
         <div className="pb-frame-body">
-          <PromptBuilderTool onQ1Complete={handleQ1Complete} autoFocusJobTitle={false} />
+          <PromptBuilderTool onQ1Complete={handleQ1Complete} autoFocusJobTitle={false} compact={true} />
         </div>
       </div>
     </div>

@@ -96,48 +96,43 @@ export default function Home() {
 
             <div className="outcomes-grid">
               <div className="outcome-card">
-                <div className="outcome-label">The All-Rounder</div>
-                <div className="outcome-headline">Good at everything. Great starting point.</div>
+                <div className="outcome-label">ChatGPT</div>
+                <div className="outcome-headline">The All-Rounder.</div>
                 <p className="outcome-body">
-                  ChatGPT handles the widest range of tasks without breaking a sweat.
-                  Writing, brainstorming, summarizing, coding. If you want one tool
-                  that does a little of everything, this is where you start.
+                  Writing, brainstorming, summarizing, coding. If you want
+                  one tool that covers the widest range of tasks, start here.
                 </p>
               </div>
               <div className="outcome-card">
-                <div className="outcome-label">The Writer</div>
-                <div className="outcome-headline">Thoughtful. Detailed. Built for long work.</div>
+                <div className="outcome-label">Claude</div>
+                <div className="outcome-headline">The Writer.</div>
                 <p className="outcome-body">
-                  Claude shines when the task needs depth: long documents, careful
-                  analysis, nuanced writing. If your work lives in reports, memos,
-                  and strategy docs, Claude will feel like the sharpest person on your team.
+                  Long documents, careful analysis, nuanced writing. If your
+                  work lives in reports and strategy docs, Claude fits.
                 </p>
               </div>
               <div className="outcome-card">
-                <div className="outcome-label">The Google Native</div>
-                <div className="outcome-headline">Lives where your work already lives.</div>
+                <div className="outcome-label">Gemini</div>
+                <div className="outcome-headline">The Google Native.</div>
                 <p className="outcome-body">
-                  Gemini connects directly to Gmail, Docs, and Drive. If your entire
-                  workflow runs through Google, Gemini meets you there instead of making
-                  you copy and paste between tabs.
+                  Connects to Gmail, Docs, and Drive. If your workflow runs
+                  through Google, Gemini meets you there.
                 </p>
               </div>
               <div className="outcome-card">
-                <div className="outcome-label">The Real-Time Pulse</div>
-                <div className="outcome-headline">Knows what happened five minutes ago.</div>
+                <div className="outcome-label">Grok</div>
+                <div className="outcome-headline">The Pulse.</div>
                 <p className="outcome-body">
-                  Grok pulls from live data and trends in real time. If your job depends
-                  on staying current with news, markets, or what people are talking about
-                  right now, Grok keeps you plugged in.
+                  Pulls from live data and trends in real time. If your job
+                  depends on staying current, Grok keeps you plugged in.
                 </p>
               </div>
               <div className="outcome-card">
-                <div className="outcome-label">The Researcher</div>
-                <div className="outcome-headline">Answers with receipts.</div>
+                <div className="outcome-label">Perplexity</div>
+                <div className="outcome-headline">The Researcher.</div>
                 <p className="outcome-body">
-                  Perplexity searches the internet and cites its sources. If you spend
-                  time Googling, cross-checking, and verifying before you can move forward,
-                  Perplexity does that legwork for you.
+                  Searches the web and cites its sources. If you spend time
+                  Googling and verifying, Perplexity does that for you.
                 </p>
               </div>
             </div>

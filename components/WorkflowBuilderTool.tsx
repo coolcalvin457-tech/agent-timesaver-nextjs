@@ -1055,15 +1055,10 @@ export default function WorkflowBuilderTool({
           <span style={{ color: "var(--cta)" }}>✓</span> Sent to your inbox.
         </div>
 
-        {/* F38: Job title echo */}
+        {/* F38: Job title echo — job title only, centered, matching Prompts */}
         {jobTitle && (
           <p style={{ fontSize: "0.9375rem", color: "rgba(255,255,255,0.55)", margin: "0 0 20px", textAlign: "center" }}>
-            {jobTitle}{resultTaskTitle ? ` · ${resultTaskTitle}` : ""}
-          </p>
-        )}
-        {!jobTitle && resultTaskTitle && (
-          <p style={{ fontSize: "0.9375rem", color: "rgba(255,255,255,0.55)", margin: "0 0 20px", textAlign: "center" }}>
-            {resultTaskTitle}
+            {jobTitle}
           </p>
         )}
 
@@ -1109,7 +1104,7 @@ export default function WorkflowBuilderTool({
 
                   {/* Section body: overview / content prose */}
                   {section.content && (
-                    <div style={{ marginBottom: section.items?.length ? "16px" : "0", paddingRight: "60px" }}>
+                    <div style={{ marginBottom: section.items?.length ? "16px" : "0" }}>
                       {section.content.split("\n\n").map((para, pIdx) => (
                         <p
                           key={pIdx}

@@ -1366,7 +1366,7 @@ export default function OnboardingKitBuilderTool({
 
         {hireTitle && (
           <p style={{ fontSize: "0.9375rem", color: "rgba(255,255,255,0.55)", margin: "0 0 20px", textAlign: "center" }}>
-            {hireName ? `${hireName} · ` : ""}{hireTitle}
+            {hireTitle}
           </p>
         )}
 
@@ -1410,7 +1410,7 @@ export default function OnboardingKitBuilderTool({
                     {copiedSectionIdx === idx ? "\u2713 Copied" : "Copy"}
                   </button>
                   {section.content && (
-                    <div style={{ marginBottom: section.items?.length ? "16px" : "0", paddingRight: "60px" }}>
+                    <div style={{ marginBottom: section.items?.length ? "16px" : "0" }}>
                       {section.content.split("\n\n").map((para, pIdx) => (
                         <p
                           key={pIdx}

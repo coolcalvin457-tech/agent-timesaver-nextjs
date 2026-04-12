@@ -52,10 +52,10 @@ export default function NavClient({ initialName, dark }: NavClientProps) {
             Prompt AI Agents
           </a>
           <ul className="nav-links">
-            <li><a href="/agents">Agents</a></li>
-            <li><a href="/blog">Blog</a></li>
             <li><a href="/about">About Us</a></li>
-            <li><a href="/community">Community</a></li>
+            <li><a href="/agents">Agents</a></li>
+            <li><a href="/pricing">Pricing</a></li>
+            <li><a href="/blog">Blog</a></li>
           </ul>
           <div className="nav-actions">
             {displayName ? (

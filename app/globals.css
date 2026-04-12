@@ -1552,7 +1552,7 @@ input, textarea {
 /* ── Manifesto Split (Section 3) ─────────────────────────── */
 .manifesto-split {
   display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
+  grid-template-columns: 0.95fr 1.05fr;
   gap: 32px;
   align-items: start;
   max-width: 1200px;
@@ -1561,7 +1561,7 @@ input, textarea {
 
 .manifesto-split-right {
   padding-top: 34px;
-  padding-left: 40px;
+  padding-left: 48px;
 }
 
 .manifesto-body {

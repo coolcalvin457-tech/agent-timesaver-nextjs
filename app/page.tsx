@@ -156,42 +156,16 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── Section 6: The Guide ─────────────────────────────────────── */}
-        <section className="section" id="about" style={{ paddingBottom: "80px" }}>
-          <div className="container">
-            <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center" }}>
-              <div className="eyebrow" style={{ marginBottom: "20px" }}>Your guide</div>
-              <p className="guide-intro">Hi, I&apos;m Calvin.</p>
-              <h2 className="guide-headline" style={{ marginBottom: "52px", marginTop: "28px" }}>
-                <span style={{ display: "block" }}>I figured this out the hard way,</span>
-                <span style={{ display: "block" }}>so you don&apos;t have to.</span>
-              </h2>
-              <p className="guide-body">
-                I used to teach history and coach basketball.<br />
-                No technical background. Nothing to do with software.<br />
-                I spent 6 months learning how AI agents actually work.
-              </p>
-              <p className="guide-body">
-                Now I&apos;m helping others apply AI to their specific jobs.<br />
-                No starting from scratch.
-              </p>
-              <p className="guide-kicker" style={{ marginTop: "52px" }}>
-                If a basketball coach can figure this out, so can you.
-              </p>
-            </div>
-          </div>
-        </section>
-
         {/* ── Section 7: Final CTA ─────────────────────────────────────── */}
         <section className="section section-dark" id="final-cta" style={{ minHeight: "70vh", display: "flex", alignItems: "center", justifyContent: "center", paddingTop: "64px", paddingBottom: "64px" }}>
           <div className="container final-cta">
             <h2
               className="display"
-              style={{ marginBottom: "32px", color: "#FFFFFF" }}
+              style={{ marginBottom: "32px", color: "#FFFFFF", fontSize: "clamp(2.25rem, 5vw, 3.5rem)" }}
             >
-              <span style={{ display: "block" }}>Your job.</span>
-              <span style={{ display: "block" }}>Your agents.</span>
-              <span style={{ display: "block" }}>Your results.</span>
+              <span style={{ display: "block" }}>Your Work.</span>
+              <span style={{ display: "block" }}>Your Agents.</span>
+              <span style={{ display: "block" }}>Your Results.</span>
             </h2>
             <FinalCtaButton />
           </div>

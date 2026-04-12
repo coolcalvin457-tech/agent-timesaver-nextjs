@@ -183,13 +183,15 @@ export default function Home() {
         </section>
 
         {/* ── Section 7: Final CTA ─────────────────────────────────────── */}
-        <section className="section section-dark" id="final-cta" style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", paddingTop: "64px", paddingBottom: "64px" }}>
+        <section className="section section-dark" id="final-cta" style={{ minHeight: "70vh", display: "flex", alignItems: "center", justifyContent: "center", paddingTop: "64px", paddingBottom: "64px" }}>
           <div className="container final-cta">
             <h2
-              className="heading-1"
-              style={{ marginBottom: "32px", color: "#FFFFFF", fontSize: "clamp(1.75rem, 4vw, 2.75rem)", lineHeight: 1.2 }}
+              className="display"
+              style={{ marginBottom: "32px", color: "#FFFFFF" }}
             >
-              Your job. Your agents. Your results.
+              <span style={{ display: "block" }}>Your job.</span>
+              <span style={{ display: "block" }}>Your agents.</span>
+              <span style={{ display: "block" }}>Your results.</span>
             </h2>
             <FinalCtaButton />
           </div>

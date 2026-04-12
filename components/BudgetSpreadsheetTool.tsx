@@ -647,7 +647,7 @@ export default function BudgetSpreadsheetTool() {
         className={`tool-container${flipClass ? ` ${flipClass}` : ""}`}
         ref={topRef}
       >
-        <div className="screen" style={{ paddingTop: "32px" }}>
+        <div className="screen">
           <p
             style={{
               fontSize: "0.8125rem",

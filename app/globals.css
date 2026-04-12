@@ -4086,6 +4086,13 @@ input, textarea {
   scroll-margin-top: 136px;
 }
 
+@media (max-width: 768px) {
+  /* Match .screen mobile padding (Prompts gold standard, S155) */
+  .hero-tool-dark .okb-tool {
+    padding: 32px 24px 40px;
+  }
+}
+
 @media (max-width: 640px) {
   .okb-tool {
     padding: 28px 20px;
@@ -4256,6 +4263,9 @@ input, textarea {
   border: 1px solid rgba(30,122,184,0.28);
   box-shadow: none;
   transition: border-color 0.2s ease;
+
+  /* Match .hero-tool-dark .screen padding (Prompts gold standard, S155) */
+  padding: 40px 44px 40px 44px;
 
   /* Cascade dark values into child inline styles that use CSS variables */
   --text-primary:   #FFFFFF;

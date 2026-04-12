@@ -161,11 +161,11 @@ export default function Home() {
           <div className="container final-cta">
             <h2
               className="display"
-              style={{ marginBottom: "24px", color: "#FFFFFF", fontSize: "clamp(1.5rem, 2.8vw, 2.25rem)", whiteSpace: "nowrap" }}
+              style={{ marginBottom: "24px", color: "#FFFFFF", fontSize: "clamp(2rem, 4vw, 3rem)", whiteSpace: "nowrap" }}
             >
               Your Work<span style={{ fontSize: "0.7em" }}>.</span> Your Agents<span style={{ fontSize: "0.7em" }}>.</span> Your Results<span style={{ fontSize: "0.7em" }}>.</span>
             </h2>
-            <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "var(--section-body-size)", lineHeight: 1.6, marginBottom: "32px", maxWidth: "400px", margin: "0 auto 32px" }}>
+            <p style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "32px", maxWidth: "400px", margin: "0 auto 32px" }}>
               Start with a free agent. See what changes.
             </p>
             <FinalCtaButton />

@@ -770,6 +770,12 @@ interface ResultSection {
   items?: ResultItem[];
 }
 
+/** Strip "Step N: " prefix from step titles. Claude sometimes includes it
+ *  despite the schema saying not to. Defensive strip for all supplementary sections. */
+function stripStepPrefix(title: string): string {
+  return title.replace(/^Step\s+\d+[A-Za-z]?:\s*/i, "");
+}
+
 function buildResultSections(workflow: WorkflowData): ResultSection[] {
   const sections: ResultSection[] = [];
 
@@ -795,7 +801,7 @@ function buildResultSections(workflow: WorkflowData): ResultSection[] {
 
     sections.push({
       eyebrow: `Step ${s.stepNumber}`,
-      title: s.stepTitle,
+      title: stripStepPrefix(s.stepTitle),
       content: detailLines,
     });
   }
@@ -805,7 +811,7 @@ function buildResultSections(workflow: WorkflowData): ResultSection[] {
   for (const s of workflow.steps) {
     if (s.tool) {
       if (!toolSet.has(s.tool)) toolSet.set(s.tool, []);
-      toolSet.get(s.tool)!.push(s.stepTitle);
+      toolSet.get(s.tool)!.push(stripStepPrefix(s.stepTitle));
     }
   }
   const aiSetupContent = Array.from(toolSet.entries())
@@ -828,17 +834,17 @@ function buildResultSections(workflow: WorkflowData): ResultSection[] {
     eyebrow: "Prompts",
     title: "AI Prompts",
     content: promptSteps.length > 0
-      ? promptSteps.map((s) => `${s.stepTitle}\n${s.prompt}`).join("\n\n")
+      ? promptSteps.map((s) => `${stripStepPrefix(s.stepTitle)}\n${s.prompt}`).join("\n\n")
       : "No AI prompts in this workflow.",
     items: promptSteps.map((s) => ({
-      label: s.stepTitle,
+      label: stripStepPrefix(s.stepTitle),
       detail: s.prompt!,
     })),
   });
 
   // 5. Time Estimates: total + per-step breakdown
   const timeLines = workflow.steps
-    .map((s) => `${s.stepTitle} - ${s.estimatedTime}`)
+    .map((s) => `${stripStepPrefix(s.stepTitle)} - ${s.estimatedTime}`)
     .join("\n");
 
   sections.push({
@@ -846,7 +852,7 @@ function buildResultSections(workflow: WorkflowData): ResultSection[] {
     title: "Time Estimates",
     content: `Total estimated time: ${workflow.totalTime}\n\n${timeLines}`,
     items: workflow.steps.map((s) => ({
-      label: s.stepTitle,
+      label: stripStepPrefix(s.stepTitle),
       detail: s.estimatedTime,
     })),
   });

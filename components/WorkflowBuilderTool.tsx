@@ -1194,7 +1194,7 @@ export default function WorkflowBuilderTool({
         )}
 
         {/* Build another — after results, before cross-sell */}
-        <div style={{ marginTop: "32px", marginBottom: "16px" }}>
+        <div style={{ marginTop: "8px", marginBottom: "16px" }}>
           <button
             type="button"
             className="btn btn-primary btn-lg btn-full"

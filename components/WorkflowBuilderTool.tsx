@@ -404,7 +404,7 @@ export default function WorkflowBuilderTool({
       // Auto-deliver: download file + send email in background
       triggerDownload(blob, wfFilename);
       if (email) {
-        // Email route still expects base64 fileData
+        // Send sections alongside file so the email body matches website results (S158)
         fetch("/api/workflow-builder-email", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -415,6 +415,7 @@ export default function WorkflowBuilderTool({
             stepCount: metadata.stepCount,
             frequency: metadata.frequency,
             fileData: docxBase64,
+            sections,
           }),
         }).catch(() => {});
       }

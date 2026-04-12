@@ -6,9 +6,9 @@ export default function FinalCtaButton() {
       href="/agents"
       style={{
         display: "inline-block",
-        padding: "12px 32px",
-        fontSize: "0.875rem",
-        fontWeight: 500,
+        padding: "9px 24px",
+        fontSize: "0.8125rem",
+        fontWeight: 400,
         letterSpacing: "0.01em",
         color: "#FFFFFF",
         background: "transparent",

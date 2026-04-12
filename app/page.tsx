@@ -121,7 +121,7 @@ export default function Home() {
             <div className="eyebrow">What tool should I choose?</div>
             <h2
               className="heading-1"
-              style={{ marginBottom: "48px", maxWidth: "480px" }}
+              style={{ marginBottom: "48px", fontSize: "var(--section-headline-size)", lineHeight: "var(--section-headline-lh)", letterSpacing: "var(--section-headline-ls)" }}
             >
               <span style={{ display: "block" }}>Turn each card over to find out.</span>
               <span style={{ display: "block" }}>Which one suits you best.</span>

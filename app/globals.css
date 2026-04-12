@@ -4174,37 +4174,19 @@ input, textarea {
   animation: fadeUp 0.3s ease;
 }
 
-/* Section dividers between steps — matches Prompts pb-system-section pattern */
+/* Section dividers between steps — matches Prompts pb-system-section pattern.
+   Uses border-top (not ::before with negative offsets) because .tool-container
+   has overflow: hidden, which clips pseudo-elements extending beyond padding. */
 .result-step-section {
   margin-top: 40px;
   padding-top: 40px;
-  position: relative;
-}
-
-.result-step-section::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -44px;
-  right: -44px;
   border-top: 2px solid rgba(255, 255, 255, 0.12);
-  pointer-events: none;
 }
 
 .result-step-section-first {
   margin-top: 0;
   padding-top: 0;
-}
-
-.result-step-section-first::before {
-  display: none;
-}
-
-@media (max-width: 640px) {
-  .result-step-section::before {
-    left: -24px;
-    right: -24px;
-  }
+  border-top: none;
 }
 
 /* Inner dark wrapper — matches Prompts pb-prompt-text-wrapper */

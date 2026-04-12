@@ -1045,7 +1045,7 @@ export default function CompetitiveDossierTool({
 
           {/* ── In-browser results (S153) ──────────────────────────────────────────── */}
           {resultSections.length > 0 && (
-            <div style={{ marginTop: "40px", textAlign: "left" }}>
+            <div style={{ marginTop: "16px", textAlign: "left" }}>
               {resultSections.map((section, idx) => (
                 <div
                   key={idx}

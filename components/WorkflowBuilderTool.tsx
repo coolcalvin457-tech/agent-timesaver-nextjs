@@ -1064,7 +1064,7 @@ export default function WorkflowBuilderTool({
 
         {/* ── In-browser results (S153) ──────────────────── */}
         {resultSections.length > 0 && (
-          <div style={{ marginTop: "40px", textAlign: "left" }}>
+          <div style={{ marginTop: "16px", textAlign: "left" }}>
             {resultSections.map((section, idx) => (
               <div key={idx} className={`result-step-section${idx === 0 ? " result-step-section-first" : ""}`} style={{ marginBottom: "32px" }}>
                 {/* Step eyebrow + headline — outside the card, on dark background */}

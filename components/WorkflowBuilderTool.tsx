@@ -1147,7 +1147,7 @@ export default function WorkflowBuilderTool({
                           <p
                             style={{
                               fontSize: "0.875rem",
-                              lineHeight: 1.65,
+                              lineHeight: 1.7,
                               color: "rgba(255,255,255,0.65)",
                               margin: 0,
                               whiteSpace: "pre-line",

@@ -1441,7 +1441,7 @@ export default function OnboardingKitBuilderTool({
                           <p style={{ fontSize: "0.875rem", fontWeight: 600, color: "rgba(255,255,255,0.85)", margin: "0 0 4px" }}>
                             {item.label}
                           </p>
-                          <p style={{ fontSize: "0.875rem", lineHeight: 1.65, color: "rgba(255,255,255,0.65)", margin: 0, whiteSpace: "pre-line" }}>
+                          <p style={{ fontSize: "0.875rem", lineHeight: 1.7, color: "rgba(255,255,255,0.65)", margin: 0, whiteSpace: "pre-line" }}>
                             {item.detail}
                           </p>
                         </div>

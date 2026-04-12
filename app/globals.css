@@ -1552,8 +1552,8 @@ input, textarea {
 /* ── Manifesto Split (Section 3) ─────────────────────────── */
 .manifesto-split {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 32px;
   align-items: start;
   max-width: 1200px;
   margin: 0 auto;

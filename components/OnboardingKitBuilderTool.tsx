@@ -56,6 +56,7 @@ interface ResultItem {
 interface ResultSection {
   title: string;
   content: string;
+  eyebrow?: string;
   items?: ResultItem[];
 }
 
@@ -1380,7 +1381,7 @@ export default function OnboardingKitBuilderTool({
                 style={{ marginBottom: "32px" }}
               >
                 <p className="result-eyebrow">
-                  Step {idx + 1}
+                  {section.eyebrow || section.title}
                 </p>
                 {/* Outer card — matches Prompts .pb-prompt-card two-layer pattern (S155) */}
                 <div className="result-section-card" style={{ position: "relative" }}>
@@ -1458,7 +1459,7 @@ export default function OnboardingKitBuilderTool({
         )}
 
         {/* Build another — after results, before cross-sell */}
-        <div style={{ marginTop: "32px", marginBottom: "16px" }}>
+        <div style={{ marginTop: "8px", marginBottom: "16px" }}>
           <button
             type="button"
             className="btn btn-primary btn-lg btn-full"

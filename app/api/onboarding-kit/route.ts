@@ -60,7 +60,13 @@ interface ResultItem {
 interface ResultSection {
   title: string;
   content: string;
+  eyebrow?: string;
   items?: ResultItem[];
+}
+
+/** Strip "Step N: " prefix from section titles. Defensive strip (S158 F26). */
+function stripStepPrefix(title: string): string {
+  return title.replace(/^Step\s+\d+[A-Za-z]?:\s*/i, "");
 }
 
 // ─── Mock fallback ─────────────────────────────────────────────────────────────
@@ -794,13 +800,15 @@ async function buildDocxFile(
 function buildResultSections(kit: OnboardingKitData): ResultSection[] {
   // 1. Welcome Letter
   const welcomeSection: ResultSection = {
-    title: "Welcome Letter",
+    eyebrow: "Welcome",
+    title: stripStepPrefix("Welcome Letter"),
     content: kit.welcomeLetter.body,
   };
 
   // 2. First Week Schedule
   const scheduleSection: ResultSection = {
-    title: "First Week Schedule",
+    eyebrow: "Schedule",
+    title: stripStepPrefix("First Week Schedule"),
     content: "",
     items: kit.firstWeekSchedule.map((day) => ({
       label: day.day,
@@ -810,7 +818,8 @@ function buildResultSections(kit: OnboardingKitData): ResultSection[] {
 
   // 3. Key Contacts
   const contactsSection: ResultSection = {
-    title: "Key Contacts",
+    eyebrow: "Contacts",
+    title: stripStepPrefix("Key Contacts"),
     content: "",
     items: kit.keyContacts.map((c) => ({
       label: `${c.name}, ${c.title}`,
@@ -820,7 +829,8 @@ function buildResultSections(kit: OnboardingKitData): ResultSection[] {
 
   // 4. Role Expectations (30/60/90)
   const expectationsSection: ResultSection = {
-    title: "Role Expectations",
+    eyebrow: "Expectations",
+    title: stripStepPrefix("Role Expectations"),
     content: kit.roleExpectations.overview,
     items: [
       { label: "30-Day Goals", detail: kit.roleExpectations.day30.join("\n") },
@@ -831,7 +841,8 @@ function buildResultSections(kit: OnboardingKitData): ResultSection[] {
 
   // 5. New Hire Checklist
   const checklistSection: ResultSection = {
-    title: "New Hire Checklist",
+    eyebrow: "Checklist",
+    title: stripStepPrefix("New Hire Checklist"),
     content: "",
     items: [
       { label: "Pre-Start", detail: kit.newHireChecklist.preStart.join("\n") },

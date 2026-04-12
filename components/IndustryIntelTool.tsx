@@ -633,10 +633,12 @@ export default function IndustryIntelTool() {
             Open in Word, Google Docs, or Pages.
           </p>
 
-          {/* Primary CTA */}
-          <button className="btn btn-primary btn-lg btn-full" onClick={handleReset}>
-            Build Another Report
-          </button>
+          {/* Build another — after results, before cross-sell (F28: 8px gap) */}
+          <div style={{ marginTop: "8px", marginBottom: "16px" }}>
+            <button className="btn btn-primary btn-lg btn-full" onClick={handleReset}>
+              Build Another Report
+            </button>
+          </div>
 
           {/* Cross-sell — Workflow */}
           <CrossSellBlock

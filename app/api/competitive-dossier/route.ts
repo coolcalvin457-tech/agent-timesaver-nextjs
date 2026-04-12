@@ -253,7 +253,13 @@ interface ResultItem {
 interface ResultSection {
   title: string;
   content: string;
+  eyebrow?: string;
   items?: ResultItem[];
+}
+
+/** Strip "Step N: " prefix from section titles. Defensive strip (S158 F26). */
+function stripStepPrefix(title: string): string {
+  return title.replace(/^Step\s+\d+[A-Za-z]?:\s*/i, "");
 }
 
 // ─── docx builder ─────────────────────────────────────────────────────────────
@@ -276,6 +282,18 @@ interface DossierData {
   };
 }
 
+// Descriptive eyebrow labels for each dossier section (S158 F22)
+const DOSSIER_EYEBROWS: Record<string, string> = {
+  snapshot: "Snapshot",
+  businessModel: "Business Model",
+  targetMarket: "Market",
+  products: "Products",
+  growthSignals: "Growth",
+  publicVoice: "Voice",
+  strengthsGaps: "Analysis",
+  forYou: "Action Items",
+};
+
 function buildResultSections(dossier: DossierData): ResultSection[] {
   const sectionOrder: (keyof typeof dossier.sections)[] = [
     "snapshot", "businessModel", "targetMarket", "products",
@@ -285,7 +303,8 @@ function buildResultSections(dossier: DossierData): ResultSection[] {
   return sectionOrder.map((key) => {
     const section = dossier.sections[key];
     const result: ResultSection = {
-      title: section.title,
+      eyebrow: DOSSIER_EYEBROWS[key] || key,
+      title: stripStepPrefix(section.title),
       content: section.content,
     };
     // forYou has nextSteps array

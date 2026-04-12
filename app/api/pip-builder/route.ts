@@ -63,7 +63,13 @@ interface ResultItem {
 interface ResultSection {
   title: string;
   content: string;
+  eyebrow?: string;
   items?: ResultItem[];
+}
+
+/** Strip "Step N: " prefix from section titles. Defensive strip (S158 F26). */
+function stripStepPrefix(title: string): string {
+  return title.replace(/^Step\s+\d+[A-Za-z]?:\s*/i, "");
 }
 
 // ─── Input type ───────────────────────────────────────────────────────────────
@@ -564,13 +570,15 @@ async function buildDocxFile(pip: PIPData): Promise<Buffer> {
 function buildResultSections(pip: PIPData): ResultSection[] {
   // 1. Opening Statement
   const openingSection: ResultSection = {
-    title: "Opening Statement",
+    eyebrow: "Opening",
+    title: stripStepPrefix("Opening Statement"),
     content: pip.openingStatement,
   };
 
   // 2. Performance Deficiencies
   const deficienciesSection: ResultSection = {
-    title: "Performance Deficiencies",
+    eyebrow: "Deficiencies",
+    title: stripStepPrefix("Performance Deficiencies"),
     content: "",
     items: pip.performanceDeficiencies.map((d) => ({
       label: d.heading,
@@ -580,7 +588,8 @@ function buildResultSections(pip: PIPData): ResultSection[] {
 
   // 3. Improvement Targets
   const targetsSection: ResultSection = {
-    title: "Improvement Targets",
+    eyebrow: "Targets",
+    title: stripStepPrefix("Improvement Targets"),
     content: "",
     items: pip.improvementTargets.map((t) => ({
       label: t.heading,
@@ -592,19 +601,22 @@ function buildResultSections(pip: PIPData): ResultSection[] {
   const supportParts = [pip.supportOffered.description];
   if (pip.supportOffered.eapLine) supportParts.push(pip.supportOffered.eapLine);
   const supportSection: ResultSection = {
-    title: "Support Offered",
+    eyebrow: "Support",
+    title: stripStepPrefix("Support Offered"),
     content: supportParts.join("\n\n"),
   };
 
   // 5. Check-in Schedule
   const checkinSection: ResultSection = {
-    title: "Check-in Schedule",
+    eyebrow: "Schedule",
+    title: stripStepPrefix("Check-in Schedule"),
     content: pip.checkinSchedule,
   };
 
   // 6. Consequences
   const consequencesSection: ResultSection = {
-    title: "Consequences",
+    eyebrow: "Consequences",
+    title: stripStepPrefix("Consequences"),
     content: pip.consequences,
   };
 

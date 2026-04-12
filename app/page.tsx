@@ -39,7 +39,7 @@ export default function Home() {
         </section>
 
         {/* ── Section 2: Dream / Aspiration ───────────────────────────── */}
-        <section className="section section-dark" id="dream" style={{ paddingTop: "128px", paddingBottom: "80px" }}>
+        <section className="section section-dark" id="dream" style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", paddingTop: "64px", paddingBottom: "64px" }}>
           <div className="container">
             <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center" }}>
               <h2 className="heading-1" style={{ color: "#fff", marginBottom: "var(--section-head-gap)", lineHeight: "var(--section-headline-lh)", fontSize: "var(--section-headline-size)", letterSpacing: "var(--section-headline-ls)" }}>
@@ -53,15 +53,22 @@ export default function Home() {
               </p>
 
               {/* Scroll hint chevron */}
-              <svg
-                width="22"
-                height="22"
-                viewBox="0 0 24 24"
-                fill="none"
-                style={{ display: "block", margin: "36px auto 0", opacity: 0.3, animation: "gentleBounce 2.4s ease-in-out infinite" }}
+              <button
+                type="button"
+                aria-label="Scroll to Start Here"
+                onClick={() => document.getElementById('prompts')?.scrollIntoView({ behavior: 'smooth' })}
+                style={{ background: "none", border: "none", padding: "8px", cursor: "pointer", display: "block", margin: "28px auto 0" }}
               >
-                <path d="M6 9l6 6 6-6" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  style={{ display: "block", opacity: 0.4, animation: "gentleBounce 2.4s ease-in-out infinite" }}
+                >
+                  <path d="M6 9l6 6 6-6" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
             </div>
           </div>
         </section>
@@ -78,7 +85,7 @@ export default function Home() {
                 style={{ marginBottom: 0, fontSize: "var(--section-headline-size)", lineHeight: "var(--section-headline-lh)", letterSpacing: "var(--section-headline-ls)" }}
               >
                 <span style={{ display: "block" }}>The first step toward creating</span>
-                <span style={{ display: "block" }}>your AI agent.</span>
+                <span style={{ display: "block" }}>your own AI agent.</span>
               </h2>
             </div>
 
@@ -94,7 +101,7 @@ export default function Home() {
             <div className="manifesto-split">
               {/* Left: eyebrow + headline */}
               <div>
-                <div className="eyebrow" style={{ marginBottom: "20px" }}>YOUR GUIDE</div>
+                <div className="eyebrow" style={{ marginBottom: "20px" }}>ABOUT US</div>
                 <h2
                   className="heading-1"
                   style={{
@@ -104,15 +111,16 @@ export default function Home() {
                     marginBottom: 0,
                   }}
                 >
-                  Figuring out AI so you don&apos;t have to.
+                  <span style={{ display: "block" }}>We&apos;re studying AI so</span>
+                  <span style={{ display: "block" }}>you don&apos;t have to.</span>
                 </h2>
               </div>
               {/* Right: body paragraph */}
               <div className="manifesto-split-right">
                 <p className="manifesto-body">
-                  We help you apply AI to your specific job.<br />
-                  Every agent requires a human in the loop.<br />
-                  Each one is built around how you actually work.<br />
+                  We&apos;ll help you apply AI at your specific job.<br />
+                  We&apos;ll teach you how to create your own agents.<br />
+                  You&apos;ll be able to maximize your productivity.<br />
                   Because your time is irreplaceable.
                 </p>
               </div>
@@ -123,12 +131,13 @@ export default function Home() {
         {/* ── Section 5: The Transformation ───────────────────────────── */}
         <section className="section section-alt" id="transformation">
           <div className="container">
-            <div className="eyebrow">What you walk away with</div>
+            <div className="eyebrow">What tool should I choose?</div>
             <h2
               className="heading-1"
               style={{ marginBottom: "48px", maxWidth: "480px" }}
             >
-              3 things change when you start.
+              <span style={{ display: "block" }}>Turn each card over to find out.</span>
+              <span style={{ display: "block" }}>Which one suits you best.</span>
             </h2>
 
             <div className="outcomes-grid">
@@ -187,27 +196,34 @@ export default function Home() {
         </section>
 
         {/* ── Section 7: Final CTA ─────────────────────────────────────── */}
-        <section className="section" id="final-cta">
+        <section className="section section-dark" id="final-cta" style={{ paddingTop: "120px", paddingBottom: "120px" }}>
           <div className="container final-cta">
             <h2
               className="display"
-              style={{ marginBottom: "16px" }}
+              style={{ marginBottom: "32px", color: "#FFFFFF" }}
             >
-              Your job. Your tools. Your results.
+              Your job. Your agents. Your results.
             </h2>
-            <p
-              className="body-lg"
+            <a
+              href="/agents"
               style={{
-                color: "var(--text-secondary)",
-                marginBottom: "36px",
-                maxWidth: "480px",
-                margin: "0 auto 36px",
+                display: "inline-block",
+                padding: "12px 32px",
+                fontSize: "0.875rem",
+                fontWeight: 500,
+                letterSpacing: "0.01em",
+                color: "#FFFFFF",
+                background: "transparent",
+                border: "1px solid rgba(255,255,255,0.25)",
+                borderRadius: "100px",
+                textDecoration: "none",
+                transition: "all 0.2s ease",
               }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)"; e.currentTarget.style.background = "rgba(255,255,255,0.06)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)"; e.currentTarget.style.background = "transparent"; }}
             >
-              Start with AGENT: Timesaver.<br />
-              5 minutes. 5 time-savers.
-            </p>
-            <HeroButton />
+              Get Started
+            </a>
           </div>
         </section>
       </main>

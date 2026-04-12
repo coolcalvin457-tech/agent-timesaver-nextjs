@@ -88,16 +88,16 @@ export default function Home() {
             <div className="eyebrow">Find Your AI Match</div>
             <h2
               className="heading-1"
-              style={{ marginBottom: "48px", fontSize: "var(--section-headline-size)", lineHeight: "var(--section-headline-lh)", letterSpacing: "var(--section-headline-ls)" }}
+              style={{ marginBottom: "48px", fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", lineHeight: "var(--section-headline-lh)", letterSpacing: "var(--section-headline-ls)" }}
             >
-              <span style={{ display: "block" }}>They all have a personality.</span>
+              <span style={{ display: "block" }}>They all have personality.</span>
               <span style={{ display: "block" }}>Which one fits yours?</span>
             </h2>
 
             <div className="outcomes-grid">
               <div className="outcome-card">
                 <div className="outcome-label">ChatGPT</div>
-                <div className="outcome-headline">The All-Rounder.</div>
+                <div className="outcome-headline">The All-Rounder</div>
                 <p className="outcome-body">
                   Writing, brainstorming, summarizing, coding. If you want
                   one tool that covers the widest range of tasks, start here.
@@ -105,7 +105,7 @@ export default function Home() {
               </div>
               <div className="outcome-card">
                 <div className="outcome-label">Claude</div>
-                <div className="outcome-headline">The Writer.</div>
+                <div className="outcome-headline">The Writer</div>
                 <p className="outcome-body">
                   Long documents, careful analysis, nuanced writing. If your
                   work lives in reports and strategy docs, Claude fits.
@@ -113,7 +113,7 @@ export default function Home() {
               </div>
               <div className="outcome-card">
                 <div className="outcome-label">Gemini</div>
-                <div className="outcome-headline">The Google Native.</div>
+                <div className="outcome-headline">The Google Native</div>
                 <p className="outcome-body">
                   Connects to Gmail, Docs, and Drive. If your workflow runs
                   through Google, Gemini meets you there.
@@ -121,7 +121,7 @@ export default function Home() {
               </div>
               <div className="outcome-card">
                 <div className="outcome-label">Grok</div>
-                <div className="outcome-headline">The Pulse.</div>
+                <div className="outcome-headline">The Pulse</div>
                 <p className="outcome-body">
                   Pulls from live data and trends in real time. If your job
                   depends on staying current, Grok keeps you plugged in.
@@ -129,7 +129,7 @@ export default function Home() {
               </div>
               <div className="outcome-card">
                 <div className="outcome-label">Perplexity</div>
-                <div className="outcome-headline">The Researcher.</div>
+                <div className="outcome-headline">The Researcher</div>
                 <p className="outcome-body">
                   Searches the web and cites its sources. If you spend time
                   Googling and verifying, Perplexity does that for you.

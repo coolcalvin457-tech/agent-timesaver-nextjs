@@ -71,7 +71,7 @@ export default function Home() {
                 className="heading-1"
                 style={{ marginBottom: 0, fontSize: "var(--section-headline-size)", lineHeight: "var(--section-headline-lh)", letterSpacing: "var(--section-headline-ls)" }}
               >
-                <span style={{ display: "block" }}>The first step toward creating</span>
+                <span style={{ display: "block" }}>The first step to creating</span>
                 <span style={{ display: "block" }}>your own AI agent.</span>
               </h2>
             </div>
@@ -98,7 +98,7 @@ export default function Home() {
                     marginBottom: 0,
                   }}
                 >
-                  <span style={{ display: "block" }}>We&apos;re studying AI so</span>
+                  <span style={{ display: "block" }}>We&apos;re studying AI so that</span>
                   <span style={{ display: "block" }}>you don&apos;t have to.</span>
                 </h2>
               </div>

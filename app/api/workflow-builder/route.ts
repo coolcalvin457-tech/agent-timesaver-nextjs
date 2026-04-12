@@ -48,8 +48,8 @@ interface UploadedFile {
 
 interface WorkflowBuilderInput {
   taskDescription: string;
-  frequency: "Daily" | "Weekly" | "Monthly" | "1x Project";
-  collaboration: "Just me" | "Small team" | "Big team";
+  frequency: "Daily" | "Weekly" | "Quarterly" | "1x Project";
+  collaboration: "Just me" | "Small team" | "Large team";
   audiencePriorities?: string;
   jobTitle?: string;
   userTools?: string;
@@ -108,14 +108,14 @@ function buildSystemPrompt(input: WorkflowBuilderInput): string {
 - No "Why this step matters" lines.
 - No "next time" language in the closing section.`,
 
-    Monthly: `FREQUENCY: MONTHLY
+    Quarterly: `FREQUENCY: QUARTERLY
 - Prompts are one full paragraph (same detail as Weekly).
 - Add a "whyThisStepMatters" value for EVERY step: one sentence explaining the purpose of that step.
   Reason: the user won't have muscle memory. Each step needs to explain itself.
 - The closing tips should include "next time" framing: reinforce that saving this doc makes the next cycle easier.`,
 
     "1x Project": `FREQUENCY: ONE-TIME PROJECT
-- Prompts are one full paragraph (same detail as Weekly/Monthly).
+- Prompts are one full paragraph (same detail as Weekly/Quarterly).
 - No "Why this step matters" lines (the user doesn't need to internalize a repeating process).
 - No "next time" language anywhere. This is a self-contained playbook.
 - Add extra setup context in the overview: what to have ready before starting, what the overall shape of the work looks like.`,
@@ -133,7 +133,7 @@ function buildSystemPrompt(input: WorkflowBuilderInput): string {
 - Add "checkpoint" values on steps that require sign-off before subsequent steps proceed.
   Format: a brief description of what approval is needed and from whom (e.g. "Director reviews draft before distribution.").`,
 
-    "Big team": `COLLABORATION: BIG TEAM
+    "Large team": `COLLABORATION: LARGE TEAM
 - Add a "who" field to every step with ownership assignments.
 - PARALLEL WORK (required): Identify at least one place where two people or teams can work simultaneously.
   Mark it clearly in the stepTitle (e.g. "Step 3A/3B: Budget + Narrative in Parallel") and in the action
@@ -154,7 +154,7 @@ CORE RULES:
    "Based on your input, this workflow focuses on [specific interpretation]."
 2. MODEL-AGNOSTIC ENFORCEMENT (hard rule):
    Never name a specific AI model (ChatGPT, Claude, Gemini, Copilot, etc.) anywhere in the output.
-   Always say "your AI tool" or "an AI assistant" for AI-powered steps.
+   Always say "your AI tool of choice" or "an AI assistant" for AI-powered steps.
    Non-AI tools (Google Docs, Excel, Slack, Notion, etc.) are named specifically.
 3. No em dashes (the — character). Use a period or a colon instead.
 4. Never use the words "leverage", "unlock", "supercharge", or "automate" anywhere in the workflow document.
@@ -185,8 +185,15 @@ CORE RULES:
    STEP 3: Set totalTime to that sum (as a range if steps used ranges).
    STEP 4: Use that exact totalTime value in the overview paragraph.
    The overview, totalTime, and sum of step times must all show the same number. Never estimate time
-   independently in any field. If steps sum to 145 minutes, totalTime is "about 2.5 hours" and the
-   overview says "about 2.5 hours." No exceptions.
+   independently in any field. No exceptions.
+   TIME FORMAT (hard rule): All time values must use human-friendly phrasing. Use whole minutes up to
+   120 ("90 minutes", "45-60 minutes"). Above 120 minutes, use natural hours-and-minutes ("about 2 hours
+   and 30 minutes", "about 1 hour and 15 minutes"). Never use decimal hours ("1.6 hours", "2.5 hours").
+   Never mix units awkwardly ("1.6 hours and 15 minutes"). Examples:
+   - 45 min total -> "45 minutes"
+   - 90 min total -> "90 minutes"
+   - 135 min total -> "about 2 hours and 15 minutes"
+   - 150 min total -> "about 2 hours and 30 minutes"
 
 ${frequencyRules[frequency]}
 
@@ -195,7 +202,7 @@ ${collaborationRules[collaboration]}
 PROMPT QUALITY STANDARD:
 Prompts must match the detail level of a professional prompt library, not a generic example.
 Bad: "Ask AI to summarize this meeting."
-Good: "Open your AI tool and paste this prompt: 'You are helping me create a summary of a client meeting. I'll paste the raw notes below. Produce: (1) a 3-sentence executive summary, (2) a bulleted action items list with owner and deadline columns, (3) any open questions that were raised but not resolved. Format the output with clear section headers. Here are the notes: [paste notes]'"
+Good: "Open your AI tool of choice and paste this prompt: 'You are helping me create a summary of a client meeting. I'll paste the raw notes below. Produce: (1) a 3-sentence executive summary, (2) a bulleted action items list with owner and deadline columns, (3) any open questions that were raised but not resolved. Format the output with clear section headers. Here are the notes: [paste notes]'"
 
 Return ONLY valid JSON. No markdown. No explanation outside the JSON.`;
 }
@@ -215,7 +222,7 @@ async function buildUserMessage(
 
   const toolsSection = userTools?.trim()
     ? `Tools and apps this person uses: ${userTools.trim()}`
-    : "No tools specified. Reference commonly available software (e.g. Google Workspace, Microsoft Office) for non-AI steps, and use 'your AI tool' for AI-powered steps.";
+    : "No tools specified. Reference commonly available software (e.g. Google Workspace, Microsoft Office) for non-AI steps, and use 'your AI tool of choice' for AI-powered steps.";
 
   const processSection = processText
     ? `--- CURRENT PROCESS (uploaded by user) ---
@@ -257,14 +264,14 @@ Return this exact JSON structure:
     {
       "stepNumber": 1,
       "stepTitle": "Short action-oriented label (e.g. 'Gather Raw Data')",
-      "tool": "Specific tool to use (e.g. 'Google Sheets', 'your AI tool', 'Slack')",
+      "tool": "Specific tool to use (e.g. 'Google Sheets', 'your AI tool of choice', 'Slack')",
       "prompt": ${frequency === "Daily" ? '"2-3 sentence prompt. Direct, no preamble. Ready to paste." or null for manual-only steps' : '"Full paragraph prompt. Include: who you are, what you need, what format to return it in. Ready to paste with no editing." or null for manual-only steps'},
       "action": "Description of the manual action to take. null for AI-prompt-only steps. Can coexist with prompt for hybrid steps.",
       "expectedOutput": "Specific, concrete description of what the user has when this step is done.",
       "estimatedTime": "e.g. '5 minutes' or '15-20 minutes'",
       "who": ${collaboration === "Just me" ? "null" : '"Role or person responsible (e.g. \\"You\\", \\"You + manager\\", \\"Designer\\")"'},
       "checkpoint": ${collaboration === "Just me" ? "null" : '"Description of approval/review gate, or null if no sign-off needed before next step"'},
-      "whyThisStepMatters": ${frequency === "Monthly" ? '"One sentence explaining why this step exists in the workflow."' : "null"}
+      "whyThisStepMatters": ${frequency === "Quarterly" ? '"One sentence explaining why this step exists in the workflow."' : "null"}
     }
   ],
   "totalTime": "Rough total time estimate for the full workflow (e.g. '45-60 minutes')",
@@ -698,19 +705,19 @@ function buildMockWorkflow(input: WorkflowBuilderInput): WorkflowData {
         estimatedTime: "5-10 minutes",
         who: input.collaboration !== "Just me" ? "You" : null,
         checkpoint: null,
-        whyThisStepMatters: input.frequency === "Monthly" ? "Starting with everything in one place prevents backtracking later in the workflow." : null,
+        whyThisStepMatters: input.frequency === "Quarterly" ? "Starting with everything in one place prevents backtracking later in the workflow." : null,
       },
       {
         stepNumber: 2,
         stepTitle: "Draft with AI",
-        tool: "Your AI tool",
+        tool: "Your AI tool of choice",
         prompt: `You are helping me complete the following task: ${input.taskDescription}. I will provide context below. Please produce a structured first draft I can refine. Focus on clarity and specificity. [Paste your context here]`,
         action: null,
         expectedOutput: "A structured first draft ready for review and editing.",
         estimatedTime: "10-15 minutes",
         who: input.collaboration !== "Just me" ? "You" : null,
         checkpoint: null,
-        whyThisStepMatters: input.frequency === "Monthly" ? "AI handles the first draft so you can focus your energy on review and refinement, not formatting." : null,
+        whyThisStepMatters: input.frequency === "Quarterly" ? "AI handles the first draft so you can focus your energy on review and refinement, not formatting." : null,
       },
       {
         stepNumber: 3,
@@ -722,7 +729,7 @@ function buildMockWorkflow(input: WorkflowBuilderInput): WorkflowData {
         estimatedTime: "15-20 minutes",
         who: input.collaboration !== "Just me" ? "You + manager" : null,
         checkpoint: input.collaboration !== "Just me" ? "Manager reviews before sending." : null,
-        whyThisStepMatters: input.frequency === "Monthly" ? "AI drafts are starting points, not final products. This step is where your judgment adds the most value." : null,
+        whyThisStepMatters: input.frequency === "Quarterly" ? "AI drafts are starting points, not final products. This step is where your judgment adds the most value." : null,
       },
       {
         stepNumber: 4,
@@ -734,7 +741,7 @@ function buildMockWorkflow(input: WorkflowBuilderInput): WorkflowData {
         estimatedTime: "5 minutes",
         who: input.collaboration !== "Just me" ? "You" : null,
         checkpoint: null,
-        whyThisStepMatters: input.frequency === "Monthly" ? "Archiving each output gives you a reference library that improves future cycles." : null,
+        whyThisStepMatters: input.frequency === "Quarterly" ? "Archiving each output gives you a reference library that improves future cycles." : null,
       },
     ],
     totalTime: "35-50 minutes",

@@ -136,9 +136,9 @@ function buildSystemPrompt(input: WorkflowBuilderInput): string {
     "Large team": `COLLABORATION: LARGE TEAM
 - Add a "who" field to every step with ownership assignments.
 - PARALLEL WORK (required): Identify at least one place where two people or teams can work simultaneously.
-  Mark it clearly in the stepTitle (e.g. "Step 3A/3B: Budget + Narrative in Parallel") and in the action
-  explain what each person does. Example: "While you build the budget (Step 3A), the project lead drafts
-  the narrative (Step 3B). Both feed into Step 4." If there is genuinely no parallel work possible, state
+  Mark it clearly in the stepTitle (e.g. "Budget + Narrative in Parallel") and in the action
+  explain what each person does. Example: "While you build the budget, the project lead drafts
+  the narrative. Both feed into the next step." If there is genuinely no parallel work possible, state
   why in the overview.
 - Add checkpoint/approval steps at natural review gates.
 - Include coordination steps (e.g. "Sync with [role] before proceeding").`,
@@ -775,7 +775,7 @@ function buildResultSections(workflow: WorkflowData): ResultSection[] {
     title: "Workflow Playbook",
     content: workflow.overview,
     items: workflow.steps.map((s) => ({
-      label: `Step ${s.stepNumber}: ${s.stepTitle}`,
+      label: s.stepTitle,
       detail: [
         s.tool ? `Tool: ${s.tool}` : "",
         s.action || "",
@@ -794,7 +794,7 @@ function buildResultSections(workflow: WorkflowData): ResultSection[] {
   for (const s of workflow.steps) {
     if (s.tool) {
       if (!toolSet.has(s.tool)) toolSet.set(s.tool, []);
-      toolSet.get(s.tool)!.push(`Step ${s.stepNumber}: ${s.stepTitle}`);
+      toolSet.get(s.tool)!.push(s.stepTitle);
     }
   }
   const aiSetupContent = Array.from(toolSet.entries())
@@ -815,24 +815,24 @@ function buildResultSections(workflow: WorkflowData): ResultSection[] {
   const aiPromptsSection: ResultSection = {
     title: "AI Prompts",
     content: promptSteps.length > 0
-      ? promptSteps.map((s) => `Step ${s.stepNumber}: ${s.stepTitle}\n${s.prompt}`).join("\n\n")
+      ? promptSteps.map((s) => `${s.stepTitle}\n${s.prompt}`).join("\n\n")
       : "No AI prompts in this workflow.",
     items: promptSteps.map((s) => ({
-      label: `Step ${s.stepNumber}: ${s.stepTitle}`,
+      label: s.stepTitle,
       detail: s.prompt!,
     })),
   };
 
   // 4. Time Estimates: total + per-step breakdown
   const timeLines = workflow.steps
-    .map((s) => `Step ${s.stepNumber}: ${s.stepTitle} - ${s.estimatedTime}`)
+    .map((s) => `${s.stepTitle} - ${s.estimatedTime}`)
     .join("\n");
 
   const timeEstimatesSection: ResultSection = {
     title: "Time Estimates",
     content: `Total estimated time: ${workflow.totalTime}\n\n${timeLines}`,
     items: workflow.steps.map((s) => ({
-      label: `Step ${s.stepNumber}: ${s.stepTitle}`,
+      label: s.stepTitle,
       detail: s.estimatedTime,
     })),
   };

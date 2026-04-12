@@ -127,7 +127,7 @@ export default function CompetitiveDossierPage({
         <section id="build-dossier" className="section" style={{ paddingTop: "64px", paddingBottom: "96px", scrollMarginTop: "80px" }}>
           <div className="container">
             <div style={{ maxWidth: "760px", margin: "0 auto" }}>
-              <div className="pb-frame hero-tool-dark" style={{ maxWidth: "760px" }}>
+              <div className="pb-frame hero-tool-dark">
                 <span className="pb-frame-label">AGENT: Company</span>
                 <div className="pb-frame-body">
                   <CompetitiveDossierTool

@@ -100,7 +100,7 @@ export default function WorkflowBuilderPage({
         <section id="build-workflow" className="section" style={{ paddingTop: "64px", paddingBottom: "96px", scrollMarginTop: "20px" }}>
           <div className="container">
             <div style={{ maxWidth: "760px", margin: "0 auto" }}>
-              <div className="pb-frame hero-tool-dark" style={{ maxWidth: "760px" }}>
+              <div className="pb-frame hero-tool-dark">
                 <span className="pb-frame-label">AGENT: Workflow</span>
                 <div className="pb-frame-body">
                   <WorkflowBuilderTool

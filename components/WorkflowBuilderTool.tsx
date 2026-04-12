@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ToolLoadingScreen from "@/components/shared/ToolLoadingScreen";
 import CrossSellBlock from "@/components/shared/CrossSellBlock";
 import BackButton from "@/components/shared/BackButton";
@@ -64,6 +64,30 @@ const DELIVERABLES = [
   "Time Estimates",
   "Key Insights",
 ];
+
+// ─── Content rendering helpers ──────────────────────────────────────────────────
+
+/** Highlight "Tool:" and "Prompt:" prefixes in white bold within content lines (S155). */
+const HIGHLIGHT_PREFIXES = ["Tool:", "Prompt:"];
+
+function renderContentLines(text: string): React.ReactNode[] {
+  return text.split("\n").map((line, i, arr) => {
+    const matched = HIGHLIGHT_PREFIXES.find((p) => line.startsWith(p));
+    return (
+      <span key={i}>
+        {matched ? (
+          <>
+            <span style={{ color: "#FFFFFF", fontWeight: 600 }}>{matched}</span>
+            {line.slice(matched.length)}
+          </>
+        ) : (
+          line
+        )}
+        {i < arr.length - 1 && "\n"}
+      </span>
+    );
+  });
+}
 
 // ─── Storage helpers ────────────────────────────────────────────────────────────
 
@@ -1119,7 +1143,7 @@ export default function WorkflowBuilderTool({
                               whiteSpace: "pre-line",
                             }}
                           >
-                            {para}
+                            {renderContentLines(para)}
                           </p>
                         ))}
                       </div>

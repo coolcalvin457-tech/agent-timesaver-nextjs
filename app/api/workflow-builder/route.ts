@@ -154,7 +154,7 @@ CORE RULES:
    "Based on your input, this workflow focuses on [specific interpretation]."
 2. MODEL-AGNOSTIC ENFORCEMENT (hard rule):
    Never name a specific AI model (ChatGPT, Claude, Gemini, Copilot, etc.) anywhere in the output.
-   Always say "your AI tool of choice" or "an AI assistant" for AI-powered steps.
+   Always say "Your AI tool of choice" or "an AI assistant" for AI-powered steps. Capitalize "Your" because it appears after a label (e.g. "Tool: Your AI tool of choice") or at the start of a sentence.
    Non-AI tools (Google Docs, Excel, Slack, Notion, etc.) are named specifically.
 3. No em dashes (the — character). Use a period or a colon instead.
 4. Never use the words "leverage", "unlock", "supercharge", or "automate" anywhere in the workflow document.
@@ -202,7 +202,7 @@ ${collaborationRules[collaboration]}
 PROMPT QUALITY STANDARD:
 Prompts must match the detail level of a professional prompt library, not a generic example.
 Bad: "Ask AI to summarize this meeting."
-Good: "Open your AI tool of choice and paste this prompt: 'You are helping me create a summary of a client meeting. I'll paste the raw notes below. Produce: (1) a 3-sentence executive summary, (2) a bulleted action items list with owner and deadline columns, (3) any open questions that were raised but not resolved. Format the output with clear section headers. Here are the notes: [paste notes]'"
+Good: "Open Your AI tool of choice and paste this prompt: 'You are helping me create a summary of a client meeting. I'll paste the raw notes below. Produce: (1) a 3-sentence executive summary, (2) a bulleted action items list with owner and deadline columns, (3) any open questions that were raised but not resolved. Format the output with clear section headers. Here are the notes: [paste notes]'"
 
 Return ONLY valid JSON. No markdown. No explanation outside the JSON.`;
 }
@@ -222,7 +222,7 @@ async function buildUserMessage(
 
   const toolsSection = userTools?.trim()
     ? `Tools and apps this person uses: ${userTools.trim()}`
-    : "No tools specified. Reference commonly available software (e.g. Google Workspace, Microsoft Office) for non-AI steps, and use 'your AI tool of choice' for AI-powered steps.";
+    : "No tools specified. Reference commonly available software (e.g. Google Workspace, Microsoft Office) for non-AI steps, and use 'Your AI tool of choice' for AI-powered steps.";
 
   const processSection = processText
     ? `--- CURRENT PROCESS (uploaded by user) ---
@@ -264,7 +264,7 @@ Return this exact JSON structure:
     {
       "stepNumber": 1,
       "stepTitle": "Short action-oriented label (e.g. 'Gather Raw Data')",
-      "tool": "Specific tool to use (e.g. 'Google Sheets', 'your AI tool of choice', 'Slack')",
+      "tool": "Specific tool to use (e.g. 'Google Sheets', 'Your AI tool of choice', 'Slack')",
       "prompt": ${frequency === "Daily" ? '"2-3 sentence prompt. Direct, no preamble. Ready to paste." or null for manual-only steps' : '"Full paragraph prompt. Include: who you are, what you need, what format to return it in. Ready to paste with no editing." or null for manual-only steps'},
       "action": "Description of the manual action to take. null for AI-prompt-only steps. Can coexist with prompt for hybrid steps.",
       "expectedOutput": "Specific, concrete description of what the user has when this step is done.",

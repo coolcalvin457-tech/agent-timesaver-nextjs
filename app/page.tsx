@@ -1,5 +1,7 @@
 import HeroToolWrap from "@/components/HeroToolWrap";
 import HeroButton from "@/components/HeroButton";
+import ScrollChevron from "@/components/ScrollChevron";
+import FinalCtaButton from "@/components/FinalCtaButton";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import PromptBuilderHomepageWrap from "@/components/PromptBuilderHomepageWrap";
@@ -53,22 +55,7 @@ export default function Home() {
               </p>
 
               {/* Scroll hint chevron */}
-              <button
-                type="button"
-                aria-label="Scroll to Start Here"
-                onClick={() => document.getElementById('prompts')?.scrollIntoView({ behavior: 'smooth' })}
-                style={{ background: "none", border: "none", padding: "8px", cursor: "pointer", display: "block", margin: "28px auto 0" }}
-              >
-                <svg
-                  width="22"
-                  height="22"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  style={{ display: "block", opacity: 0.4, animation: "gentleBounce 2.4s ease-in-out infinite" }}
-                >
-                  <path d="M6 9l6 6 6-6" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </button>
+              <ScrollChevron />
             </div>
           </div>
         </section>
@@ -204,26 +191,7 @@ export default function Home() {
             >
               Your job. Your agents. Your results.
             </h2>
-            <a
-              href="/agents"
-              style={{
-                display: "inline-block",
-                padding: "12px 32px",
-                fontSize: "0.875rem",
-                fontWeight: 500,
-                letterSpacing: "0.01em",
-                color: "#FFFFFF",
-                background: "transparent",
-                border: "1px solid rgba(255,255,255,0.25)",
-                borderRadius: "100px",
-                textDecoration: "none",
-                transition: "all 0.2s ease",
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)"; e.currentTarget.style.background = "rgba(255,255,255,0.06)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)"; e.currentTarget.style.background = "transparent"; }}
-            >
-              Get Started
-            </a>
+            <FinalCtaButton />
           </div>
         </section>
       </main>

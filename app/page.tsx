@@ -165,7 +165,7 @@ export default function Home() {
             >
               Your Work<span style={{ fontSize: "0.7em" }}>.</span> Your Agents<span style={{ fontSize: "0.7em" }}>.</span> Your Results<span style={{ fontSize: "0.7em" }}>.</span>
             </h2>
-            <p style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "32px", maxWidth: "400px", margin: "0 auto 32px" }}>
+            <p style={{ color: "rgba(255,255,255,0.45)", fontSize: "1rem", lineHeight: 1.6, marginBottom: "32px", maxWidth: "400px", margin: "0 auto 32px" }}>
               Start with a free agent. See what changes.
             </p>
             <FinalCtaButton />

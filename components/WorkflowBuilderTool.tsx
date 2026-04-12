@@ -49,6 +49,7 @@ interface ResultItem {
 interface ResultSection {
   title: string;
   content: string;
+  eyebrow?: string;
   items?: ResultItem[];
 }
 
@@ -1069,7 +1070,7 @@ export default function WorkflowBuilderTool({
               <div key={idx} className={`result-step-section${idx === 0 ? " result-step-section-first" : ""}`} style={{ marginBottom: "32px" }}>
                 {/* Step eyebrow + headline — outside the card, on dark background */}
                 <p className="result-eyebrow">
-                  Step {idx + 1}
+                  {section.eyebrow || section.title}
                 </p>
                 {/* Outer card — matches Prompts .pb-prompt-card two-layer pattern (S155) */}
                 <div className="result-section-card" style={{ position: "relative" }}>

@@ -766,30 +766,41 @@ interface ResultItem {
 interface ResultSection {
   title: string;
   content: string;
+  eyebrow?: string;
   items?: ResultItem[];
 }
 
 function buildResultSections(workflow: WorkflowData): ResultSection[] {
-  // 1. Workflow Playbook: overview + numbered steps
-  const playbookSection: ResultSection = {
+  const sections: ResultSection[] = [];
+
+  // 1. Overview: standalone card with workflow summary
+  sections.push({
+    eyebrow: "Overview",
     title: "Workflow Playbook",
     content: workflow.overview,
-    items: workflow.steps.map((s) => ({
-      label: s.stepTitle,
-      detail: [
-        s.tool ? `Tool: ${s.tool}` : "",
-        s.action || "",
-        s.prompt ? `Prompt: ${s.prompt}` : "",
-        `Expected output: ${s.expectedOutput}`,
-        `Time: ${s.estimatedTime}`,
-        s.who ? `Owner: ${s.who}` : "",
-        s.checkpoint ? `Checkpoint: ${s.checkpoint}` : "",
-        s.whyThisStepMatters || "",
-      ].filter(Boolean).join("\n"),
-    })),
-  };
+  });
 
-  // 2. AI Setup: tools referenced across steps
+  // 2. Each step as its own card (matches Prompts pattern: one card per result)
+  for (const s of workflow.steps) {
+    const detailLines = [
+      s.tool ? `Tool: ${s.tool}` : "",
+      s.action || "",
+      s.prompt ? `Prompt: ${s.prompt}` : "",
+      `Expected output: ${s.expectedOutput}`,
+      `Time: ${s.estimatedTime}`,
+      s.who ? `Owner: ${s.who}` : "",
+      s.checkpoint ? `Checkpoint: ${s.checkpoint}` : "",
+      s.whyThisStepMatters || "",
+    ].filter(Boolean).join("\n");
+
+    sections.push({
+      eyebrow: `Step ${s.stepNumber}`,
+      title: s.stepTitle,
+      content: detailLines,
+    });
+  }
+
+  // 3. AI Setup: tools referenced across steps
   const toolSet = new Map<string, string[]>();
   for (const s of workflow.steps) {
     if (s.tool) {
@@ -801,18 +812,20 @@ function buildResultSections(workflow: WorkflowData): ResultSection[] {
     .map(([tool, steps]) => `${tool}\nUsed in: ${steps.join(", ")}`)
     .join("\n\n");
 
-  const aiSetupSection: ResultSection = {
+  sections.push({
+    eyebrow: "Setup",
     title: "AI Setup",
     content: aiSetupContent || "No specific tools referenced.",
     items: Array.from(toolSet.entries()).map(([tool, steps]) => ({
       label: tool,
       detail: `Used in: ${steps.join(", ")}`,
     })),
-  };
+  });
 
-  // 3. AI Prompts: all prompts from steps that have them
+  // 4. AI Prompts: all prompts from steps that have them
   const promptSteps = workflow.steps.filter((s) => s.prompt);
-  const aiPromptsSection: ResultSection = {
+  sections.push({
+    eyebrow: "Prompts",
     title: "AI Prompts",
     content: promptSteps.length > 0
       ? promptSteps.map((s) => `${s.stepTitle}\n${s.prompt}`).join("\n\n")
@@ -821,23 +834,24 @@ function buildResultSections(workflow: WorkflowData): ResultSection[] {
       label: s.stepTitle,
       detail: s.prompt!,
     })),
-  };
+  });
 
-  // 4. Time Estimates: total + per-step breakdown
+  // 5. Time Estimates: total + per-step breakdown
   const timeLines = workflow.steps
     .map((s) => `${s.stepTitle} - ${s.estimatedTime}`)
     .join("\n");
 
-  const timeEstimatesSection: ResultSection = {
+  sections.push({
+    eyebrow: "Timing",
     title: "Time Estimates",
     content: `Total estimated time: ${workflow.totalTime}\n\n${timeLines}`,
     items: workflow.steps.map((s) => ({
       label: s.stepTitle,
       detail: s.estimatedTime,
     })),
-  };
+  });
 
-  // 5. Key Insights: tips + collaboration context
+  // 6. Key Insights: tips + collaboration context
   const insightParts: string[] = [...workflow.tips];
   if (workflow.collaboration && workflow.collaboration !== "Just me") {
     insightParts.push(`This is a ${workflow.collaboration.toLowerCase()} workflow. Coordinate handoffs at each checkpoint.`);
@@ -846,12 +860,13 @@ function buildResultSections(workflow: WorkflowData): ResultSection[] {
     insightParts.push(`Frequency: ${workflow.frequency}. This workflow is designed to be repeatable.`);
   }
 
-  const keyInsightsSection: ResultSection = {
+  sections.push({
+    eyebrow: "Insights",
     title: "Key Insights",
     content: insightParts.join("\n\n"),
-  };
+  });
 
-  return [playbookSection, aiSetupSection, aiPromptsSection, timeEstimatesSection, keyInsightsSection];
+  return sections;
 }
 
 // ─── Route handler ────────────────────────────────────────────────────────────

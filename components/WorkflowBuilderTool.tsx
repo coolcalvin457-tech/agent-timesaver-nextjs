@@ -1071,20 +1071,20 @@ export default function WorkflowBuilderTool({
                 <p className="result-eyebrow">
                   Step {idx + 1}
                 </p>
-                <h3 style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 400,
-                  fontSize: "1.375rem",
-                  color: "#FFFFFF",
-                  letterSpacing: "-0.025em",
-                  margin: "0 0 8px",
-                }}>
-                  {section.title}.
-                </h3>
+                {/* Outer card — matches Prompts .pb-prompt-card two-layer pattern (S155) */}
+                <div className="result-section-card" style={{ position: "relative" }}>
+                  <h3 style={{
+                    fontFamily: "var(--font-display)",
+                    fontWeight: 400,
+                    fontSize: "1.375rem",
+                    color: "#FFFFFF",
+                    letterSpacing: "-0.025em",
+                    margin: "0 0 12px",
+                  }}>
+                    {section.title}.
+                  </h3>
 
-                {/* Content wrapper — dark inset card, matches Prompts pb-prompt-text-wrapper */}
-                <div className="result-content-wrapper" style={{ flexDirection: "column", alignItems: "stretch", position: "relative" }}>
-                  {/* Copy button — top-right inside wrapper, matches Prompts */}
+                  {/* Copy button — top-right inside outer card */}
                   <button
                     type="button"
                     className={`result-copy-btn${copiedSectionIdx === idx ? " copied" : ""}`}
@@ -1097,68 +1097,71 @@ export default function WorkflowBuilderTool({
                         setTimeout(() => setCopiedSectionIdx(null), 2000);
                       }).catch(() => {});
                     }}
-                    style={{ position: "absolute", top: "12px", right: "12px" }}
+                    style={{ position: "absolute", top: "16px", right: "16px" }}
                   >
                     {copiedSectionIdx === idx ? "\u2713 Copied" : "Copy"}
                   </button>
 
-                  {/* Section body: overview / content prose */}
-                  {section.content && (
-                    <div style={{ marginBottom: section.items?.length ? "16px" : "0" }}>
-                      {section.content.split("\n\n").map((para, pIdx) => (
-                        <p
-                          key={pIdx}
-                          style={{
-                            fontSize: "0.875rem",
-                            lineHeight: 1.7,
-                            color: "rgba(255,255,255,0.72)",
-                            margin: `0 0 ${pIdx < section.content.split("\n\n").length - 1 ? "16px" : "0"}`,
-                            whiteSpace: "pre-line",
-                          }}
-                        >
-                          {para}
-                        </p>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Structured sub-items (steps, prompts, time breakdown) */}
-                  {section.items && section.items.length > 0 && (
-                    <div>
-                      {section.items.map((item, iIdx) => (
-                        <div
-                          key={iIdx}
-                          style={{
-                            paddingTop: iIdx > 0 ? "12px" : "0",
-                            borderTop: iIdx > 0 ? "1px solid rgba(255,255,255,0.06)" : "none",
-                            marginTop: iIdx > 0 ? "12px" : "0",
-                          }}
-                        >
+                  {/* Inner dark box — matches Prompts .pb-prompt-text-wrapper */}
+                  <div className="result-content-wrapper" style={{ flexDirection: "column", alignItems: "stretch" }}>
+                    {/* Section body: overview / content prose */}
+                    {section.content && (
+                      <div style={{ marginBottom: section.items?.length ? "16px" : "0" }}>
+                        {section.content.split("\n\n").map((para, pIdx) => (
                           <p
-                            style={{
-                              fontSize: "0.875rem",
-                              fontWeight: 600,
-                              color: "rgba(255,255,255,0.85)",
-                              margin: "0 0 4px",
-                            }}
-                          >
-                            {item.label}
-                          </p>
-                          <p
+                            key={pIdx}
                             style={{
                               fontSize: "0.875rem",
                               lineHeight: 1.7,
-                              color: "rgba(255,255,255,0.65)",
-                              margin: 0,
+                              color: "rgba(255,255,255,0.72)",
+                              margin: `0 0 ${pIdx < section.content.split("\n\n").length - 1 ? "16px" : "0"}`,
                               whiteSpace: "pre-line",
                             }}
                           >
-                            {item.detail}
+                            {para}
                           </p>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Structured sub-items (steps, prompts, time breakdown) */}
+                    {section.items && section.items.length > 0 && (
+                      <div>
+                        {section.items.map((item, iIdx) => (
+                          <div
+                            key={iIdx}
+                            style={{
+                              paddingTop: iIdx > 0 ? "12px" : "0",
+                              borderTop: iIdx > 0 ? "1px solid rgba(255,255,255,0.06)" : "none",
+                              marginTop: iIdx > 0 ? "12px" : "0",
+                            }}
+                          >
+                            <p
+                              style={{
+                                fontSize: "0.875rem",
+                                fontWeight: 600,
+                                color: "rgba(255,255,255,0.85)",
+                                margin: "0 0 4px",
+                              }}
+                            >
+                              {item.label}
+                            </p>
+                            <p
+                              style={{
+                                fontSize: "0.875rem",
+                                lineHeight: 1.7,
+                                color: "rgba(255,255,255,0.65)",
+                                margin: 0,
+                                whiteSpace: "pre-line",
+                              }}
+                            >
+                              {item.detail}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}

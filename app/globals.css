@@ -4213,7 +4213,7 @@ input, textarea {
   background: rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-input, 8px);
-  padding: 14px 16px;
+  padding: 20px 24px;
 }
 
 .result-copy-btn {

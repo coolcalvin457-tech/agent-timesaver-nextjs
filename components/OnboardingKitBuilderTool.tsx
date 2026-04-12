@@ -1382,17 +1382,18 @@ export default function OnboardingKitBuilderTool({
                 <p className="result-eyebrow">
                   Step {idx + 1}
                 </p>
-                <h3 style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 400,
-                  fontSize: "1.375rem",
-                  color: "#FFFFFF",
-                  letterSpacing: "-0.025em",
-                  margin: "0 0 8px",
-                }}>
-                  {section.title}.
-                </h3>
-                <div className="result-content-wrapper" style={{ flexDirection: "column", alignItems: "stretch", position: "relative" }}>
+                {/* Outer card — matches Prompts .pb-prompt-card two-layer pattern (S155) */}
+                <div className="result-section-card" style={{ position: "relative" }}>
+                  <h3 style={{
+                    fontFamily: "var(--font-display)",
+                    fontWeight: 400,
+                    fontSize: "1.375rem",
+                    color: "#FFFFFF",
+                    letterSpacing: "-0.025em",
+                    margin: "0 0 12px",
+                  }}>
+                    {section.title}.
+                  </h3>
                   <button
                     type="button"
                     className={`result-copy-btn${copiedSectionIdx === idx ? " copied" : ""}`}
@@ -1405,10 +1406,11 @@ export default function OnboardingKitBuilderTool({
                         setTimeout(() => setCopiedSectionIdx(null), 2000);
                       }).catch(() => {});
                     }}
-                    style={{ position: "absolute", top: "12px", right: "12px" }}
+                    style={{ position: "absolute", top: "16px", right: "16px" }}
                   >
                     {copiedSectionIdx === idx ? "\u2713 Copied" : "Copy"}
                   </button>
+                  <div className="result-content-wrapper" style={{ flexDirection: "column", alignItems: "stretch" }}>
                   {section.content && (
                     <div style={{ marginBottom: section.items?.length ? "16px" : "0" }}>
                       {section.content.split("\n\n").map((para, pIdx) => (
@@ -1448,6 +1450,7 @@ export default function OnboardingKitBuilderTool({
                       ))}
                     </div>
                   )}
+                  </div>
                 </div>
               </div>
             ))}

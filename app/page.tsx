@@ -82,40 +82,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── Section 4: Manifesto (moved down from S62) ─────────────── */}
-        <section className="section section-alt" id="why" style={{ paddingBottom: "72px" }}>
-          <div className="container">
-            <div className="manifesto-split">
-              {/* Left: eyebrow + headline */}
-              <div>
-                <div className="eyebrow" style={{ marginBottom: "20px" }}>ABOUT US</div>
-                <h2
-                  className="heading-1"
-                  style={{
-                    fontSize: "var(--section-headline-size)",
-                    lineHeight: "var(--section-headline-lh)",
-                    letterSpacing: "var(--section-headline-ls)",
-                    marginBottom: 0,
-                  }}
-                >
-                  <span style={{ display: "block" }}>We&apos;re studying AI so that</span>
-                  <span style={{ display: "block" }}>you don&apos;t have to.</span>
-                </h2>
-              </div>
-              {/* Right: body paragraph */}
-              <div className="manifesto-split-right">
-                <p className="manifesto-body">
-                  We&apos;ll help you apply AI at your specific job.<br />
-                  We&apos;ll teach you how to create your own agents.<br />
-                  You&apos;ll be able to maximize your productivity.<br />
-                  Because your time is irreplaceable.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── Section 5: The Transformation ───────────────────────────── */}
+        {/* ── Section 4: The Transformation ───────────────────────────── */}
         <section className="section section-alt" id="transformation">
           <div className="container">
             <div className="eyebrow">What tool should I choose?</div>

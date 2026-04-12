@@ -1616,9 +1616,15 @@ input, textarea {
 
 /* ── Transformation Outcomes ──────────────────────────────── */
 .outcomes-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 24px;
+  justify-content: center;
+}
+
+.outcomes-grid > .outcome-card {
+  flex: 0 1 calc((100% - 48px) / 3);
+  min-width: 280px;
 }
 
 .outcome-card {
@@ -3043,7 +3049,10 @@ input, textarea {
     grid-template-columns: 1fr;
   }
 
-  .outcomes-grid,
+  .outcomes-grid > .outcome-card {
+    flex: 0 1 100%;
+  }
+
   .steps-grid,
   .content-grid {
     grid-template-columns: 1fr;

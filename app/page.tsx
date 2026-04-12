@@ -82,41 +82,62 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── Section 4: The Transformation ───────────────────────────── */}
+        {/* ── Section 4: Find Your AI Match ────────────────────────────── */}
         <section className="section section-alt" id="transformation">
           <div className="container">
-            <div className="eyebrow">What tool should I choose?</div>
+            <div className="eyebrow">Find Your AI Match</div>
             <h2
               className="heading-1"
               style={{ marginBottom: "48px", fontSize: "var(--section-headline-size)", lineHeight: "var(--section-headline-lh)", letterSpacing: "var(--section-headline-ls)" }}
             >
-              <span style={{ display: "block" }}>Turn each card over to find out.</span>
-              <span style={{ display: "block" }}>Which one suits you best.</span>
+              <span style={{ display: "block" }}>They all have a personality.</span>
+              <span style={{ display: "block" }}>Which one fits yours?</span>
             </h2>
 
             <div className="outcomes-grid">
               <div className="outcome-card">
-                <div className="outcome-label">Clarity</div>
-                <div className="outcome-headline">Choose the right tools.</div>
+                <div className="outcome-label">The All-Rounder</div>
+                <div className="outcome-headline">Good at everything. Great starting point.</div>
                 <p className="outcome-body">
-                  You&apos;ll know exactly which AI tools are worth your time
-                  and which ones aren&apos;t. No more experimenting in the dark.
+                  ChatGPT handles the widest range of tasks without breaking a sweat.
+                  Writing, brainstorming, summarizing, coding. If you want one tool
+                  that does a little of everything, this is where you start.
                 </p>
               </div>
               <div className="outcome-card">
-                <div className="outcome-label">Capability</div>
-                <div className="outcome-headline">Time-savers built for your actual job.</div>
+                <div className="outcome-label">The Writer</div>
+                <div className="outcome-headline">Thoughtful. Detailed. Built for long work.</div>
                 <p className="outcome-body">
-                  You&apos;ll gain real processes that you can try today. No
-                  more generic advice that still keeps you guessing.
+                  Claude shines when the task needs depth: long documents, careful
+                  analysis, nuanced writing. If your work lives in reports, memos,
+                  and strategy docs, Claude will feel like the sharpest person on your team.
                 </p>
               </div>
               <div className="outcome-card">
-                <div className="outcome-label">Confidence</div>
-                <div className="outcome-headline">Stop feeling behind.</div>
+                <div className="outcome-label">The Google Native</div>
+                <div className="outcome-headline">Lives where your work already lives.</div>
                 <p className="outcome-body">
-                  You&apos;ll start feeling and acting like the most capable
-                  person in the room.
+                  Gemini connects directly to Gmail, Docs, and Drive. If your entire
+                  workflow runs through Google, Gemini meets you there instead of making
+                  you copy and paste between tabs.
+                </p>
+              </div>
+              <div className="outcome-card">
+                <div className="outcome-label">The Real-Time Pulse</div>
+                <div className="outcome-headline">Knows what happened five minutes ago.</div>
+                <p className="outcome-body">
+                  Grok pulls from live data and trends in real time. If your job depends
+                  on staying current with news, markets, or what people are talking about
+                  right now, Grok keeps you plugged in.
+                </p>
+              </div>
+              <div className="outcome-card">
+                <div className="outcome-label">The Researcher</div>
+                <div className="outcome-headline">Answers with receipts.</div>
+                <p className="outcome-body">
+                  Perplexity searches the internet and cites its sources. If you spend
+                  time Googling, cross-checking, and verifying before you can move forward,
+                  Perplexity does that legwork for you.
                 </p>
               </div>
             </div>

@@ -4770,7 +4770,7 @@ input, textarea {
 .pricing-grid-coaching {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 14px;
   max-width: 1080px;
   margin: 0 auto;
   align-items: stretch;

@@ -1623,8 +1623,8 @@ input, textarea {
 }
 
 .outcomes-grid > .outcome-card {
-  flex: 0 1 calc((100% - 48px) / 3);
-  min-width: 280px;
+  flex: 0 1 calc((100% - 64px) / 3);
+  min-width: 260px;
   min-height: 180px;
   display: flex;
   flex-direction: column;

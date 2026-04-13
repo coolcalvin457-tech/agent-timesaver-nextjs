@@ -29,7 +29,7 @@ export default function FinalCtaButton() {
         e.currentTarget.style.transform = "scale(1)";
       }}
     >
-      Get Started
+      Let&apos;s Go
     </a>
   );
 }

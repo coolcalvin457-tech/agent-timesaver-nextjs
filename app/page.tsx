@@ -100,7 +100,7 @@ export default function Home() {
         </section>
 
         {/* ── Section 7: Final CTA ─────────────────────────────────────── */}
-        <section className="section section-dark" id="final-cta" style={{ minHeight: "70vh", display: "flex", alignItems: "center", justifyContent: "center", paddingTop: "64px", paddingBottom: "64px" }}>
+        <section className="section section-dark" id="final-cta" style={{ minHeight: "55vh", display: "flex", alignItems: "flex-end", justifyContent: "center", paddingTop: "64px", paddingBottom: "96px" }}>
           <div className="container final-cta">
             <h2
               className="display"
@@ -109,7 +109,7 @@ export default function Home() {
               Your Work<span style={{ fontSize: "0.7em" }}>.</span> Your Agents<span style={{ fontSize: "0.7em" }}>.</span> Your Results<span style={{ fontSize: "0.7em" }}>.</span>
             </h2>
             <p style={{ color: "rgba(255,255,255,0.45)", fontSize: "1rem", lineHeight: 1.6, marginBottom: "32px", maxWidth: "400px", margin: "0 auto 32px" }}>
-              Start with a free agent. See what changes.
+              Start creating an agent today.
             </p>
             <FinalCtaButton />
           </div>

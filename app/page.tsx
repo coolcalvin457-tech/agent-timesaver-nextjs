@@ -117,25 +117,26 @@ export default function Home() {
                 <div className="outcome-headline">The Office</div>
                 <p className="outcome-body">
                   If your company uses Microsoft, it&apos;s embedded into
-                  everything. Careful the way you talk about AI around
-                  the watercooler.
+                  everything. Careful with the AI talk around the
+                  watercooler.
                 </p>
               </div>
               <div className="outcome-card">
                 <div className="outcome-label">Gemini</div>
                 <div className="outcome-headline">Google Machine</div>
                 <p className="outcome-body">
-                  The world&apos;s most popular search engine now has AI
-                  superpowers. It generates breathtaking images and viral
-                  videos in minutes.
+                  World&apos;s best search engine now has AI superpowers.
+                  It generates breathtaking images and viral videos
+                  in minutes.
                 </p>
               </div>
               <div className="outcome-card">
                 <div className="outcome-label">Grok</div>
                 <div className="outcome-headline">Elon Musk</div>
                 <p className="outcome-body">
-                  The friend who&apos;s up-to-date on all the breaking news
-                  and latest trends. No, it won&apos;t always agree with you.
+                  The friend who&apos;s up-to-date on all the breaking
+                  news and latest trends. And no, it won&apos;t always
+                  agree with you.
                 </p>
               </div>
               <div className="outcome-card">

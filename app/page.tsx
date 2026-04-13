@@ -86,7 +86,7 @@ export default function Home() {
         {/* ── Section 4: Find Your AI Match ────────────────────────────── */}
         <section className="section section-alt" id="transformation">
           <div className="container">
-            <div className="eyebrow">Find Your AI Match</div>
+            <div className="eyebrow">Your AI Match</div>
             <h2
               className="heading-1"
               style={{ marginBottom: "48px", fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", lineHeight: "var(--section-headline-lh)", letterSpacing: "var(--section-headline-ls)" }}

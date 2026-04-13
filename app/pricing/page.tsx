@@ -32,7 +32,7 @@ type Tier = {
 
 const coachingTiers: Tier[] = [
   {
-    name: "Starter",
+    name: "Beginner",
     subtitle: "3 Sessions",
     tagline: "Prompt naturally. Begin your AI workspace.",
     price: "$500",
@@ -44,23 +44,23 @@ const coachingTiers: Tier[] = [
       "Walk away fluent, with AI set up the way you actually work",
     ],
     ctaLabel: "Book a Free Call",
-    ctaHref: "mailto:calvin@promptaiagents.com?subject=AI%20Coaching%20Discovery%20Call%20-%20Starter",
+    ctaHref: "mailto:calvin@promptaiagents.com?subject=AI%20Coaching%20Discovery%20Call%20-%20Beginner",
     ctaStyle: "outline",
   },
   {
-    name: "Growth",
-    subtitle: "8 Sessions",
+    name: "Confident",
+    subtitle: "10 Sessions",
     tagline: "Prompt with intent. Build your first agent.",
-    price: "$2,000",
-    priceNote: "Eight 60-minute 1-on-1 sessions with Calvin.",
+    price: "$2,500",
+    priceNote: "Ten 60-minute 1-on-1 sessions with Calvin.",
     features: [
-      "Eight 60-minute 1-on-1 sessions, live",
-      "Everything in Starter, plus agent architecture",
+      "Ten 60-minute 1-on-1 sessions, live",
+      "Everything in Beginner, plus agent architecture",
       "Build your first AI agent around a workflow you actually do",
       "Walk away with a working agent you built yourself",
     ],
     ctaLabel: "Book a Free Call",
-    ctaHref: "mailto:calvin@promptaiagents.com?subject=AI%20Coaching%20Discovery%20Call%20-%20Growth",
+    ctaHref: "mailto:calvin@promptaiagents.com?subject=AI%20Coaching%20Discovery%20Call%20-%20Confident",
     ctaStyle: "outline",
   },
   {

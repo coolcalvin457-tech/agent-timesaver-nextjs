@@ -34,6 +34,7 @@ type Tier = {
 const coachingTiers: Tier[] = [
   {
     badge: "Starter",
+    badgeFeatured: true,
     name: "3 Sessions",
     tagline: "Prompt naturally. Begin your AI workspace.",
     price: "$500",
@@ -50,6 +51,7 @@ const coachingTiers: Tier[] = [
   },
   {
     badge: "Growth",
+    badgeFeatured: true,
     name: "8 Sessions",
     tagline: "Prompt with intent. Build your first agent.",
     price: "$2,000",
@@ -66,6 +68,7 @@ const coachingTiers: Tier[] = [
   },
   {
     badge: "Scale",
+    badgeFeatured: true,
     name: "Team & Custom",
     tagline: "Prompt at scale. Build your full AI system.",
     price: "$5,000",
@@ -171,26 +174,6 @@ export default function PricingPage() {
               <TierCard key={tier.name} tier={tier} />
             ))}
           </div>
-
-          {/* Foot note */}
-          <p
-            style={{
-              textAlign: "center",
-              margin: "72px auto 0",
-              fontSize: "0.875rem",
-              color: "var(--text-muted)",
-              maxWidth: "560px",
-            }}
-          >
-            Coaching billed per package. Questions? Email{" "}
-            <a
-              href="mailto:support@promptaiagents.com"
-              style={{ color: "var(--cta)", textDecoration: "none" }}
-            >
-              support@promptaiagents.com
-            </a>
-            .
-          </p>
         </div>
       </main>
       <Footer />

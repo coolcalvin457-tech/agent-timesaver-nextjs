@@ -4801,7 +4801,9 @@ input, textarea {
 }
 
 .pricing-subtitle-badge {
-  display: inline-block;
+  position: absolute;
+  top: 28px;
+  right: 28px;
   font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -4810,7 +4812,6 @@ input, textarea {
   border-radius: var(--radius-tag);
   background: rgba(255, 255, 255, 0.08);
   color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 20px;
 }
 
 .pricing-tier-name {
@@ -4818,7 +4819,7 @@ input, textarea {
   font-size: 2rem;
   font-weight: 700;
   color: #FFFFFF;
-  margin: 0 0 10px;
+  margin: 28px 0 10px;
   line-height: 1.15;
   letter-spacing: -0.01em;
 }

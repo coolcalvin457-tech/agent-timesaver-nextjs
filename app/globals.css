@@ -4820,6 +4820,7 @@ input, textarea {
   font-weight: 700;
   color: #FFFFFF;
   margin: 28px 0 16px;
+  padding-left: 10px;
   line-height: 1.15;
   letter-spacing: -0.01em;
 }
@@ -4829,6 +4830,7 @@ input, textarea {
   color: rgba(255, 255, 255, 0.6);
   line-height: 1.5;
   margin-bottom: 24px;
+  padding-left: 10px;
 }
 
 .pricing-price-row {
@@ -4837,7 +4839,7 @@ input, textarea {
   gap: 6px;
   margin-bottom: 24px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding-top: 24px;
+  padding: 24px 0 0 10px;
 }
 
 .pricing-price {

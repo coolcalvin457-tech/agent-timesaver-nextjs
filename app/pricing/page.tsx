@@ -17,9 +17,8 @@ export const metadata: Metadata = {
 };
 
 type Tier = {
-  badge: string;
-  badgeFeatured?: boolean;
   name: string;
+  subtitle: string;
   tagline: string;
   price: string;
   priceUnit?: string;
@@ -28,14 +27,13 @@ type Tier = {
   ctaLabel: string;
   ctaHref: string;
   ctaStyle: "primary" | "outline" | "ghost";
-  highlight?: boolean;
+  featured?: boolean;
 };
 
 const coachingTiers: Tier[] = [
   {
-    badge: "Starter",
-    badgeFeatured: true,
-    name: "3 Sessions",
+    name: "Starter",
+    subtitle: "3 Sessions",
     tagline: "Prompt naturally. Begin your AI workspace.",
     price: "$500",
     priceNote: "Three 60-minute 1-on-1 sessions with Calvin.",
@@ -50,9 +48,8 @@ const coachingTiers: Tier[] = [
     ctaStyle: "outline",
   },
   {
-    badge: "Growth",
-    badgeFeatured: true,
-    name: "8 Sessions",
+    name: "Growth",
+    subtitle: "8 Sessions",
     tagline: "Prompt with intent. Build your first agent.",
     price: "$2,000",
     priceNote: "Eight 60-minute 1-on-1 sessions with Calvin.",
@@ -67,9 +64,8 @@ const coachingTiers: Tier[] = [
     ctaStyle: "outline",
   },
   {
-    badge: "Scale",
-    badgeFeatured: true,
-    name: "Team & Custom",
+    name: "Scale",
+    subtitle: "Team & Custom",
     tagline: "Prompt at scale. Build your full AI system.",
     price: "$5,000",
     priceNote: "Custom engagement, shaped to your outcome.",
@@ -82,6 +78,7 @@ const coachingTiers: Tier[] = [
     ctaLabel: "Book a Free Call",
     ctaHref: "mailto:calvin@promptaiagents.com?subject=AI%20Coaching%20Discovery%20Call%20-%20Scale",
     ctaStyle: "outline",
+    featured: true,
   },
 ];
 
@@ -94,14 +91,10 @@ function TierCard({ tier }: { tier: Tier }) {
       : "pricing-cta pricing-cta-outline";
 
   return (
-    <div className={`pricing-card${tier.highlight ? " pricing-card-highlight" : ""}`}>
+    <div className={`pricing-card${tier.featured ? " pricing-card-featured" : ""}`}>
       <div>
-        <span
-          className={`pricing-badge${tier.badgeFeatured ? " pricing-badge-featured" : ""}`}
-        >
-          {tier.badge}
-        </span>
         <h2 className="pricing-tier-name">{tier.name}</h2>
+        <p className="pricing-tier-subtitle">{tier.subtitle}</p>
         <p className="pricing-tier-tagline">{tier.tagline}</p>
 
         <div className="pricing-price-row">

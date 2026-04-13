@@ -4800,21 +4800,27 @@ input, textarea {
     linear-gradient(180deg, #1F2228 0%, #1A1A1C 100%);
 }
 
+.pricing-subtitle-badge {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: var(--radius-tag);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 20px;
+}
+
 .pricing-tier-name {
   font-family: var(--font-display);
   font-size: 2rem;
   font-weight: 700;
   color: #FFFFFF;
-  margin: 0 0 4px;
+  margin: 0 0 10px;
   line-height: 1.15;
   letter-spacing: -0.01em;
-}
-
-.pricing-tier-subtitle {
-  font-size: 0.9375rem;
-  color: rgba(255, 255, 255, 0.55);
-  margin: 0 0 20px;
-  line-height: 1.4;
 }
 
 .pricing-tier-tagline {
@@ -4855,7 +4861,7 @@ input, textarea {
 
 .pricing-features {
   list-style: none;
-  padding: 24px 0 0;
+  padding: 24px 0 0 10px;
   margin: 0 0 28px;
   display: flex;
   flex-direction: column;

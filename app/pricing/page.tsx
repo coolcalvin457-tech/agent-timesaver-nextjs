@@ -93,8 +93,8 @@ function TierCard({ tier }: { tier: Tier }) {
   return (
     <div className={`pricing-card${tier.featured ? " pricing-card-featured" : ""}`}>
       <div>
+        <span className="pricing-subtitle-badge">{tier.subtitle}</span>
         <h2 className="pricing-tier-name">{tier.name}</h2>
-        <p className="pricing-tier-subtitle">{tier.subtitle}</p>
         <p className="pricing-tier-tagline">{tier.tagline}</p>
 
         <div className="pricing-price-row">
@@ -155,7 +155,7 @@ export default function PricingPage() {
                 margin: "0 auto",
               }}
             >
-              Personal AI Coaching.
+              One-to-one, live AI coaching.
             </p>
           </div>
         </div>

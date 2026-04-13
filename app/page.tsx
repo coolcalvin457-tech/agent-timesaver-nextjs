@@ -5,6 +5,7 @@ import FinalCtaButton from "@/components/FinalCtaButton";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import PromptBuilderHomepageWrap from "@/components/PromptBuilderHomepageWrap";
+import AiMatchCards from "@/components/AiMatchCards";
 
 export default function Home() {
   return (
@@ -94,60 +95,7 @@ export default function Home() {
               <span style={{ display: "block" }}>Which one fits yours?</span>
             </h2>
 
-            <div className="outcomes-grid">
-              <div className="outcome-card">
-                <div className="outcome-label">ChatGPT</div>
-                <div className="outcome-headline">World-Class Writer</div>
-                <p className="outcome-body">
-                  Think Pulitzer Prize winner at your fingertips.
-                  If you&apos;re already here, you picked a good one.
-                </p>
-              </div>
-              <div className="outcome-card">
-                <div className="outcome-label">Claude</div>
-                <div className="outcome-headline">Amazing Coworker</div>
-                <p className="outcome-body">
-                  Ever wish you had your own personal assistant?
-                  Well now you do, and they
-                  are way overqualified.
-                </p>
-              </div>
-              <div className="outcome-card">
-                <div className="outcome-label">Copilot</div>
-                <div className="outcome-headline">The Office</div>
-                <p className="outcome-body">
-                  If your company uses Microsoft, it&apos;s embedded into
-                  everything. Careful with the AI talk around the
-                  watercooler.
-                </p>
-              </div>
-              <div className="outcome-card">
-                <div className="outcome-label">Gemini</div>
-                <div className="outcome-headline">Google Machine</div>
-                <p className="outcome-body">
-                  World&apos;s best search engine now has AI superpowers.
-                  It generates breathtaking images and viral videos
-                  in minutes.
-                </p>
-              </div>
-              <div className="outcome-card">
-                <div className="outcome-label">Grok</div>
-                <div className="outcome-headline">Elon Musk</div>
-                <p className="outcome-body">
-                  The friend who&apos;s up-to-date on all the breaking
-                  news and latest trends. And no, it won&apos;t always
-                  agree with you.
-                </p>
-              </div>
-              <div className="outcome-card">
-                <div className="outcome-label">Perplexity</div>
-                <div className="outcome-headline">Deep Researcher</div>
-                <p className="outcome-body">
-                  While Google gives you ten blue links, this power tool
-                  gives you a dossier before your coffee gets cold.
-                </p>
-              </div>
-            </div>
+            <AiMatchCards />
           </div>
         </section>
 

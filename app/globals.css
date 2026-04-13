@@ -4842,11 +4842,13 @@ input, textarea {
   align-items: baseline;
   gap: 6px;
   margin-bottom: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 24px;
 }
 
 .pricing-price {
   font-family: var(--font-display);
-  font-size: 2.5rem;
+  font-size: 1.75rem;
   font-weight: 700;
   color: #FFFFFF;
   line-height: 1;
@@ -4866,11 +4868,12 @@ input, textarea {
 
 .pricing-features {
   list-style: none;
-  padding: 0;
+  padding: 24px 0 0;
   margin: 0 0 28px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .pricing-features li {

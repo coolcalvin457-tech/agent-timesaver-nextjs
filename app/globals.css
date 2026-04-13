@@ -1618,12 +1618,13 @@ input, textarea {
 .outcomes-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
+  gap: 32px;
   justify-content: center;
 }
 
 .outcomes-grid > .outcome-card {
   flex: 0 1 calc((100% - 64px) / 3);
+  max-width: 340px;
   min-width: 260px;
   min-height: 180px;
   display: flex;

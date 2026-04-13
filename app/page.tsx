@@ -99,16 +99,16 @@ export default function Home() {
                 <div className="outcome-label">ChatGPT</div>
                 <div className="outcome-headline">World-Class Writer</div>
                 <p className="outcome-body">
-                  Writing, brainstorming, summarizing, coding. If you want
-                  one tool that covers the widest range of tasks, start here.
+                  Think Pulitzer Prize winner at your fingertips.
+                  If you&apos;re already here, you picked a good one.
                 </p>
               </div>
               <div className="outcome-card">
                 <div className="outcome-label">Claude</div>
                 <div className="outcome-headline">Amazing Coworker</div>
                 <p className="outcome-body">
-                  Long documents, careful analysis, nuanced writing. If your
-                  work lives in reports and strategy docs, Claude fits.
+                  Ever wish you had your own personal assistant? Well now
+                  you do, and they are way overqualified.
                 </p>
               </div>
               <div className="outcome-card">
@@ -124,8 +124,9 @@ export default function Home() {
                 <div className="outcome-label">Gemini</div>
                 <div className="outcome-headline">Google Machine</div>
                 <p className="outcome-body">
-                  Connects to Gmail, Docs, and Drive. If your workflow runs
-                  through Google, Gemini meets you there.
+                  The world&apos;s most popular search engine now has AI
+                  superpowers. Generate breathtaking images and viral videos
+                  in minutes.
                 </p>
               </div>
               <div className="outcome-card">

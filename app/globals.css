@@ -1630,12 +1630,6 @@ input, textarea {
   flex-direction: column;
 }
 
-/* Bottom row: 2 cards span wider to fill the row */
-.outcomes-grid > .outcome-card:nth-child(4),
-.outcomes-grid > .outcome-card:nth-child(5) {
-  flex: 0 1 calc((100% - 24px) / 2);
-}
-
 .outcome-card {
   background: var(--surface);
   border: 1px solid var(--border);

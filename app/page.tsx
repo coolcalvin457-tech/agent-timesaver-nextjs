@@ -112,6 +112,15 @@ export default function Home() {
                 </p>
               </div>
               <div className="outcome-card">
+                <div className="outcome-label">Copilot</div>
+                <div className="outcome-headline">The Office</div>
+                <p className="outcome-body">
+                  It&apos;s already inside your Word, Excel, and Outlook. If your
+                  company runs on Microsoft, Copilot is the AI you&apos;re paying
+                  for whether you use it or not.
+                </p>
+              </div>
+              <div className="outcome-card">
                 <div className="outcome-label">Gemini</div>
                 <div className="outcome-headline">Google Machine</div>
                 <p className="outcome-body">

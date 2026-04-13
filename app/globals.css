@@ -1706,7 +1706,7 @@ input, textarea {
 
 .flip-card-back {
   transform: rotateY(180deg);
-  padding-bottom: 32px;
+  padding-bottom: 40px;
 }
 
 .flip-card-name {
@@ -1745,6 +1745,12 @@ input, textarea {
   border-color: var(--cta);
   box-shadow: 0 0 0 1px var(--cta), 0 4px 20px rgba(30, 122, 184, 0.12);
   transform: scale(1.03);
+}
+
+.flip-card-wrapper:hover .flip-card-back {
+  border-color: var(--border);
+  box-shadow: var(--shadow-card);
+  transform: rotateY(180deg);
 }
 
 /* ── How It Works Steps ───────────────────────────────────── */

@@ -100,7 +100,7 @@ export default function Home() {
         </section>
 
         {/* ── Section 7: Final CTA ─────────────────────────────────────── */}
-        <section className="section section-dark" id="final-cta" style={{ minHeight: "55vh", display: "flex", alignItems: "flex-end", justifyContent: "center", paddingTop: "64px", paddingBottom: "96px" }}>
+        <section className="section section-dark" id="final-cta" style={{ minHeight: "70vh", display: "flex", alignItems: "flex-end", justifyContent: "center", paddingTop: "64px", paddingBottom: "96px" }}>
           <div className="container final-cta">
             <h2
               className="display"

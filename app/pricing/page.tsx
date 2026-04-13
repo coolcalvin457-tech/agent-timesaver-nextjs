@@ -5,11 +5,11 @@ import Footer from "@/components/Footer";
 export const metadata: Metadata = {
   title: "Pricing | Prompt AI Agents",
   description:
-    "Simple pricing for every agent. Free tools, paid agents at $49, $99, and $149 per year, plus future all-access and 1-on-1 AI Coaching.",
+    "Personal AI Coaching with Calvin. 1-on-1 Zoom sessions to get fluent at prompting, build your first AI agent, and stand up your full AI system.",
   openGraph: {
     title: "Pricing | Prompt AI Agents",
     description:
-      "Simple pricing for every agent. Free tools, paid agents at $49, $99, and $149 per year, plus future all-access and 1-on-1 AI Coaching.",
+      "Personal AI Coaching with Calvin. 1-on-1 Zoom sessions to get fluent at prompting, build your first AI agent, and stand up your full AI system.",
     url: "https://promptaiagents.com/pricing",
     siteName: "Prompt AI Agents",
     type: "website",
@@ -30,80 +30,6 @@ type Tier = {
   ctaStyle: "primary" | "outline" | "ghost";
   highlight?: boolean;
 };
-
-const mainTiers: Tier[] = [
-  {
-    badge: "Free",
-    name: "Free Agents",
-    tagline: "Start here. No card required.",
-    price: "$0",
-    priceNote: "Three agents, always free.",
-    features: [
-      "AGENT: Timesaver",
-      "AGENT: Prompts",
-      "AGENT: Spreadsheets",
-      "AGENT: Industry (free tier)",
-      "Results delivered to your inbox",
-    ],
-    ctaLabel: "Explore free agents",
-    ctaHref: "/agents",
-    ctaStyle: "outline",
-  },
-  {
-    badge: "Most Popular",
-    badgeFeatured: true,
-    name: "AGENT: Workflow",
-    tagline: "Your first paid agent.",
-    price: "$49",
-    priceUnit: "/year",
-    priceNote: "The first step into paid agents.",
-    features: [
-      "Turn any task into a step-by-step workflow",
-      "Unlimited workflow generations",
-      "Download and email delivery",
-      "Everything in Free",
-    ],
-    ctaLabel: "Get Workflow",
-    ctaHref: "/workflow",
-    ctaStyle: "primary",
-    highlight: true,
-  },
-  {
-    badge: "For HR",
-    name: "HR Agents Package",
-    tagline: "Two agents built for HR work.",
-    price: "$99",
-    priceUnit: "/year",
-    priceNote: "Onboarding + PIP, bundled.",
-    features: [
-      "AGENT: Onboarding",
-      "AGENT: PIP",
-      "Unlimited kits and plans",
-      "Download and email delivery",
-      "Everything in Free",
-    ],
-    ctaLabel: "Get HR Package",
-    ctaHref: "/onboarding",
-    ctaStyle: "outline",
-  },
-  {
-    badge: "Intel",
-    name: "AGENT: Company",
-    tagline: "Deep dossiers on any company.",
-    price: "$149",
-    priceUnit: "/year",
-    priceNote: "Unlimited company research.",
-    features: [
-      "Full competitive dossiers on demand",
-      "Unlimited company lookups",
-      "Download and email delivery",
-      "Everything in Free",
-    ],
-    ctaLabel: "Get Company",
-    ctaHref: "/company",
-    ctaStyle: "outline",
-  },
-];
 
 const coachingTiers: Tier[] = [
   {
@@ -233,50 +159,13 @@ export default function PricingPage() {
                 margin: "0 auto",
               }}
             >
-              Built for real jobs. Not demos.
+              Personal AI Coaching.
             </p>
           </div>
         </div>
 
-        {/* Main tier cards */}
+        {/* Coaching cards */}
         <div className="container">
-          <div className="pricing-grid-main">
-            {mainTiers.map((tier) => (
-              <TierCard key={tier.name} tier={tier} />
-            ))}
-          </div>
-
-          {/* 1-on-1 AI Coaching header */}
-          <div
-            style={{
-              maxWidth: "1280px",
-              margin: "96px auto 0",
-              textAlign: "center",
-            }}
-          >
-            <h2
-              className="heading-1"
-              style={{
-                fontSize: "clamp(1.75rem, 3.5vw, 2.25rem)",
-                lineHeight: 1.15,
-                marginBottom: "12px",
-              }}
-            >
-              1-on-1 AI Coaching.
-            </h2>
-            <p
-              style={{
-                color: "var(--text-secondary)",
-                fontSize: "1rem",
-                maxWidth: "560px",
-                margin: "0 auto 32px",
-                lineHeight: 1.6,
-              }}
-            >
-              Live coaching with Calvin. Go from stuck to building your own agents.
-            </p>
-          </div>
-
           <div className="pricing-grid-coaching">
             {coachingTiers.map((tier) => (
               <TierCard key={tier.name} tier={tier} />
@@ -293,7 +182,7 @@ export default function PricingPage() {
               maxWidth: "560px",
             }}
           >
-            Agents billed annually. Coaching billed per package. Cancel anytime. Questions? Email{" "}
+            Coaching billed per package. Questions? Email{" "}
             <a
               href="mailto:support@promptaiagents.com"
               style={{ color: "var(--cta)", textDecoration: "none" }}

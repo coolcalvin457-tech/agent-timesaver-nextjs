@@ -1716,20 +1716,33 @@ input, textarea {
   letter-spacing: -0.02em;
 }
 
-.flip-card-hint {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+.flip-card-chevron {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
   color: var(--cta);
-  margin-top: 10px;
-  opacity: 0.7;
-  transition: opacity 0.2s ease;
+  opacity: 0.5;
+  animation: gentleNudge 2.4s ease-in-out infinite;
+  transition: opacity 0.25s ease;
 }
 
-.flip-card-wrapper:hover .flip-card-hint {
+.flip-card-wrapper:hover .flip-card-chevron {
   opacity: 1;
+}
+
+@keyframes gentleNudge {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(4px); }
+}
+
+/* ── Flip Card Hover (front face) ─────────────────────────── */
+.flip-card-front {
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.flip-card-wrapper:hover .flip-card-front {
+  border-color: var(--cta);
+  box-shadow: 0 0 0 1px var(--cta), 0 4px 20px rgba(30, 122, 184, 0.12);
 }
 
 /* ── How It Works Steps ───────────────────────────────────── */

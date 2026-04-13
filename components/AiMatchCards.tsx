@@ -61,10 +61,26 @@ export default function AiMatchCards() {
           <div
             className={`flip-card-inner${flipped.has(i) ? " flipped" : ""}`}
           >
-            {/* ── Front: tool name only ── */}
+            {/* ── Front: tool name + chevron arrow ── */}
             <div className="flip-card-face flip-card-front outcome-card">
               <div className="flip-card-name">{card.name}</div>
-              <div className="flip-card-hint">Click to reveal</div>
+              <svg
+                className="flip-card-chevron"
+                width="18"
+                height="18"
+                viewBox="0 0 18 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <path
+                  d="M7 4.5L12 9L7 13.5"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </div>
 
             {/* ── Back: personality + description ── */}

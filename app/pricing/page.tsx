@@ -5,11 +5,11 @@ import Footer from "@/components/Footer";
 export const metadata: Metadata = {
   title: "Pricing | Prompt AI Agents",
   description:
-    "Personal AI Coaching with Calvin. 1-on-1 Zoom sessions to get fluent at prompting, build your first AI agent, and stand up your full AI system.",
+    "Personal AI Coaching with Calvin. Live 1-on-1 sessions to get fluent at prompting, build your first AI agent, and stand up your full AI system.",
   openGraph: {
     title: "Pricing | Prompt AI Agents",
     description:
-      "Personal AI Coaching with Calvin. 1-on-1 Zoom sessions to get fluent at prompting, build your first AI agent, and stand up your full AI system.",
+      "Personal AI Coaching with Calvin. Live 1-on-1 sessions to get fluent at prompting, build your first AI agent, and stand up your full AI system.",
     url: "https://promptaiagents.com/pricing",
     siteName: "Prompt AI Agents",
     type: "website",
@@ -38,9 +38,9 @@ const coachingTiers: Tier[] = [
     name: "3 Sessions",
     tagline: "Prompt naturally. Begin your AI workspace.",
     price: "$500",
-    priceNote: "Three 60-minute 1-on-1 Zoom sessions with Calvin.",
+    priceNote: "Three 60-minute 1-on-1 sessions with Calvin.",
     features: [
-      "Three 60-minute 1-on-1 sessions, live on Zoom",
+      "Three 60-minute 1-on-1 sessions, live",
       "Prompting fluency, in plain English",
       "Your own AI workspace: profile, memory, tasks",
       "Walk away fluent, with AI set up the way you actually work",
@@ -55,9 +55,9 @@ const coachingTiers: Tier[] = [
     name: "8 Sessions",
     tagline: "Prompt with intent. Build your first agent.",
     price: "$2,000",
-    priceNote: "Eight 60-minute 1-on-1 Zoom sessions with Calvin.",
+    priceNote: "Eight 60-minute 1-on-1 sessions with Calvin.",
     features: [
-      "Eight 60-minute 1-on-1 sessions, live on Zoom",
+      "Eight 60-minute 1-on-1 sessions, live",
       "Everything in Starter, plus agent architecture",
       "Build your first AI agent around a workflow you actually do",
       "Walk away with a working agent you built yourself",
@@ -74,7 +74,7 @@ const coachingTiers: Tier[] = [
     price: "$5,000",
     priceNote: "Custom engagement, shaped to your outcome.",
     features: [
-      "Fifteen 60-minute 1-on-1 sessions, live on Zoom",
+      "Fifteen 60-minute 1-on-1 sessions, live",
       "Or a full-day team training, tailored to your team",
       "Or an AI audit for your small business",
       "Custom scope, shaped to the outcome you want",

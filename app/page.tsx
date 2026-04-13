@@ -107,17 +107,18 @@ export default function Home() {
                 <div className="outcome-label">Claude</div>
                 <div className="outcome-headline">Amazing Coworker</div>
                 <p className="outcome-body">
-                  Ever wish you had your own personal assistant? Well now
-                  you do, and they are way overqualified.
+                  Ever wish you had your own personal assistant?
+                  Well now you do, and they
+                  are way overqualified.
                 </p>
               </div>
               <div className="outcome-card">
                 <div className="outcome-label">Copilot</div>
                 <div className="outcome-headline">The Office</div>
                 <p className="outcome-body">
-                  It&apos;s already inside your Word, Excel, and Outlook. If your
-                  company runs on Microsoft, Copilot is the AI you&apos;re paying
-                  for whether you use it or not.
+                  If your company uses Microsoft, it&apos;s embedded into
+                  everything. Careful the way you talk about AI around
+                  the watercooler.
                 </p>
               </div>
               <div className="outcome-card">
@@ -125,24 +126,24 @@ export default function Home() {
                 <div className="outcome-headline">Google Machine</div>
                 <p className="outcome-body">
                   The world&apos;s most popular search engine now has AI
-                  superpowers. Generate breathtaking images and viral videos
-                  in minutes.
+                  superpowers. It generates breathtaking images and viral
+                  videos in minutes.
                 </p>
               </div>
               <div className="outcome-card">
                 <div className="outcome-label">Grok</div>
                 <div className="outcome-headline">Elon Musk</div>
                 <p className="outcome-body">
-                  Pulls from live data and trends in real time. If your job
-                  depends on staying current, Grok keeps you plugged in.
+                  The friend who&apos;s up-to-date on all the breaking news
+                  and latest trends. No, it won&apos;t always agree with you.
                 </p>
               </div>
               <div className="outcome-card">
                 <div className="outcome-label">Perplexity</div>
                 <div className="outcome-headline">Deep Researcher</div>
                 <p className="outcome-body">
-                  Searches the web and cites its sources. If you spend time
-                  Googling and verifying, Perplexity does that for you.
+                  While Google gives you ten blue links, this power tool
+                  gives you a dossier before your coffee gets cold.
                 </p>
               </div>
             </div>

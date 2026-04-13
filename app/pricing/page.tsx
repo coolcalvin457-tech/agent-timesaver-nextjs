@@ -36,7 +36,6 @@ const coachingTiers: Tier[] = [
     subtitle: "3 Sessions",
     tagline: "Prompt naturally. Begin your AI workspace.",
     price: "$500",
-    priceNote: "Three 60-minute 1-on-1 sessions with Calvin.",
     features: [
       "Three 60-minute 1-on-1 sessions, live",
       "Prompting fluency, in plain English",
@@ -52,7 +51,6 @@ const coachingTiers: Tier[] = [
     subtitle: "10 Sessions",
     tagline: "Prompt with intent. Build your first agent.",
     price: "$2,500",
-    priceNote: "Ten 60-minute 1-on-1 sessions with Calvin.",
     features: [
       "Ten 60-minute 1-on-1 sessions, live",
       "Everything in Beginner, plus agent architecture",
@@ -68,7 +66,6 @@ const coachingTiers: Tier[] = [
     subtitle: "Team & Custom",
     tagline: "Prompt at scale. Build your full AI system.",
     price: "$5,000",
-    priceNote: "Custom engagement, shaped to your outcome.",
     features: [
       "Fifteen 60-minute 1-on-1 sessions, live",
       "Or a full-day team training, tailored to your team",
@@ -103,7 +100,6 @@ function TierCard({ tier }: { tier: Tier }) {
             <span className="pricing-price-unit">{tier.priceUnit}</span>
           ) : null}
         </div>
-        <div className="pricing-price-note">{tier.priceNote ?? ""}</div>
 
         <ul className="pricing-features">
           {tier.features.map((feature) => (

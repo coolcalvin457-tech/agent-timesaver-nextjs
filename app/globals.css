@@ -4771,7 +4771,7 @@ input, textarea {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
-  max-width: 1080px;
+  max-width: 1280px;
   margin: 0 auto;
   align-items: stretch;
 }
@@ -4819,13 +4819,13 @@ input, textarea {
   font-size: 2.25rem;
   font-weight: 700;
   color: #FFFFFF;
-  margin: 28px 0 10px;
+  margin: 28px 0 16px;
   line-height: 1.15;
   letter-spacing: -0.01em;
 }
 
 .pricing-tier-tagline {
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   color: rgba(255, 255, 255, 0.6);
   line-height: 1.5;
   margin-bottom: 24px;
@@ -4835,13 +4835,13 @@ input, textarea {
   display: flex;
   align-items: baseline;
   gap: 6px;
-  margin-bottom: 6px;
+  margin-bottom: 24px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   padding-top: 24px;
 }
 
 .pricing-price {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: rgba(255, 255, 255, 0.8);
   line-height: 1;

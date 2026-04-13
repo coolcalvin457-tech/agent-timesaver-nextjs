@@ -4796,7 +4796,7 @@ input, textarea {
 
 .pricing-card-featured {
   background:
-    radial-gradient(ellipse 85% 65% at 50% 110%, rgba(30, 122, 184, 0.28) 0%, rgba(30, 122, 184, 0) 70%),
+    radial-gradient(ellipse 100% 90% at 50% 100%, rgba(30, 122, 184, 0.32) 0%, rgba(30, 122, 184, 0) 75%),
     linear-gradient(180deg, #1F2228 0%, #1A1A1C 100%);
 }
 

@@ -1687,11 +1687,7 @@ input, textarea {
 }
 
 .flip-card-face {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
-  height: 100%;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   display: flex;
@@ -1699,12 +1695,17 @@ input, textarea {
 }
 
 .flip-card-front {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
   justify-content: center;
   align-items: center;
   text-align: center;
 }
 
 .flip-card-back {
+  position: relative;
   transform: rotateY(180deg);
   padding-bottom: 40px;
 }

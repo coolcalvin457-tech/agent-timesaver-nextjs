@@ -4899,8 +4899,12 @@ input, textarea {
   font-size: 0.9375rem;
   font-weight: 600;
   text-decoration: none;
-  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, opacity 0.15s ease, transform 0.15s ease;
   margin-top: auto;
+}
+
+.pricing-cta:hover {
+  transform: scale(1.03);
 }
 
 .pricing-cta-primary {

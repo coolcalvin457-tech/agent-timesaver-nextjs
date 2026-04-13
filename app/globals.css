@@ -1707,7 +1707,8 @@ input, textarea {
 .flip-card-back {
   position: relative;
   transform: rotateY(180deg);
-  padding-bottom: 40px;
+  padding: 32px 24px;
+  justify-content: center;
 }
 
 .flip-card-name {

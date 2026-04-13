@@ -206,11 +206,10 @@ function TierCard({ tier }: { tier: Tier }) {
 export default function PricingPage() {
   return (
     <>
-      <Nav dark />
+      <Nav />
       <main
         style={{
           minHeight: "100vh",
-          background: "var(--dark)",
           paddingTop: "100px",
           paddingBottom: "120px",
         }}
@@ -221,7 +220,6 @@ export default function PricingPage() {
             <h1
               className="heading-1"
               style={{
-                color: "#FFFFFF",
                 marginBottom: "20px",
                 fontSize: "clamp(2.75rem, 6vw, 4.5rem)",
                 lineHeight: 1.05,
@@ -232,7 +230,6 @@ export default function PricingPage() {
             <p
               className="hero-subheadline"
               style={{
-                color: "rgba(255,255,255,0.65)",
                 margin: "0 auto",
               }}
             >
@@ -260,7 +257,6 @@ export default function PricingPage() {
             <h2
               className="heading-1"
               style={{
-                color: "#FFFFFF",
                 fontSize: "clamp(1.75rem, 3.5vw, 2.25rem)",
                 lineHeight: 1.15,
                 marginBottom: "12px",
@@ -270,7 +266,7 @@ export default function PricingPage() {
             </h2>
             <p
               style={{
-                color: "rgba(255,255,255,0.55)",
+                color: "var(--text-secondary)",
                 fontSize: "1rem",
                 maxWidth: "560px",
                 margin: "0 auto 32px",
@@ -293,14 +289,14 @@ export default function PricingPage() {
               textAlign: "center",
               margin: "72px auto 0",
               fontSize: "0.875rem",
-              color: "rgba(255,255,255,0.45)",
+              color: "var(--text-muted)",
               maxWidth: "560px",
             }}
           >
             Agents billed annually. Coaching billed per package. Cancel anytime. Questions? Email{" "}
             <a
               href="mailto:support@promptaiagents.com"
-              style={{ color: "#6DB8E8", textDecoration: "none" }}
+              style={{ color: "var(--cta)", textDecoration: "none" }}
             >
               support@promptaiagents.com
             </a>

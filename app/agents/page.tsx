@@ -74,7 +74,7 @@ const tools = [
 export default function AgentsPage() {
   return (
     <>
-      <Nav />
+      <Nav dark />
       <main
         style={{
           minHeight: "100vh",

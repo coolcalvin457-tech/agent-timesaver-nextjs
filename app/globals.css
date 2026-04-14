@@ -211,7 +211,7 @@ input, textarea {
 
 /* ── Nav dark variant (dark-background pages) ─────────────── */
 .nav.nav-dark {
-  background: rgba(26,27,34,0.85);
+  background: rgba(20,21,26,0.85);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   border-bottom: 1px solid rgba(255,255,255,0.10);
@@ -1458,7 +1458,7 @@ input, textarea {
 .section-dark {
   background:
     radial-gradient(ellipse 90% 55% at 50% 38%, rgba(255,255,255,0.05) 0%, transparent 65%),
-    linear-gradient(180deg, #1A1B22 0%, #0E0E10 100%);
+    linear-gradient(180deg, #14151A 0%, #0A0A0C 100%);
   color: #fff;
 }
 
@@ -3043,7 +3043,7 @@ input, textarea {
 
 /* Dark CTA box — fully visible above the fold */
 .pb-paywall-box {
-  background: linear-gradient(180deg, #1A1B22 0%, #0E0E10 100%);
+  background: linear-gradient(180deg, #14151A 0%, #0A0A0C 100%);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-card);
   padding: 24px 24px 20px;
@@ -3316,7 +3316,7 @@ input, textarea {
 }
 
 .blog-cta-card {
-  background: linear-gradient(180deg, #1A1B22 0%, #0E0E10 100%);
+  background: linear-gradient(180deg, #14151A 0%, #0A0A0C 100%);
   border: 1px solid var(--dark-border);
   border-radius: var(--radius-card);
   padding: 48px 40px;

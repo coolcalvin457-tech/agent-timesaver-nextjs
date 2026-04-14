@@ -80,7 +80,7 @@ export default function AgentsPage() {
           minHeight: "100vh",
           paddingTop: "100px",
           paddingBottom: "80px",
-          background: "linear-gradient(180deg, #1A1B22 0%, #0E0E10 100%)",
+          background: "linear-gradient(180deg, #14151A 0%, #0A0A0C 100%)",
           color: "#fff",
         }}
       >

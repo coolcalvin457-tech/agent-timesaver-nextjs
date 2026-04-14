@@ -28,7 +28,7 @@ export default function PIPBuilderPage({
       <Nav dark />
       <main
         style={{
-          background: "linear-gradient(180deg, #1A1B22 0%, #0E0E10 100%)",
+          background: "linear-gradient(180deg, #14151A 0%, #0A0A0C 100%)",
           minHeight: "100vh",
         }}
       >

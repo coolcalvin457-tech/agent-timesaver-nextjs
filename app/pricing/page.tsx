@@ -36,7 +36,7 @@ const coachingTiers: Tier[] = [
     subtitle: "3 Sessions",
     tagline: "Prompt naturally. Begin your AI workspace.",
     price: "$500",
-    priceUnit: "3 live sessions (60-min. each)",
+    priceUnit: "3 live sessions",
     features: [
       "Three 60-minute 1-on-1 sessions, live",
       "Prompting fluency, in plain English",
@@ -52,7 +52,7 @@ const coachingTiers: Tier[] = [
     subtitle: "10 Sessions",
     tagline: "Own a workflow. Create your first agent.",
     price: "$2,500",
-    priceUnit: "10 live sessions (60-min. each)",
+    priceUnit: "10 live sessions",
     features: [
       "Ten 60-minute 1-on-1 sessions, live",
       "Everything in Beginner, plus agent architecture",
@@ -65,15 +65,15 @@ const coachingTiers: Tier[] = [
   },
   {
     name: "Scale",
-    subtitle: "Team & Custom",
+    subtitle: "15 Sessions",
     tagline: "Scale what works. Build out your AI system.",
     price: "$5,000",
-    priceUnit: "Custom engagement",
+    priceUnit: "15 live sessions",
     features: [
       "Fifteen 60-minute 1-on-1 sessions, live",
-      "Or a full-day team training, tailored to your team",
-      "Or an AI audit for your small business",
-      "Custom scope, shaped to the outcome you want",
+      "Everything in Confident, plus system-level architecture",
+      "Build a system of 2-3 agents around your role",
+      "Walk away with an AI system you built and can extend yourself",
     ],
     ctaLabel: "Schedule a free call",
     ctaHref: "mailto:calvin@promptaiagents.com?subject=AI%20Coaching%20Discovery%20Call%20-%20Scale",

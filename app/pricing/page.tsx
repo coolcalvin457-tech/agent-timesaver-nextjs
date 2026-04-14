@@ -154,7 +154,7 @@ export default function PricingPage() {
                 margin: "0 auto",
               }}
             >
-              One-to-one, live AI coaching.
+              One-on-one, live AI coaching.
             </p>
           </div>
         </div>

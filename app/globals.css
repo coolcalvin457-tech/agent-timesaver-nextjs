@@ -4781,6 +4781,23 @@ input, textarea {
   max-width: 1280px;
   margin: 0 auto;
   align-items: stretch;
+  position: relative;
+}
+
+.pricing-grid-coaching::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: -5%;
+  width: 55%;
+  height: 50%;
+  background: radial-gradient(
+    ellipse 100% 100% at 65% 100%,
+    rgba(30, 122, 184, 0.10) 0%,
+    rgba(30, 122, 184, 0) 70%
+  );
+  pointer-events: none;
+  z-index: 0;
 }
 
 .pricing-card {
@@ -4825,20 +4842,6 @@ input, textarea {
   border-radius: 0 16px 0 0;
 }
 
-.pricing-card-featured::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 2px;
-  height: 60px;
-  background: linear-gradient(
-    180deg,
-    rgba(30, 122, 184, 0.25) 0%,
-    rgba(30, 122, 184, 0) 100%
-  );
-  border-radius: 0 16px 0 0;
-}
 
 .pricing-subtitle-badge {
   position: absolute;

@@ -50,7 +50,7 @@ const coachingTiers: Tier[] = [
   {
     name: "Confident",
     subtitle: "10 Sessions",
-    tagline: "Prompt with intent. Build your first agent.",
+    tagline: "Own a workflow. Create your first agent.",
     price: "$2,500",
     priceUnit: "10 live sessions (60-min. each)",
     features: [
@@ -66,7 +66,7 @@ const coachingTiers: Tier[] = [
   {
     name: "Scale",
     subtitle: "Team & Custom",
-    tagline: "Prompt at scale. Build your full AI system.",
+    tagline: "Scale what works. Build out your AI system.",
     price: "$5,000",
     priceUnit: "Custom engagement",
     features: [

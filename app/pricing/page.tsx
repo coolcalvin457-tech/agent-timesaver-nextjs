@@ -129,7 +129,7 @@ function TierCard({ tier }: { tier: Tier }) {
 export default function PricingPage() {
   return (
     <>
-      <Nav />
+      <Nav dark />
       <main
         style={{
           minHeight: "100vh",

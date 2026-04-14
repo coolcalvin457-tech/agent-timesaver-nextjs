@@ -80,17 +80,19 @@ export default function AgentsPage() {
           minHeight: "100vh",
           paddingTop: "100px",
           paddingBottom: "80px",
+          background: "linear-gradient(180deg, #1A1B22 0%, #0E0E10 100%)",
+          color: "#fff",
         }}
       >
         {/* Page header */}
         <div className="container">
           <div style={{ paddingTop: "80px", marginBottom: "40px", textAlign: "center" }}>
-            <h1 className="heading-1" style={{ marginBottom: "20px", fontSize: "clamp(2.75rem, 6vw, 4.5rem)", lineHeight: 1.05 }}>
+            <h1 className="heading-1" style={{ marginBottom: "20px", fontSize: "clamp(2.75rem, 6vw, 4.5rem)", lineHeight: 1.05, color: "#fff" }}>
               Agents
             </h1>
             <p
               className="hero-subheadline"
-              style={{ margin: "0 auto" }}
+              style={{ margin: "0 auto", color: "rgba(255,255,255,0.65)" }}
             >
               Built for real jobs. Not demos.
             </p>
@@ -102,7 +104,7 @@ export default function AgentsPage() {
           <ToolsList tools={tools} />
 
           {/* More tools placeholder */}
-          <p style={{ textAlign: "center", margin: "72px auto 56px", fontSize: "0.875rem", color: "var(--text-muted)" }}>
+          <p style={{ textAlign: "center", margin: "72px auto 56px", fontSize: "0.875rem", color: "rgba(255,255,255,0.4)" }}>
             More agents in progress...
           </p>
         </div>

@@ -135,6 +135,8 @@ export default function PricingPage() {
           minHeight: "100vh",
           paddingTop: "100px",
           paddingBottom: "120px",
+          background: "linear-gradient(180deg, #1A1B22 0%, #0E0E10 100%)",
+          color: "#fff",
         }}
       >
         {/* Page header */}
@@ -146,6 +148,7 @@ export default function PricingPage() {
                 marginBottom: "20px",
                 fontSize: "clamp(2.75rem, 6vw, 4.5rem)",
                 lineHeight: 1.05,
+                color: "#fff",
               }}
             >
               Pricing
@@ -154,6 +157,7 @@ export default function PricingPage() {
               className="hero-subheadline"
               style={{
                 margin: "0 auto",
+                color: "rgba(255,255,255,0.65)",
               }}
             >
               One-on-one, live AI coaching.

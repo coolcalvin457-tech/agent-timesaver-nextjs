@@ -211,7 +211,7 @@ input, textarea {
 
 /* ── Nav dark variant (dark-background pages) ─────────────── */
 .nav.nav-dark {
-  background: rgba(14,14,16,0.85);
+  background: rgba(26,27,34,0.85);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   border-bottom: 1px solid rgba(255,255,255,0.10);

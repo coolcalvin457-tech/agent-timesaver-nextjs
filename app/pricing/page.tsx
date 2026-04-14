@@ -38,10 +38,11 @@ const coachingTiers: Tier[] = [
     price: "$500",
     priceUnit: "3 live sessions",
     features: [
-      "60 minutes tailored to your actual work",
-      "Prompting fluency, in plain English",
+      "60 minutes, each tailored to your actual work",
+      "Give clear prompts, get precise outcomes",
       "Your own AI workspace: profile, memory, tasks",
-      "Walk away fluent, with AI set up the way you actually work",
+      "Run AI sessions with a plan and agenda",
+      "Prompt fluently without overthinking it",
     ],
     ctaLabel: "Schedule a free call",
     ctaHref: "mailto:calvin@promptaiagents.com?subject=AI%20Coaching%20Discovery%20Call%20-%20Beginner",
@@ -54,7 +55,7 @@ const coachingTiers: Tier[] = [
     price: "$2,500",
     priceUnit: "10 live sessions",
     features: [
-      "60 minutes tailored to your actual work",
+      "60 minutes, each tailored to your actual work",
       "Everything in Beginner, plus agent architecture",
       "Build your first AI agent around a workflow you actually do",
       "Walk away with a working agent you built yourself",
@@ -70,7 +71,7 @@ const coachingTiers: Tier[] = [
     price: "$5,000",
     priceUnit: "15 live sessions",
     features: [
-      "60 minutes tailored to your actual work",
+      "60 minutes, each tailored to your actual work",
       "Everything in Confident, plus system-level architecture",
       "Build a system of 2-3 agents around your role",
       "Walk away with an AI system you built and can extend yourself",

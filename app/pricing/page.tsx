@@ -51,14 +51,14 @@ const coachingTiers: Tier[] = [
   {
     name: "Confident",
     subtitle: "Phase 2",
-    tagline: "Own a workflow. Create your first AI agent.",
+    tagline: "Own a process. Create your first AI agent.",
     price: "$2,500",
     priceUnit: "10 live sessions",
     features: [
       "60 minutes, each tailored to your actual work",
       "Turn a recurring task into an agent blueprint",
       "Understand the architecture under the hood",
-      "Create your own agent with a series of prompts",
+      "Create your agent through a series of prompts",
       "Test, review, refine until it achieves your goal",
     ],
     ctaLabel: "Schedule a free call",

@@ -4919,7 +4919,7 @@ input, textarea {
 .pricing-cta-outline {
   background: transparent;
   color: #FFFFFF;
-  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
 }
 
 .pricing-cta-outline:hover {

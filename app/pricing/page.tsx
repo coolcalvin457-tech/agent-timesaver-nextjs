@@ -40,8 +40,8 @@ const coachingTiers: Tier[] = [
     features: [
       "60 minutes, each tailored to your actual work",
       "Give clear prompts, get precise outcomes",
-      "Set up your workspace profile, memory, tasks",
       "Run AI sessions with a plan and agenda",
+      "Set up your workspace profile, memory, tasks",
       "Prompt fluently without overthinking",
     ],
     ctaLabel: "Schedule a free call",
@@ -75,7 +75,7 @@ const coachingTiers: Tier[] = [
       "60 minutes, each tailored to your actual work",
       "Audit your role and prioritize what to automate",
       "Automate recurring tasks with multiple agents",
-      "Design a system workflow",
+      "Design your agentic workflow",
       "Build a system where agents talk to each other",
     ],
     ctaLabel: "Schedule a free call",

@@ -4865,7 +4865,7 @@ input, textarea {
   margin: 0 0 28px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 

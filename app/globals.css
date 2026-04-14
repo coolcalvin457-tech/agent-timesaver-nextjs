@@ -3651,7 +3651,7 @@ input, textarea {
 .tool-card {
   display: flex;
   flex-direction: column;
-  background: linear-gradient(180deg, #1F2228 0%, #1A1A1C 100%);
+  background: linear-gradient(180deg, #181A1F 0%, #141416 100%);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-card);
   padding: 40px;
@@ -4786,7 +4786,7 @@ input, textarea {
 .pricing-card {
   display: flex;
   flex-direction: column;
-  background: linear-gradient(180deg, #1F2228 0%, #1A1A1C 100%);
+  background: linear-gradient(180deg, #181A1F 0%, #141416 100%);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-card);
   padding: 32px 38px;
@@ -4804,7 +4804,7 @@ input, textarea {
 .pricing-card-featured {
   background:
     radial-gradient(ellipse 100% 100% at 50% 100%, rgba(30, 122, 184, 0.4) 0%, rgba(30, 122, 184, 0) 88%),
-    linear-gradient(180deg, #1F2228 0%, #1A1A1C 100%);
+    linear-gradient(180deg, #181A1F 0%, #141416 100%);
 }
 
 .pricing-subtitle-badge {

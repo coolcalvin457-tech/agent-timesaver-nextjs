@@ -33,7 +33,7 @@ type Tier = {
 const coachingTiers: Tier[] = [
   {
     name: "Beginner",
-    subtitle: "3 Sessions",
+    subtitle: "Phase 1",
     tagline: "Prompt naturally. Begin your AI workspace.",
     price: "$500",
     priceUnit: "3 live sessions",
@@ -50,7 +50,7 @@ const coachingTiers: Tier[] = [
   },
   {
     name: "Confident",
-    subtitle: "10 Sessions",
+    subtitle: "Phase 2",
     tagline: "Own a workflow. Create your first agent.",
     price: "$2,500",
     priceUnit: "10 live sessions",
@@ -66,7 +66,7 @@ const coachingTiers: Tier[] = [
   },
   {
     name: "Scale",
-    subtitle: "15 Sessions",
+    subtitle: "Phase 3",
     tagline: "Scale what works. Build out your AI system.",
     price: "$5,000",
     priceUnit: "15 live sessions",

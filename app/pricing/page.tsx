@@ -174,6 +174,25 @@ export default function PricingPage() {
             ))}
           </div>
         </div>
+
+        {/* Custom engagement bar */}
+        <div className="container" style={{ marginTop: "56px" }}>
+          <div className="pricing-custom-bar">
+            <div className="pricing-custom-content">
+              <span className="pricing-custom-label">Custom</span>
+              <p className="pricing-custom-description">
+                AI audits, team training, and consulting for organizations ready to move faster.
+              </p>
+            </div>
+            <a
+              className="pricing-cta pricing-cta-outline"
+              href="mailto:calvin@promptaiagents.com?subject=Custom%20Engagement%20Inquiry"
+              style={{ flexShrink: 0, width: "auto", padding: "12px 32px" }}
+            >
+              Request info
+            </a>
+          </div>
+        </div>
       </main>
       <Footer />
     </>

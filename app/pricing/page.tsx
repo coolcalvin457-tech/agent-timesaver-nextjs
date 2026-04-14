@@ -73,9 +73,10 @@ const coachingTiers: Tier[] = [
     priceUnit: "15 live sessions",
     features: [
       "60 minutes, each tailored to your actual work",
-      "Everything in Confident, plus system-level architecture",
-      "Build a system of 2-3 agents around your role",
-      "Walk away with an AI system you built and can extend yourself",
+      "Audit your role and prioritize what to automate",
+      "Automate recurring tasks with multiple agents",
+      "Design a system workflow",
+      "Build your own AI system where agents talk to each other",
     ],
     ctaLabel: "Schedule a free call",
     ctaHref: "mailto:calvin@promptaiagents.com?subject=AI%20Coaching%20Discovery%20Call%20-%20Scale",

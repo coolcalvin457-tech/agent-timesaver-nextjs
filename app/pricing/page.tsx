@@ -176,7 +176,7 @@ export default function PricingPage() {
         </div>
 
         {/* Custom engagement bar */}
-        <div className="container" style={{ marginTop: "56px" }}>
+        <div className="container" style={{ marginTop: "10px" }}>
           <div className="pricing-custom-bar">
             <div className="pricing-custom-content">
               <span className="pricing-custom-label">Custom</span>
@@ -185,9 +185,8 @@ export default function PricingPage() {
               </p>
             </div>
             <a
-              className="pricing-cta pricing-cta-outline"
-              href="mailto:calvin@promptaiagents.com?subject=Custom%20Engagement%20Inquiry"
-              style={{ flexShrink: 0, width: "auto", padding: "12px 32px" }}
+              className="pricing-cta pricing-cta-outline pricing-cta-small"
+              href="mailto:info@promptaiagents.com?subject=Custom%20Engagement%20Inquiry"
             >
               Request info
             </a>

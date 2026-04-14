@@ -56,9 +56,10 @@ const coachingTiers: Tier[] = [
     priceUnit: "10 live sessions",
     features: [
       "60 minutes, each tailored to your actual work",
-      "Everything in Beginner, plus agent architecture",
-      "Build your first AI agent around a workflow you actually do",
-      "Walk away with a working agent you built yourself",
+      "Turn a recurring task into an agent blueprint",
+      "Understand the architecture under the hood",
+      "Create your own agent with a series of prompts",
+      "Test, review, refine until it achieves your goal",
     ],
     ctaLabel: "Schedule a free call",
     ctaHref: "mailto:calvin@promptaiagents.com?subject=AI%20Coaching%20Discovery%20Call%20-%20Confident",

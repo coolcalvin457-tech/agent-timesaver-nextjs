@@ -4803,6 +4803,7 @@ input, textarea {
 
 .pricing-card-featured {
   position: relative;
+  overflow: hidden;
   background:
     radial-gradient(ellipse 140% 120% at 50% 100%, rgba(30, 122, 184, 0.18) 0%, rgba(30, 122, 184, 0) 70%),
     linear-gradient(180deg, #181A1F 0%, #141416 100%);
@@ -4811,9 +4812,9 @@ input, textarea {
 .pricing-card-featured::before {
   content: "";
   position: absolute;
-  top: -1px;
+  top: 0;
   left: 28px;
-  right: -1px;
+  right: 0;
   height: 2px;
   background: linear-gradient(
     90deg,
@@ -4827,8 +4828,8 @@ input, textarea {
 .pricing-card-featured::after {
   content: "";
   position: absolute;
-  top: -1px;
-  right: -1px;
+  top: 0;
+  right: 0;
   width: 2px;
   height: 60px;
   background: linear-gradient(

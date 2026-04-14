@@ -4784,21 +4784,6 @@ input, textarea {
   position: relative;
 }
 
-.pricing-grid-coaching::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  right: 2%;
-  width: 38%;
-  height: 50%;
-  background: radial-gradient(
-    ellipse 100% 100% at 55% 100%,
-    rgba(30, 122, 184, 0.08) 0%,
-    rgba(30, 122, 184, 0) 65%
-  );
-  pointer-events: none;
-  z-index: 0;
-}
 
 .pricing-card {
   display: flex;

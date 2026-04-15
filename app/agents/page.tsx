@@ -39,16 +39,6 @@ const tools = [
     cta: "Get Workflows",
   },
   {
-    slug: "company",
-    href: "/company",
-    badgeClass: "tool-badge-paid",
-    label: "$149/yr",
-    name: "AGENT: Company",
-    tagline: "A competitive dossier on any company.",
-    description: "",
-    cta: "Get Dossiers",
-  },
-  {
     slug: "industry",
     href: "/industry",
     badgeClass: "tool-badge-free",
@@ -78,6 +68,16 @@ const tools = [
     description:
       "Start with your job title. Answer a few questions. Get 5 personalized AI time-savers built for your exact role, plus an estimate of how many hours you could save each week.",
     cta: "Get Time-Savers",
+  },
+  {
+    slug: "company",
+    href: "/company",
+    badgeClass: "tool-badge-paid",
+    label: "$149/yr",
+    name: "AGENT: Company",
+    tagline: "A competitive dossier on any company.",
+    description: "",
+    cta: "Get Dossiers",
   },
 ];
 

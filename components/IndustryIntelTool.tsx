@@ -528,7 +528,7 @@ export default function IndustryIntelTool() {
             </>
           ) : (
             <div style={{ ...fieldGroupStyle, marginBottom: "8px" }}>
-              <label style={labelStyle}>
+              <label style={{ ...labelStyle, marginBottom: "10px" }}>
                 {s4Config.headline} <span style={optionalStyle}>(optional)</span>
               </label>
               <textarea

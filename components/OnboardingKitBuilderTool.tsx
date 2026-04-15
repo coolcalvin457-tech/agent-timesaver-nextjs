@@ -69,7 +69,7 @@ const LOADING_STEPS = [
   "Welcome Letter",
   "First-Week Schedule",
   "Key Contacts",
-  "30-60-90 Day Plan",
+  "30-60-90 Plan",
   "New Hire Checklist",
 ];
 
@@ -886,7 +886,7 @@ export default function OnboardingKitBuilderTool({
 
         {/* Why this hire */}
         <div style={fieldWrapStyle}>
-          <label style={labelStyle}>Why this hire, why now</label>
+          <label style={{ ...labelStyle, marginBottom: "10px" }}>Why this hire, why now</label>
           <div style={{ position: "relative" }}>
             <textarea
               style={{ ...textareaStyle, minHeight: "120px", paddingBottom: "24px" }}
@@ -904,7 +904,7 @@ export default function OnboardingKitBuilderTool({
 
         {/* Week one priorities */}
         <div style={fieldWrapStyle}>
-          <label style={labelStyle}>Week one priorities</label>
+          <label style={{ ...labelStyle, marginBottom: "10px" }}>Week one priorities</label>
           <div style={{ position: "relative" }}>
             <textarea
               style={{ ...textareaStyle, minHeight: "100px", paddingBottom: "24px" }}
@@ -987,7 +987,7 @@ export default function OnboardingKitBuilderTool({
 
         {/* 30/60/90 */}
         <div style={fieldWrapStyle}>
-          <label style={labelStyle}>30/60/90 day expectations</label>
+          <label style={{ ...labelStyle, marginBottom: "10px" }}>30/60/90 day expectations</label>
           <div style={{ position: "relative" }}>
             <textarea
               style={{ ...textareaStyle, minHeight: "120px", paddingBottom: "24px" }}
@@ -1042,7 +1042,7 @@ export default function OnboardingKitBuilderTool({
           </div>
 
           {/* Free-form team notes */}
-          <label style={{ ...labelStyle, fontWeight: 400, color: "var(--text-muted)" }}>
+          <label style={{ ...labelStyle, fontWeight: 400, color: "var(--text-muted)", marginBottom: "10px" }}>
             Anything else about the team?
           </label>
           <div style={{ position: "relative" }}>
@@ -1134,7 +1134,7 @@ export default function OnboardingKitBuilderTool({
               "Welcome Letter",
               "First-Week Schedule",
               "Key Contacts",
-              "30-60-90 Day Plan",
+              "30-60-90 Plan",
               "New Hire Checklist",
             ].map((item) => (
               <div key={item} style={{ display: "flex", alignItems: "center", gap: "10px" }}>

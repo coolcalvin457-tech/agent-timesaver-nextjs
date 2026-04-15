@@ -644,7 +644,7 @@ export default function CompetitiveDossierTool({
           </p>
 
           <div style={fieldGroupStyle}>
-            <label style={labelStyle}>
+            <label style={{ ...labelStyle, marginBottom: "10px" }}>
               What do you most want to learn about this company? <span style={optionalStyle}>(optional)</span>
             </label>
             <div style={{ position: "relative" }}>
@@ -680,7 +680,7 @@ export default function CompetitiveDossierTool({
           </div>
 
           <div style={fieldGroupStyle}>
-            <label style={labelStyle}>
+            <label style={{ ...labelStyle, marginBottom: "10px" }}>
               Anything you already know? <span style={optionalStyle}>(optional)</span>
             </label>
             <div style={{ position: "relative" }}>
@@ -739,7 +739,7 @@ export default function CompetitiveDossierTool({
           </div>
 
           <div style={fieldGroupStyle}>
-            <label style={labelStyle}>
+            <label style={{ ...labelStyle, marginBottom: "10px" }}>
               Brief description of your company or product <span style={optionalStyle}>(optional)</span>
             </label>
             <div style={{ position: "relative" }}>

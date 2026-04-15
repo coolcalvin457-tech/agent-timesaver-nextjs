@@ -792,7 +792,7 @@ export default function PIPBuilderTool({
 
         {/* Specific Deficiencies */}
         <div style={fieldGroupStyle}>
-          <label style={labelStyle}>
+          <label style={{ ...labelStyle, marginBottom: "10px" }}>
             Specific deficiencies          </label>
           <div style={{ position: "relative" }}>
             <textarea
@@ -814,7 +814,7 @@ export default function PIPBuilderTool({
 
         {/* Performance Standard */}
         <div style={fieldGroupStyle}>
-          <label style={labelStyle}>
+          <label style={{ ...labelStyle, marginBottom: "10px" }}>
             Performance standard being missed{" "}
             <span style={{ fontWeight: 400, color: "var(--text-muted)" }}>(optional)</span>
           </label>
@@ -837,7 +837,7 @@ export default function PIPBuilderTool({
 
         {/* Improvement Targets */}
         <div style={fieldGroupStyle}>
-          <label style={labelStyle}>
+          <label style={{ ...labelStyle, marginBottom: "10px" }}>
             Improvement targets          </label>
           <div style={{ position: "relative" }}>
             <textarea
@@ -952,7 +952,7 @@ export default function PIPBuilderTool({
 
         {/* Support Offered */}
         <div style={fieldGroupStyle}>
-          <label style={labelStyle}>
+          <label style={{ ...labelStyle, marginBottom: "10px" }}>
             Support being offered{" "}
             <span style={{ fontWeight: 400, color: "var(--text-muted)" }}>(optional)</span>
           </label>
@@ -975,7 +975,7 @@ export default function PIPBuilderTool({
 
         {/* Consequences */}
         <div style={fieldGroupStyle}>
-          <label style={labelStyle}>
+          <label style={{ ...labelStyle, marginBottom: "10px" }}>
             Consequences if targets are not met          </label>
           <div style={{ position: "relative" }}>
             <textarea
@@ -1401,7 +1401,7 @@ export default function PIPBuilderTool({
           checklistItems={[
             "Welcome Letter",
             "First-Week Schedule",
-            "30-60-90 Day Plan",
+            "30-60-90 Plan",
             "New Hire Checklist",
           ]}
           buttonLabel="Try Now"

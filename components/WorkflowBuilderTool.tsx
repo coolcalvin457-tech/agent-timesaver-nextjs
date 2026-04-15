@@ -622,7 +622,7 @@ export default function WorkflowBuilderTool({
 
           {/* Task description */}
           <div style={fieldGroupStyle}>
-            <label htmlFor="wf-task" style={labelStyle}>
+            <label htmlFor="wf-task" style={{ ...labelStyle, marginBottom: "10px" }}>
               What would you like a workflow for?
             </label>
             <div style={{ position: "relative" }}>
@@ -830,7 +830,7 @@ export default function WorkflowBuilderTool({
 
           {/* Audience and priorities (optional) */}
           <div style={fieldGroupStyle}>
-            <label htmlFor="wf-audience" style={labelStyle}>
+            <label htmlFor="wf-audience" style={{ ...labelStyle, marginBottom: "10px" }}>
               Who reviews this when it's done?
               <span style={optionalStyle}>(optional)</span>
             </label>

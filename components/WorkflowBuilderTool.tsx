@@ -628,14 +628,14 @@ export default function WorkflowBuilderTool({
             <div style={{ position: "relative" }}>
               <textarea
                 id="wf-task"
-                style={{ ...textareaStyle, fontSize: "0.875rem", minHeight: "220px", padding: "14px 16px", paddingBottom: "28px" }}
+                style={{ ...textareaStyle, fontSize: "0.875rem", minHeight: "160px", padding: "14px 16px", paddingBottom: "28px" }}
                 value={taskDescription}
                 onChange={(e) => setTaskDescription(e.target.value)}
                 placeholder={"e.g. Onboard new clients from signed contract to first deliverable. This means sending them a welcome packet, scheduling the kickoff call, collecting brand assets and logins, assigning the internal team, and setting up the project in our tracking system. I'd rather spend that time building the actual relationship with the client and talking through their goals.\n"}
                 rows={3}
                 maxLength={500}
               />
-              <span style={{ position: "absolute", bottom: "8px", right: "12px", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", pointerEvents: "none" }}>
+              <span style={{ position: "absolute", bottom: "8px", right: "16px", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", pointerEvents: "none" }}>
                 {taskDescription.length === 0 ? "363" : taskDescription.length}/500
               </span>
             </div>
@@ -643,7 +643,7 @@ export default function WorkflowBuilderTool({
           </div>
 
           {/* Single upload — compact, centered */}
-          <div style={{ marginTop: "16px", marginBottom: "16px", display: "flex", flexDirection: "column" as const, alignItems: "center" }}>
+          <div style={{ marginTop: "8px", marginBottom: "8px", display: "flex", flexDirection: "column" as const, alignItems: "center" }}>
             <div style={{ display: "flex", alignItems: "center" }}>
               <label
                 className="choose-file-btn"

@@ -296,7 +296,7 @@ function buildIntelEmailHTML(
   `;
 
   return buildBaseEmailHTML({
-    preHeaderText: `Industry intel on ${industry} for ${jobTitle}.`,
+    preHeaderText: `Industry intel on ${industry} for ${jobTitle}`,
     eyebrowLabel: "AGENT: Industry",
     heroContent,
   });

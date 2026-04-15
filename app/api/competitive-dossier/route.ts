@@ -82,7 +82,7 @@ Specific instructions by section:
 - Section 2 (Business Model and Pricing): Revenue model clarity matters. A clean, recurring subscription business with published pricing is more predictable than a services-heavy or custom-pricing model.
 - Section 4 (Product and Service Breakdown): Assess product depth and architecture signals. A company with a narrow, deep product is easier to integrate than one with a scattered feature surface.
 - Section 5 (Growth Signals): Hiring patterns are the clearest signal. Map growth posture explicitly: heavy sales and marketing vs. engineering investment tells a different story.
-- Section 7 (Strengths and Gaps): Frame strengths as acquisition upside and gaps as integration risk or price-reduction leverage.
+- Section 7 (Strengths and Gaps): Frame strengths as acquisition upside and gaps as integration risk or price-reduction negotiation points.
 - Section 8 (What This Means for You): This section must answer: What is the apparent strategic value of acquiring this company? What are the key integration risks? What would due diligence need to focus on given the public signals? What is the strongest argument for and against this acquisition? Provide 3 to 5 specific next steps for the evaluation process.`,
 
   "General research": `RELATIONSHIP TYPE: GENERAL RESEARCH

@@ -3,11 +3,11 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
 export const metadata = {
-  title: "AGENT: Industry — Prompt AI Agents",
+  title: "AGENT: Industry | Prompt AI Agents",
   description:
     "Answer a few questions about your role and industry. Get one sharp insight you can act on this week.",
   openGraph: {
-    title: "AGENT: Industry — Prompt AI Agents",
+    title: "AGENT: Industry | Prompt AI Agents",
     description:
       "Answer a few questions about your role and industry. Get one sharp insight you can act on this week.",
     url: "https://promptaiagents.com/industry",

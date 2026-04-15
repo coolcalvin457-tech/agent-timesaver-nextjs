@@ -531,15 +531,21 @@ export default function IndustryIntelTool() {
               <label style={{ ...labelStyle, marginBottom: "10px" }}>
                 {s4Config.headline} <span style={optionalStyle}>(optional)</span>
               </label>
-              <textarea
-                className="input"
-                placeholder={s4Config.placeholder}
-                value={screen3Input}
-                onChange={(e) => setScreen3Input(e.target.value)}
-                autoFocus
-                rows={4}
-                style={{ resize: "none", lineHeight: 1.6 }}
-              />
+              <div style={{ position: "relative" }}>
+                <textarea
+                  className="input"
+                  placeholder={s4Config.placeholder}
+                  value={screen3Input}
+                  onChange={(e) => setScreen3Input(e.target.value)}
+                  autoFocus
+                  rows={4}
+                  maxLength={500}
+                  style={{ resize: "none", lineHeight: 1.6, paddingBottom: "24px" }}
+                />
+                <span style={{ position: "absolute", bottom: "8px", right: "12px", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", pointerEvents: "none" }}>
+                  {screen3Input.length}/500
+                </span>
+              </div>
             </div>
           )}
 
@@ -559,9 +565,11 @@ export default function IndustryIntelTool() {
   if (screen === "loading") {
     return (
       <div className={`tool-container${flipClass ? ` ${flipClass}` : ""}`} ref={topRef}>
-        <ToolLoadingScreen
-          headingText="Thinking"
-        />
+        <div className="loading-screen" style={{ minHeight: "320px" }}>
+          <ToolLoadingScreen
+            headingText="Thinking"
+          />
+        </div>
       </div>
     );
   }

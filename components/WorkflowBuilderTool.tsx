@@ -707,7 +707,7 @@ export default function WorkflowBuilderTool({
           <button
             type="button"
             className="btn btn-dark-cta"
-            style={{ width: "100%", marginTop: "16px" }}
+            style={{ width: "100%", marginTop: "22px" }}
             onClick={handleS1Continue}
           >
             Continue

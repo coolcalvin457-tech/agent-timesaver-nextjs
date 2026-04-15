@@ -573,7 +573,7 @@ export default function CompetitiveDossierTool({
 
       {/* ── Screen 1: Target company ────────────────────────────────────────── */}
       {screen === "s1" && (
-        <div>
+        <div className="screen">
           <StepIndicator current={1} total={3} />
           <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.25rem, 2.5vw, 1.625rem)", color: "#fff", margin: "0 0 6px" }}>
             Who do you want to research?
@@ -633,7 +633,7 @@ export default function CompetitiveDossierTool({
 
       {/* ── Screen 2: Research focus ─────────────────────────────────────────── */}
       {screen === "s2" && (
-        <div>
+        <div className="screen">
           <BackButton onClick={() => setScreen("s1")} />
           <StepIndicator current={2} total={3} />
           <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.25rem, 2.5vw, 1.625rem)", color: "#fff", margin: "0 0 6px" }}>
@@ -706,7 +706,7 @@ export default function CompetitiveDossierTool({
 
       {/* ── Screen 3: About you ──────────────────────────────────────────────── */}
       {screen === "s3" && (
-        <div>
+        <div className="screen">
           <BackButton onClick={() => setScreen("s2")} />
           <StepIndicator current={3} total={3} />
           <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.25rem, 2.5vw, 1.625rem)", color: "#fff", margin: "0 0 6px" }}>
@@ -767,7 +767,7 @@ export default function CompetitiveDossierTool({
 
       {/* ── Paywall ──────────────────────────────────────────────────────────── */}
       {screen === "paywall" && (
-        <>
+        <div className="screen">
           <h2
             style={{
               fontSize: "clamp(1.75rem, 3.5vw, 2.25rem)",
@@ -968,7 +968,7 @@ export default function CompetitiveDossierTool({
             </div>
           )}
 
-        </>
+        </div>
       )}
 
       {/* ── Loading (SSE) ────────────────────────────────────────────────────── */}

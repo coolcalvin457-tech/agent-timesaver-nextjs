@@ -5,11 +5,11 @@ import Footer from "@/components/Footer";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AGENT: PIP — Prompt AI Agents",
+  title: "AGENT: PIP | Prompt AI Agents",
   description:
     "A PIP that holds up. Describe the performance situation, get a structured, defensible Performance Improvement Plan as a ready-to-use .docx file.",
   openGraph: {
-    title: "AGENT: PIP — Prompt AI Agents",
+    title: "AGENT: PIP | Prompt AI Agents",
     description:
       "A PIP that holds up. Structured, defensible, and delivered as a ready-to-use .docx file.",
     url: "https://promptaiagents.com/pip",

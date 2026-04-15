@@ -79,7 +79,7 @@ function saveToStorage(data: SavedFormData): void {
   try {
     sessionStorage.setItem(PIP_STORAGE_KEY, JSON.stringify(data));
   } catch {
-    // sessionStorage unavailable — continue without saving
+    // sessionStorage unavailable, continue without saving
   }
 }
 
@@ -567,7 +567,7 @@ export default function PIPBuilderTool({
       // If subscription check fails, proceed to Stripe anyway
     }
 
-    // No active subscription — redirect to Stripe
+    // No active subscription: redirect to Stripe
     try {
       const res = await fetch("/api/hr-package-checkout", {
         method: "POST",
@@ -1213,7 +1213,7 @@ export default function PIPBuilderTool({
               </p>
             )}
 
-            {/* Sign-in link — inside pricing card */}
+            {/* Sign-in link: inside pricing card */}
             {!user && (
               <p style={{ fontSize: "0.8125rem", textAlign: "center", margin: "16px 0 0" }}>
                 <span style={{ color: "rgba(255,255,255,0.5)" }}>Already have an account? </span>
@@ -1282,7 +1282,7 @@ export default function PIPBuilderTool({
   if (screen === "sent") {
     return (
       <div ref={toolContainerRef} className="okb-tool result-screen-enter">
-        {/* Sent confirmation — matches Prompts pattern */}
+        {/* Sent confirmation: matches Prompts pattern */}
         <div style={{
           display: "flex", alignItems: "center", gap: "8px",
           background: "rgba(30,122,184,0.06)", border: "1px solid rgba(30,122,184,0.15)",
@@ -1310,7 +1310,7 @@ export default function PIPBuilderTool({
                 <p className="result-eyebrow">
                   {section.eyebrow || section.title}
                 </p>
-                {/* Outer card — matches Prompts .pb-prompt-card two-layer pattern (S155) */}
+                {/* Outer card: matches Prompts .pb-prompt-card two-layer pattern (S155) */}
                 <div className="result-section-card" style={{ position: "relative" }}>
                   <h3 style={{
                     fontFamily: "var(--font-display)",
@@ -1385,7 +1385,7 @@ export default function PIPBuilderTool({
           </div>
         )}
 
-        {/* Build another — after results, before cross-sell */}
+        {/* Build another: after results, before cross-sell */}
         <div style={{ marginTop: "8px", marginBottom: "16px" }}>
           <button
             type="button"

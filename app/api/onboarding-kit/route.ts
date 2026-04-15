@@ -700,8 +700,8 @@ async function buildDocxFile(
   children.push(spacer());
   children.push(pageBreak());
 
-  // ── Section 4: 30-60-90 Day Plan ─────────────────────────────
-  children.push(sectionLabel("30-60-90 Day Plan"));
+  // ── Section 4: 30-60-90 Plan ─────────────────────────────
+  children.push(sectionLabel("30-60-90 Plan"));
   children.push(h1("Your First 90 Days"));
   children.push(divider());
   children.push(body(kit.roleExpectations.overview, { italic: true, color: "555555" }));

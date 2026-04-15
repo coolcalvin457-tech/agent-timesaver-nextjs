@@ -44,7 +44,7 @@ async function sendPIPEmail(
       checklistItems: [
         "Welcome Letter",
         "First-Week Schedule",
-        "30-60-90 Day Plan",
+        "30-60-90 Plan",
         "New Hire Checklist",
       ],
       href: "https://promptaiagents.com/onboarding",

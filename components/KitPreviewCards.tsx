@@ -8,7 +8,7 @@ const DELIVERABLES = [
   { title: "Welcome Letter" },
   { title: "First-Week Schedule" },
   { title: "Key Contacts" },
-  { title: "30-60-90 Day Plan" },
+  { title: "30-60-90 Plan" },
   { title: "New Hire Checklist" },
 ];
 

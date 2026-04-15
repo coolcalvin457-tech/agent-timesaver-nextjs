@@ -75,7 +75,7 @@ export default function CompetitiveDossierPage({
 
         {/* ── What's Included section ─────────────────────────────────────── */}
         <section
-          className="section"
+          className="section dark-kit-section"
           style={{ paddingTop: "32px", paddingBottom: "40px" }}
         >
           <div className="container">

@@ -1,14 +1,15 @@
 import CompetitiveDossierTool from "@/components/CompetitiveDossierTool";
+import CompanySectionCards from "@/components/CompanySectionCards";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AGENT: Company — Prompt AI Agents",
+  title: "AGENT: Company | Prompt AI Agents",
   description:
     "Enter a company URL. Get back a personalized competitive intelligence dossier you can act on. 8 sections. Built for your role.",
   openGraph: {
-    title: "AGENT: Company — Prompt AI Agents",
+    title: "AGENT: Company | Prompt AI Agents",
     description:
       "Enter a company URL. Get a 10-page competitive intelligence dossier in 2 minutes. Personalized to your role and relationship.",
     url: "https://promptaiagents.com/company",
@@ -72,7 +73,7 @@ export default function CompetitiveDossierPage({
           </div>
         </section>
 
-        {/* ── What's Inside section ──────────────────────────────────────── */}
+        {/* ── What's Included section ─────────────────────────────────────── */}
         <section
           className="section"
           style={{ paddingTop: "32px", paddingBottom: "40px" }}
@@ -88,37 +89,9 @@ export default function CompetitiveDossierPage({
                 marginBottom: "20px",
                 textAlign: "left",
               }}>
-                What&apos;s Inside Every Dossier
+                What&apos;s Included
               </p>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "12px" }}>
-                {[
-                  { num: "01", label: "Company Snapshot" },
-                  { num: "02", label: "Business Model and Pricing" },
-                  { num: "03", label: "Target Market and Positioning" },
-                  { num: "04", label: "Product and Service Breakdown" },
-                  { num: "05", label: "Growth Signals" },
-                  { num: "06", label: "Content and Public Voice" },
-                  { num: "07", label: "Strengths and Gaps" },
-                  { num: "08", label: "What This Means for You" },
-                ].map((item) => (
-                  <div
-                    key={item.num}
-                    style={{
-                      background: "linear-gradient(135deg, #1F2228, #1A1A1C)",
-                      border: "1px solid rgba(255,255,255,0.08)",
-                      borderRadius: "var(--radius-card, 12px)",
-                      padding: "16px",
-                    }}
-                  >
-                    <p style={{ margin: "0 0 6px", fontFamily: "var(--font-mono, monospace)", fontSize: "0.7rem", color: "rgba(255,255,255,0.3)", letterSpacing: "0.08em" }}>
-                      {item.num}
-                    </p>
-                    <p style={{ margin: 0, fontSize: "0.875rem", color: "rgba(255,255,255,0.80)", fontWeight: 500, lineHeight: 1.4 }}>
-                      {item.label}
-                    </p>
-                  </div>
-                ))}
-              </div>
+              <CompanySectionCards />
             </div>
           </div>
         </section>

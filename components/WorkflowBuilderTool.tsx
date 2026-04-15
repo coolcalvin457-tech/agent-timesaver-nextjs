@@ -643,7 +643,7 @@ export default function WorkflowBuilderTool({
           </div>
 
           {/* Single upload — compact, centered */}
-          <div style={{ marginTop: "16px", marginBottom: "16px", display: "flex", flexDirection: "column" as const, alignItems: "center" }}>
+          <div style={{ marginTop: "8px", marginBottom: "16px", display: "flex", flexDirection: "column" as const, alignItems: "center" }}>
             <div style={{ display: "flex", alignItems: "center" }}>
               <label
                 className="choose-file-btn"

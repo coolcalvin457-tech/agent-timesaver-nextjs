@@ -30,9 +30,9 @@ The user views this company as a competitor. Your analysis must be shaped by thi
 
 Specific instructions by section:
 - Section 2 (Business Model and Pricing): Highlight pricing differences, tier structures, and any visible price anchoring or discounting strategy. Flag where they are more or less aggressive than typical for the market.
-- Section 3 (Target Market and Positioning): Identify where their stated ICP overlaps with the user's market. Quote their positioning language and note where it competes directly with common alternatives, including (if the user provided their company description) the user's own positioning.
+- Section 3 (Target Market, Positioning): Identify where their stated ICP overlaps with the user's market. Quote their positioning language and note where it competes directly with common alternatives, including (if the user provided their company description) the user's own positioning.
 - Section 5 (Growth Signals): Flag any signals of expansion into the user's core market segments. Hiring in sales, marketing, or product for segments the user owns is a threat signal.
-- Section 6 (Content and Public Voice): A competitor's content strategy reveals their positioning ambitions. What topics are they trying to own? Who are they writing for? Are they going after the same audience as the user? Note any content gaps or topic avoidance -- these are openings.
+- Section 6 (Public Content, Messaging): A competitor's content strategy reveals their positioning ambitions. What topics are they trying to own? Who are they writing for? Are they going after the same audience as the user? Note any content gaps or topic avoidance -- these are openings.
 - Section 7 (Strengths and Gaps): Be direct about gaps. A weak pricing page, thin case study library, or content strategy that avoids certain topics are real competitive openings.
 - Section 8 (What This Means for You): This section must answer: Where is their positioning weaker than yours? Where are the market gaps they are not addressing? What should you watch for in the next 6 to 12 months? If the user provided their company description, draw direct comparisons. Provide 3 to 5 specific next steps a professional in their role can act on now.`,
 
@@ -42,8 +42,8 @@ The user is preparing to sell to, pitch, or approach this company. Your analysis
 
 Specific instructions by section:
 - Section 2 (Business Model and Pricing): Note their spending posture. A company with premium pricing and enterprise positioning likely has budget. A freemium-first company may be more cost-sensitive. This matters for how the user frames their pitch.
-- Section 3 (Target Market and Positioning): Identify what this company cares about. Their positioning language reveals their priorities. The user's pitch should speak to those priorities directly.
-- Section 4 (Product and Service Breakdown): Understanding what they sell helps the user identify where their own solution fits -- as an enhancement, a replacement, or a complement. If the user provided a company description, note directly where their offering maps onto this company's product surface.
+- Section 3 (Target Market, Positioning): Identify what this company cares about. Their positioning language reveals their priorities. The user's pitch should speak to those priorities directly.
+- Section 4 (Product/Service Breakdown): Understanding what they sell helps the user identify where their own solution fits -- as an enhancement, a replacement, or a complement. If the user provided a company description, note directly where their offering maps onto this company's product surface.
 - Section 5 (Growth Signals): Growth signals reveal buying signals. A company hiring aggressively in a department that the user's product serves is in buying mode. Note these directly.
 - Section 7 (Strengths and Gaps): Gaps are entry points. Where they are weak or underinvested is where a well-positioned pitch lands.
 - Section 8 (What This Means for You): This section must answer: What does this company care about most right now? How should the user frame their pitch or approach? What objections should they prepare for? What is the most compelling angle for the opening conversation? Provide 3 to 5 specific next steps the user can take before or during their outreach.`,
@@ -53,8 +53,8 @@ Specific instructions by section:
 The user is evaluating or building a partnership with this company. Your analysis must be shaped by this lens throughout.
 
 Specific instructions by section:
-- Section 3 (Target Market and Positioning): Assess customer base overlap. Strong partnerships work when both companies serve the same customer with complementary (not competing) offerings. Note where alignment exists and where it is ambiguous.
-- Section 4 (Product and Service Breakdown): Identify where their product or service complements the user's. Flag any areas where their offering overlaps with the user's in a way that could create friction in the partnership.
+- Section 3 (Target Market, Positioning): Assess customer base overlap. Strong partnerships work when both companies serve the same customer with complementary (not competing) offerings. Note where alignment exists and where it is ambiguous.
+- Section 4 (Product/Service Breakdown): Identify where their product or service complements the user's. Flag any areas where their offering overlaps with the user's in a way that could create friction in the partnership.
 - Section 5 (Growth Signals): Growth signals reveal where the partner is heading. A partner moving into markets or capabilities the user depends on is a risk. A partner expanding in ways that increase distribution for the user is an opportunity.
 - Section 7 (Strengths and Gaps): Note where their operational or cultural gaps might create friction in a working partnership.
 - Section 8 (What This Means for You): This section must answer: How complementary is this company to the user's business? Where is there genuine partnership upside? What are the risks, friction points, or dependency risks to watch for? What does a strong partnership proposal look like given what you now know about them? Provide 3 to 5 specific next steps for moving the partnership forward.`,
@@ -65,9 +65,9 @@ The user is evaluating this company as a vendor or supplier. Your analysis must 
 
 Specific instructions by section:
 - Section 2 (Business Model and Pricing): Pricing transparency is a key trust signal. Note whether pricing is published, gated, or absent. Enterprise-only pricing with no self-serve option may indicate slow sales cycles or high switching costs.
-- Section 4 (Product and Service Breakdown): Assess how clearly they communicate what they deliver. Vague product descriptions, missing documentation, or overly broad service offerings are reliability risk signals.
+- Section 4 (Product/Service Breakdown): Assess how clearly they communicate what they deliver. Vague product descriptions, missing documentation, or overly broad service offerings are reliability risk signals.
 - Section 5 (Growth Signals): A vendor growing fast is not always a good thing. Rapid headcount growth in some areas with stagnant customer support hiring may signal service degradation risk.
-- Section 6 (Content and Public Voice): Publishing frequency and topic consistency signal organizational health. A vendor with irregular content production or messaging that shifts frequently may have internal instability.
+- Section 6 (Public Content, Messaging): Publishing frequency and topic consistency signal organizational health. A vendor with irregular content production or messaging that shifts frequently may have internal instability.
 - Section 7 (Strengths and Gaps): Frame gaps in terms of vendor risk. Missing documentation, no visible customer success signals, or thin case study evidence are procurement red flags.
 - Section 8 (What This Means for You): This section must answer: What are the signals that this vendor can be relied on? What are the risk factors to validate before signing a contract? What alternatives should be on the shortlist? What due diligence questions should the user prioritize? Provide 3 to 5 specific next steps for the evaluation process.`,
 
@@ -78,9 +78,9 @@ The user is evaluating this company as a potential acquisition target. Your anal
 This is the most analytically demanding relationship type. Every section should be read through the lens of: what does this signal about the company's value, risk, and integration feasibility?
 
 Specific instructions by section:
-- Section 1 (Company Snapshot): For an acquisition target, this section must establish the basics that matter in a deal context: founding year (if available), apparent company size and stage, leadership signals (founders still involved vs. professional management layer), and a one-sentence read on where they sit in the market lifecycle.
+- Section 1 (Company Brief): For an acquisition target, this section must establish the basics that matter in a deal context: founding year (if available), apparent company size and stage, leadership signals (founders still involved vs. professional management layer), and a one-sentence read on where they sit in the market lifecycle.
 - Section 2 (Business Model and Pricing): Revenue model clarity matters. A clean, recurring subscription business with published pricing is more predictable than a services-heavy or custom-pricing model.
-- Section 4 (Product and Service Breakdown): Assess product depth and architecture signals. A company with a narrow, deep product is easier to integrate than one with a scattered feature surface.
+- Section 4 (Product/Service Breakdown): Assess product depth and architecture signals. A company with a narrow, deep product is easier to integrate than one with a scattered feature surface.
 - Section 5 (Growth Signals): Hiring patterns are the clearest signal. Map growth posture explicitly: heavy sales and marketing vs. engineering investment tells a different story.
 - Section 7 (Strengths and Gaps): Frame strengths as acquisition upside and gaps as integration risk or price-reduction negotiation points.
 - Section 8 (What This Means for You): This section must answer: What is the apparent strategic value of acquiring this company? What are the key integration risks? What would due diligence need to focus on given the public signals? What is the strongest argument for and against this acquisition? Provide 3 to 5 specific next steps for the evaluation process.`,
@@ -116,7 +116,7 @@ If the scraped pages do not contain enough information to fully populate a secti
 
 For small or obscure companies with limited public presence: note at the top of the relevant section that public data is limited and the analysis reflects what was available.
 
-For very small sites where fewer than 5 pages were successfully scraped: open the Company Snapshot section with a one-sentence disclosure: "This report combines data from [Company Name]'s public website with publicly available information, as the site has limited publicly accessible content." Do not repeat this disclosure in other sections.
+For very small sites where fewer than 5 pages were successfully scraped: open the Company Brief section with a one-sentence disclosure: "This report combines data from [Company Name]'s public website with publicly available information, as the site has limited publicly accessible content." Do not repeat this disclosure in other sections.
 
 ---
 
@@ -157,7 +157,7 @@ Return a single JSON object. No text before or after the JSON. The format is:
   "dataQualityNote": "string or null",
   "sections": {
     "snapshot": {
-      "title": "Company Snapshot",
+      "title": "Company Brief",
       "content": "string -- 2 to 3 paragraphs. Cover: what the company does in plain language, founding year and brief history if available, headquarters location, rough size indicators, and a single sentence on where they sit in their market."
     },
     "businessModel": {
@@ -165,11 +165,11 @@ Return a single JSON object. No text before or after the JSON. The format is:
       "content": "string -- 3 to 5 paragraphs. Include specific pricing numbers if available."
     },
     "targetMarket": {
-      "title": "Target Market and Positioning",
+      "title": "Target Market, Positioning",
       "content": "string -- 3 to 5 paragraphs. Quote or closely paraphrase their actual positioning language."
     },
     "products": {
-      "title": "Product and Service Breakdown",
+      "title": "Product/Service Breakdown",
       "content": "string -- 4 to 6 paragraphs. Synthesize, do not list features."
     },
     "growthSignals": {
@@ -177,7 +177,7 @@ Return a single JSON object. No text before or after the JSON. The format is:
       "content": "string -- 4 to 6 paragraphs. Interpret hiring patterns, content focus, and announcements as signals, not facts."
     },
     "publicVoice": {
-      "title": "Content and Public Voice",
+      "title": "Public Content, Messaging",
       "content": "string -- 2 to 4 paragraphs."
     },
     "strengthsGaps": {

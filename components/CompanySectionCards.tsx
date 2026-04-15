@@ -5,12 +5,12 @@ import React from "react";
 // ─── Deliverable names (canonical, from tool config) ─────────────────────────
 
 const DOSSIER_SECTIONS = [
-  { title: "Company Snapshot" },
+  { title: "Company Brief" },
   { title: "Business Model and Pricing" },
-  { title: "Target Market and Positioning" },
-  { title: "Product and Service Breakdown" },
+  { title: "Target Market, Positioning" },
+  { title: "Product/Service Breakdown" },
   { title: "Growth Signals" },
-  { title: "Content and Public Voice" },
+  { title: "Public Content, Messaging" },
   { title: "Strengths and Gaps" },
   { title: "What This Means for You" },
 ];

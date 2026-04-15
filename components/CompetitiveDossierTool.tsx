@@ -59,12 +59,12 @@ const RELATIONSHIP_OPTIONS: RelationshipType[] = [
 ];
 
 const DOSSIER_SECTIONS = [
-  "Company Snapshot",
+  "Company Brief",
   "Business Model and Pricing",
-  "Target Market and Positioning",
-  "Product and Service Breakdown",
+  "Target Market, Positioning",
+  "Product/Service Breakdown",
   "Growth Signals",
-  "Content and Public Voice",
+  "Public Content, Messaging",
   "Strengths and Gaps",
   "What This Means for You",
 ];
@@ -86,19 +86,19 @@ interface ResultSection {
 // Loading steps use canonical deliverable names (matches all other tools).
 // Backend sends 6 SSE pipeline events; STEP_MAP spreads them across 8 deliverables.
 const LOADING_STEPS = [
-  "Company Snapshot",
+  "Company Brief",
   "Business Model and Pricing",
-  "Target Market and Positioning",
-  "Product and Service Breakdown",
+  "Target Market, Positioning",
+  "Product/Service Breakdown",
   "Growth Signals",
-  "Content and Public Voice",
+  "Public Content, Messaging",
   "Strengths and Gaps",
   "What This Means for You",
 ];
 
 // Maps backend pipeline step (1-6) to deliverable indices (0-7) to mark as active/complete
 const STEP_MAP_ACTIVE: Record<number, number[]> = {
-  1: [0],       // Mapping site → Company Snapshot active
+  1: [0],       // Mapping site → Company Brief active
   2: [1],       // Selecting pages → Business Model active
   3: [2],       // Scraping → Target Market active
   4: [4],       // Analyzing → Growth Signals active
@@ -106,10 +106,10 @@ const STEP_MAP_ACTIVE: Record<number, number[]> = {
   6: [7],       // Formatting → What This Means for You active
 };
 const STEP_MAP_COMPLETE: Record<number, number[]> = {
-  1: [0],             // Company Snapshot done
+  1: [0],             // Company Brief done
   2: [1],             // Business Model done
   3: [2, 3],          // Target Market + Product Breakdown done
-  4: [4, 5],          // Growth Signals + Content and Public Voice done
+  4: [4, 5],          // Growth Signals + Public Content, Messaging done
   5: [6],             // Strengths and Gaps done
   6: [7],             // What This Means for You done
 };

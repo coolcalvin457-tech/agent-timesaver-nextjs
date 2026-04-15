@@ -628,7 +628,7 @@ export default function WorkflowBuilderTool({
             <div style={{ position: "relative" }}>
               <textarea
                 id="wf-task"
-                style={{ ...textareaStyle, fontSize: "0.875rem", minHeight: "190px", paddingBottom: "28px" }}
+                style={{ ...textareaStyle, fontSize: "0.875rem", minHeight: "220px", padding: "14px 16px", paddingBottom: "28px" }}
                 value={taskDescription}
                 onChange={(e) => setTaskDescription(e.target.value)}
                 placeholder={"e.g. Onboard new clients from signed contract to first deliverable. This means sending them a welcome packet, scheduling the kickoff call, collecting brand assets and logins, assigning the internal team, and setting up the project in our tracking system. I'd rather spend that time building the actual relationship with the client and talking through their goals.\n"}
@@ -643,7 +643,7 @@ export default function WorkflowBuilderTool({
           </div>
 
           {/* Single upload — compact, centered */}
-          <div style={{ marginTop: "8px", marginBottom: "16px", display: "flex", flexDirection: "column" as const, alignItems: "center" }}>
+          <div style={{ marginTop: "16px", marginBottom: "16px", display: "flex", flexDirection: "column" as const, alignItems: "center" }}>
             <div style={{ display: "flex", alignItems: "center" }}>
               <label
                 className="choose-file-btn"

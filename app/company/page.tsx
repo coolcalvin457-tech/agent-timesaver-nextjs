@@ -47,7 +47,7 @@ export default function CompetitiveDossierPage({
                 color: "#ffffff",
               }}
             >
-              Enter a URL.<br />Get a Dossier.
+              Enter a Company's URL.<br />Get a Dossier.
             </h1>
 
             <p

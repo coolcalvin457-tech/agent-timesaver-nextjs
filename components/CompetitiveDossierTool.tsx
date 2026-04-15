@@ -778,7 +778,7 @@ export default function CompetitiveDossierTool({
               lineHeight: 1.2,
             }}
           >
-            Deep AI Research in Minutes.
+            Deep Research in Minutes.
           </h2>
 
           {paymentCancelled && (

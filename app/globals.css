@@ -4929,14 +4929,14 @@ input, textarea {
 }
 
 .pricing-cta-outline {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.1);
   color: #FFFFFF;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid transparent;
 }
 
 .pricing-cta-outline:hover {
-  border-color: rgba(255, 255, 255, 0.5);
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: transparent;
 }
 
 .pricing-cta-ghost {

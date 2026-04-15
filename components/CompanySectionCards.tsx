@@ -6,7 +6,7 @@ import React from "react";
 
 const DOSSIER_SECTIONS = [
   { title: "Company Brief" },
-  { title: "Business Model and Pricing" },
+  { title: "Business Model" },
   { title: "Target Market, Positioning" },
   { title: "Product/Service Breakdown" },
   { title: "Growth Signals" },

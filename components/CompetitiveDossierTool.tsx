@@ -60,7 +60,7 @@ const RELATIONSHIP_OPTIONS: RelationshipType[] = [
 
 const DOSSIER_SECTIONS = [
   "Company Brief",
-  "Business Model and Pricing",
+  "Business Model",
   "Target Market, Positioning",
   "Product/Service Breakdown",
   "Growth Signals",
@@ -87,7 +87,7 @@ interface ResultSection {
 // Backend sends 6 SSE pipeline events; STEP_MAP spreads them across 8 deliverables.
 const LOADING_STEPS = [
   "Company Brief",
-  "Business Model and Pricing",
+  "Business Model",
   "Target Market, Positioning",
   "Product/Service Breakdown",
   "Growth Signals",

@@ -29,7 +29,7 @@ const RELATIONSHIP_BLOCKS: Record<string, string> = {
 The user views this company as a competitor. Your analysis must be shaped by this lens throughout.
 
 Specific instructions by section:
-- Section 2 (Business Model and Pricing): Highlight pricing differences, tier structures, and any visible price anchoring or discounting strategy. Flag where they are more or less aggressive than typical for the market.
+- Section 2 (Business Model): Highlight pricing differences, tier structures, and any visible price anchoring or discounting strategy. Flag where they are more or less aggressive than typical for the market.
 - Section 3 (Target Market, Positioning): Identify where their stated ICP overlaps with the user's market. Quote their positioning language and note where it competes directly with common alternatives, including (if the user provided their company description) the user's own positioning.
 - Section 5 (Growth Signals): Flag any signals of expansion into the user's core market segments. Hiring in sales, marketing, or product for segments the user owns is a threat signal.
 - Section 6 (Public Content, Messaging): A competitor's content strategy reveals their positioning ambitions. What topics are they trying to own? Who are they writing for? Are they going after the same audience as the user? Note any content gaps or topic avoidance -- these are openings.
@@ -41,7 +41,7 @@ Specific instructions by section:
 The user is preparing to sell to, pitch, or approach this company. Your analysis must be shaped by this lens throughout.
 
 Specific instructions by section:
-- Section 2 (Business Model and Pricing): Note their spending posture. A company with premium pricing and enterprise positioning likely has budget. A freemium-first company may be more cost-sensitive. This matters for how the user frames their pitch.
+- Section 2 (Business Model): Note their spending posture. A company with premium pricing and enterprise positioning likely has budget. A freemium-first company may be more cost-sensitive. This matters for how the user frames their pitch.
 - Section 3 (Target Market, Positioning): Identify what this company cares about. Their positioning language reveals their priorities. The user's pitch should speak to those priorities directly.
 - Section 4 (Product/Service Breakdown): Understanding what they sell helps the user identify where their own solution fits -- as an enhancement, a replacement, or a complement. If the user provided a company description, note directly where their offering maps onto this company's product surface.
 - Section 5 (Growth Signals): Growth signals reveal buying signals. A company hiring aggressively in a department that the user's product serves is in buying mode. Note these directly.
@@ -64,7 +64,7 @@ Specific instructions by section:
 The user is evaluating this company as a vendor or supplier. Your analysis must be shaped by this lens throughout.
 
 Specific instructions by section:
-- Section 2 (Business Model and Pricing): Pricing transparency is a key trust signal. Note whether pricing is published, gated, or absent. Enterprise-only pricing with no self-serve option may indicate slow sales cycles or high switching costs.
+- Section 2 (Business Model): Pricing transparency is a key trust signal. Note whether pricing is published, gated, or absent. Enterprise-only pricing with no self-serve option may indicate slow sales cycles or high switching costs.
 - Section 4 (Product/Service Breakdown): Assess how clearly they communicate what they deliver. Vague product descriptions, missing documentation, or overly broad service offerings are reliability risk signals.
 - Section 5 (Growth Signals): A vendor growing fast is not always a good thing. Rapid headcount growth in some areas with stagnant customer support hiring may signal service degradation risk.
 - Section 6 (Public Content, Messaging): Publishing frequency and topic consistency signal organizational health. A vendor with irregular content production or messaging that shifts frequently may have internal instability.
@@ -79,7 +79,7 @@ This is the most analytically demanding relationship type. Every section should 
 
 Specific instructions by section:
 - Section 1 (Company Brief): For an acquisition target, this section must establish the basics that matter in a deal context: founding year (if available), apparent company size and stage, leadership signals (founders still involved vs. professional management layer), and a one-sentence read on where they sit in the market lifecycle.
-- Section 2 (Business Model and Pricing): Revenue model clarity matters. A clean, recurring subscription business with published pricing is more predictable than a services-heavy or custom-pricing model.
+- Section 2 (Business Model): Revenue model clarity matters. A clean, recurring subscription business with published pricing is more predictable than a services-heavy or custom-pricing model.
 - Section 4 (Product/Service Breakdown): Assess product depth and architecture signals. A company with a narrow, deep product is easier to integrate than one with a scattered feature surface.
 - Section 5 (Growth Signals): Hiring patterns are the clearest signal. Map growth posture explicitly: heavy sales and marketing vs. engineering investment tells a different story.
 - Section 7 (Strengths and Gaps): Frame strengths as acquisition upside and gaps as integration risk or price-reduction negotiation points.
@@ -161,7 +161,7 @@ Return a single JSON object. No text before or after the JSON. The format is:
       "content": "string -- 2 to 3 paragraphs. Cover: what the company does in plain language, founding year and brief history if available, headquarters location, rough size indicators, and a single sentence on where they sit in their market."
     },
     "businessModel": {
-      "title": "Business Model and Pricing",
+      "title": "Business Model",
       "content": "string -- 3 to 5 paragraphs. Include specific pricing numbers if available."
     },
     "targetMarket": {

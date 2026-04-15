@@ -2,133 +2,137 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 
-const KIT_ITEMS: { title: string; pdf: string; thumb: string; featured?: boolean; display?: React.ReactNode; hideTitle?: boolean }[] = [
-  { title: "Welcome Letter",    pdf: "/kit-samples/warm-welcome-letter.pdf",     thumb: "/kit-thumbnails/warm-welcome-letter.png" },
-  { title: "Week 1 Schedule",    pdf: "/kit-samples/first-week-schedule.pdf",   thumb: "/kit-thumbnails/first-week-schedule.png" },
-  { title: "Key Contacts",      pdf: "/kit-samples/key-contacts.pdf",            thumb: "/kit-thumbnails/key-contacts.png" },
-  { title: "30-60-90 Plan",     pdf: "/kit-samples/30-60-90-day-plan.pdf",       thumb: "/kit-thumbnails/30-60-90-day-plan.png" },
-  { title: "New Hire Checklist",pdf: "/kit-samples/new-hire-checklist.pdf",      thumb: "/kit-thumbnails/new-hire-checklist.png" },
-  { title: "Complete Kit",      pdf: "/kit-samples/onboarding-kit-sample.pdf",   thumb: "/kit-thumbnails/onboarding-kit-sample.png", featured: true, hideTitle: true },
+// ─── Deliverable names (canonical, from tool config) ─────────────────────────
+
+const DELIVERABLES = [
+  { title: "Welcome Letter" },
+  { title: "First-Week Schedule" },
+  { title: "Key Contacts" },
+  { title: "30-60-90 Day Plan" },
+  { title: "New Hire Checklist" },
 ];
 
+const SAMPLE_PDF = "/kit-samples/onboarding-kit-sample.pdf";
+
+// ─── Component ───────────────────────────────────────────────────────────────
+
 export default function KitPreviewCards() {
-  const [previewPdf, setPreviewPdf] = useState<string | null>(null);
-  const [previewTitle, setPreviewTitle] = useState<string>("");
+  const [previewOpen, setPreviewOpen] = useState(false);
 
-  const openPreview = (pdf: string, title: string) => {
-    setPreviewPdf(pdf);
-    setPreviewTitle(title);
-  };
-
-  const closePreview = useCallback(() => {
-    setPreviewPdf(null);
-    setPreviewTitle("");
-  }, []);
+  const openPreview = () => setPreviewOpen(true);
+  const closePreview = useCallback(() => setPreviewOpen(false), []);
 
   useEffect(() => {
-    if (!previewPdf) return;
+    if (!previewOpen) return;
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") closePreview(); };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, [previewPdf, closePreview]);
+  }, [previewOpen, closePreview]);
 
   useEffect(() => {
-    document.body.style.overflow = previewPdf ? "hidden" : "";
+    document.body.style.overflow = previewOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
-  }, [previewPdf]);
+  }, [previewOpen]);
 
   return (
     <>
       {/* ── List ── */}
       <div className="kit-list">
-        {KIT_ITEMS.map((item, index) => (
+        {/* Deliverable name rows (text-only, non-clickable) */}
+        {DELIVERABLES.map((section) => (
           <div
-            key={item.title}
-            className={`kit-list-row${item.featured ? " kit-list-row-featured" : ""}`}
-            onClick={() => openPreview(item.pdf, item.title)}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") openPreview(item.pdf, item.title); }}
-            aria-label={`Preview ${item.title}`}
-            style={{}}
+            key={section.title}
+            className="kit-list-row"
+            style={{ cursor: "default", minHeight: "58px", justifyContent: "center" }}
           >
-            {/* Small thumbnail */}
-            <div className="kit-list-thumb">
-              <img
-                src={item.thumb}
-                alt=""
-                aria-hidden="true"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  objectPosition: "top",
-                  display: "block",
-                }}
-              />
-            </div>
-
-            {/* Title + badge */}
-            <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
-              {!item.hideTitle && (
-                <span className="kit-list-title" style={{ textAlign: "center" }}>{item.display ?? item.title}</span>
-              )}
-              {item.featured && (
-                <span className="kit-list-badge">Full Kit</span>
-              )}
-            </div>
-
-            {/* Actions */}
-            <div style={{ display: "flex", gap: "12px", alignItems: "center", flexShrink: 0 }}>
-              <button
-                type="button"
-                onClick={(e) => { e.stopPropagation(); openPreview(item.pdf, item.title); }}
-                className="kit-icon-btn"
-                title="Preview"
-                aria-label={`Preview ${item.title}`}
-              >
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="11" cy="11" r="8"/>
-                  <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                </svg>
-              </button>
-              <a
-                href={item.pdf}
-                download
-                className="kit-icon-btn"
-                title="Download"
-                aria-label={`Download ${item.title}`}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                  <polyline points="7 10 12 15 17 10"/>
-                  <line x1="12" y1="15" x2="12" y2="3"/>
-                </svg>
-              </a>
-            </div>
+            <span className="kit-list-title" style={{ textAlign: "center" }}>
+              {section.title}
+            </span>
           </div>
         ))}
+
+        {/* Featured: Example row */}
+        <div
+          className="kit-list-row kit-list-row-featured"
+          onClick={openPreview}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") openPreview(); }}
+          aria-label="Preview example Onboarding Kit output"
+          style={{ position: "relative" }}
+        >
+          {/* Document thumbnail */}
+          <div className="kit-list-thumb">
+            <img
+              src="/kit-thumbnails/onboarding-kit-sample.png"
+              alt=""
+              aria-hidden="true"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                objectPosition: "top left",
+                display: "block",
+              }}
+            />
+          </div>
+
+          {/* Badge absolutely centered in the card */}
+          <span className="kit-list-badge" style={{ position: "absolute", left: "50%", transform: "translateX(-50%)" }}>Example</span>
+
+          {/* Spacer to keep icons pushed right */}
+          <div style={{ flex: 1 }} />
+
+          {/* Preview + Download */}
+          <div style={{ display: "flex", gap: "12px", alignItems: "center", flexShrink: 0 }}>
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); openPreview(); }}
+              className="kit-icon-btn"
+              title="Preview sample"
+              aria-label="Preview sample Onboarding Kit output"
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+            </button>
+            <a
+              href={SAMPLE_PDF}
+              download
+              className="kit-icon-btn"
+              title="Download sample"
+              aria-label="Download sample Onboarding Kit output"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+            </a>
+          </div>
+        </div>
       </div>
 
       {/* ── PDF Preview Modal ── */}
-      {previewPdf && (
+      {previewOpen && (
         <div
           className="kit-modal-backdrop"
           onClick={closePreview}
           role="dialog"
           aria-modal="true"
-          aria-label={`Preview: ${previewTitle}`}
+          aria-label="Preview: Example Onboarding Kit Output"
         >
           <div
             className="kit-modal-panel"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="kit-modal-header">
-              <span className="kit-modal-title">{previewTitle}</span>
+              <span className="kit-modal-title">Example Onboarding Kit Output</span>
               <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
                 <a
-                  href={previewPdf}
+                  href={SAMPLE_PDF}
                   download
                   className="kit-modal-download"
                   title="Download"
@@ -154,9 +158,9 @@ export default function KitPreviewCards() {
               </div>
             </div>
             <iframe
-              src={`${previewPdf}#toolbar=0`}
+              src={`${SAMPLE_PDF}#toolbar=0`}
               className="kit-modal-iframe"
-              title={previewTitle}
+              title="Example Onboarding Kit Output"
             />
           </div>
         </div>

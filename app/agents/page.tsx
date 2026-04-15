@@ -94,7 +94,7 @@ export default function AgentsPage() {
               className="hero-subheadline"
               style={{ margin: "0 auto", color: "rgba(255,255,255,0.65)" }}
             >
-              Built for real jobs. Not demos.
+              Automate your most time-consuming tasks.
             </p>
           </div>
         </div>

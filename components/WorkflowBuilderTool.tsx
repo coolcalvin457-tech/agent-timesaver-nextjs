@@ -635,7 +635,7 @@ export default function WorkflowBuilderTool({
                 rows={3}
                 maxLength={500}
               />
-              <span style={{ position: "absolute", bottom: "8px", right: "16px", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", pointerEvents: "none" }}>
+              <span style={{ position: "absolute", bottom: "12px", right: "16px", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", pointerEvents: "none" }}>
                 {taskDescription.length === 0 ? "363" : taskDescription.length}/500
               </span>
             </div>

@@ -39,6 +39,16 @@ const tools = [
     cta: "Get Workflows",
   },
   {
+    slug: "company",
+    href: "/company",
+    badgeClass: "tool-badge-paid",
+    label: "$149/yr",
+    name: "AGENT: Company",
+    tagline: "A competitive dossier on any company.",
+    description: "",
+    cta: "Get Dossiers",
+  },
+  {
     slug: "industry",
     href: "/industry",
     badgeClass: "tool-badge-free",

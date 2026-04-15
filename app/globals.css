@@ -4961,7 +4961,7 @@ input, textarea {
 
 .pricing-custom-content {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 20px;
   min-width: 0;
 }

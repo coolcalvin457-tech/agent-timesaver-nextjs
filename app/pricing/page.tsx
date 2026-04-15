@@ -181,7 +181,7 @@ export default function PricingPage() {
             <div className="pricing-custom-content">
               <span className="pricing-custom-label">Custom</span>
               <p className="pricing-custom-description">
-                Team training, AI audits, and consulting for businesses ready to move fast.
+                For team training, AI audits, and consulting for businesses ready to move fast.
               </p>
             </div>
             <a

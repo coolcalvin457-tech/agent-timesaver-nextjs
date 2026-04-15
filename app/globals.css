@@ -1543,7 +1543,7 @@ input, textarea {
   color: #767674;
   line-height: 1.9;
   max-width: 460px;
-  margin-bottom: 52px;
+  margin-bottom: 36px;
 }
 
 @media (max-width: 768px) {

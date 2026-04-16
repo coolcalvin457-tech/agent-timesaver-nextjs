@@ -922,7 +922,7 @@ export default function CompetitiveDossierTool({
               <button
                 type="button"
                 className="btn-paywall-cta"
-                onClick={handleCheckout}
+                onClick={() => handleCheckout()}
                 disabled={checkoutLoading}
                 style={{
                   maxWidth: "320px",

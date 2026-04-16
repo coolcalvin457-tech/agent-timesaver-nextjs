@@ -4,12 +4,13 @@ import { NextRequest, NextResponse } from "next/server";
 export const dynamic = "force-dynamic";
 
 // ─── Stripe Checkout — AGENT: Workflow ────────────────────────────────
-// Standalone checkout route for the Workflow subscription ($49/year).
-// Separate from the HR Agents Package — this is its own Stripe product.
+// Dual-mode checkout: one-time ($49) or annual subscription ($99/yr).
+// Default is one-time (primary purchase path). Annual is triggered by
+// passing { type: "annual" } in the request body (used by sent-screen upsell).
 //
-// IMPORTANT: STRIPE_WORKFLOW_BUILDER_PRICE_ID must be set in Vercel before going live.
-// Create the Stripe product ("AGENT: Workflow", $49/year recurring) in the
-// Stripe dashboard, copy the Price ID, and add it as STRIPE_WORKFLOW_BUILDER_PRICE_ID.
+// Env vars required in Vercel:
+//   STRIPE_WORKFLOW_ONETIME_PRICE_ID  ($49 one-time)
+//   STRIPE_WORKFLOW_ANNUAL_PRICE_ID   ($99/yr recurring)
 //
 // On success: Stripe redirects to {origin}/workflow?payment=success&session_id=xxx
 // On cancel:  Stripe redirects to {origin}/workflow?payment=cancelled
@@ -24,11 +25,20 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const priceId = process.env.STRIPE_WORKFLOW_BUILDER_PRICE_ID;
+    // Determine purchase type from request body. Default: one-time.
+    const body = await req.json().catch(() => ({}));
+    const purchaseType = body.type === "annual" ? "annual" : "one-time";
+
+    const onetimePriceId = process.env.STRIPE_WORKFLOW_ONETIME_PRICE_ID;
+    const annualPriceId = process.env.STRIPE_WORKFLOW_ANNUAL_PRICE_ID;
+
+    const priceId = purchaseType === "annual" ? annualPriceId : onetimePriceId;
+    const stripeMode = purchaseType === "annual" ? "subscription" : "payment";
+
     if (!priceId) {
       console.error(
-        "STRIPE_WORKFLOW_BUILDER_PRICE_ID is not set. Create the AGENT: Workflow product " +
-        "in Stripe ($49/year subscription) and add the Price ID to Vercel env vars."
+        `STRIPE_WORKFLOW_${purchaseType === "annual" ? "ANNUAL" : "ONETIME"}_PRICE_ID is not set. ` +
+        "Add the Price ID to Vercel env vars."
       );
       return NextResponse.json(
         { error: "AGENT: Workflow price not configured. Contact support." },
@@ -42,7 +52,7 @@ export async function POST(req: NextRequest) {
       "payment_method_types[]": "card",
       "line_items[0][price]": priceId,
       "line_items[0][quantity]": "1",
-      mode: "subscription",
+      mode: stripeMode,
       success_url: `${origin}/workflow?payment=success&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/workflow?payment=cancelled`,
     });

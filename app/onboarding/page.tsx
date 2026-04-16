@@ -47,7 +47,7 @@ export default function OnboardingKitBuilderPage({
                 color: "#ffffff",
               }}
             >
-              Successful Onboarding.<br />Use for Every New Hire.
+              Customized Onboarding Kit.<br />Use for Every Hire.
             </h1>
 
             <p

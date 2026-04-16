@@ -480,7 +480,7 @@ export default function WorkflowBuilderTool({
 
   // ─── Stripe checkout ──────────────────────────────────────
 
-  async function handleCheckout(): Promise<void> {
+  async function handleCheckout(options?: { type?: "annual" }): Promise<void> {
     setCheckoutLoading(true);
     setCheckoutError("");
 
@@ -488,6 +488,7 @@ export default function WorkflowBuilderTool({
       const res = await fetch("/api/workflow-builder-checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        body: options ? JSON.stringify(options) : undefined,
       });
       const data = await res.json() as { url?: string; error?: string };
       if (data.url) {
@@ -1202,6 +1203,30 @@ export default function WorkflowBuilderTool({
             onClick={handleReset}
           >
             Build another workflow
+          </button>
+        </div>
+
+        {/* Annual upsell — subtle text link below build-another, above cross-sell */}
+        <div style={{ textAlign: "center", marginTop: "-4px", marginBottom: "24px" }}>
+          <button
+            type="button"
+            onClick={() => handleCheckout({ type: "annual" })}
+            disabled={checkoutLoading}
+            style={{
+              background: "none",
+              border: "none",
+              padding: 0,
+              fontSize: "0.875rem",
+              color: "rgba(255,255,255,0.65)",
+              cursor: checkoutLoading ? "wait" : "pointer",
+              fontFamily: "inherit",
+              lineHeight: 1.5,
+              textDecoration: "underline",
+              textDecorationColor: "rgba(255,255,255,0.3)",
+              textUnderlineOffset: "3px",
+            }}
+          >
+            Need more? Annual access for $99/yr.
           </button>
         </div>
 

@@ -510,11 +510,15 @@ export default function CompetitiveDossierTool({
 
   // ── Paywall handlers ──────────────────────────────────────────────────────────
 
-  async function handleCheckout() {
+  async function handleCheckout(options?: { type?: "annual" }) {
     setCheckoutLoading(true);
     setCheckoutError("");
     try {
-      const res = await fetch("/api/competitive-dossier-checkout", { method: "POST" });
+      const res = await fetch("/api/competitive-dossier-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: options ? JSON.stringify(options) : undefined,
+      });
       const data = await res.json() as { url?: string; error?: string };
       if (data.url) {
         window.location.href = data.url;
@@ -1142,6 +1146,30 @@ export default function CompetitiveDossierTool({
               className="btn btn-primary btn-lg btn-full"
             >
               Build another dossier
+            </button>
+          </div>
+
+          {/* Annual upsell — subtle text link below build-another, above cross-sell */}
+          <div style={{ textAlign: "center", marginTop: "-4px", marginBottom: "24px" }}>
+            <button
+              type="button"
+              onClick={() => handleCheckout({ type: "annual" })}
+              disabled={checkoutLoading}
+              style={{
+                background: "none",
+                border: "none",
+                padding: 0,
+                fontSize: "0.875rem",
+                color: "rgba(255,255,255,0.65)",
+                cursor: checkoutLoading ? "wait" : "pointer",
+                fontFamily: "inherit",
+                lineHeight: 1.5,
+                textDecoration: "underline",
+                textDecorationColor: "rgba(255,255,255,0.3)",
+                textUnderlineOffset: "3px",
+              }}
+            >
+              Need more? Annual access for $149/yr.
             </button>
           </div>
 

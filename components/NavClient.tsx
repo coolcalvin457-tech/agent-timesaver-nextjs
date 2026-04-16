@@ -66,23 +66,6 @@ export default function NavClient({ initialName, dark }: NavClientProps) {
                   onClick={() => setDropdownOpen((prev) => !prev)}
                 >
                   {displayName}
-                  <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 12 12"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    style={{
-                      marginLeft: "6px",
-                      transform: dropdownOpen ? "rotate(180deg)" : "none",
-                      transition: "transform 0.15s ease",
-                    }}
-                  >
-                    <path d="M3 4.5L6 7.5L9 4.5" />
-                  </svg>
                 </button>
                 {dropdownOpen && (
                   <div className="nav-dropdown">

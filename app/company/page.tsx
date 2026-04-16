@@ -53,14 +53,12 @@ export default function CompetitiveDossierPage({
             <p
               style={{
                 fontSize: "0.9375rem",
-                color: "rgba(255,255,255,0.45)",
+                color: "rgba(255,255,255,0.55)",
                 margin: "0 0 32px",
                 lineHeight: 1.6,
               }}
             >
-              <span style={{ fontWeight: 800, color: "var(--cta)", fontSize: "1.125rem" }}>$149</span>
-              {" · "}
-              <span style={{ fontWeight: 400, color: "rgba(255,255,255,0.65)" }}>Annual subscription · 15 dossiers per month.</span>
+              $29 per dossier  ·  $149 Annually
             </p>
 
             <a

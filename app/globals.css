@@ -235,7 +235,7 @@ input, textarea {
 
 .nav.nav-dark .nav-user-btn,
 .nav.nav-dark .nav-cta {
-  color: #fff;
+  color: #fff !important;
 }
 
 .nav.nav-dark .nav-user-btn:hover,

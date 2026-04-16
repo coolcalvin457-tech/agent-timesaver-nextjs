@@ -53,18 +53,12 @@ export default function WorkflowBuilderPage({
             <p
               style={{
                 fontSize: "0.9375rem",
-                color: "rgba(255,255,255,0.45)",
+                color: "rgba(255,255,255,0.55)",
                 margin: "0 0 32px",
                 lineHeight: 1.6,
               }}
             >
-              <span style={{ fontWeight: 400, color: "rgba(255,255,255,0.65)" }}>$49</span>
-              {" "}
-              <span style={{ fontWeight: 400, color: "rgba(255,255,255,0.65)" }}>One-time</span>
-              {"  "}
-              <span style={{ color: "rgba(255,255,255,0.30)" }}>/</span>
-              {"  "}
-              <span style={{ fontWeight: 400, color: "rgba(255,255,255,0.45)" }}>$99 Annually</span>
+              $49 One-time  ·  $99 Annually
             </p>
 
             <a

@@ -371,22 +371,22 @@ input, textarea {
   background: var(--bg-alt, #F8F8F6);
 }
 
-/* Nav focus rings: hidden on mouse click, preserved for keyboard a11y */
+/* Nav focus rings: fully suppressed. Dropdown open-state + chevron rotation
+   provide sufficient visual feedback without a ring on the trigger button. */
+.nav-user-btn,
 .nav-user-btn:focus,
-.nav-cta:focus,
-.nav-dropdown-item:focus {
-  outline: none;
-}
-
 .nav-user-btn:focus-visible,
-.nav-cta:focus-visible {
-  outline: 2px solid var(--cta);
-  outline-offset: 2px;
-}
-
-.nav-dropdown-item:focus-visible {
-  outline: 2px solid var(--cta);
-  outline-offset: -2px;
+.nav-user-btn:active,
+.nav-cta,
+.nav-cta:focus,
+.nav-cta:focus-visible,
+.nav-cta:active,
+.nav-dropdown-item,
+.nav-dropdown-item:focus,
+.nav-dropdown-item:focus-visible,
+.nav-dropdown-item:active {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 /* ── Buttons ──────────────────────────────────────────────── */

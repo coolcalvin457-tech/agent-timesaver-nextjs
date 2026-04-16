@@ -371,6 +371,24 @@ input, textarea {
   background: var(--bg-alt, #F8F8F6);
 }
 
+/* Nav focus rings: hidden on mouse click, preserved for keyboard a11y */
+.nav-user-btn:focus,
+.nav-cta:focus,
+.nav-dropdown-item:focus {
+  outline: none;
+}
+
+.nav-user-btn:focus-visible,
+.nav-cta:focus-visible {
+  outline: 2px solid var(--cta);
+  outline-offset: 2px;
+}
+
+.nav-dropdown-item:focus-visible {
+  outline: 2px solid var(--cta);
+  outline-offset: -2px;
+}
+
 /* ── Buttons ──────────────────────────────────────────────── */
 .btn {
   display: inline-flex;

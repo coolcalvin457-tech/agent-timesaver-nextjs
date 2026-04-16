@@ -58,7 +58,7 @@ export default function WorkflowBuilderPage({
                 lineHeight: 1.6,
               }}
             >
-              <span style={{ fontWeight: 800, color: "#FFFFFF", fontSize: "1.125rem" }}>$49</span>
+              <span style={{ fontWeight: 400, color: "rgba(255,255,255,0.65)" }}>$49</span>
               {" "}
               <span style={{ fontWeight: 400, color: "rgba(255,255,255,0.65)" }}>One-time</span>
               {"  "}

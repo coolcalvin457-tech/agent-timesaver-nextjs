@@ -47,7 +47,7 @@ export default function OnboardingKitBuilderPage({
                 color: "#ffffff",
               }}
             >
-              Position-Specific Onboarding.<br />Use for Every New Hire.
+              Successful Onboarding.<br />Use for Every New Hire.
             </h1>
 
             <p
@@ -58,7 +58,7 @@ export default function OnboardingKitBuilderPage({
                 lineHeight: 1.6,
               }}
             >
-              $99  ·  HR Agents Package. Annual subscription.
+              $99  ·  HR Agents Package  ·  Annual subscription
             </p>
 
             <a

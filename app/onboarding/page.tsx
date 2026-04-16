@@ -58,7 +58,7 @@ export default function OnboardingKitBuilderPage({
                 lineHeight: 1.6,
               }}
             >
-              $99  ·  HR Agents Package  ·  Annual subscription
+              $99  ·  HR Package (Annual subscription)
             </p>
 
             <a

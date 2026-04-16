@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 // ─── Verify AGENT: Workflow Subscription ─────────────────────────────────────
 // Called from the AGENT: Workflow paywall screen when a logged-in user's
 // subscription needs verification, or when a returning purchaser checks access.
-// Checks for an active STRIPE_WORKFLOW_BUILDER_PRICE_ID subscription.
+// Checks for an active STRIPE_WORKFLOW_ANNUAL_PRICE_ID subscription.
 // Returns { verified: true } if an active subscription is found.
 
 export async function POST(req: NextRequest) {
@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Step 2: Check each customer for an active AGENT: Workflow subscription
-    const priceId = process.env.STRIPE_WORKFLOW_BUILDER_PRICE_ID;
+    const priceId = process.env.STRIPE_WORKFLOW_ANNUAL_PRICE_ID;
 
     for (const customer of customers.data) {
       const subsRes = await fetch(
@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
 
       for (const sub of subs.data ?? []) {
         for (const item of sub.items?.data ?? []) {
-          // Match against STRIPE_WORKFLOW_BUILDER_PRICE_ID.
+          // Match against STRIPE_WORKFLOW_ANNUAL_PRICE_ID.
           // If not configured, any active AGENT: Workflow subscription counts.
           if (!priceId || item.price?.id === priceId) {
             return NextResponse.json({ verified: true });

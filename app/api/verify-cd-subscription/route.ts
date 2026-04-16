@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Step 2: Check for active CD subscription
-    const priceId = process.env.STRIPE_COMPETITIVE_DOSSIER_PRICE_ID;
+    const priceId = process.env.STRIPE_COMPANY_ANNUAL_PRICE_ID;
 
     for (const customer of customers.data) {
       const subsRes = await fetch(

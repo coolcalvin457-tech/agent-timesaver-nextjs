@@ -19,6 +19,17 @@ export const metadata: Metadata = {
 
 const tools = [
   {
+    slug: "timesaver",
+    href: "/",
+    badgeClass: "tool-badge-free",
+    label: "Free",
+    name: "AGENT: Timesaver",
+    tagline: "See how many hours you could be saving.",
+    description:
+      "Start with your job title. Answer a few questions. Get 5 personalized AI time-savers built for your exact role, plus an estimate of how many hours you could save each week.",
+    cta: "Get Time-Savers",
+  },
+  {
     slug: "prompts",
     href: "/prompts",
     badgeClass: "tool-badge-free",
@@ -47,27 +58,6 @@ const tools = [
     tagline: "Get intel on your industry.",
     description: "",
     cta: "Get Intel",
-  },
-  {
-    slug: "spreadsheets",
-    href: "/spreadsheets",
-    badgeClass: "tool-badge-free",
-    label: "Free",
-    name: "AGENT: Spreadsheets",
-    tagline: "Model any budget scenario in minutes.",
-    description: "",
-    cta: "Get Spreadsheets",
-  },
-  {
-    slug: "timesaver",
-    href: "/",
-    badgeClass: "tool-badge-free",
-    label: "Free",
-    name: "AGENT: Timesaver",
-    tagline: "See how many hours you could be saving.",
-    description:
-      "Start with your job title. Answer a few questions. Get 5 personalized AI time-savers built for your exact role, plus an estimate of how many hours you could save each week.",
-    cta: "Get Time-Savers",
   },
   {
     slug: "company",

@@ -232,7 +232,6 @@ input, textarea {
 .nav.nav-dark .nav-user-btn,
 .nav.nav-dark .nav-cta {
   color: #fff;
-  border: 1px solid rgba(255,255,255,0.22);
 }
 
 .nav.nav-dark .nav-user-btn:hover,
@@ -298,16 +297,16 @@ input, textarea {
   color: var(--text-primary) !important;
   padding: 5px 12px;
   border-radius: var(--radius-btn);
-  border: 1px solid rgba(0, 0, 0, 0.22);
+  border: none;
   font-size: 0.8125rem !important;
   font-weight: 500 !important;
   letter-spacing: 0.01em;
-  transition: background 0.15s, transform 0.15s !important;
+  transition: color 0.15s !important;
 }
 
 .nav-cta:hover {
-  background: rgba(0, 0, 0, 0.05) !important;
-  transform: translateY(-1px);
+  color: #1E7AB8 !important;
+  background: transparent !important;
 }
 
 /* ── Nav user dropdown ─────────────────────────────────────── */
@@ -323,19 +322,18 @@ input, textarea {
   color: var(--text-primary);
   padding: 5px 12px;
   border-radius: var(--radius-btn);
-  border: 1px solid rgba(0, 0, 0, 0.22);
+  border: none;
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.01em;
-  border: 1px solid rgba(0, 0, 0, 0.18);
   cursor: pointer;
-  transition: background 0.15s ease, transform 0.15s ease;
+  transition: color 0.15s ease;
   white-space: nowrap;
 }
 
 .nav-user-btn:hover {
-  background: rgba(0, 0, 0, 0.05);
-  transform: translateY(-1px);
+  color: #1E7AB8;
+  background: transparent;
 }
 
 .nav-dropdown {

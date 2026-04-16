@@ -344,11 +344,11 @@ input, textarea {
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  min-width: 140px;
+  min-width: 100px;
   background: var(--surface, #FFFFFF);
-  border: 1px solid var(--border, #E4E4E2);
+  border: 1px solid rgba(0,0,0,0.08);
   border-radius: var(--radius-btn);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
   z-index: 100;
   overflow: hidden;
 }
@@ -357,7 +357,7 @@ input, textarea {
   display: block;
   width: 100%;
   padding: 10px 16px;
-  font-size: 14px;
+  font-size: 0.8125rem;
   font-weight: 500;
   color: var(--text-primary, #161618);
   background: none;

@@ -11,7 +11,16 @@ import {
   BorderStyle,
   PageBreak,
 } from "docx";
-import { getMonthlyDossierRunCount, logDossierRun } from "@/lib/db";
+import {
+  findUserById,
+  getAnnualToolRunCount,
+  logPaidToolRun,
+  type SubscriptionType,
+} from "@/lib/db";
+import {
+  hasActiveAnnualSubscription,
+  verifyOneTimeSession,
+} from "@/lib/entitlements";
 import { verifyToken } from "@/lib/auth";
 import { cookies } from "next/headers";
 import { cleanJsonResponse } from "@/app/api/_shared/cleanJson";
@@ -21,7 +30,7 @@ export const maxDuration = 300; // 5-minute ceiling for Map + Claude #1 + Scrape
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const MONTHLY_RUN_LIMIT = 15;
+const ANNUAL_COMPANY_LIMIT = 150;
 
 const RELATIONSHIP_BLOCKS: Record<string, string> = {
   "Competitor": `RELATIONSHIP TYPE: COMPETITOR
@@ -498,22 +507,61 @@ export async function POST(req: NextRequest) {
           return;
         }
 
+        // ── Suspended-user check (fresh DB read; JWT payload omits suspended) ──
+        const dbUser = await findUserById(authUser.id);
+        if (!dbUser) {
+          send("error", { type: "auth_required", message: "Account not found. Please sign in again." });
+          controller.close();
+          return;
+        }
+        if (dbUser.suspended) {
+          send("error", { type: "account_suspended", message: "Account access has been suspended." });
+          controller.close();
+          return;
+        }
+
         const userId = authUser.id;
         const userEmail = authUser.email;
 
-        // ── Monthly run limit check ──────────────────────────────────────────
-        const runCount = await getMonthlyDossierRunCount(userId);
-        if (runCount >= MONTHLY_RUN_LIMIT) {
-          const resetDate = new Date();
-          resetDate.setMonth(resetDate.getMonth() + 1);
-          resetDate.setDate(1);
-          const resetStr = resetDate.toLocaleDateString("en-US", { month: "long", day: "numeric" });
-          send("error", {
-            type: "run_limit_reached",
-            message: `You have reached your ${MONTHLY_RUN_LIMIT}-run monthly limit. Your limit resets on ${resetStr}.`,
-          });
-          controller.close();
-          return;
+        // ── Entitlement resolution (annual subscription preferred, one-time fallback) ──
+        // NEVER trust a session_id URL param alone. Check for an active annual
+        // subscription first. If none, fall back to verifying a one-time checkout
+        // session matches Company's one-time price ID. If neither, reject.
+        let subscriptionType: SubscriptionType;
+        const hasAnnual = await hasActiveAnnualSubscription(userEmail, "company");
+        if (hasAnnual) {
+          subscriptionType = "annual";
+        } else {
+          const url = new URL(req.url);
+          const sessionId = url.searchParams.get("session_id");
+          if (!sessionId) {
+            send("error", { type: "payment_required", message: "No active subscription or one-time purchase found." });
+            controller.close();
+            return;
+          }
+          const onetimeValid = await verifyOneTimeSession(sessionId, "company");
+          if (!onetimeValid) {
+            send("error", { type: "payment_required", message: "Purchase could not be verified." });
+            controller.close();
+            return;
+          }
+          subscriptionType = "onetime";
+        }
+
+        // ── Cap check (annual subscribers only) ─────────────────────────────
+        let runCount = 0;
+        if (subscriptionType === "annual") {
+          runCount = await getAnnualToolRunCount(userId, "company");
+          if (runCount >= ANNUAL_COMPANY_LIMIT) {
+            const nextYear = new Date().getUTCFullYear() + 1;
+            const resetDate = `January 1, ${nextYear}`;
+            send("error", {
+              type: "run_limit_reached",
+              message: `You've used this year's dossiers. Your next one unlocks on ${resetDate}.`,
+            });
+            controller.close();
+            return;
+          }
         }
 
         // ── Parse request body ───────────────────────────────────────────────
@@ -780,7 +828,13 @@ Produce the competitive intelligence dossier as specified. Return only the JSON 
         send("progress", { step: 6, label: "Formatting your dossier...", status: "complete" });
 
         // ── Log the run ──────────────────────────────────────────────────────
-        await logDossierRun(userId, userEmail, companyUrl, dossierData.companyName ?? companyName ?? null);
+        // New runs write to paid_tool_runs only. competitive_dossier_runs stops
+        // receiving rows at this step; migration 006 already captured history.
+        // target_ref carries the companyUrl. The companyName field is dropped
+        // from the new schema; it's reconstructable from the dossier output.
+        // `runCount` (declared above) will feed Step 5's threshold alert call:
+        //   checkAndFireThresholdAlerts(userId, userEmail, "company", runCount + 1, ANNUAL_COMPANY_LIMIT)
+        await logPaidToolRun(userId, userEmail, "company", subscriptionType, companyUrl);
 
         // ── Send complete event ──────────────────────────────────────────────
         // Serialize structured sections for in-browser results (S149)

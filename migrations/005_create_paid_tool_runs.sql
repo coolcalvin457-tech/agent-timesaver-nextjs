@@ -17,8 +17,15 @@ CREATE TABLE IF NOT EXISTS paid_tool_runs (
   tool_name         TEXT NOT NULL,        -- 'workflow' | 'company' | 'swot' | 'competitor' | 'search'
   subscription_type TEXT NOT NULL,        -- 'annual' (caps apply) | 'onetime' (not capped; logged for analytics)
   target_ref        TEXT,                 -- tool-specific reference (company URL, workflow title, etc.)
-  created_at        TIMESTAMPTZ NOT NULL DEFAULT now()
+  created_at        TIMESTAMPTZ NOT NULL DEFAULT now(),
+  CONSTRAINT paid_tool_runs_subscription_type_check
+    CHECK (subscription_type IN ('annual', 'onetime'))
 );
+
+-- No CHECK on tool_name: the PaidToolName union will grow (swot, competitor,
+-- search, possibly onboarding + pip later) and we don't want to ship a
+-- migration every time a tool is added. Enforcement is at the TypeScript
+-- type level (PaidToolName in lib/db.ts).
 
 -- Fast monthly count lookups per user per tool
 CREATE INDEX IF NOT EXISTS idx_ptr_user_tool_created

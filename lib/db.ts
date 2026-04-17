@@ -116,11 +116,13 @@ export async function markMagicLinkUsed(id: string): Promise<void> {
   `;
 }
 
-// ─── AGENT: Company run tracking ───────────────────────────────────────
+// ─── AGENT: Company run tracking (legacy) ──────────────────────────────
 
 /**
- * Count how many AGENT: Company runs a user has made in the current
- * calendar month (UTC). Used to enforce the 15-run/month limit.
+ * @deprecated Use getAnnualToolRunCount(userId, "company") instead.
+ * Legacy helper. Still here so the Company route compiles during the
+ * incremental cap-enforcement rollout. Will be removed after Step 4
+ * swaps the Company route over to the generalized helpers.
  */
 export async function getMonthlyDossierRunCount(userId: string): Promise<number> {
   const result = await pool.sql<{ count: string }>`
@@ -133,9 +135,8 @@ export async function getMonthlyDossierRunCount(userId: string): Promise<number>
 }
 
 /**
- * Log a completed AGENT: Company run.
- * Call after successful generation (before email delivery).
- * Never throws — fire-and-forget safe.
+ * @deprecated Use logPaidToolRun(userId, email, "company", "annual", companyUrl).
+ * Legacy helper retained for the same reason as above. Removed after Step 4.
  */
 export async function logDossierRun(
   userId: string,
@@ -155,6 +156,99 @@ export async function logDossierRun(
     `;
   } catch (err) {
     console.error("[logDossierRun] Failed to log dossier run:", err);
+  }
+}
+
+// ─── Paid-tool run tracking (generalized) ──────────────────────────────
+//
+// One schema for all paid tools. Company backfill from
+// competitive_dossier_runs landed via migration 006. New runs for any paid
+// tool should be logged via logPaidToolRun and cap-checked via
+// getAnnualToolRunCount.
+//
+// Window: UTC calendar year. Resets 00:00 UTC January 1.
+// Scope: annual subscribers only. One-time runs are logged for analytics
+// but excluded from the cap count.
+
+export type PaidToolName =
+  | "workflow"
+  | "company"
+  | "swot"
+  | "competitor"
+  | "search";
+export type SubscriptionType = "annual" | "onetime";
+
+/**
+ * Annual run count for a user for a specific paid tool (current UTC
+ * calendar year). Counts annual-subscription runs only; one-time runs are
+ * logged for analytics but intentionally excluded from the cap check.
+ */
+export async function getAnnualToolRunCount(
+  userId: string,
+  toolName: PaidToolName
+): Promise<number> {
+  const result = await pool.sql<{ count: string }>`
+    SELECT COUNT(*) AS count
+    FROM paid_tool_runs
+    WHERE user_id = ${userId}::uuid
+      AND tool_name = ${toolName}
+      AND subscription_type = 'annual'
+      AND created_at >= date_trunc('year', now() AT TIME ZONE 'UTC')
+  `;
+  return parseInt(result.rows[0]?.count ?? "0", 10);
+}
+
+/**
+ * Log a completed paid-tool run. Fire-and-forget safe; never throws.
+ * Call after successful generation (before email delivery).
+ */
+export async function logPaidToolRun(
+  userId: string,
+  email: string,
+  toolName: PaidToolName,
+  subscriptionType: SubscriptionType,
+  targetRef?: string | null
+): Promise<void> {
+  try {
+    await pool.sql`
+      INSERT INTO paid_tool_runs (user_id, email, tool_name, subscription_type, target_ref)
+      VALUES (
+        ${userId}::uuid,
+        ${email.toLowerCase()},
+        ${toolName},
+        ${subscriptionType},
+        ${targetRef ?? null}
+      )
+    `;
+  } catch (err) {
+    console.error("[logPaidToolRun] Failed to log run:", err);
+  }
+}
+
+/**
+ * Idempotent alert-slot claim. Returns true if this alert has NOT yet been
+ * sent for this (user, tool, year, type); atomic INSERT ... ON CONFLICT
+ * prevents double-send across concurrent requests.
+ *
+ * period_bucket is the UTC calendar year as a 4-char string, e.g. '2026'.
+ */
+export async function claimAlertSlot(
+  userId: string,
+  toolName: PaidToolName,
+  alertType: "user_75" | "calvin_80"
+): Promise<boolean> {
+  const periodBucket = new Date().toISOString().slice(0, 4); // 'YYYY'
+  try {
+    const result = await pool.sql`
+      INSERT INTO paid_tool_alerts (user_id, tool_name, period_bucket, alert_type)
+      VALUES (${userId}::uuid, ${toolName}, ${periodBucket}, ${alertType})
+      ON CONFLICT (user_id, tool_name, period_bucket, alert_type) DO NOTHING
+      RETURNING id
+    `;
+    return (result.rowCount ?? 0) > 0;
+  } catch (err) {
+    console.error("[claimAlertSlot] Failed to claim alert:", err);
+    return false;
   }
 }
 

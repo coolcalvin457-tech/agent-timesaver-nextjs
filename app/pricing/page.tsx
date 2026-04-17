@@ -166,7 +166,7 @@ export default function PricingPage() {
                 fontWeight: 400,
               }}
             >
-              One-on-one, live AI coaching.
+              Live one-on-one AI coaching.
             </p>
           </div>
         </div>

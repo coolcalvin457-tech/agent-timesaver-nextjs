@@ -163,6 +163,7 @@ export default function PricingPage() {
                 margin: "0 auto",
                 color: "rgba(255,255,255,0.72)",
                 fontSize: "clamp(1.125rem, 2vw, 1.375rem)",
+                fontWeight: 400,
               }}
             >
               One-on-one, live AI coaching.

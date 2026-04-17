@@ -252,6 +252,40 @@ export async function claimAlertSlot(
   }
 }
 
+// ─── Admin dashboard query ──────────────────────────────────────────────────
+
+/**
+ * One row per (user, tool) with their current-calendar-year annual-subscription
+ * run count and most-recent run timestamp. Powers /admin/usage and the GET
+ * /api/admin/usage endpoint. One-time runs are intentionally excluded; caps
+ * apply to annual subscribers only.
+ *
+ * Ordered by count DESC so the highest-usage rows surface at the top.
+ */
+export interface AdminUsageRow {
+  user_id: string;
+  email: string;
+  tool_name: PaidToolName;
+  count: number;
+  last_run: Date;
+}
+
+export async function getAdminUsageRows(): Promise<AdminUsageRow[]> {
+  const result = await pool.sql<AdminUsageRow>`
+    SELECT user_id,
+           email,
+           tool_name,
+           COUNT(*)::int AS count,
+           MAX(created_at) AS last_run
+    FROM paid_tool_runs
+    WHERE created_at >= date_trunc('year', now() AT TIME ZONE 'UTC')
+      AND subscription_type = 'annual'
+    GROUP BY user_id, email, tool_name
+    ORDER BY count DESC
+  `;
+  return result.rows;
+}
+
 // ─── Tool usage logging ──────────────────────────────────────────────────────
 
 /**

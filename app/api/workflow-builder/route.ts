@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers";
 import {
   Document,
   Packer,
@@ -12,8 +13,23 @@ import {
   WidthType,
 } from "docx";
 import { cleanJsonResponse } from "@/app/api/_shared/cleanJson";
+import { verifyToken } from "@/lib/auth";
+import {
+  findUserById,
+  getAnnualToolRunCount,
+  logPaidToolRun,
+  type SubscriptionType,
+} from "@/lib/db";
+import {
+  hasActiveAnnualSubscription,
+  verifyOneTimeSession,
+} from "@/lib/entitlements";
 
 export const maxDuration = 300; // Vercel Pro max
+
+// ─── Cap ──────────────────────────────────────────────────────────────────────
+
+const ANNUAL_WORKFLOW_LIMIT = 100;
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -879,6 +895,85 @@ function buildResultSections(workflow: WorkflowData): ResultSection[] {
 
 export async function POST(req: NextRequest) {
   try {
+    // ── Auth check ─────────────────────────────────────────────────────────
+    const cookieStore = await cookies();
+    const sessionCookie = cookieStore.get("paa_session")?.value;
+    if (!sessionCookie) {
+      return NextResponse.json(
+        { error: "auth_required", message: "Please sign in to use this tool." },
+        { status: 401 }
+      );
+    }
+    const authUser = await verifyToken(sessionCookie);
+    if (!authUser) {
+      return NextResponse.json(
+        { error: "auth_required", message: "Session expired. Please sign in again." },
+        { status: 401 }
+      );
+    }
+
+    // ── Suspended-user check (fresh DB read; JWT payload omits suspended) ──
+    const dbUser = await findUserById(authUser.id);
+    if (!dbUser) {
+      return NextResponse.json(
+        { error: "auth_required", message: "Account not found. Please sign in again." },
+        { status: 401 }
+      );
+    }
+    if (dbUser.suspended) {
+      return NextResponse.json(
+        { error: "account_suspended", message: "Account access has been suspended." },
+        { status: 403 }
+      );
+    }
+
+    const userId = authUser.id;
+    const userEmail = authUser.email;
+
+    // ── Entitlement resolution (annual subscription preferred, one-time fallback) ──
+    // NEVER trust a session_id URL param alone. Check for an active annual
+    // subscription first. If none, fall back to verifying a one-time checkout
+    // session matches Workflow's one-time price ID. If neither, reject.
+    let subscriptionType: SubscriptionType;
+    const hasAnnual = await hasActiveAnnualSubscription(userEmail, "workflow");
+    if (hasAnnual) {
+      subscriptionType = "annual";
+    } else {
+      const url = new URL(req.url);
+      const sessionId = url.searchParams.get("session_id");
+      if (!sessionId) {
+        return NextResponse.json(
+          { error: "payment_required", message: "No active subscription or one-time purchase found." },
+          { status: 402 }
+        );
+      }
+      const onetimeValid = await verifyOneTimeSession(sessionId, "workflow");
+      if (!onetimeValid) {
+        return NextResponse.json(
+          { error: "payment_required", message: "Purchase could not be verified." },
+          { status: 402 }
+        );
+      }
+      subscriptionType = "onetime";
+    }
+
+    // ── Cap check (annual subscribers only) ────────────────────────────────
+    let runCount = 0;
+    if (subscriptionType === "annual") {
+      runCount = await getAnnualToolRunCount(userId, "workflow");
+      if (runCount >= ANNUAL_WORKFLOW_LIMIT) {
+        const nextYear = new Date().getUTCFullYear() + 1;
+        const resetDate = `January 1, ${nextYear}`;
+        return NextResponse.json(
+          {
+            error: "run_limit_reached",
+            message: `You've used this year's workflows. Your next one unlocks on ${resetDate}.`,
+          },
+          { status: 429 }
+        );
+      }
+    }
+
     const input = await req.json() as WorkflowBuilderInput;
 
     // Validation
@@ -935,6 +1030,17 @@ export async function POST(req: NextRequest) {
 
     // Encode .docx as base64 for JSON transport
     const docxBase64 = Buffer.from(docxBuffer).toString("base64");
+
+    // Log the run. Fire-and-forget safe; never throws.
+    // `runCount` (declared above) will feed the Step 5 threshold alert call:
+    //   checkAndFireThresholdAlerts(userId, userEmail, "workflow", runCount + 1, ANNUAL_WORKFLOW_LIMIT)
+    await logPaidToolRun(
+      userId,
+      userEmail,
+      "workflow",
+      subscriptionType,
+      input.taskDescription
+    );
 
     return NextResponse.json({
       docxBase64,

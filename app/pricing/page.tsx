@@ -146,8 +146,11 @@ export default function PricingPage() {
             <h1
               className="heading-1"
               style={{
-                marginBottom: "20px",
-                fontSize: "clamp(2.75rem, 6vw, 4.5rem)",
+                marginBottom: "14px",
+                fontFamily: "var(--font-sans)",
+                fontWeight: 600,
+                letterSpacing: "-0.02em",
+                fontSize: "clamp(2.5rem, 5vw, 4rem)",
                 lineHeight: 1.05,
                 color: "#fff",
               }}
@@ -158,7 +161,8 @@ export default function PricingPage() {
               className="hero-subheadline"
               style={{
                 margin: "0 auto",
-                color: "rgba(255,255,255,0.65)",
+                color: "rgba(255,255,255,0.72)",
+                fontSize: "clamp(1.125rem, 2vw, 1.375rem)",
               }}
             >
               One-on-one, live AI coaching.

@@ -4858,7 +4858,7 @@ input, textarea {
 
 .pricing-tier-tagline {
   font-size: 0.9375rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.72);
   line-height: 1.5;
   margin-bottom: 24px;
 }
@@ -4877,12 +4877,14 @@ input, textarea {
   font-weight: 500;
   color: rgba(255, 255, 255, 0.8);
   line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
 .pricing-price-unit {
   font-size: 0.875rem;
   color: rgba(255, 255, 255, 0.7);
   margin-left: 4px;
+  font-variant-numeric: tabular-nums;
 }
 
 .pricing-price-note {

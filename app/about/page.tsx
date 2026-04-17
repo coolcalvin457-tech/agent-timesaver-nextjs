@@ -3,11 +3,11 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "About Us | Prompt AI Agents",
+  title: "About | Prompt AI Agents",
   description:
     "We're studying AI so that you don't have to. Prompt AI Agents helps non-technical professionals apply AI at their specific job.",
   openGraph: {
-    title: "About Us | Prompt AI Agents",
+    title: "About | Prompt AI Agents",
     description:
       "We're studying AI so that you don't have to. Prompt AI Agents helps non-technical professionals apply AI at their specific job.",
     url: "https://promptaiagents.com/about",
@@ -41,7 +41,7 @@ export default function AboutPage() {
                 lineHeight: 1.05,
               }}
             >
-              About Us
+              About
             </h1>
             <p
               className="hero-subheadline"

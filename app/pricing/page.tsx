@@ -36,7 +36,7 @@ const coachingTiers: Tier[] = [
     subtitle: "Phase 1",
     tagline: "Prompt naturally. Set up your AI workspace.",
     price: "$500",
-    priceUnit: "3 live sessions",
+    priceUnit: "3 sessions",
     features: [
       "60 minutes, each tailored to your actual work",
       "Give clear prompts, get precise outcomes",
@@ -53,7 +53,7 @@ const coachingTiers: Tier[] = [
     subtitle: "Phase 2",
     tagline: "Own a workflow. Create your AI agent.",
     price: "$2,500",
-    priceUnit: "10 live sessions",
+    priceUnit: "10 sessions",
     features: [
       "60 minutes, each tailored to your actual work",
       "Turn a recurring task into an agent blueprint",
@@ -70,7 +70,7 @@ const coachingTiers: Tier[] = [
     subtitle: "Phase 3",
     tagline: "Scale what works. Build your AI system.",
     price: "$5,000",
-    priceUnit: "15 live sessions",
+    priceUnit: "15 sessions",
     features: [
       "60 minutes, each tailored to your actual work",
       "Audit your role and prioritize what to delegate",

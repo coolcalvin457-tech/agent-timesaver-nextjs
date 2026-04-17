@@ -359,7 +359,10 @@ export default function WorkflowBuilderTool({
         exampleFileData = { name: exampleFile.name, type: exampleFile.type, data: b64 };
       }
 
-      const res = await fetch("/api/workflow-builder", {
+      // Forward session_id to the API so verifyOneTimeSession can match it.
+      // Annual subscribers will pass on the annual check first and never need this.
+      const qs = initialSessionId ? `?session_id=${encodeURIComponent(initialSessionId)}` : "";
+      const res = await fetch(`/api/workflow-builder${qs}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

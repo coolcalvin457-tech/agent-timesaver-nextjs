@@ -362,7 +362,10 @@ export default function CompetitiveDossierTool({
     setLoadingStepStatuses(LOADING_STEPS.map(() => "pending"));
 
     try {
-      const res = await fetch("/api/competitive-dossier", {
+      // Forward session_id to the API so verifyOneTimeSession can match it.
+      // Annual subscribers will pass on the annual check first and never need this.
+      const qs = initialSessionId ? `?session_id=${encodeURIComponent(initialSessionId)}` : "";
+      const res = await fetch(`/api/competitive-dossier${qs}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

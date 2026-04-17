@@ -33,14 +33,20 @@ export default function AboutPage() {
             <h1
               className="heading-1"
               style={{
-                marginBottom: "20px",
-                fontSize: "clamp(2.75rem, 6vw, 4.5rem)",
+                marginBottom: "14px",
+                fontFamily: "var(--font-sans)",
+                fontWeight: 600,
+                letterSpacing: "-0.02em",
+                fontSize: "clamp(2.5rem, 5vw, 4rem)",
                 lineHeight: 1.05,
               }}
             >
               About Us
             </h1>
-            <p className="hero-subheadline" style={{ margin: "0 auto" }}>
+            <p
+              className="hero-subheadline"
+              style={{ margin: "0 auto", fontSize: "clamp(1.125rem, 2vw, 1.375rem)", fontWeight: 400 }}
+            >
               Built for real jobs. Not demos.
             </p>
           </div>

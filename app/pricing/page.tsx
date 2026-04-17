@@ -186,14 +186,14 @@ export default function PricingPage() {
             <div className="pricing-custom-content">
               <span className="pricing-custom-label">Custom</span>
               <p className="pricing-custom-description">
-                Team training, AI audits, and consulting for businesses ready to move fast.
+                AI audits, team training, and consulting for businesses ready to move fast.
               </p>
             </div>
             <a
               className="pricing-cta pricing-cta-outline pricing-cta-small"
               href="mailto:info@promptaiagents.com?subject=Custom%20Engagement%20Inquiry"
             >
-              Request info
+              Learn more
             </a>
           </div>
         </div>

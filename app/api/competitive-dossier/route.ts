@@ -21,6 +21,7 @@ import {
   hasActiveAnnualSubscription,
   verifyOneTimeSession,
 } from "@/lib/entitlements";
+import { checkAndFireThresholdAlerts } from "@/lib/alerts";
 import { verifyToken } from "@/lib/auth";
 import { cookies } from "next/headers";
 import { cleanJsonResponse } from "@/app/api/_shared/cleanJson";
@@ -832,9 +833,20 @@ Produce the competitive intelligence dossier as specified. Return only the JSON 
         // receiving rows at this step; migration 006 already captured history.
         // target_ref carries the companyUrl. The companyName field is dropped
         // from the new schema; it's reconstructable from the dossier output.
-        // `runCount` (declared above) will feed Step 5's threshold alert call:
-        //   checkAndFireThresholdAlerts(userId, userEmail, "company", runCount + 1, ANNUAL_COMPANY_LIMIT)
         await logPaidToolRun(userId, userEmail, "company", subscriptionType, companyUrl);
+
+        // ── Threshold alerts (annual subscribers only) ───────────────────────
+        // 75% user email, 80% Calvin email. Fire-and-forget; idempotent per
+        // (user, tool, year, type) via claimAlertSlot. Catches its own errors.
+        if (subscriptionType === "annual") {
+          void checkAndFireThresholdAlerts(
+            userId,
+            userEmail,
+            "company",
+            runCount + 1,
+            ANNUAL_COMPANY_LIMIT
+          );
+        }
 
         // ── Send complete event ──────────────────────────────────────────────
         // Serialize structured sections for in-browser results (S149)

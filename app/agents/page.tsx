@@ -87,14 +87,14 @@ export default function AgentsPage() {
         {/* Page header */}
         <div className="container">
           <div style={{ paddingTop: "80px", marginBottom: "40px", textAlign: "center" }}>
-            <h1 className="heading-1" style={{ marginBottom: "20px", fontSize: "clamp(2.75rem, 6vw, 4.5rem)", lineHeight: 1.05, color: "#fff" }}>
+            <h1 className="heading-1" style={{ marginBottom: "14px", fontFamily: "var(--font-sans)", fontWeight: 600, letterSpacing: "-0.02em", fontSize: "clamp(2.5rem, 5vw, 4rem)", lineHeight: 1.05, color: "#fff" }}>
               Agents
             </h1>
             <p
               className="hero-subheadline"
-              style={{ margin: "0 auto", color: "rgba(255,255,255,0.65)" }}
+              style={{ margin: "0 auto", color: "rgba(255,255,255,0.72)", fontSize: "clamp(1.125rem, 2vw, 1.375rem)", fontWeight: 400 }}
             >
-              Automate your most time-consuming tasks.
+              A library of agents tailored to your work.
             </p>
           </div>
         </div>

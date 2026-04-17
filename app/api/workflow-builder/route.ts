@@ -24,6 +24,7 @@ import {
   hasActiveAnnualSubscription,
   verifyOneTimeSession,
 } from "@/lib/entitlements";
+import { checkAndFireThresholdAlerts } from "@/lib/alerts";
 
 export const maxDuration = 300; // Vercel Pro max
 
@@ -1032,8 +1033,6 @@ export async function POST(req: NextRequest) {
     const docxBase64 = Buffer.from(docxBuffer).toString("base64");
 
     // Log the run. Fire-and-forget safe; never throws.
-    // `runCount` (declared above) will feed the Step 5 threshold alert call:
-    //   checkAndFireThresholdAlerts(userId, userEmail, "workflow", runCount + 1, ANNUAL_WORKFLOW_LIMIT)
     await logPaidToolRun(
       userId,
       userEmail,
@@ -1041,6 +1040,19 @@ export async function POST(req: NextRequest) {
       subscriptionType,
       input.taskDescription
     );
+
+    // Threshold alerts: 75% user email, 80% Calvin email. Annual subscribers only.
+    // Fire-and-forget: catches its own errors, never throws. Idempotent per
+    // (user, tool, year, type) via claimAlertSlot.
+    if (subscriptionType === "annual") {
+      void checkAndFireThresholdAlerts(
+        userId,
+        userEmail,
+        "workflow",
+        runCount + 1,
+        ANNUAL_WORKFLOW_LIMIT
+      );
+    }
 
     return NextResponse.json({
       docxBase64,

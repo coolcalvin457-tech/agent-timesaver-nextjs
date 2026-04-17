@@ -90,12 +90,12 @@ export default function BlogPage() {
         {/* Page header */}
         <div className="container">
           <div style={{ paddingTop: "80px", marginBottom: "40px", textAlign: "center" }}>
-            <h1 className="heading-1" style={{ marginBottom: "14px", fontSize: "clamp(2.75rem, 6vw, 4.5rem)", lineHeight: 1.05 }}>
+            <h1 className="heading-1" style={{ marginBottom: "14px", fontFamily: "var(--font-sans)", fontWeight: 600, letterSpacing: "-0.02em", fontSize: "clamp(2.5rem, 5vw, 4rem)", lineHeight: 1.05 }}>
               Blog
             </h1>
             <p
               className="hero-subheadline"
-              style={{ margin: "0 auto" }}
+              style={{ margin: "0 auto", fontSize: "clamp(1.125rem, 2vw, 1.375rem)", fontWeight: 400 }}
             >
               Built for real jobs. Not demos.
             </p>

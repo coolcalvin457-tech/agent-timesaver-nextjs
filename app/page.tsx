@@ -86,14 +86,18 @@ export default function Home() {
         {/* ── Section 4: Find Your AI Match ────────────────────────────── */}
         <section className="section section-alt" id="transformation">
           <div className="container">
-            <div className="eyebrow">Your AI Match</div>
-            <h2
-              className="heading-1"
-              style={{ marginBottom: "48px", fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", lineHeight: "var(--section-headline-lh)", letterSpacing: "var(--section-headline-ls)" }}
-            >
-              <span style={{ display: "block" }}>They all have personality.</span>
-              <span style={{ display: "block" }}>Which one fits yours?</span>
-            </h2>
+
+            {/* Centered header (matches Section 3 pattern) */}
+            <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center", marginBottom: "40px" }}>
+              <div className="eyebrow" style={{ marginBottom: "16px" }}>Your AI Match</div>
+              <h2
+                className="heading-1"
+                style={{ marginBottom: 0, fontSize: "var(--section-headline-size)", lineHeight: "var(--section-headline-lh)", letterSpacing: "var(--section-headline-ls)" }}
+              >
+                <span style={{ display: "block" }}>They all have personality.</span>
+                <span style={{ display: "block" }}>Which one fits yours?</span>
+              </h2>
+            </div>
 
             <AiMatchCards />
           </div>

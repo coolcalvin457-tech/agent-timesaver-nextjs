@@ -11,11 +11,15 @@ import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/auth";
 import { getAdminUsageRows } from "@/lib/db";
 
-const ADMIN_EMAIL = "calvin@promptaiagents.com";
+// Both Calvin's Workspace email and his personal Gmail used for site login.
+const ADMIN_EMAILS = new Set([
+  "calvin@promptaiagents.com",
+  "coolcalvin457@gmail.com",
+]);
 
 export async function GET() {
   const user = await getSessionUser();
-  if (!user || user.email.toLowerCase() !== ADMIN_EMAIL) {
+  if (!user || !ADMIN_EMAILS.has(user.email.toLowerCase())) {
     return NextResponse.json({ error: "forbidden" }, { status: 403 });
   }
 

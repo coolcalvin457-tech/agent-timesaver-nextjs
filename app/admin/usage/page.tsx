@@ -15,7 +15,11 @@ import { getAdminUsageRows, type AdminUsageRow, type PaidToolName } from "@/lib/
 
 export const dynamic = "force-dynamic";
 
-const ADMIN_EMAIL = "calvin@promptaiagents.com";
+// Both Calvin's Workspace email and his personal Gmail used for site login.
+const ADMIN_EMAILS = new Set([
+  "calvin@promptaiagents.com",
+  "coolcalvin457@gmail.com",
+]);
 
 // Caps per Calvin's Brain/cap-setting-framework.md (mid-S192 revision).
 // Competitor and Search caps are TBD at launch; display "—" until set.
@@ -69,7 +73,7 @@ function formatLastRun(d: Date): string {
 
 export default async function AdminUsagePage() {
   const user = await getSessionUser();
-  if (!user || user.email.toLowerCase() !== ADMIN_EMAIL) {
+  if (!user || !ADMIN_EMAILS.has(user.email.toLowerCase())) {
     redirect("/");
   }
 

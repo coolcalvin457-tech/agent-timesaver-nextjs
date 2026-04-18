@@ -581,7 +581,7 @@ export async function POST(req: NextRequest) {
               });
               send("error", {
                 type: "run_limit_reached",
-                message: `You've used this period's dossiers. Your next one unlocks when your subscription renews on ${renewalDate}.`,
+                message: `Your next one unlocks when your subscription renews on ${renewalDate}.`,
               });
               controller.close();
               return;

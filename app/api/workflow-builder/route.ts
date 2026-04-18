@@ -19,6 +19,7 @@ import {
   getCurrentPeriodRunCount,
   getCurrentSubscriptionPeriod,
   logPaidToolRun,
+  type SubscriptionPeriod,
   type SubscriptionType,
 } from "@/lib/db";
 import {
@@ -969,18 +970,17 @@ export async function POST(req: NextRequest) {
     // brand-new subscriber, or an un-backfilled row), skip the cap check
     // and log. A paying customer should never be denied because of a
     // bookkeeping lag. Post-migration this path should effectively never
-    // fire. The alert-fire block below is also gated on this flag so a
+    // fire. The alert-fire block below is also gated on `period` so a
     // null-period run doesn't touch paid_tool_alerts with stale counts.
     let runCount = 0;
-    let hasPeriodBounds = false;
+    let period: SubscriptionPeriod | null = null;
     if (subscriptionType === "annual") {
-      const period = await getCurrentSubscriptionPeriod(userId);
+      period = await getCurrentSubscriptionPeriod(userId);
       if (!period) {
         console.warn(
           `[workflow-builder] Annual subscriber ${userEmail} (${userId}) has no cached subscription period. Skipping cap check.`
         );
       } else {
-        hasPeriodBounds = true;
         runCount = await getCurrentPeriodRunCount(userId, "workflow", period.start);
         if (runCount >= ANNUAL_WORKFLOW_LIMIT) {
           const renewalDate = period.end.toLocaleDateString("en-US", {
@@ -1065,22 +1065,21 @@ export async function POST(req: NextRequest) {
       input.taskDescription
     );
 
-    // Threshold alerts: 75% user email, 80% Calvin email. Annual subscribers only.
-    // Fire-and-forget: catches its own errors, never throws. Idempotent per
-    // (user, tool, period, type) via claimAlertSlot.
+    // Threshold alerts: 75% user email (standard §2 or pace-exceeded §2B),
+    // 80% Calvin email. Annual subscribers only. Fire-and-forget: catches its
+    // own errors, never throws. Idempotent per (user, tool, period, type)
+    // via claimAlertSlot with period-aware bucket.
     //
-    // Gated on hasPeriodBounds so the null-period defensive path above
-    // doesn't feed stale counts into the alerter. Track 0.7 threads the
-    // period through checkAndFireThresholdAlerts and adds the pace-exceeded
-    // variant; after that lands this gate and the YYYY-bucket fallback in
-    // claimAlertSlot can both be removed.
-    if (subscriptionType === "annual" && hasPeriodBounds) {
+    // Gated on `period` so the null-period defensive path above doesn't feed
+    // stale counts into the alerter.
+    if (subscriptionType === "annual" && period) {
       void checkAndFireThresholdAlerts(
         userId,
         userEmail,
         "workflow",
         runCount + 1,
-        ANNUAL_WORKFLOW_LIMIT
+        ANNUAL_WORKFLOW_LIMIT,
+        period
       );
     }
 

@@ -16,6 +16,7 @@ import {
   getCurrentPeriodRunCount,
   getCurrentSubscriptionPeriod,
   logPaidToolRun,
+  type SubscriptionPeriod,
   type SubscriptionType,
 } from "@/lib/db";
 import {
@@ -559,19 +560,18 @@ export async function POST(req: NextRequest) {
         // true but the cached bounds aren't populated yet (webhook race on a
         // brand-new subscriber, or an un-backfilled row), skip the cap check
         // and log. A paying customer should never be denied because of a
-        // bookkeeping lag. The alert-fire block below is also gated on this
-        // flag so a null-period run doesn't touch paid_tool_alerts with
+        // bookkeeping lag. The alert-fire block below is also gated on
+        // `period` so a null-period run doesn't touch paid_tool_alerts with
         // stale counts.
         let runCount = 0;
-        let hasPeriodBounds = false;
+        let period: SubscriptionPeriod | null = null;
         if (subscriptionType === "annual") {
-          const period = await getCurrentSubscriptionPeriod(userId);
+          period = await getCurrentSubscriptionPeriod(userId);
           if (!period) {
             console.warn(
               `[competitive-dossier] Annual subscriber ${userEmail} (${userId}) has no cached subscription period. Skipping cap check.`
             );
           } else {
-            hasPeriodBounds = true;
             runCount = await getCurrentPeriodRunCount(userId, "company", period.start);
             if (runCount >= ANNUAL_COMPANY_LIMIT) {
               const renewalDate = period.end.toLocaleDateString("en-US", {
@@ -860,21 +860,20 @@ Produce the competitive intelligence dossier as specified. Return only the JSON 
         await logPaidToolRun(userId, userEmail, "company", subscriptionType, companyUrl);
 
         // ── Threshold alerts (annual subscribers only) ───────────────────────
-        // 75% user email, 80% Calvin email. Fire-and-forget; idempotent per
-        // (user, tool, period, type) via claimAlertSlot. Catches its own errors.
+        // 75% user email (standard §2 or pace-exceeded §2B), 80% Calvin email.
+        // Fire-and-forget; idempotent per (user, tool, period, type) via
+        // claimAlertSlot with period-aware bucket. Catches its own errors.
         //
-        // Gated on hasPeriodBounds so the null-period defensive path above
-        // doesn't feed stale counts into the alerter. Track 0.7 threads the
-        // period through checkAndFireThresholdAlerts and adds the pace-exceeded
-        // variant; after that lands this gate and the YYYY-bucket fallback in
-        // claimAlertSlot can both be removed.
-        if (subscriptionType === "annual" && hasPeriodBounds) {
+        // Gated on `period` so the null-period defensive path above doesn't
+        // feed stale counts into the alerter.
+        if (subscriptionType === "annual" && period) {
           void checkAndFireThresholdAlerts(
             userId,
             userEmail,
             "company",
             runCount + 1,
-            ANNUAL_COMPANY_LIMIT
+            ANNUAL_COMPANY_LIMIT,
+            period
           );
         }
 

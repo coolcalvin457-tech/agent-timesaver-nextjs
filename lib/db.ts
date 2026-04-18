@@ -11,7 +11,9 @@ import { createHash, randomBytes } from "crypto";
 // ─── Pool ────────────────────────────────────────────────────────────────────
 
 // createPool reads POSTGRES_URL by default. We override with STORAGE_URL.
-const pool = createPool({
+// Exported so the Stripe webhook handler can run UPDATE statements against
+// the same connection pool without re-instantiating.
+export const pool = createPool({
   connectionString: process.env.STORAGE_URL,
 });
 

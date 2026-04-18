@@ -348,10 +348,16 @@ export async function claimAlertSlot(
 // ─── Admin dashboard query ──────────────────────────────────────────────────
 
 /**
- * One row per (user, tool) with their current-calendar-year annual-subscription
- * run count and most-recent run timestamp. Powers /admin/usage and the GET
- * /api/admin/usage endpoint. One-time runs are intentionally excluded; caps
- * apply to annual subscribers only.
+ * One row per (user, tool) with their current-subscription-period annual-
+ * subscription run count, most-recent run timestamp, and the user's Stripe
+ * current-period bounds (period_start / period_end). Powers /admin/usage and
+ * the GET /api/admin/usage endpoint.
+ *
+ * One-time runs are intentionally excluded; caps apply to annual subscribers.
+ * Users whose Stripe period bounds aren't populated on the users row
+ * (pre-webhook or actively cancelled) are excluded — the dashboard mirrors
+ * what the cap check sees, and a null-period row with no period_end can't be
+ * rendered meaningfully.
  *
  * Ordered by count DESC so the highest-usage rows surface at the top.
  */
@@ -361,19 +367,31 @@ export interface AdminUsageRow {
   tool_name: PaidToolName;
   count: number;
   last_run: Date;
+  period_start: Date;
+  period_end: Date;
 }
 
 export async function getAdminUsageRows(): Promise<AdminUsageRow[]> {
   const result = await pool.sql<AdminUsageRow>`
-    SELECT user_id,
-           email,
-           tool_name,
-           COUNT(*)::int AS count,
-           MAX(created_at) AS last_run
-    FROM paid_tool_runs
-    WHERE created_at >= date_trunc('year', now() AT TIME ZONE 'UTC')
-      AND subscription_type = 'annual'
-    GROUP BY user_id, email, tool_name
+    SELECT ptr.user_id,
+           ptr.email,
+           ptr.tool_name,
+           COUNT(*)::int                    AS count,
+           MAX(ptr.created_at)              AS last_run,
+           u.stripe_current_period_start    AS period_start,
+           u.stripe_current_period_end      AS period_end
+    FROM paid_tool_runs ptr
+    JOIN users u ON u.id = ptr.user_id
+    WHERE ptr.subscription_type = 'annual'
+      AND u.stripe_current_period_start IS NOT NULL
+      AND u.stripe_current_period_end   IS NOT NULL
+      AND ptr.created_at >= u.stripe_current_period_start
+      AND ptr.created_at <  u.stripe_current_period_end
+    GROUP BY ptr.user_id,
+             ptr.email,
+             ptr.tool_name,
+             u.stripe_current_period_start,
+             u.stripe_current_period_end
     ORDER BY count DESC
   `;
   return result.rows;

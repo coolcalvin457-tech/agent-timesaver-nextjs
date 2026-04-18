@@ -1,7 +1,8 @@
 // ─── GET /api/admin/usage ────────────────────────────────────────────────────
 //
-// Returns one row per (user, tool) with their current-calendar-year annual-
-// subscription run count and most-recent run timestamp. Gated to Calvin.
+// Returns one row per (user, tool) with their current-subscription-period
+// annual-subscription run count, most-recent run timestamp, and Stripe
+// current-period bounds (period_start / period_end). Gated to Calvin.
 // One-time runs are intentionally excluded; caps apply to annual subscribers.
 //
 // Powers the /admin/usage dashboard page and any ops scripts that need a JSON

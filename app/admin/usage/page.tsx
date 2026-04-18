@@ -1,13 +1,16 @@
 // ─── /admin/usage ────────────────────────────────────────────────────────────
 //
-// Internal ops dashboard: one row per (user, tool) with current-calendar-year
-// annual-subscription run count, cap, % of cap, status, and most-recent run.
-// Gated to Calvin's email via paa_session cookie. Non-Calvin sessions are
-// redirected to /.
+// Internal ops dashboard: one row per (user, tool) with current-subscription-
+// period annual-subscription run count, cap, % of cap, status, most-recent
+// run, and the user's subscription-period end (renewal date). Gated to
+// Calvin's email via paa_session cookie. Non-Calvin sessions are redirected
+// to /.
 //
 // Dark theme matches the Agents gradient (#14151A → #0A0A0C). Status column
 // color-coded per cap-enforcement-copy.md §4. One-time runs are intentionally
-// excluded from the count; caps apply to annual subscribers only.
+// excluded from the count; caps apply to annual subscribers only. Users
+// without cached Stripe period bounds (pre-webhook or actively cancelled)
+// are excluded upstream by getAdminUsageRows.
 
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/auth";
@@ -60,8 +63,8 @@ function formatPercent(count: number, cap: number | null): string {
   return `${Math.round((count / cap) * 100)}%`;
 }
 
-// "Apr 14, 2026" per §4 example.
-function formatLastRun(d: Date): string {
+// "Apr 14, 2026" per §4 example. Short month used in Last run column.
+function formatShortDate(d: Date): string {
   const date = d instanceof Date ? d : new Date(d);
   return date.toLocaleDateString("en-US", {
     month: "short",
@@ -85,8 +88,6 @@ export default async function AdminUsagePage() {
     console.error("[/admin/usage] query failed:", err);
     queryError = true;
   }
-
-  const currentYear = new Date().getUTCFullYear();
 
   return (
     <main
@@ -130,7 +131,7 @@ export default async function AdminUsagePage() {
               margin: 0,
             }}
           >
-            Annual-subscription runs for {currentYear} (UTC calendar year). One-time runs excluded.
+            Annual-subscription runs for each user's current subscription period (aligned to Stripe renewal anniversary). One-time runs excluded.
           </p>
         </header>
 
@@ -158,7 +159,7 @@ export default async function AdminUsagePage() {
               fontSize: 14,
             }}
           >
-            No annual-subscription runs recorded yet this year.
+            No annual-subscription runs recorded in any active subscription period.
           </div>
         ) : (
           <div
@@ -189,11 +190,12 @@ export default async function AdminUsagePage() {
                 >
                   <th style={thStyle}>Email</th>
                   <th style={thStyle}>Tool</th>
-                  <th style={thStyleRight}>Runs this year</th>
+                  <th style={thStyleRight}>Runs this period</th>
                   <th style={thStyleRight}>Cap</th>
                   <th style={thStyleRight}>% of cap</th>
                   <th style={thStyle}>Status</th>
                   <th style={thStyle}>Last run</th>
+                  <th style={thStyle}>Period ends</th>
                 </tr>
               </thead>
               <tbody>
@@ -218,7 +220,8 @@ export default async function AdminUsagePage() {
                       <td style={{ ...tdStyle, color: status.color }}>
                         {status.label}
                       </td>
-                      <td style={tdStyle}>{formatLastRun(row.last_run)}</td>
+                      <td style={tdStyle}>{formatShortDate(row.last_run)}</td>
+                      <td style={tdStyle}>{formatShortDate(row.period_end)}</td>
                     </tr>
                   );
                 })}

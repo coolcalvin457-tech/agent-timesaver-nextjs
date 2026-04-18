@@ -5,7 +5,8 @@ import { cleanJsonResponse } from "../_shared/cleanJson";
 // migration. The URL is internal plumbing and does not leak to users. All
 // types, variables, copy, and system-prompt output use "time-savers"
 // terminology. "Workflow" / "workflows" is reserved exclusively for
-// AGENT: Workflow (the $49/yr paid tool). See master spec Layer 1 §1.1.
+// AGENT: Workflow (the dual-mode paid tool: $49 one-time / $99 annually).
+// See master spec Layer 1 §1.1.
 
 export const maxDuration = 300; // Vercel Pro max; adaptive thinking can exceed 120s
 

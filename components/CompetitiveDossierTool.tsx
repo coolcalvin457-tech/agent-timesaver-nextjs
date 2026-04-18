@@ -1191,7 +1191,7 @@ export default function CompetitiveDossierTool({
 
       {/* ── Error: site unreachable ───────────────────────────────────────────── */}
       {screen === "error-site" && (
-        <div style={{ textAlign: "center" }}>
+        <div className="screen" style={{ textAlign: "center" }}>
           <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.25rem, 2.5vw, 1.5rem)", color: "#fff", margin: "0 0 12px" }}>
             We couldn&apos;t reach that website.
           </h2>
@@ -1209,7 +1209,7 @@ export default function CompetitiveDossierTool({
 
       {/* ── Error: insufficient data ──────────────────────────────────────────── */}
       {screen === "error-data" && (
-        <div style={{ textAlign: "center" }}>
+        <div className="screen" style={{ textAlign: "center" }}>
           <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.25rem, 2.5vw, 1.5rem)", color: "#fff", margin: "0 0 12px" }}>
             We couldn&apos;t find enough to work with.
           </h2>
@@ -1227,9 +1227,9 @@ export default function CompetitiveDossierTool({
 
       {/* ── Error: run limit ─────────────────────────────────────────────────── */}
       {screen === "error-limit" && (
-        <div style={{ textAlign: "center" }}>
+        <div className="screen" style={{ textAlign: "center" }}>
           <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.25rem, 2.5vw, 1.5rem)", color: "#fff", margin: "0 0 12px" }}>
-            You&apos;ve reached your monthly limit.
+            You&apos;ve used this period&apos;s dossiers.
           </h2>
           <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.55)", margin: "0 0 12px", lineHeight: 1.6 }}>
             {errorMsg}
@@ -1245,7 +1245,7 @@ export default function CompetitiveDossierTool({
 
       {/* ── Error: general ───────────────────────────────────────────────────── */}
       {screen === "error-general" && (
-        <div style={{ textAlign: "center" }}>
+        <div className="screen" style={{ textAlign: "center" }}>
           <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.25rem, 2.5vw, 1.5rem)", color: "#fff", margin: "0 0 12px" }}>
             Something went wrong on our end.
           </h2>

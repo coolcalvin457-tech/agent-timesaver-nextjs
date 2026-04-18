@@ -1249,7 +1249,7 @@ export default function WorkflowBuilderTool({
 
       {/* ── Error ─────────────────────────────────────────── */}
       {screen === "error" && (
-        <div style={{ textAlign: "center", padding: "20px 0" }}>
+        <div className="screen" style={{ textAlign: "center" }}>
           <p
             style={{
               fontSize: "clamp(1.1rem, 2vw, 1.25rem)",

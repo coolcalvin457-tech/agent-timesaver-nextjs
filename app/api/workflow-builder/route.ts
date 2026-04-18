@@ -16,7 +16,8 @@ import { cleanJsonResponse } from "@/app/api/_shared/cleanJson";
 import { verifyToken } from "@/lib/auth";
 import {
   findUserById,
-  getAnnualToolRunCount,
+  getCurrentPeriodRunCount,
+  getCurrentSubscriptionPeriod,
   logPaidToolRun,
   type SubscriptionType,
 } from "@/lib/db";
@@ -959,19 +960,42 @@ export async function POST(req: NextRequest) {
     }
 
     // ── Cap check (annual subscribers only) ────────────────────────────────
+    // Window (S194): the user's current Stripe subscription period. Bounds
+    // are cached on users.* by the invoice.payment_succeeded webhook and
+    // refresh on every annual renewal.
+    //
+    // Null-period defensive path: if hasActiveAnnualSubscription returned
+    // true but the cached bounds aren't populated yet (webhook race on a
+    // brand-new subscriber, or an un-backfilled row), skip the cap check
+    // and log. A paying customer should never be denied because of a
+    // bookkeeping lag. Post-migration this path should effectively never
+    // fire. The alert-fire block below is also gated on this flag so a
+    // null-period run doesn't touch paid_tool_alerts with stale counts.
     let runCount = 0;
+    let hasPeriodBounds = false;
     if (subscriptionType === "annual") {
-      runCount = await getAnnualToolRunCount(userId, "workflow");
-      if (runCount >= ANNUAL_WORKFLOW_LIMIT) {
-        const nextYear = new Date().getUTCFullYear() + 1;
-        const resetDate = `January 1, ${nextYear}`;
-        return NextResponse.json(
-          {
-            error: "run_limit_reached",
-            message: `You've used this year's workflows. Your next one unlocks on ${resetDate}.`,
-          },
-          { status: 429 }
+      const period = await getCurrentSubscriptionPeriod(userId);
+      if (!period) {
+        console.warn(
+          `[workflow-builder] Annual subscriber ${userEmail} (${userId}) has no cached subscription period. Skipping cap check.`
         );
+      } else {
+        hasPeriodBounds = true;
+        runCount = await getCurrentPeriodRunCount(userId, "workflow", period.start);
+        if (runCount >= ANNUAL_WORKFLOW_LIMIT) {
+          const renewalDate = period.end.toLocaleDateString("en-US", {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+          });
+          return NextResponse.json(
+            {
+              error: "run_limit_reached",
+              message: `You've used this period's workflows. Your next one unlocks when your subscription renews on ${renewalDate}.`,
+            },
+            { status: 429 }
+          );
+        }
       }
     }
 
@@ -1043,8 +1067,14 @@ export async function POST(req: NextRequest) {
 
     // Threshold alerts: 75% user email, 80% Calvin email. Annual subscribers only.
     // Fire-and-forget: catches its own errors, never throws. Idempotent per
-    // (user, tool, year, type) via claimAlertSlot.
-    if (subscriptionType === "annual") {
+    // (user, tool, period, type) via claimAlertSlot.
+    //
+    // Gated on hasPeriodBounds so the null-period defensive path above
+    // doesn't feed stale counts into the alerter. Track 0.7 threads the
+    // period through checkAndFireThresholdAlerts and adds the pace-exceeded
+    // variant; after that lands this gate and the YYYY-bucket fallback in
+    // claimAlertSlot can both be removed.
+    if (subscriptionType === "annual" && hasPeriodBounds) {
       void checkAndFireThresholdAlerts(
         userId,
         userEmail,

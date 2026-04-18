@@ -166,9 +166,13 @@ export async function logDossierRun(
 // One schema for all paid tools. Company backfill from
 // competitive_dossier_runs landed via migration 006. New runs for any paid
 // tool should be logged via logPaidToolRun and cap-checked via
-// getAnnualToolRunCount.
+// getCurrentPeriodRunCount (see below).
 //
-// Window: UTC calendar year. Resets 00:00 UTC January 1.
+// Window (S194): subscription period aligned to the user's Stripe annual
+// renewal anniversary. Bounds are cached on the users table (populated by
+// the invoice.payment_succeeded webhook) and read via
+// getCurrentSubscriptionPeriod. Previous window was UTC calendar year
+// (S192/S193, getAnnualToolRunCount, now @deprecated).
 // Scope: annual subscribers only. One-time runs are logged for analytics
 // but excluded from the cap count.
 
@@ -181,6 +185,82 @@ export type PaidToolName =
 export type SubscriptionType = "annual" | "onetime";
 
 /**
+ * User's current Stripe annual-subscription period. Reads the cached bounds
+ * populated by the invoice.payment_succeeded webhook. Returns null if the
+ * user has no active annual subscription (no row, one-time-only buyer,
+ * cancelled subscriber). Route code treats null as "no active cap window"
+ * and denies.
+ */
+export interface SubscriptionPeriod {
+  start: Date;
+  end: Date;
+  subscriptionId: string;
+}
+
+export async function getCurrentSubscriptionPeriod(
+  userId: string
+): Promise<SubscriptionPeriod | null> {
+  const result = await pool.sql<{
+    stripe_current_period_start: Date | null;
+    stripe_current_period_end: Date | null;
+    stripe_subscription_id: string | null;
+  }>`
+    SELECT stripe_current_period_start,
+           stripe_current_period_end,
+           stripe_subscription_id
+    FROM users
+    WHERE id = ${userId}::uuid
+    LIMIT 1
+  `;
+  const row = result.rows[0];
+  if (
+    !row ||
+    !row.stripe_current_period_start ||
+    !row.stripe_current_period_end ||
+    !row.stripe_subscription_id
+  ) {
+    return null;
+  }
+  return {
+    start: row.stripe_current_period_start,
+    end: row.stripe_current_period_end,
+    subscriptionId: row.stripe_subscription_id,
+  };
+}
+
+/**
+ * Annual run count for a user for a specific paid tool within their current
+ * Stripe subscription period. Counts annual-subscription runs only; one-time
+ * runs are logged for analytics but intentionally excluded from the cap check.
+ *
+ * Caller passes the period start from getCurrentSubscriptionPeriod(). No
+ * upper bound on the query — a late-arriving webhook that rolls the period
+ * forward shouldn't retroactively strip runs out of the count mid-request.
+ * Runs created after the new period_start will just count against the new
+ * window; runs in the old window fall off naturally on the next call.
+ */
+export async function getCurrentPeriodRunCount(
+  userId: string,
+  toolName: PaidToolName,
+  periodStart: Date
+): Promise<number> {
+  const result = await pool.sql<{ count: string }>`
+    SELECT COUNT(*) AS count
+    FROM paid_tool_runs
+    WHERE user_id = ${userId}::uuid
+      AND tool_name = ${toolName}
+      AND subscription_type = 'annual'
+      AND created_at >= ${periodStart.toISOString()}
+  `;
+  return parseInt(result.rows[0]?.count ?? "0", 10);
+}
+
+/**
+ * @deprecated S194: use getCurrentPeriodRunCount(userId, toolName, periodStart)
+ * against the user's Stripe subscription-period window instead. This
+ * calendar-year variant is kept only so routes that haven't been swapped
+ * yet still compile; remove once no callers remain.
+ *
  * Annual run count for a user for a specific paid tool (current UTC
  * calendar year). Counts annual-subscription runs only; one-time runs are
  * logged for analytics but intentionally excluded from the cap check.
@@ -227,19 +307,30 @@ export async function logPaidToolRun(
   }
 }
 
+export type AlertType = "user_75" | "calvin_80" | "pace_exceeded_75";
+
 /**
  * Idempotent alert-slot claim. Returns true if this alert has NOT yet been
- * sent for this (user, tool, year, type); atomic INSERT ... ON CONFLICT
+ * sent for this (user, tool, period, type); atomic INSERT ... ON CONFLICT
  * prevents double-send across concurrent requests.
  *
- * period_bucket is the UTC calendar year as a 4-char string, e.g. '2026'.
+ * period_bucket (S194): '[user_id]:[period_start_YYYY-MM-DD]' when periodStart
+ * is provided, aligned to the user's Stripe renewal anniversary. Includes
+ * user_id so two users with the same renewal date can't collide.
+ *
+ * Legacy fallback: if periodStart is omitted, uses the UTC calendar year
+ * bucket ('YYYY'). Present only so alerts.ts + routes continue to compile
+ * during the S194 migration; remove after all callers pass periodStart.
  */
 export async function claimAlertSlot(
   userId: string,
   toolName: PaidToolName,
-  alertType: "user_75" | "calvin_80"
+  alertType: AlertType,
+  periodStart?: Date
 ): Promise<boolean> {
-  const periodBucket = new Date().toISOString().slice(0, 4); // 'YYYY'
+  const periodBucket = periodStart
+    ? `${userId}:${periodStart.toISOString().slice(0, 10)}`
+    : new Date().toISOString().slice(0, 4); // legacy 'YYYY' fallback
   try {
     const result = await pool.sql`
       INSERT INTO paid_tool_alerts (user_id, tool_name, period_bucket, alert_type)

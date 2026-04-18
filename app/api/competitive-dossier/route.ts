@@ -861,13 +861,20 @@ Produce the competitive intelligence dossier as specified. Return only the JSON 
 
         // ── Threshold alerts (annual subscribers only) ───────────────────────
         // 75% user email (standard §2 or pace-exceeded §2B), 80% Calvin email.
-        // Fire-and-forget; idempotent per (user, tool, period, type) via
-        // claimAlertSlot with period-aware bucket. Catches its own errors.
+        // Awaited (not fire-and-forget) so Vercel doesn't reap the serverless
+        // function between controller.close() and the alert work completing.
+        // S194 Track B caught calvin_80 silently dropping on a real Company
+        // run when this was `void` — first claim+send made it through, the
+        // second slot+send did not. checkAndFireThresholdAlerts catches its
+        // own errors and never throws; idempotent per (user, tool, period,
+        // type) via claimAlertSlot with period-aware bucket. Added latency is
+        // two DB queries + one Resend call (~500-1000ms), trivial next to the
+        // 2:40 dossier load.
         //
         // Gated on `period` so the null-period defensive path above doesn't
         // feed stale counts into the alerter.
         if (subscriptionType === "annual" && period) {
-          void checkAndFireThresholdAlerts(
+          await checkAndFireThresholdAlerts(
             userId,
             userEmail,
             "company",

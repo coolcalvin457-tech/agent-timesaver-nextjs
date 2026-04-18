@@ -1066,14 +1066,18 @@ export async function POST(req: NextRequest) {
     );
 
     // Threshold alerts: 75% user email (standard §2 or pace-exceeded §2B),
-    // 80% Calvin email. Annual subscribers only. Fire-and-forget: catches its
-    // own errors, never throws. Idempotent per (user, tool, period, type)
-    // via claimAlertSlot with period-aware bucket.
+    // 80% Calvin email. Annual subscribers only. Awaited (not fire-and-forget)
+    // so Vercel doesn't reap the serverless function before the alert work
+    // completes — `return NextResponse.json(...)` below would otherwise drop
+    // any pending promises. checkAndFireThresholdAlerts catches its own errors
+    // and never throws; idempotent per (user, tool, period, type) via
+    // claimAlertSlot with period-aware bucket. Added latency is two DB queries
+    // + one Resend call (~500-1000ms).
     //
     // Gated on `period` so the null-period defensive path above doesn't feed
     // stale counts into the alerter.
     if (subscriptionType === "annual" && period) {
-      void checkAndFireThresholdAlerts(
+      await checkAndFireThresholdAlerts(
         userId,
         userEmail,
         "workflow",

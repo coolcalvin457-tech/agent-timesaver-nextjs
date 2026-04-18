@@ -108,11 +108,32 @@ export async function POST(req: NextRequest) {
 
 async function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice): Promise<void> {
   // Only care about subscription invoices. One-time payments fire this event
-  // too (for their single-invoice cycle) but have no invoice.subscription.
+  // too (for their single-invoice cycle) but have no subscription reference.
+  //
+  // Stripe removed invoice.subscription from the top level in recent API
+  // versions; the subscription reference now lives on invoice.parent.
+  // subscription_details.subscription and/or invoice.lines.data[*].subscription.
+  // Read all three paths; first non-null wins. Cast through unknown so the
+  // code compiles against any SDK version without pinning.
+  const invoiceAny = invoice as unknown as {
+    subscription?: string | { id: string } | null;
+    parent?: {
+      subscription_details?: {
+        subscription?: string | { id: string } | null;
+      };
+    };
+    lines?: {
+      data?: Array<{
+        subscription?: string | { id: string } | null;
+      }>;
+    };
+  };
+  const rawSub =
+    invoiceAny.subscription ??
+    invoiceAny.parent?.subscription_details?.subscription ??
+    invoiceAny.lines?.data?.[0]?.subscription;
   const subscriptionId =
-    typeof invoice.subscription === "string"
-      ? invoice.subscription
-      : invoice.subscription?.id;
+    typeof rawSub === "string" ? rawSub : rawSub?.id;
   if (!subscriptionId) return;
 
   const subscription = await stripe.subscriptions.retrieve(subscriptionId);

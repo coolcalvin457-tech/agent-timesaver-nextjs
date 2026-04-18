@@ -94,7 +94,7 @@ export default function AgentsPage() {
               className="hero-subheadline"
               style={{ margin: "0 auto", color: "rgba(255,255,255,0.72)", fontSize: "clamp(1.125rem, 2vw, 1.375rem)", fontWeight: 400 }}
             >
-              A library of agents tailored to your work.
+              A library of AI agents tailored to your work.
             </p>
           </div>
         </div>

@@ -47,7 +47,7 @@ export default function AboutPage() {
               className="hero-subheadline"
               style={{ margin: "0 auto", fontSize: "clamp(1.125rem, 2vw, 1.375rem)", fontWeight: 400 }}
             >
-              Built for real jobs. Not demos.
+              Helping AI beginners customize their own AI.
             </p>
           </div>
         </div>

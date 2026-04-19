@@ -878,12 +878,7 @@ export default function CompetitiveDossierTool({
                 animationDelay: "0.1s",
               }}
             >
-              {/* WHAT'S INCLUDED label — left-aligned as section marker */}
-              <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "rgba(255,255,255,0.45)", margin: "0 0 14px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-                What&apos;s Included
-              </p>
-
-              {/* Deliverables list — block centered, items left-aligned within block */}
+              {/* Deliverables list — label removed; list speaks for itself under page H1 */}
               <div style={{ display: "flex", justifyContent: "center", marginBottom: "44px" }}>
                 <div style={{ display: "flex", flexDirection: "column", gap: "9px" }}>
                   {DOSSIER_SECTIONS.map((item) => (
@@ -928,7 +923,7 @@ export default function CompetitiveDossierTool({
                           fontWeight: 500,
                           letterSpacing: "0.01em",
                           color: isActive ? "#FFFFFF" : "rgba(255,255,255,0.55)",
-                          background: isActive ? "rgba(255,255,255,0.12)" : "transparent",
+                          background: isActive ? "rgba(255,255,255,0.08)" : "transparent",
                           border: "none",
                           borderRadius: "999px",
                           cursor: "pointer",
@@ -952,7 +947,7 @@ export default function CompetitiveDossierTool({
                     letterSpacing: "-0.01em",
                     color: "#FFFFFF",
                     lineHeight: 1,
-                    opacity: selectedMode === "onetime" ? 1 : 0.3,
+                    opacity: selectedMode === "onetime" ? 1 : 0.2,
                     transition: "opacity 0.2s ease",
                   }}
                 >
@@ -966,7 +961,7 @@ export default function CompetitiveDossierTool({
                     letterSpacing: "-0.01em",
                     color: "#FFFFFF",
                     lineHeight: 1,
-                    opacity: selectedMode === "annual" ? 1 : 0.3,
+                    opacity: selectedMode === "annual" ? 1 : 0.2,
                     transition: "opacity 0.2s ease",
                   }}
                 >

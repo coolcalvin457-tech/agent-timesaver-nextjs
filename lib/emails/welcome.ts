@@ -78,7 +78,8 @@ function buildWelcomeEmailHTML(toolName: WelcomeTool): string {
   const preHeader = `AGENT: ${toolName} is ready whenever you are.`;
 
   // Body is exactly four sentences per spec rule. Parallel phrasing across
-  // all three tools — only the tool name in sentences two and four changes.
+  // all three tools. Only sentence two carries the tool name; the opener
+  // ("Hi,"), feedback line, and closer ("Welcome aboard.") are tool-agnostic.
   // The middle value-prop phrase ("making complex tasks feel easier")
   // stays identical across Workflow, Company, and SWOT.
   return `<!DOCTYPE html>
@@ -103,11 +104,11 @@ function buildWelcomeEmailHTML(toolName: WelcomeTool): string {
             <td style="background:#ffffff; border:1px solid #e4e4e2; border-radius:16px; padding:40px;">
 
               <p style="font-size:16px; line-height:1.7; color:#161618; margin:0 0 18px;">
-                Welcome,
+                Hi,
               </p>
 
               <p style="font-size:16px; line-height:1.7; color:#161618; margin:0 0 18px;">
-                Thank you for using Prompt AI Agents. I hope ${toolName} proves to be a valuable resource for making complex tasks feel easier. You can always reach out with feedback you'd like to share or if you need help with any one of our agent tools. In the meantime, enjoy using ${toolName}.
+                Thank you for using Prompt AI Agents. I hope ${toolName} proves to be a valuable resource for making complex tasks feel easier. Reach out any time with feedback, or if you need help with any of our agent tools. Welcome aboard.
               </p>
 
               <p style="font-size:16px; line-height:1.7; color:#161618; margin:0 0 4px;">
@@ -140,9 +141,9 @@ function buildWelcomeEmailHTML(toolName: WelcomeTool): string {
  * as the HTML version. Used for clients that strip HTML.
  */
 function buildWelcomeEmailText(toolName: WelcomeTool): string {
-  return `Welcome,
+  return `Hi,
 
-Thank you for using Prompt AI Agents. I hope ${toolName} proves to be a valuable resource for making complex tasks feel easier. You can always reach out with feedback you'd like to share or if you need help with any one of our agent tools. In the meantime, enjoy using ${toolName}.
+Thank you for using Prompt AI Agents. I hope ${toolName} proves to be a valuable resource for making complex tasks feel easier. Reach out any time with feedback, or if you need help with any of our agent tools. Welcome aboard.
 
 Best,
 Christian

@@ -1226,19 +1226,28 @@ export default function CompetitiveDossierTool({
       )}
 
       {/* ── Error: run limit ─────────────────────────────────────────────────── */}
+      {/* Spec: cap-enforcement-copy.md §5 Variant B (Company, cap = 150/period).
+           H2 hardcoded here; body prose comes from the 429 server message.
+           Trailing line is hardcoded per §5 ("check your inbox to renew your
+           plan" assumes the §2 email already landed, which it will for any
+           user who crossed 75% before 100%). Operational channel is support@
+           per §5 reasoning block — do NOT link christian@. Matches the
+           Workflow §5 Variant A styling so the three cap-hit screens read
+           identically below the H2 (§5 rule line 313). */}
       {screen === "error-limit" && (
         <div className="screen" style={{ textAlign: "center" }}>
-          <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.25rem, 2.5vw, 1.5rem)", color: "#fff", margin: "0 0 12px" }}>
+          <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.25rem, 2.5vw, 1.5rem)", color: "#fff", margin: "0 0 12px", lineHeight: 1.4 }}>
             You&apos;ve used this period&apos;s dossiers.
           </h2>
-          <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.55)", margin: "0 0 12px", lineHeight: 1.6 }}>
+          <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.55)", margin: "0 0 16px", lineHeight: 1.6 }}>
             {errorMsg}
           </p>
-          <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.45)", margin: "0", lineHeight: 1.6 }}>
-            Questions? Reach out to{" "}
+          <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.55)", margin: "0", lineHeight: 1.6 }}>
+            If you would like to continue building before then, please check your inbox to renew your plan or email{" "}
             <a href="mailto:support@promptaiagents.com" style={{ color: "var(--cta, #1E7AB8)" }}>
               support@promptaiagents.com
             </a>
+            .
           </p>
         </div>
       )}

@@ -878,8 +878,8 @@ export default function CompetitiveDossierTool({
                 animationDelay: "0.1s",
               }}
             >
-              {/* WHAT'S INCLUDED label — centered to align with block below */}
-              <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "rgba(255,255,255,0.45)", margin: "0 0 14px", textTransform: "uppercase", letterSpacing: "0.05em", textAlign: "center" }}>
+              {/* WHAT'S INCLUDED label — left-aligned as section marker */}
+              <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "rgba(255,255,255,0.45)", margin: "0 0 14px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
                 What&apos;s Included
               </p>
 
@@ -907,7 +907,7 @@ export default function CompetitiveDossierTool({
                     display: "inline-flex",
                     padding: "2px",
                     borderRadius: "999px",
-                    background: "rgba(0,0,0,0.25)",
+                    background: "transparent",
                   }}
                 >
                   {([
@@ -943,11 +943,11 @@ export default function CompetitiveDossierTool({
               </div>
 
               {/* Prices pair — serif display font, lighter weight for premium feel */}
-              <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "36px", marginBottom: "40px", flexWrap: "wrap" }}>
+              <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "28px", marginBottom: "40px", flexWrap: "wrap" }}>
                 <span
                   style={{
                     fontFamily: "var(--font-display)",
-                    fontSize: "2.25rem",
+                    fontSize: "2rem",
                     fontWeight: 400,
                     letterSpacing: "-0.01em",
                     color: "#FFFFFF",
@@ -961,7 +961,7 @@ export default function CompetitiveDossierTool({
                 <span
                   style={{
                     fontFamily: "var(--font-display)",
-                    fontSize: "2.25rem",
+                    fontSize: "2rem",
                     fontWeight: 400,
                     letterSpacing: "-0.01em",
                     color: "#FFFFFF",
@@ -973,28 +973,6 @@ export default function CompetitiveDossierTool({
                   $149
                 </span>
               </div>
-
-              {/* Sign-in link — placed above CTA for visualization */}
-              {!user && (
-                <p style={{ fontSize: "0.8125rem", textAlign: "center", margin: "0 0 20px" }}>
-                  <span style={{ color: "rgba(255,255,255,0.5)" }}>Already have an account? </span>
-                  <button
-                    type="button"
-                    onClick={handleSignIn}
-                    style={{
-                      background: "none",
-                      border: "none",
-                      padding: 0,
-                      fontSize: "0.8125rem",
-                      color: "#60B4F0",
-                      textDecoration: "underline",
-                      cursor: "pointer",
-                    }}
-                  >
-                    Sign in
-                  </button>
-                </p>
-              )}
 
               {/* CTA — pill, wider. Color stays solid; hover only fires once ToS
                    is checked (handled by `:not(:disabled)` in .btn-paywall-cta CSS). */}
@@ -1066,6 +1044,27 @@ export default function CompetitiveDossierTool({
                 </label>
               </div>
 
+              {/* Sign-in link — inside pricing card, below ToS */}
+              {!user && (
+                <p style={{ fontSize: "0.8125rem", textAlign: "center", margin: "16px 0 0" }}>
+                  <span style={{ color: "rgba(255,255,255,0.5)" }}>Already have an account? </span>
+                  <button
+                    type="button"
+                    onClick={handleSignIn}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      padding: 0,
+                      fontSize: "0.8125rem",
+                      color: "#60B4F0",
+                      textDecoration: "underline",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Sign in
+                  </button>
+                </p>
+              )}
             </div>
           )}
 

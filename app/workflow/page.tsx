@@ -58,7 +58,7 @@ export default function WorkflowBuilderPage({
                 lineHeight: 1.6,
               }}
             >
-              $49 One-time  ·  $99 Annually
+              $49 One-time  ·  $99 Annual
             </p>
 
             <a

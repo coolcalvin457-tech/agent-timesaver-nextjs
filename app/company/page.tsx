@@ -58,7 +58,7 @@ export default function CompetitiveDossierPage({
                 lineHeight: 1.6,
               }}
             >
-              $29 One-time  ·  $149 Annually
+              $29 One-time  ·  $149 Annual
             </p>
 
             <a

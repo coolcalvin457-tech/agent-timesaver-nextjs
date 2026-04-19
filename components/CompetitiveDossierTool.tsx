@@ -878,13 +878,13 @@ export default function CompetitiveDossierTool({
                 animationDelay: "0.1s",
               }}
             >
-              {/* WHAT'S INCLUDED label — left-aligned as section marker */}
-              <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "rgba(255,255,255,0.45)", margin: "0 0 14px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+              {/* WHAT'S INCLUDED label — left-aligned as section marker, nudged right */}
+              <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "rgba(255,255,255,0.45)", margin: "0 0 14px 16px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
                 What&apos;s Included
               </p>
 
-              {/* Deliverables list — left-aligned */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "9px", paddingLeft: "4px", marginBottom: "44px" }}>
+              {/* Deliverables list — left-aligned, nudged right to match label */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "9px", paddingLeft: "20px", marginBottom: "44px" }}>
                 {DOSSIER_SECTIONS.map((item) => (
                   <div key={item} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0, color: "var(--cta, #1E7AB8)" }}>

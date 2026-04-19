@@ -581,7 +581,17 @@ export default function CompetitiveDossierTool({
   // ─── Render ───────────────────────────────────────────────────────────────────
 
   return (
-    <div ref={toolContainerRef} className="tool-container" style={{ scrollMarginTop: "136px" }}>
+    <div
+      ref={toolContainerRef}
+      className="tool-container"
+      style={{
+        scrollMarginTop: "136px",
+        // Paywall screen gets a flat dark canvas so the What's Included card's
+        // internal gradient reads as the only glow. All other screens keep
+        // the ambient blue gradient defined in globals.css.
+        ...(screen === "paywall" ? { background: "var(--dark, #161618)" } : {}),
+      }}
+    >
 
       {/* ── Screen 1: Target company ────────────────────────────────────────── */}
       {screen === "s1" && (
@@ -779,7 +789,7 @@ export default function CompetitiveDossierTool({
 
       {/* ── Paywall ──────────────────────────────────────────────────────────── */}
       {screen === "paywall" && (
-        <div className="screen" style={{ background: "var(--dark, #161618)" }}>
+        <div className="screen">
           <h2
             style={{
               fontSize: "clamp(1.75rem, 3.5vw, 2.25rem)",

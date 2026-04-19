@@ -988,10 +988,15 @@ export async function POST(req: NextRequest) {
             day: "numeric",
             year: "numeric",
           });
+          // Body prose only — the H2 ("You've used this period's workflows.")
+          // is hardcoded in the WorkflowBuilderTool error-limit screen per
+          // cap-enforcement-copy.md §5 (S195-Copy structural pattern: H2
+          // names the state in the component, server message names the
+          // resolution in the body).
           return NextResponse.json(
             {
               error: "run_limit_reached",
-              message: `You've used this period's workflows. Your next one unlocks when your subscription renews on ${renewalDate}.`,
+              message: `Your next one unlocks when your subscription renews on ${renewalDate}.`,
             },
             { status: 429 }
           );

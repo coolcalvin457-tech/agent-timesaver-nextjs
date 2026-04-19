@@ -19,7 +19,8 @@ type Screen =
   | "verifying"
   | "loading"
   | "sent"
-  | "error";
+  | "error"
+  | "error-limit";
 
 type Frequency = "Daily" | "Weekly" | "Quarterly" | "1x Project";
 type Collaboration = "Just me" | "Small team" | "Large team";
@@ -379,6 +380,17 @@ export default function WorkflowBuilderTool({
       const json = await res.json();
 
       if (!res.ok) {
+        // Cap-hit intercept: dedicated screen instead of the generic error
+        // retry path. Retry would just 429 again — UX needs to name the
+        // reset date and point at the renewal/support ladder. Per
+        // cap-enforcement-copy.md §5 Variant A (Workflow, cap = 100/period).
+        if (res.status === 429 && json?.error === "run_limit_reached") {
+          setErrorMsg(
+            typeof json?.message === "string" ? json.message : ""
+          );
+          setScreen("error-limit");
+          return;
+        }
         throw new Error(json.error ?? "Build failed");
       }
 
@@ -1244,6 +1256,41 @@ export default function WorkflowBuilderTool({
           buttonLabel="Try Now"
           href="/industry"
         />
+        </div>
+      )}
+
+      {/* ── Error: run limit ─────────────────────────────────
+           Spec: cap-enforcement-copy.md §5 Variant A (Workflow, cap = 100/period).
+           H2 hardcoded here; body prose comes from the 429 server message
+           ("Your next one unlocks when your subscription renews on [date].").
+           Trailing line is hardcoded — operational channel is support@ per
+           §5 reasoning block (founder voice is email-only; do not link
+           christian@ on this website surface). Wrapped in `.screen` per
+           DESIGN-19 padding rule (error screens are the highest-miss category). */}
+      {screen === "error-limit" && (
+        <div className="screen" style={{ textAlign: "center" }}>
+          <h2
+            style={{
+              fontFamily: "var(--font-display)",
+              fontWeight: 400,
+              fontSize: "clamp(1.25rem, 2.5vw, 1.5rem)",
+              color: "#fff",
+              margin: "0 0 12px",
+              lineHeight: 1.4,
+            }}
+          >
+            You&apos;ve used this period&apos;s workflows.
+          </h2>
+          <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.55)", margin: "0 0 16px", lineHeight: 1.6 }}>
+            {errorMsg}
+          </p>
+          <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.55)", margin: "0", lineHeight: 1.6 }}>
+            If you would like to continue building before then, please check your inbox to renew your plan or email{" "}
+            <a href="mailto:support@promptaiagents.com" style={{ color: "var(--cta, #1E7AB8)" }}>
+              support@promptaiagents.com
+            </a>
+            .
+          </p>
         </div>
       )}
 

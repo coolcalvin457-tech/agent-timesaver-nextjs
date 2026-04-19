@@ -895,34 +895,14 @@ export default function CompetitiveDossierTool({
                 animationDelay: "0.2s",
               }}
             >
-              {/* Product name — centered at top */}
-              <p style={{ fontSize: "0.9375rem", fontWeight: 700, color: "#FFFFFF", margin: "0 0 20px", textAlign: "center" }}>
-                Competitive Dossier
-              </p>
-
-              {/* Prices pair — $29 primary anchor, $149 secondary, side by side */}
-              <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-end", gap: "56px", marginBottom: "20px", flexWrap: "wrap" }}>
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
-                  <span style={{ fontSize: "1.875rem", fontWeight: 800, color: "#FFFFFF", lineHeight: 1 }}>$29</span>
-                  <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.55)" }}>one-time</span>
-                </div>
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
-                  <div style={{ display: "flex", alignItems: "baseline" }}>
-                    <span style={{ fontSize: "1.375rem", fontWeight: 700, color: "#FFFFFF", lineHeight: 1 }}>$149</span>
-                    <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.55)", marginLeft: "2px" }}>/yr</span>
-                  </div>
-                  <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.55)" }}>annual</span>
-                </div>
-              </div>
-
-              {/* Segmented toggle: One-time · Annual */}
+              {/* Segmented toggle — now the header element, tighter/more premium */}
               <div style={{ display: "flex", justifyContent: "center", marginBottom: "20px" }}>
                 <div
                   role="tablist"
                   aria-label="Choose your plan"
                   style={{
                     display: "inline-flex",
-                    padding: "4px",
+                    padding: "3px",
                     borderRadius: "999px",
                     background: "rgba(255,255,255,0.04)",
                     border: "1px solid rgba(255,255,255,0.10)",
@@ -941,9 +921,10 @@ export default function CompetitiveDossierTool({
                         aria-selected={isActive}
                         onClick={() => setSelectedMode(opt.key)}
                         style={{
-                          padding: "7px 18px",
-                          fontSize: "0.8125rem",
-                          fontWeight: 600,
+                          padding: "5px 14px",
+                          fontSize: "0.75rem",
+                          fontWeight: 500,
+                          letterSpacing: "0.01em",
                           color: isActive ? "#FFFFFF" : "rgba(255,255,255,0.55)",
                           background: isActive ? "rgba(255,255,255,0.08)" : "transparent",
                           border: "none",
@@ -959,36 +940,23 @@ export default function CompetitiveDossierTool({
                 </div>
               </div>
 
+              {/* Prices pair — $29 primary anchor, $149 secondary, side by side */}
+              <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-end", gap: "56px", marginBottom: "22px", flexWrap: "wrap" }}>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
+                  <span style={{ fontSize: "2.125rem", fontWeight: 800, color: "#FFFFFF", lineHeight: 1 }}>$29</span>
+                  <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.55)" }}>one-time</span>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
+                  <div style={{ display: "flex", alignItems: "baseline" }}>
+                    <span style={{ fontSize: "1.625rem", fontWeight: 700, color: "#FFFFFF", lineHeight: 1 }}>$149</span>
+                    <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.55)", marginLeft: "2px" }}>/yr</span>
+                  </div>
+                  <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.55)" }}>annual</span>
+                </div>
+              </div>
+
               {/* Divider — separates info/selection from action */}
               <div style={{ borderTop: "1px solid rgba(255,255,255,0.12)", margin: "0 0 20px" }} />
-
-              {/* ToS checkbox — centered, gates the CTA */}
-              <div style={{ display: "flex", justifyContent: "center", marginBottom: "16px" }}>
-                <label style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer", userSelect: "none" }}>
-                  <input
-                    type="checkbox"
-                    checked={tosAccepted}
-                    onChange={(e) => setTosAccepted(e.target.checked)}
-                    style={{
-                      width: "16px",
-                      height: "16px",
-                      cursor: "pointer",
-                      accentColor: "#1E7AB8",
-                    }}
-                  />
-                  <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.70)" }}>
-                    I agree to the{" "}
-                    <a
-                      href="#"
-                      style={{ color: "#60B4F0", textDecoration: "underline" }}
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      Terms of Service
-                    </a>
-                    .
-                  </span>
-                </label>
-              </div>
 
               {/* CTA */}
               <button
@@ -1019,6 +987,45 @@ export default function CompetitiveDossierTool({
                   {checkoutError}
                 </p>
               )}
+
+              {/* ToS checkbox — centered below CTA, transparent/outlined custom styling */}
+              <div style={{ display: "flex", justifyContent: "center", margin: "16px 0 0" }}>
+                <label style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer", userSelect: "none" }}>
+                  <input
+                    type="checkbox"
+                    checked={tosAccepted}
+                    onChange={(e) => setTosAccepted(e.target.checked)}
+                    style={{
+                      appearance: "none",
+                      WebkitAppearance: "none",
+                      width: "16px",
+                      height: "16px",
+                      border: `1.5px solid ${tosAccepted ? "#1E7AB8" : "rgba(255,255,255,0.35)"}`,
+                      borderRadius: "3px",
+                      background: tosAccepted ? "#1E7AB8" : "transparent",
+                      backgroundImage: tosAccepted
+                        ? `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.2l2.3 2.3 4.7-5.2' stroke='white' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`
+                        : undefined,
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "center",
+                      cursor: "pointer",
+                      flexShrink: 0,
+                      transition: "background 0.15s ease, border-color 0.15s ease",
+                    }}
+                  />
+                  <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.70)" }}>
+                    I agree to the{" "}
+                    <a
+                      href="#"
+                      style={{ color: "#60B4F0", textDecoration: "underline" }}
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      Terms of Service
+                    </a>
+                    .
+                  </span>
+                </label>
+              </div>
 
               {/* Sign-in link — inside pricing card */}
               {!user && (

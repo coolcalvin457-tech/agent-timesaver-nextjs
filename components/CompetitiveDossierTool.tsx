@@ -810,39 +810,12 @@ export default function CompetitiveDossierTool({
             </p>
           )}
 
-          {/* What's included */}
-          <div
-            style={{
-              background: "radial-gradient(ellipse 80% 90% at center, rgba(30,122,184,0.14) 0%, transparent 65%), var(--dark, #161618)",
-              border: "1px solid rgba(255,255,255,0.10)",
-              borderRadius: "10px",
-              padding: "18px 20px",
-              marginBottom: "16px",
-              animation: "fadeUp 0.4s ease both",
-              animationDelay: "0.1s",
-            }}
-          >
-            <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "rgba(255,255,255,0.45)", margin: "0 0 12px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-              What&apos;s Included
-            </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "8px", paddingLeft: "4px" }}>
-              {DOSSIER_SECTIONS.map((item) => (
-                <div key={item} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                  <svg width="13" height="13" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0, color: "var(--cta, #1E7AB8)" }}>
-                    <path d="M2.5 1.5h6l3 3v8h-9v-11z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" fill="none"/>
-                    <path d="M8.5 1.5v3h3" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/>
-                  </svg>
-                  <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.70)", fontWeight: 500 }}>{item}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Pricing card */}
+          {/* Merged paywall card — deliverables + pricing + CTA flow as one artifact */}
           {subscriptionVerified ? (
             <div
               style={{
                 background: "var(--dark, #161618)",
+                border: "1px solid rgba(255,255,255,0.10)",
                 borderRadius: "12px",
                 padding: "24px 26px",
                 marginBottom: "16px",
@@ -896,16 +869,34 @@ export default function CompetitiveDossierTool({
           ) : (
             <div
               style={{
-                background: "var(--dark, #161618)",
+                background: "radial-gradient(ellipse 80% 90% at center, rgba(30,122,184,0.14) 0%, transparent 65%), var(--dark, #161618)",
                 border: "1px solid rgba(255,255,255,0.10)",
                 borderRadius: "12px",
-                padding: "26px 28px",
+                padding: "28px 32px",
                 marginBottom: "0",
                 animation: "fadeUp 0.4s ease both",
-                animationDelay: "0.2s",
+                animationDelay: "0.1s",
               }}
             >
-              {/* Segmented toggle — header element, tight & premium */}
+              {/* WHAT'S INCLUDED label */}
+              <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "rgba(255,255,255,0.45)", margin: "0 0 14px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                What&apos;s Included
+              </p>
+
+              {/* Deliverables list */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "9px", paddingLeft: "4px", marginBottom: "32px" }}>
+                {DOSSIER_SECTIONS.map((item) => (
+                  <div key={item} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                    <svg width="13" height="13" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0, color: "var(--cta, #1E7AB8)" }}>
+                      <path d="M2.5 1.5h6l3 3v8h-9v-11z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" fill="none"/>
+                      <path d="M8.5 1.5v3h3" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/>
+                    </svg>
+                    <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.70)", fontWeight: 500 }}>{item}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Segmented toggle — outline removed */}
               <div style={{ display: "flex", justifyContent: "center", marginBottom: "24px" }}>
                 <div
                   role="tablist"
@@ -915,7 +906,6 @@ export default function CompetitiveDossierTool({
                     padding: "3px",
                     borderRadius: "999px",
                     background: "rgba(255,255,255,0.04)",
-                    border: "1px solid rgba(255,255,255,0.10)",
                   }}
                 >
                   {([
@@ -950,12 +940,13 @@ export default function CompetitiveDossierTool({
                 </div>
               </div>
 
-              {/* Prices pair — selected emphasized, non-selected dimmed for context */}
-              <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "48px", marginBottom: "26px", flexWrap: "wrap" }}>
+              {/* Prices pair — serif display font, lighter weight for premium feel */}
+              <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "48px", marginBottom: "40px", flexWrap: "wrap" }}>
                 <span
                   style={{
+                    fontFamily: "var(--font-display)",
                     fontSize: "2.25rem",
-                    fontWeight: 800,
+                    fontWeight: 400,
                     color: "#FFFFFF",
                     lineHeight: 1,
                     opacity: selectedMode === "onetime" ? 1 : 0.3,
@@ -966,8 +957,9 @@ export default function CompetitiveDossierTool({
                 </span>
                 <span
                   style={{
+                    fontFamily: "var(--font-display)",
                     fontSize: "2.25rem",
-                    fontWeight: 800,
+                    fontWeight: 400,
                     color: "#FFFFFF",
                     lineHeight: 1,
                     opacity: selectedMode === "annual" ? 1 : 0.3,
@@ -978,14 +970,14 @@ export default function CompetitiveDossierTool({
                 </span>
               </div>
 
-              {/* CTA — pill, narrower, refined */}
+              {/* CTA — pill, wider */}
               <button
                 type="button"
                 className="btn-paywall-cta"
                 onClick={() => handleCheckout(selectedMode === "annual" ? { type: "annual" } : undefined)}
                 disabled={checkoutLoading || !tosAccepted}
                 style={{
-                  maxWidth: "280px",
+                  maxWidth: "320px",
                   width: "100%",
                   margin: "0 auto",
                   display: "block",

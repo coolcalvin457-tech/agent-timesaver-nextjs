@@ -896,17 +896,17 @@ export default function CompetitiveDossierTool({
                 ))}
               </div>
 
-              {/* Unified dark pill — single shape with gradient bleed; active state is color-only */}
+              {/* Unified dark pill — fixed width + flex:1 columns for alignment with prices row */}
               <div style={{ display: "flex", justifyContent: "center", marginBottom: "24px" }}>
                 <div
                   role="tablist"
                   aria-label="Choose your plan"
                   style={{
-                    display: "inline-flex",
-                    padding: "6px 18px",
-                    gap: "18px",
+                    display: "flex",
+                    width: "200px",
+                    padding: "6px 0",
                     borderRadius: "999px",
-                    background: "rgba(0,0,0,0.35)",
+                    background: "rgba(0,0,0,0.20)",
                   }}
                 >
                   {([
@@ -922,10 +922,12 @@ export default function CompetitiveDossierTool({
                         aria-selected={isActive}
                         onClick={() => setSelectedMode(opt.key)}
                         style={{
+                          flex: 1,
                           padding: 0,
                           fontSize: "0.75rem",
                           fontWeight: 500,
                           letterSpacing: "0.01em",
+                          textAlign: "center",
                           color: isActive ? "#FFFFFF" : "rgba(255,255,255,0.40)",
                           background: "transparent",
                           border: "none",
@@ -940,34 +942,40 @@ export default function CompetitiveDossierTool({
                 </div>
               </div>
 
-              {/* Prices pair — serif display font, lighter weight for premium feel */}
-              <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "20px", marginBottom: "40px", flexWrap: "wrap" }}>
-                <span
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "2rem",
-                    fontWeight: 400,
-                    letterSpacing: "-0.01em",
-                    color: selectedMode === "onetime" ? "#FFFFFF" : "rgba(255,255,255,0.40)",
-                    lineHeight: 1,
-                    transition: "color 0.2s ease",
-                  }}
-                >
-                  $29
-                </span>
-                <span
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "2rem",
-                    fontWeight: 400,
-                    letterSpacing: "-0.01em",
-                    color: selectedMode === "annual" ? "#FFFFFF" : "rgba(255,255,255,0.40)",
-                    lineHeight: 1,
-                    transition: "color 0.2s ease",
-                  }}
-                >
-                  $149
-                </span>
+              {/* Prices pair — matches toggle column structure (200px wrapper + flex:1 each) so each price centers directly under its label */}
+              <div style={{ display: "flex", justifyContent: "center", marginBottom: "40px" }}>
+                <div style={{ display: "flex", width: "200px" }}>
+                  <span
+                    style={{
+                      flex: 1,
+                      textAlign: "center",
+                      fontFamily: "var(--font-display)",
+                      fontSize: "2rem",
+                      fontWeight: 400,
+                      letterSpacing: "-0.01em",
+                      color: selectedMode === "onetime" ? "#FFFFFF" : "rgba(255,255,255,0.40)",
+                      lineHeight: 1,
+                      transition: "color 0.2s ease",
+                    }}
+                  >
+                    $29
+                  </span>
+                  <span
+                    style={{
+                      flex: 1,
+                      textAlign: "center",
+                      fontFamily: "var(--font-display)",
+                      fontSize: "2rem",
+                      fontWeight: 400,
+                      letterSpacing: "-0.01em",
+                      color: selectedMode === "annual" ? "#FFFFFF" : "rgba(255,255,255,0.40)",
+                      lineHeight: 1,
+                      transition: "color 0.2s ease",
+                    }}
+                  >
+                    $149
+                  </span>
+                </div>
               </div>
 
               {/* CTA — pill, wider. Color stays solid; hover only fires once ToS

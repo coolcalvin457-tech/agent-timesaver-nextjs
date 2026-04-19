@@ -905,8 +905,8 @@ export default function CompetitiveDossierTool({
                     display: "inline-flex",
                     alignItems: "center",
                     gap: "27px",
-                    paddingLeft: "10px",
-                    paddingRight: "27px",
+                    paddingLeft: "18px",
+                    paddingRight: "35px",
                     paddingTop: "6px",
                     paddingBottom: "6px",
                     borderRadius: "999px",
@@ -1022,7 +1022,7 @@ export default function CompetitiveDossierTool({
                       borderRadius: "3px",
                       background: "transparent",
                       backgroundImage: tosAccepted
-                        ? `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.2l2.3 2.3 4.7-5.2' stroke='white' stroke-width='1.8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`
+                        ? `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.2l2.3 2.3 5.8-6.4' stroke='white' stroke-width='1.8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`
                         : undefined,
                       backgroundRepeat: "no-repeat",
                       backgroundPosition: "center",
@@ -1034,7 +1034,7 @@ export default function CompetitiveDossierTool({
                       transition: "background-image 0.15s ease",
                     }}
                   />
-                  <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.5)" }}>
+                  <span style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.5)" }}>
                     I agree to the{" "}
                     <a
                       href="#"
@@ -1049,7 +1049,7 @@ export default function CompetitiveDossierTool({
 
               {/* Sign-in link — inside pricing card, below ToS */}
               {!user && (
-                <p style={{ fontSize: "0.8125rem", textAlign: "center", margin: "16px 0 0" }}>
+                <p style={{ fontSize: "0.75rem", textAlign: "center", margin: "16px 0 0" }}>
                   <span style={{ color: "rgba(255,255,255,0.5)" }}>Already have an account? </span>
                   <button
                     type="button"
@@ -1058,7 +1058,7 @@ export default function CompetitiveDossierTool({
                       background: "none",
                       border: "none",
                       padding: 0,
-                      fontSize: "0.8125rem",
+                      fontSize: "0.75rem",
                       color: "#60B4F0",
                       textDecoration: "underline",
                       cursor: "pointer",

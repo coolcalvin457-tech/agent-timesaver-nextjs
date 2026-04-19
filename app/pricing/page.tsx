@@ -3,13 +3,13 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Pricing | Prompt AI Agents",
+  title: "Pricing · Prompt AI Agents",
   description:
-    "Personal AI Coaching with Calvin. Live 1-on-1 sessions to get fluent at prompting, build your first AI agent, and stand up your full AI system.",
+    "Personal AI Coaching with Christian Murphy. Live 1-on-1 sessions to get fluent at prompting, build your first AI agent, and stand up your full AI system.",
   openGraph: {
-    title: "Pricing | Prompt AI Agents",
+    title: "Pricing · Prompt AI Agents",
     description:
-      "Personal AI Coaching with Calvin. Live 1-on-1 sessions to get fluent at prompting, build your first AI agent, and stand up your full AI system.",
+      "Personal AI Coaching with Christian Murphy. Live 1-on-1 sessions to get fluent at prompting, build your first AI agent, and stand up your full AI system.",
     url: "https://promptaiagents.com/pricing",
     siteName: "Prompt AI Agents",
     type: "website",
@@ -45,7 +45,7 @@ const coachingTiers: Tier[] = [
       "Run sessions with a framework and agenda",
     ],
     ctaLabel: "Schedule a free call",
-    ctaHref: "mailto:calvin@promptaiagents.com?subject=AI%20Coaching%20Discovery%20Call%20-%20Beginner",
+    ctaHref: "mailto:christian@promptaiagents.com?subject=AI%20Coaching%20Discovery%20Call%20-%20Beginner",
     ctaStyle: "outline",
   },
   {
@@ -62,7 +62,7 @@ const coachingTiers: Tier[] = [
       "Test, review, refine until it achieves the goal",
     ],
     ctaLabel: "Schedule a free call",
-    ctaHref: "mailto:calvin@promptaiagents.com?subject=AI%20Coaching%20Discovery%20Call%20-%20Confident",
+    ctaHref: "mailto:christian@promptaiagents.com?subject=AI%20Coaching%20Discovery%20Call%20-%20Confident",
     ctaStyle: "outline",
   },
   {
@@ -79,7 +79,7 @@ const coachingTiers: Tier[] = [
       "Design a roadmap for future systems",
     ],
     ctaLabel: "Schedule a free call",
-    ctaHref: "mailto:calvin@promptaiagents.com?subject=AI%20Coaching%20Discovery%20Call%20-%20Scale",
+    ctaHref: "mailto:christian@promptaiagents.com?subject=AI%20Coaching%20Discovery%20Call%20-%20Scale",
     ctaStyle: "outline",
     featured: true,
   },

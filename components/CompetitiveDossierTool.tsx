@@ -1008,7 +1008,7 @@ export default function CompetitiveDossierTool({
 
               {/* ToS checkbox — 12×12 box with overlay SVG so the check can extend outside the top-right corner */}
               <div style={{ display: "flex", justifyContent: "center", margin: "24px 0 0" }}>
-                <label style={{ display: "flex", alignItems: "center", gap: "7px", cursor: "pointer", userSelect: "none" }}>
+                <label style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer", userSelect: "none" }}>
                   <span
                     style={{
                       position: "relative",

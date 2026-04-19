@@ -896,7 +896,7 @@ export default function CompetitiveDossierTool({
                 ))}
               </div>
 
-              {/* Unified dark pill — asymmetric padding + wider gap so One-time sits over $29 and Annual over $149 */}
+              {/* Unified dark pill — widened gap + asymmetric padding so One-time sits over $29 and Annual over $149 */}
               <div style={{ display: "flex", justifyContent: "center", marginBottom: "24px" }}>
                 <div
                   role="tablist"
@@ -904,9 +904,9 @@ export default function CompetitiveDossierTool({
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
-                    gap: "27px",
-                    paddingLeft: "18px",
-                    paddingRight: "35px",
+                    gap: "38px",
+                    paddingLeft: "24px",
+                    paddingRight: "38px",
                     paddingTop: "6px",
                     paddingBottom: "6px",
                     borderRadius: "999px",
@@ -1006,34 +1006,63 @@ export default function CompetitiveDossierTool({
                 </p>
               )}
 
-              {/* ToS checkbox — centered below CTA, transparent/outlined custom styling */}
+              {/* ToS checkbox — 12×12 box with overlay SVG so the check can extend outside the top-right corner */}
               <div style={{ display: "flex", justifyContent: "center", margin: "24px 0 0" }}>
                 <label style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer", userSelect: "none" }}>
-                  <input
-                    type="checkbox"
-                    checked={tosAccepted}
-                    onChange={(e) => setTosAccepted(e.target.checked)}
+                  <span
                     style={{
-                      appearance: "none",
-                      WebkitAppearance: "none",
-                      width: "14px",
-                      height: "14px",
-                      border: "1.5px solid rgba(255,255,255,0.35)",
-                      borderRadius: "3px",
-                      background: "transparent",
-                      backgroundImage: tosAccepted
-                        ? `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.2l2.3 2.3 5.8-6.4' stroke='white' stroke-width='1.8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`
-                        : undefined,
-                      backgroundRepeat: "no-repeat",
-                      backgroundPosition: "center",
-                      backgroundSize: "10px 10px",
-                      cursor: "pointer",
+                      position: "relative",
+                      display: "inline-block",
+                      width: "12px",
+                      height: "12px",
                       flexShrink: 0,
-                      outline: "none",
-                      boxShadow: "none",
-                      transition: "background-image 0.15s ease",
                     }}
-                  />
+                  >
+                    <input
+                      type="checkbox"
+                      checked={tosAccepted}
+                      onChange={(e) => setTosAccepted(e.target.checked)}
+                      style={{
+                        appearance: "none",
+                        WebkitAppearance: "none",
+                        boxSizing: "border-box",
+                        width: "12px",
+                        height: "12px",
+                        margin: 0,
+                        padding: 0,
+                        border: "1.5px solid rgba(255,255,255,0.35)",
+                        borderRadius: "3px",
+                        background: "transparent",
+                        cursor: "pointer",
+                        outline: "none",
+                        boxShadow: "none",
+                        display: "block",
+                      }}
+                    />
+                    {tosAccepted && (
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        style={{
+                          position: "absolute",
+                          left: 0,
+                          top: "-2px",
+                          pointerEvents: "none",
+                          overflow: "visible",
+                        }}
+                      >
+                        <path
+                          d="M3 9.2l2.5 2.3 9.5-10.5"
+                          stroke="white"
+                          strokeWidth="1.8"
+                          fill="none"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    )}
+                  </span>
                   <span style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.5)" }}>
                     I agree to the{" "}
                     <a

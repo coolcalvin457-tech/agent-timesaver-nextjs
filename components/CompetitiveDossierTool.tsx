@@ -903,9 +903,9 @@ export default function CompetitiveDossierTool({
                   aria-label="Choose your plan"
                   style={{
                     display: "inline-flex",
-                    padding: "3px",
+                    padding: "2px",
                     borderRadius: "999px",
-                    background: "rgba(255,255,255,0.04)",
+                    background: "rgba(0,0,0,0.25)",
                   }}
                 >
                   {([
@@ -941,7 +941,7 @@ export default function CompetitiveDossierTool({
               </div>
 
               {/* Prices pair — serif display font, lighter weight for premium feel */}
-              <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "48px", marginBottom: "40px", flexWrap: "wrap" }}>
+              <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "36px", marginBottom: "40px", flexWrap: "wrap" }}>
                 <span
                   style={{
                     fontFamily: "var(--font-display)",
@@ -971,6 +971,28 @@ export default function CompetitiveDossierTool({
                   $149
                 </span>
               </div>
+
+              {/* Sign-in link — placed above CTA for visualization */}
+              {!user && (
+                <p style={{ fontSize: "0.8125rem", textAlign: "center", margin: "0 0 20px" }}>
+                  <span style={{ color: "rgba(255,255,255,0.5)" }}>Already have an account? </span>
+                  <button
+                    type="button"
+                    onClick={handleSignIn}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      padding: 0,
+                      fontSize: "0.8125rem",
+                      color: "#60B4F0",
+                      textDecoration: "underline",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Sign in
+                  </button>
+                </p>
+              )}
 
               {/* CTA — pill, wider. Color stays solid; hover only fires once ToS
                    is checked (handled by `:not(:disabled)` in .btn-paywall-cta CSS). */}
@@ -1038,32 +1060,10 @@ export default function CompetitiveDossierTool({
                     >
                       Terms of Service
                     </a>
-                    .
                   </span>
                 </label>
               </div>
 
-              {/* Sign-in link — inside pricing card */}
-              {!user && (
-                <p style={{ fontSize: "0.8125rem", textAlign: "center", margin: "16px 0 0" }}>
-                  <span style={{ color: "rgba(255,255,255,0.5)" }}>Already have an account? </span>
-                  <button
-                    type="button"
-                    onClick={handleSignIn}
-                    style={{
-                      background: "none",
-                      border: "none",
-                      padding: 0,
-                      fontSize: "0.8125rem",
-                      color: "#60B4F0",
-                      textDecoration: "underline",
-                      cursor: "pointer",
-                    }}
-                  >
-                    Sign in
-                  </button>
-                </p>
-              )}
             </div>
           )}
 

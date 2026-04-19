@@ -217,6 +217,13 @@ export default function WorkflowBuilderTool({
   const [returningCheckLoading, setReturningCheckLoading] = useState(false);
   const [returningCheckError, setReturningCheckError] = useState("");
 
+  // ── Dual-mode paywall state (S198) ────────────────────────
+  // Mirrors /company canonical pattern from S197. Default is one-time ($49);
+  // annual selection ($99/yr) passes { type: "annual" } to the checkout route.
+  // tosAccepted gates the Get Access CTA.
+  const [selectedMode, setSelectedMode] = useState<"onetime" | "annual">("onetime");
+  const [tosAccepted, setTosAccepted] = useState(false);
+
   // ── Build completion flag ─────────────────────────────────
   const [buildDone, setBuildDone] = useState(false);
 
@@ -901,41 +908,12 @@ export default function WorkflowBuilderTool({
             </p>
           )}
 
-          {/* What's included */}
-          <div
-            style={{
-              background: "radial-gradient(ellipse 80% 90% at center, rgba(30,122,184,0.14) 0%, transparent 65%)",
-              border: "1px solid rgba(255,255,255,0.10)",
-              borderRadius: "10px",
-              padding: "18px 20px",
-              marginLeft: "26px",
-              marginRight: "26px",
-              marginBottom: "12px",
-              animation: "fadeUp 0.4s ease both",
-              animationDelay: "0.1s",
-            }}
-          >
-            <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "rgba(255,255,255,0.45)", margin: "0 0 12px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-              What&apos;s Included
-            </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "8px", paddingLeft: "4px" }}>
-              {DELIVERABLES.map((item) => (
-                <div key={item} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                  <svg width="13" height="13" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0, color: "var(--cta, #1E7AB8)" }}>
-                    <path d="M2.5 1.5h6l3 3v8h-9v-11z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" fill="none"/>
-                    <path d="M8.5 1.5v3h3" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/>
-                  </svg>
-                  <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.70)", fontWeight: 500 }}>{item}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Pricing card */}
+          {/* Merged paywall card — deliverables + pricing + CTA flow as one artifact (S198 canonical from /company) */}
           {subscriptionVerified ? (
             <div
               style={{
                 background: "var(--dark, #161618)",
+                border: "1px solid rgba(255,255,255,0.10)",
                 borderRadius: "12px",
                 padding: "24px 26px",
                 marginBottom: "16px",
@@ -989,78 +967,216 @@ export default function WorkflowBuilderTool({
           ) : (
             <div
               style={{
-                background: "var(--dark, #161618)",
+                background: "radial-gradient(ellipse 80% 90% at center, rgba(30,122,184,0.14) 0%, transparent 65%), var(--dark, #161618)",
+                border: "1px solid rgba(255,255,255,0.10)",
                 borderRadius: "12px",
-                padding: "24px 28px 24px 37px",
+                padding: "28px 32px",
                 marginBottom: "0",
                 animation: "fadeUp 0.4s ease both",
-                animationDelay: "0.2s",
+                animationDelay: "0.1s",
               }}
             >
-              {/* Header row: tool name left, badge right */}
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px", flexWrap: "wrap", gap: "8px" }}>
-                <p style={{ fontSize: "0.9375rem", fontWeight: 700, color: "#FFFFFF", margin: 0 }}>
-                  Workflow Builder
-                </p>
-                <span
+              {/* WHAT'S INCLUDED label — left-aligned as section marker, nudged right */}
+              <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "rgba(255,255,255,0.45)", margin: "0 0 14px 16px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                What&apos;s Included
+              </p>
+
+              {/* Deliverables list — left-aligned, nudged right to match label */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "9px", paddingLeft: "20px", marginBottom: "44px" }}>
+                {DELIVERABLES.map((item) => (
+                  <div key={item} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0, color: "var(--cta, #1E7AB8)" }}>
+                      <path d="M2.5 1.5h6l3 3v8h-9v-11z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" fill="none"/>
+                      <path d="M8.5 1.5v3h3" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/>
+                    </svg>
+                    <span style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.70)", fontWeight: 500 }}>{item}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Unified dark pill — widened gap + asymmetric padding so One-time sits over $49 and Annual over $99 */}
+              <div style={{ display: "flex", justifyContent: "center", marginBottom: "24px" }}>
+                <div
+                  role="tablist"
+                  aria-label="Choose your plan"
                   style={{
-                    fontSize: "0.6875rem",
-                    fontWeight: 700,
-                    letterSpacing: "0.06em",
-                    textTransform: "uppercase",
-                    padding: "3px 10px",
-                    borderRadius: "20px",
-                    background: "rgba(30,122,184,0.25)",
-                    color: "#60B4F0",
-                    border: "1px solid rgba(30,122,184,0.20)",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "38px",
+                    paddingLeft: "24px",
+                    paddingRight: "28px",
+                    paddingTop: "6px",
+                    paddingBottom: "6px",
+                    borderRadius: "999px",
+                    background: "rgba(0,0,0,0.35)",
                   }}
                 >
-                  Annual Subscription
+                  {([
+                    { key: "onetime", label: "One-time" },
+                    { key: "annual", label: "Annual" },
+                  ] as const).map((opt) => {
+                    const isActive = selectedMode === opt.key;
+                    return (
+                      <button
+                        key={opt.key}
+                        type="button"
+                        role="tab"
+                        aria-selected={isActive}
+                        onClick={() => setSelectedMode(opt.key)}
+                        style={{
+                          padding: 0,
+                          fontSize: "0.75rem",
+                          fontWeight: 500,
+                          letterSpacing: "0.01em",
+                          color: isActive ? "#FFFFFF" : "rgba(255,255,255,0.40)",
+                          background: "transparent",
+                          border: "none",
+                          cursor: "pointer",
+                          transition: "color 0.15s ease",
+                        }}
+                      >
+                        {opt.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Prices pair — flex + gap 20px, untouched (sacred alignment pattern from /company S197) */}
+              <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "20px", marginBottom: "40px", flexWrap: "wrap" }}>
+                <span
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: "2rem",
+                    fontWeight: 400,
+                    letterSpacing: "-0.01em",
+                    color: selectedMode === "onetime" ? "#FFFFFF" : "rgba(255,255,255,0.40)",
+                    lineHeight: 1,
+                    transition: "color 0.2s ease",
+                  }}
+                >
+                  $49
+                </span>
+                <span
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: "2rem",
+                    fontWeight: 400,
+                    letterSpacing: "-0.01em",
+                    color: selectedMode === "annual" ? "#FFFFFF" : "rgba(255,255,255,0.40)",
+                    lineHeight: 1,
+                    transition: "color 0.2s ease",
+                  }}
+                >
+                  $99
                 </span>
               </div>
 
-              {/* Price */}
-              <div style={{ display: "flex", alignItems: "baseline", marginBottom: "24px" }}>
-                <span style={{ fontSize: "2rem", fontWeight: 800, color: "#FFFFFF", lineHeight: 1 }}>$49</span>
-                <span style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.5)" }}>/year</span>
-              </div>
-
-              {/* Divider */}
-              <div style={{ borderTop: "1px solid rgba(255,255,255,0.12)", margin: "0 0 28px" }} />
-
-              {/* CTA */}
+              {/* CTA — pill, wider. Color stays solid; hover only fires once ToS
+                   is checked (handled by `:not(:disabled)` in .btn-paywall-cta CSS). */}
               <button
                 type="button"
                 className="btn-paywall-cta"
-                onClick={() => handleCheckout()}
-                disabled={checkoutLoading}
+                onClick={() => handleCheckout(selectedMode === "annual" ? { type: "annual" } : undefined)}
+                disabled={checkoutLoading || !tosAccepted}
                 style={{
                   maxWidth: "320px",
                   width: "100%",
                   margin: "0 auto",
                   display: "block",
-                  padding: "11px 20px",
+                  padding: "11px 28px",
                   fontSize: "0.9375rem",
-                  fontWeight: 600,
-                  background: checkoutLoading ? "rgba(30,122,184,0.5)" : "#1E7AB8",
+                  fontWeight: 500,
+                  letterSpacing: "0.01em",
+                  background: "#1E7AB8",
                   color: "#FFFFFF",
                   border: "none",
-                  borderRadius: "8px",
-                  cursor: checkoutLoading ? "not-allowed" : "pointer",
+                  borderRadius: "999px",
+                  cursor: (checkoutLoading || !tosAccepted) ? "not-allowed" : "pointer",
                 }}
               >
                 {checkoutLoading ? "Redirecting to checkout..." : "Get Access"}
               </button>
 
               {checkoutError && (
-                <p style={{ fontSize: "0.8125rem", color: "#F87171", margin: "12px 0 0" }}>
+                <p style={{ fontSize: "0.8125rem", color: "#F87171", margin: "12px 0 0", textAlign: "center" }}>
                   {checkoutError}
                 </p>
               )}
 
-              {/* Sign-in link — inside pricing card */}
+              {/* ToS checkbox — 12×12 box with overlay SVG so the check can extend outside the top-right corner */}
+              <div style={{ display: "flex", justifyContent: "center", margin: "24px 0 0" }}>
+                <label style={{ display: "flex", alignItems: "center", gap: "7px", cursor: "pointer", userSelect: "none" }}>
+                  <span
+                    style={{
+                      position: "relative",
+                      display: "inline-block",
+                      width: "12px",
+                      height: "12px",
+                      flexShrink: 0,
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={tosAccepted}
+                      onChange={(e) => setTosAccepted(e.target.checked)}
+                      style={{
+                        appearance: "none",
+                        WebkitAppearance: "none",
+                        boxSizing: "border-box",
+                        width: "12px",
+                        height: "12px",
+                        margin: 0,
+                        padding: 0,
+                        border: "1.5px solid rgba(255,255,255,0.35)",
+                        borderRadius: "3px",
+                        background: "transparent",
+                        cursor: "pointer",
+                        outline: "none",
+                        boxShadow: "none",
+                        display: "block",
+                      }}
+                    />
+                    {tosAccepted && (
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        style={{
+                          position: "absolute",
+                          left: 0,
+                          top: "-2px",
+                          pointerEvents: "none",
+                          overflow: "visible",
+                        }}
+                      >
+                        <path
+                          d="M3 9.2l2.5 2.3 9.5-10.5"
+                          stroke="white"
+                          strokeWidth="1.8"
+                          fill="none"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    )}
+                  </span>
+                  <span style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.5)" }}>
+                    I agree to the{" "}
+                    <a
+                      href="#"
+                      style={{ color: "#60B4F0", textDecoration: "underline" }}
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      Terms of Service
+                    </a>
+                  </span>
+                </label>
+              </div>
+
+              {/* Sign-in link — inside pricing card, below ToS */}
               {!user && (
-                <p style={{ fontSize: "0.8125rem", textAlign: "center", margin: "16px 0 0" }}>
+                <p style={{ fontSize: "0.75rem", textAlign: "center", margin: "16px 0 0" }}>
                   <span style={{ color: "rgba(255,255,255,0.5)" }}>Already have an account? </span>
                   <button
                     type="button"
@@ -1069,7 +1185,7 @@ export default function WorkflowBuilderTool({
                       background: "none",
                       border: "none",
                       padding: 0,
-                      fontSize: "0.8125rem",
+                      fontSize: "0.75rem",
                       color: "#60B4F0",
                       textDecoration: "underline",
                       cursor: "pointer",

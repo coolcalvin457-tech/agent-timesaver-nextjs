@@ -889,44 +889,30 @@ export default function CompetitiveDossierTool({
               style={{
                 background: "var(--dark, #161618)",
                 borderRadius: "12px",
-                padding: "24px 28px 24px 37px",
+                padding: "24px 28px 24px 28px",
                 marginBottom: "0",
                 animation: "fadeUp 0.4s ease both",
                 animationDelay: "0.2s",
               }}
             >
-              {/* Header row: tool name left · Annual Subscription pill + $149/year cluster right */}
-              <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "16px", flexWrap: "wrap", gap: "8px" }}>
-                <p style={{ fontSize: "0.9375rem", fontWeight: 700, color: "#FFFFFF", margin: 0, paddingTop: "4px" }}>
-                  Competitive Dossier
-                </p>
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px" }}>
-                  <span
-                    style={{
-                      fontSize: "0.6875rem",
-                      fontWeight: 700,
-                      letterSpacing: "0.06em",
-                      textTransform: "uppercase",
-                      padding: "3px 10px",
-                      borderRadius: "20px",
-                      background: "rgba(30,122,184,0.25)",
-                      color: "#60B4F0",
-                      border: "1px solid rgba(30,122,184,0.20)",
-                    }}
-                  >
-                    Annual Subscription
-                  </span>
-                  <div style={{ display: "flex", alignItems: "baseline" }}>
-                    <span style={{ fontSize: "1.25rem", fontWeight: 700, color: "#FFFFFF", lineHeight: 1 }}>$149</span>
-                    <span style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.5)" }}>/year</span>
-                  </div>
-                </div>
-              </div>
+              {/* Product name — centered at top */}
+              <p style={{ fontSize: "0.9375rem", fontWeight: 700, color: "#FFFFFF", margin: "0 0 20px", textAlign: "center" }}>
+                Competitive Dossier
+              </p>
 
-              {/* Primary anchor: $29 one-time */}
-              <div style={{ display: "flex", alignItems: "baseline", marginBottom: "20px" }}>
-                <span style={{ fontSize: "1.625rem", fontWeight: 800, color: "#FFFFFF", lineHeight: 1 }}>$29</span>
-                <span style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.6)", marginLeft: "6px" }}>one-time</span>
+              {/* Prices pair — $29 primary anchor, $149 secondary, side by side */}
+              <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-end", gap: "56px", marginBottom: "20px", flexWrap: "wrap" }}>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
+                  <span style={{ fontSize: "1.875rem", fontWeight: 800, color: "#FFFFFF", lineHeight: 1 }}>$29</span>
+                  <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.55)" }}>one-time</span>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
+                  <div style={{ display: "flex", alignItems: "baseline" }}>
+                    <span style={{ fontSize: "1.375rem", fontWeight: 700, color: "#FFFFFF", lineHeight: 1 }}>$149</span>
+                    <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.55)", marginLeft: "2px" }}>/yr</span>
+                  </div>
+                  <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.55)" }}>annual</span>
+                </div>
               </div>
 
               {/* Segmented toggle: One-time · Annual */}
@@ -973,7 +959,7 @@ export default function CompetitiveDossierTool({
                 </div>
               </div>
 
-              {/* Divider */}
+              {/* Divider — separates info/selection from action */}
               <div style={{ borderTop: "1px solid rgba(255,255,255,0.12)", margin: "0 0 20px" }} />
 
               {/* ToS checkbox — centered, gates the CTA */}

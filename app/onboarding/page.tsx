@@ -5,13 +5,13 @@ import Footer from "@/components/Footer";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AGENT: Onboarding — Prompt AI Agents",
+  title: "AGENT: Onboarding · Prompt AI Agents",
   description:
-    "A position-specific onboarding kit for every new hire. Welcome letter, first-week schedule, key contacts, 30/60/90 plan, and priority checklist — as a ready-to-use .docx file.",
+    "A full onboarding kit for your next hire. Tailored to the role and your company context. Built in minutes from a few inputs.",
   openGraph: {
-    title: "AGENT: Onboarding — Prompt AI Agents",
+    title: "AGENT: Onboarding · Prompt AI Agents",
     description:
-      "A position-specific onboarding kit for every new hire. Delivered as a ready-to-use .docx file.",
+      "A full onboarding kit for your next hire. Tailored to the role and your company context. Built in minutes from a few inputs.",
     url: "https://promptaiagents.com/onboarding",
     siteName: "Prompt AI Agents",
     type: "website",

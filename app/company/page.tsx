@@ -5,13 +5,13 @@ import Footer from "@/components/Footer";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AGENT: Company | Prompt AI Agents",
+  title: "AGENT: Company · Prompt AI Agents",
   description:
-    "Enter a company URL. Get back a personalized competitive intelligence dossier you can act on. 8 sections. Built for your role.",
+    "A research dossier on any company. Tailored to your role and relationship. Built in minutes from a few inputs.",
   openGraph: {
-    title: "AGENT: Company | Prompt AI Agents",
+    title: "AGENT: Company · Prompt AI Agents",
     description:
-      "Enter a company URL. Get a 10-page competitive intelligence dossier in 2 minutes. Personalized to your role and relationship.",
+      "A research dossier on any company. Tailored to your role and relationship. Built in minutes from a few inputs.",
     url: "https://promptaiagents.com/company",
     siteName: "Prompt AI Agents",
     type: "website",

@@ -3,11 +3,11 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Blog | Prompt AI Agents",
+  title: "Blog · Prompt AI Agents",
   description:
     "Practical AI skills for non-technical people. Real workflows, honest takes, and a clear path forward.",
   openGraph: {
-    title: "Blog | Prompt AI Agents",
+    title: "Blog · Prompt AI Agents",
     description:
       "Practical AI skills for non-technical people. Real workflows, honest takes, and a clear path forward.",
     url: "https://promptaiagents.com/blog",
@@ -37,7 +37,7 @@ export default function BlogPage() {
               className="hero-subheadline"
               style={{ margin: "0 auto", fontSize: "clamp(1.125rem, 2vw, 1.375rem)", fontWeight: 400 }}
             >
-              Built for real jobs. Not demos.
+              Real workflows. Honest takes.
             </p>
           </div>
         </div>

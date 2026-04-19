@@ -3,9 +3,9 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Resources | Prompt AI Agents",
+  title: "Resources · Prompt AI Agents",
   description:
-    "Practical AI guides, tutorials, and workflows for people who want to work smarter. Built for real jobs. Not demos.",
+    "Free AI guides and frameworks for non-technical people. Practical playbooks you can actually use.",
 };
 
 export default function GuidesPage() {
@@ -28,7 +28,7 @@ export default function GuidesPage() {
               className="hero-subheadline"
               style={{ margin: "0 auto" }}
             >
-              Built for real jobs. Not demos.
+              Frameworks and playbooks for people who need to ship.
             </p>
           </div>
         </div>

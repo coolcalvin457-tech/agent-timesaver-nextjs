@@ -3,13 +3,13 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
 export const metadata = {
-  title: "AGENT: Spreadsheets — Prompt AI Agents",
+  title: "AGENT: Spreadsheets · Prompt AI Agents",
   description:
-    "Describe your budget and get a formatted, formula-filled .xlsx file in seconds.",
+    "A free custom budget spreadsheet. Tailored to your job and tracking needs. Built in minutes from a few inputs.",
   openGraph: {
-    title: "AGENT: Spreadsheets — Prompt AI Agents",
+    title: "AGENT: Spreadsheets · Prompt AI Agents",
     description:
-      "Describe your budget and get a formatted, formula-filled .xlsx file in seconds.",
+      "A free custom budget spreadsheet. Tailored to your job and tracking needs. Built in minutes from a few inputs.",
     url: "https://promptaiagents.com/spreadsheets",
     siteName: "Prompt AI Agents",
     type: "website",

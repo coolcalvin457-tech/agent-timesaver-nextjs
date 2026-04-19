@@ -3,13 +3,13 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
 export const metadata = {
-  title: "AGENT: Industry | Prompt AI Agents",
+  title: "AGENT: Industry · Prompt AI Agents",
   description:
-    "Answer a few questions about your role and industry. Get one sharp insight you can act on this week.",
+    "A free industry intel briefing. Tailored to your role and what matters this week. Built in minutes from four questions.",
   openGraph: {
-    title: "AGENT: Industry | Prompt AI Agents",
+    title: "AGENT: Industry · Prompt AI Agents",
     description:
-      "Answer a few questions about your role and industry. Get one sharp insight you can act on this week.",
+      "A free industry intel briefing. Tailored to your role and what matters this week. Built in minutes from four questions.",
     url: "https://promptaiagents.com/industry",
     siteName: "Prompt AI Agents",
     type: "website",

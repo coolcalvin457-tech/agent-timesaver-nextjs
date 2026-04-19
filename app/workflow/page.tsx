@@ -5,13 +5,13 @@ import Footer from "@/components/Footer";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AGENT: Workflow — Prompt AI Agents",
+  title: "AGENT: Workflow · Prompt AI Agents",
   description:
-    "Describe a task you want to do better with AI. Get a step-by-step workflow doc: what tools to use, in what order, with the actual prompts to run each step.",
+    "An AI-automated workflow playbook for any recurring task. Tailored to your role and tools. Built in minutes from four questions.",
   openGraph: {
-    title: "AGENT: Workflow — Prompt AI Agents",
+    title: "AGENT: Workflow · Prompt AI Agents",
     description:
-      "Describe a task. Get the exact playbook to get it done with AI. Step-by-step workflow delivered as a ready-to-use .docx file.",
+      "An AI-automated workflow playbook for any recurring task. Tailored to your role and tools. Built in minutes from four questions.",
     url: "https://promptaiagents.com/workflow",
     siteName: "Prompt AI Agents",
     type: "website",

@@ -245,6 +245,11 @@ export default function CompetitiveDossierTool({
   const [returningCheckLoading, setReturningCheckLoading] = useState(false);
   const [returningCheckError, setReturningCheckError] = useState("");
 
+  // Dual-mode paywall (S197): segmented toggle chooses plan, single Get Access CTA
+  // fires selected mode. ToS checkbox gates the CTA (disabled until checked).
+  const [selectedMode, setSelectedMode] = useState<"onetime" | "annual">("onetime");
+  const [tosAccepted, setTosAccepted] = useState(false);
+
   // ── Loading (SSE) ─────────────────────────────────────────────────────────────
   const [loadingStepStatuses, setLoadingStepStatuses] = useState<("pending" | "in_progress" | "complete")[]>(
     LOADING_STEPS.map(() => "pending")
@@ -890,43 +895,121 @@ export default function CompetitiveDossierTool({
                 animationDelay: "0.2s",
               }}
             >
-              {/* Header row: tool name left, badge right */}
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px", flexWrap: "wrap", gap: "8px" }}>
-                <p style={{ fontSize: "0.9375rem", fontWeight: 700, color: "#FFFFFF", margin: 0 }}>
+              {/* Header row: tool name left · Annual Subscription pill + $149/year cluster right */}
+              <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "16px", flexWrap: "wrap", gap: "8px" }}>
+                <p style={{ fontSize: "0.9375rem", fontWeight: 700, color: "#FFFFFF", margin: 0, paddingTop: "4px" }}>
                   Competitive Dossier
                 </p>
-                <span
-                  style={{
-                    fontSize: "0.6875rem",
-                    fontWeight: 700,
-                    letterSpacing: "0.06em",
-                    textTransform: "uppercase",
-                    padding: "3px 10px",
-                    borderRadius: "20px",
-                    background: "rgba(30,122,184,0.25)",
-                    color: "#60B4F0",
-                    border: "1px solid rgba(30,122,184,0.20)",
-                  }}
-                >
-                  Annual Subscription
-                </span>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px" }}>
+                  <span
+                    style={{
+                      fontSize: "0.6875rem",
+                      fontWeight: 700,
+                      letterSpacing: "0.06em",
+                      textTransform: "uppercase",
+                      padding: "3px 10px",
+                      borderRadius: "20px",
+                      background: "rgba(30,122,184,0.25)",
+                      color: "#60B4F0",
+                      border: "1px solid rgba(30,122,184,0.20)",
+                    }}
+                  >
+                    Annual Subscription
+                  </span>
+                  <div style={{ display: "flex", alignItems: "baseline" }}>
+                    <span style={{ fontSize: "1.25rem", fontWeight: 700, color: "#FFFFFF", lineHeight: 1 }}>$149</span>
+                    <span style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.5)" }}>/year</span>
+                  </div>
+                </div>
               </div>
 
-              {/* Price */}
-              <div style={{ display: "flex", alignItems: "baseline", marginBottom: "24px" }}>
-                <span style={{ fontSize: "2rem", fontWeight: 800, color: "#FFFFFF", lineHeight: 1 }}>$149</span>
-                <span style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.5)" }}>/year</span>
+              {/* Primary anchor: $29 one-time */}
+              <div style={{ display: "flex", alignItems: "baseline", marginBottom: "20px" }}>
+                <span style={{ fontSize: "1.625rem", fontWeight: 800, color: "#FFFFFF", lineHeight: 1 }}>$29</span>
+                <span style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.6)", marginLeft: "6px" }}>one-time</span>
+              </div>
+
+              {/* Segmented toggle: One-time · Annual */}
+              <div style={{ display: "flex", justifyContent: "center", marginBottom: "20px" }}>
+                <div
+                  role="tablist"
+                  aria-label="Choose your plan"
+                  style={{
+                    display: "inline-flex",
+                    padding: "4px",
+                    borderRadius: "999px",
+                    background: "rgba(255,255,255,0.04)",
+                    border: "1px solid rgba(255,255,255,0.10)",
+                  }}
+                >
+                  {([
+                    { key: "onetime", label: "One-time" },
+                    { key: "annual", label: "Annual" },
+                  ] as const).map((opt) => {
+                    const isActive = selectedMode === opt.key;
+                    return (
+                      <button
+                        key={opt.key}
+                        type="button"
+                        role="tab"
+                        aria-selected={isActive}
+                        onClick={() => setSelectedMode(opt.key)}
+                        style={{
+                          padding: "7px 18px",
+                          fontSize: "0.8125rem",
+                          fontWeight: 600,
+                          color: isActive ? "#FFFFFF" : "rgba(255,255,255,0.55)",
+                          background: isActive ? "rgba(255,255,255,0.08)" : "transparent",
+                          border: "none",
+                          borderRadius: "999px",
+                          cursor: "pointer",
+                          transition: "color 0.15s ease, background 0.15s ease",
+                        }}
+                      >
+                        {opt.label}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
 
               {/* Divider */}
-              <div style={{ borderTop: "1px solid rgba(255,255,255,0.12)", margin: "0 0 28px" }} />
+              <div style={{ borderTop: "1px solid rgba(255,255,255,0.12)", margin: "0 0 20px" }} />
+
+              {/* ToS checkbox — centered, gates the CTA */}
+              <div style={{ display: "flex", justifyContent: "center", marginBottom: "16px" }}>
+                <label style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer", userSelect: "none" }}>
+                  <input
+                    type="checkbox"
+                    checked={tosAccepted}
+                    onChange={(e) => setTosAccepted(e.target.checked)}
+                    style={{
+                      width: "16px",
+                      height: "16px",
+                      cursor: "pointer",
+                      accentColor: "#1E7AB8",
+                    }}
+                  />
+                  <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.70)" }}>
+                    I agree to the{" "}
+                    <a
+                      href="#"
+                      style={{ color: "#60B4F0", textDecoration: "underline" }}
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      Terms of Service
+                    </a>
+                    .
+                  </span>
+                </label>
+              </div>
 
               {/* CTA */}
               <button
                 type="button"
                 className="btn-paywall-cta"
-                onClick={() => handleCheckout()}
-                disabled={checkoutLoading}
+                onClick={() => handleCheckout(selectedMode === "annual" ? { type: "annual" } : undefined)}
+                disabled={checkoutLoading || !tosAccepted}
                 style={{
                   maxWidth: "320px",
                   width: "100%",
@@ -935,18 +1018,18 @@ export default function CompetitiveDossierTool({
                   padding: "11px 20px",
                   fontSize: "0.9375rem",
                   fontWeight: 600,
-                  background: checkoutLoading ? "rgba(30,122,184,0.5)" : "#1E7AB8",
+                  background: (checkoutLoading || !tosAccepted) ? "rgba(30,122,184,0.5)" : "#1E7AB8",
                   color: "#FFFFFF",
                   border: "none",
                   borderRadius: "8px",
-                  cursor: checkoutLoading ? "not-allowed" : "pointer",
+                  cursor: (checkoutLoading || !tosAccepted) ? "not-allowed" : "pointer",
                 }}
               >
                 {checkoutLoading ? "Redirecting to checkout..." : "Get Access"}
               </button>
 
               {checkoutError && (
-                <p style={{ fontSize: "0.8125rem", color: "#F87171", margin: "12px 0 0" }}>
+                <p style={{ fontSize: "0.8125rem", color: "#F87171", margin: "12px 0 0", textAlign: "center" }}>
                   {checkoutError}
                 </p>
               )}

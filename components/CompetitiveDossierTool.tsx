@@ -779,7 +779,7 @@ export default function CompetitiveDossierTool({
 
       {/* ── Paywall ──────────────────────────────────────────────────────────── */}
       {screen === "paywall" && (
-        <div className="screen">
+        <div className="screen" style={{ background: "var(--dark, #161618)" }}>
           <h2
             style={{
               fontSize: "clamp(1.75rem, 3.5vw, 2.25rem)",

@@ -884,7 +884,7 @@ export default function CompetitiveDossierTool({
               </p>
 
               {/* Deliverables list */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "9px", paddingLeft: "4px", marginBottom: "32px" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "9px", paddingLeft: "4px", marginBottom: "44px" }}>
                 {DOSSIER_SECTIONS.map((item) => (
                   <div key={item} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                     <svg width="13" height="13" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0, color: "var(--cta, #1E7AB8)" }}>
@@ -947,6 +947,7 @@ export default function CompetitiveDossierTool({
                     fontFamily: "var(--font-display)",
                     fontSize: "2.25rem",
                     fontWeight: 400,
+                    letterSpacing: "-0.01em",
                     color: "#FFFFFF",
                     lineHeight: 1,
                     opacity: selectedMode === "onetime" ? 1 : 0.3,
@@ -960,6 +961,7 @@ export default function CompetitiveDossierTool({
                     fontFamily: "var(--font-display)",
                     fontSize: "2.25rem",
                     fontWeight: 400,
+                    letterSpacing: "-0.01em",
                     color: "#FFFFFF",
                     lineHeight: 1,
                     opacity: selectedMode === "annual" ? 1 : 0.3,
@@ -982,9 +984,10 @@ export default function CompetitiveDossierTool({
                   width: "100%",
                   margin: "0 auto",
                   display: "block",
-                  padding: "12px 24px",
+                  padding: "14px 28px",
                   fontSize: "0.9375rem",
                   fontWeight: 600,
+                  letterSpacing: "0.01em",
                   background: "#1E7AB8",
                   color: "#FFFFFF",
                   border: "none",

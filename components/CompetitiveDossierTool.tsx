@@ -817,9 +817,7 @@ export default function CompetitiveDossierTool({
               border: "1px solid rgba(255,255,255,0.10)",
               borderRadius: "10px",
               padding: "18px 20px",
-              marginLeft: "26px",
-              marginRight: "26px",
-              marginBottom: "12px",
+              marginBottom: "16px",
               animation: "fadeUp 0.4s ease both",
               animationDelay: "0.1s",
             }}
@@ -899,15 +897,16 @@ export default function CompetitiveDossierTool({
             <div
               style={{
                 background: "var(--dark, #161618)",
+                border: "1px solid rgba(255,255,255,0.10)",
                 borderRadius: "12px",
-                padding: "24px 28px 24px 28px",
+                padding: "26px 28px",
                 marginBottom: "0",
                 animation: "fadeUp 0.4s ease both",
                 animationDelay: "0.2s",
               }}
             >
-              {/* Segmented toggle — now the header element, tighter/more premium */}
-              <div style={{ display: "flex", justifyContent: "center", marginBottom: "20px" }}>
+              {/* Segmented toggle — header element, tight & premium */}
+              <div style={{ display: "flex", justifyContent: "center", marginBottom: "24px" }}>
                 <div
                   role="tablist"
                   aria-label="Choose your plan"
@@ -937,7 +936,7 @@ export default function CompetitiveDossierTool({
                           fontWeight: 500,
                           letterSpacing: "0.01em",
                           color: isActive ? "#FFFFFF" : "rgba(255,255,255,0.55)",
-                          background: isActive ? "rgba(255,255,255,0.08)" : "transparent",
+                          background: isActive ? "rgba(255,255,255,0.12)" : "transparent",
                           border: "none",
                           borderRadius: "999px",
                           cursor: "pointer",
@@ -951,33 +950,52 @@ export default function CompetitiveDossierTool({
                 </div>
               </div>
 
-              {/* Prices pair — $29 primary anchor, $149 secondary, side by side */}
-              <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "56px", marginBottom: "22px", flexWrap: "wrap" }}>
-                <span style={{ fontSize: "2.125rem", fontWeight: 800, color: "#FFFFFF", lineHeight: 1 }}>$29</span>
-                <span style={{ fontSize: "1.625rem", fontWeight: 700, color: "#FFFFFF", lineHeight: 1 }}>$149</span>
+              {/* Prices pair — selected emphasized, non-selected dimmed for context */}
+              <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "48px", marginBottom: "26px", flexWrap: "wrap" }}>
+                <span
+                  style={{
+                    fontSize: "2.25rem",
+                    fontWeight: 800,
+                    color: "#FFFFFF",
+                    lineHeight: 1,
+                    opacity: selectedMode === "onetime" ? 1 : 0.3,
+                    transition: "opacity 0.2s ease",
+                  }}
+                >
+                  $29
+                </span>
+                <span
+                  style={{
+                    fontSize: "2.25rem",
+                    fontWeight: 800,
+                    color: "#FFFFFF",
+                    lineHeight: 1,
+                    opacity: selectedMode === "annual" ? 1 : 0.3,
+                    transition: "opacity 0.2s ease",
+                  }}
+                >
+                  $149
+                </span>
               </div>
 
-              {/* Divider — separates info/selection from action */}
-              <div style={{ borderTop: "1px solid rgba(255,255,255,0.12)", margin: "0 0 20px" }} />
-
-              {/* CTA */}
+              {/* CTA — pill, narrower, refined */}
               <button
                 type="button"
                 className="btn-paywall-cta"
                 onClick={() => handleCheckout(selectedMode === "annual" ? { type: "annual" } : undefined)}
                 disabled={checkoutLoading || !tosAccepted}
                 style={{
-                  maxWidth: "320px",
+                  maxWidth: "280px",
                   width: "100%",
                   margin: "0 auto",
                   display: "block",
-                  padding: "11px 20px",
+                  padding: "12px 24px",
                   fontSize: "0.9375rem",
                   fontWeight: 600,
                   background: (checkoutLoading || !tosAccepted) ? "rgba(30,122,184,0.5)" : "#1E7AB8",
                   color: "#FFFFFF",
                   border: "none",
-                  borderRadius: "8px",
+                  borderRadius: "999px",
                   cursor: (checkoutLoading || !tosAccepted) ? "not-allowed" : "pointer",
                 }}
               >

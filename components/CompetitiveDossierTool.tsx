@@ -970,7 +970,8 @@ export default function CompetitiveDossierTool({
                 </span>
               </div>
 
-              {/* CTA — pill, wider */}
+              {/* CTA — pill, wider. Color stays solid; hover only fires once ToS
+                   is checked (handled by `:not(:disabled)` in .btn-paywall-cta CSS). */}
               <button
                 type="button"
                 className="btn-paywall-cta"
@@ -984,7 +985,7 @@ export default function CompetitiveDossierTool({
                   padding: "12px 24px",
                   fontSize: "0.9375rem",
                   fontWeight: 600,
-                  background: (checkoutLoading || !tosAccepted) ? "rgba(30,122,184,0.5)" : "#1E7AB8",
+                  background: "#1E7AB8",
                   color: "#FFFFFF",
                   border: "none",
                   borderRadius: "999px",

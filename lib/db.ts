@@ -307,7 +307,12 @@ export async function logPaidToolRun(
   }
 }
 
-export type AlertType = "user_75" | "calvin_80" | "pace_exceeded_75";
+export type AlertType = "user_75" | "calvin_80";
+// Note (S195-Copy): `pace_exceeded_75` was retired when §2 collapsed to a
+// single variant. Legacy rows with that alert_type may exist in the
+// `paid_tool_alerts` table from S194 E2E testing; they persist harmlessly
+// but are no longer written by the app. No schema change needed — the
+// column is plain TEXT, not an enum.
 
 /**
  * Idempotent alert-slot claim. Returns true if this alert has NOT yet been

@@ -1012,19 +1012,22 @@ export default function CompetitiveDossierTool({
                     style={{
                       appearance: "none",
                       WebkitAppearance: "none",
-                      width: "16px",
-                      height: "16px",
-                      border: `1.5px solid ${tosAccepted ? "#1E7AB8" : "rgba(255,255,255,0.35)"}`,
+                      width: "14px",
+                      height: "14px",
+                      border: "1.5px solid rgba(255,255,255,0.35)",
                       borderRadius: "3px",
-                      background: tosAccepted ? "#1E7AB8" : "transparent",
+                      background: "transparent",
                       backgroundImage: tosAccepted
-                        ? `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.2l2.3 2.3 4.7-5.2' stroke='white' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`
+                        ? `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.2l2.3 2.3 4.7-5.2' stroke='white' stroke-width='1.8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`
                         : undefined,
                       backgroundRepeat: "no-repeat",
                       backgroundPosition: "center",
+                      backgroundSize: "10px 10px",
                       cursor: "pointer",
                       flexShrink: 0,
-                      transition: "background 0.15s ease, border-color 0.15s ease",
+                      outline: "none",
+                      boxShadow: "none",
+                      transition: "background-image 0.15s ease",
                     }}
                   />
                   <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.5)" }}>

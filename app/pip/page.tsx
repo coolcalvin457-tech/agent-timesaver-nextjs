@@ -41,7 +41,7 @@ export default function PIPBuilderPage({
             <h1
               className="heading-1"
               style={{
-                margin: "0 auto 28px",
+                margin: "0 auto 56px",
                 fontSize: "clamp(2.25rem, 4vw, 3.5rem)",
                 lineHeight: 1.25,
                 color: "#ffffff",
@@ -49,17 +49,6 @@ export default function PIPBuilderPage({
             >
               A PIP That Holds Up.<br />Use for Difficult Conversations.
             </h1>
-
-            <p
-              style={{
-                fontSize: "0.9375rem",
-                color: "rgba(255,255,255,0.55)",
-                margin: "0 0 32px",
-                lineHeight: 1.6,
-              }}
-            >
-              $99 HR Package (Annual subscription)
-            </p>
 
             <a
               href="#build-pip"

@@ -896,16 +896,17 @@ export default function CompetitiveDossierTool({
                 ))}
               </div>
 
-              {/* Segmented toggle — outline removed */}
+              {/* Unified dark pill — single shape with gradient bleed; active state is color-only */}
               <div style={{ display: "flex", justifyContent: "center", marginBottom: "24px" }}>
                 <div
                   role="tablist"
                   aria-label="Choose your plan"
                   style={{
                     display: "inline-flex",
-                    padding: "2px",
+                    padding: "6px 18px",
+                    gap: "18px",
                     borderRadius: "999px",
-                    background: "transparent",
+                    background: "rgba(0,0,0,0.35)",
                   }}
                 >
                   {([
@@ -921,16 +922,15 @@ export default function CompetitiveDossierTool({
                         aria-selected={isActive}
                         onClick={() => setSelectedMode(opt.key)}
                         style={{
-                          padding: "5px 14px",
+                          padding: 0,
                           fontSize: "0.75rem",
                           fontWeight: 500,
                           letterSpacing: "0.01em",
                           color: isActive ? "#FFFFFF" : "rgba(255,255,255,0.55)",
-                          background: isActive ? "rgba(255,255,255,0.08)" : "transparent",
+                          background: "transparent",
                           border: "none",
-                          borderRadius: "999px",
                           cursor: "pointer",
-                          transition: "color 0.15s ease, background 0.15s ease",
+                          transition: "color 0.15s ease",
                         }}
                       >
                         {opt.label}
@@ -948,10 +948,9 @@ export default function CompetitiveDossierTool({
                     fontSize: "2rem",
                     fontWeight: 400,
                     letterSpacing: "-0.01em",
-                    color: "#FFFFFF",
+                    color: selectedMode === "onetime" ? "#FFFFFF" : "rgba(255,255,255,0.55)",
                     lineHeight: 1,
-                    opacity: selectedMode === "onetime" ? 1 : 0.2,
-                    transition: "opacity 0.2s ease",
+                    transition: "color 0.2s ease",
                   }}
                 >
                   $29
@@ -962,10 +961,9 @@ export default function CompetitiveDossierTool({
                     fontSize: "2rem",
                     fontWeight: 400,
                     letterSpacing: "-0.01em",
-                    color: "#FFFFFF",
+                    color: selectedMode === "annual" ? "#FFFFFF" : "rgba(255,255,255,0.55)",
                     lineHeight: 1,
-                    opacity: selectedMode === "annual" ? 1 : 0.2,
-                    transition: "opacity 0.2s ease",
+                    transition: "color 0.2s ease",
                   }}
                 >
                   $149

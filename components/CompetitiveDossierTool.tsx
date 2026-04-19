@@ -982,9 +982,9 @@ export default function CompetitiveDossierTool({
                   width: "100%",
                   margin: "0 auto",
                   display: "block",
-                  padding: "14px 28px",
+                  padding: "11px 28px",
                   fontSize: "0.9375rem",
-                  fontWeight: 600,
+                  fontWeight: 500,
                   letterSpacing: "0.01em",
                   background: "#1E7AB8",
                   color: "#FFFFFF",
@@ -1003,7 +1003,7 @@ export default function CompetitiveDossierTool({
               )}
 
               {/* ToS checkbox — centered below CTA, transparent/outlined custom styling */}
-              <div style={{ display: "flex", justifyContent: "center", margin: "16px 0 0" }}>
+              <div style={{ display: "flex", justifyContent: "center", margin: "24px 0 0" }}>
                 <label style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer", userSelect: "none" }}>
                   <input
                     type="checkbox"

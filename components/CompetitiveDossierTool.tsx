@@ -788,6 +788,7 @@ export default function CompetitiveDossierTool({
               color: "#FFFFFF",
               margin: "0 0 28px",
               lineHeight: 1.2,
+              textAlign: "center",
             }}
           >
             Deep Research in Minutes.
@@ -802,7 +803,7 @@ export default function CompetitiveDossierTool({
           {/* What's included */}
           <div
             style={{
-              background: "radial-gradient(ellipse 80% 90% at center, rgba(30,122,184,0.14) 0%, transparent 65%)",
+              background: "radial-gradient(ellipse 80% 90% at center, rgba(30,122,184,0.14) 0%, transparent 65%), var(--dark, #161618)",
               border: "1px solid rgba(255,255,255,0.10)",
               borderRadius: "10px",
               padding: "18px 20px",
@@ -941,18 +942,9 @@ export default function CompetitiveDossierTool({
               </div>
 
               {/* Prices pair — $29 primary anchor, $149 secondary, side by side */}
-              <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-end", gap: "56px", marginBottom: "22px", flexWrap: "wrap" }}>
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
-                  <span style={{ fontSize: "2.125rem", fontWeight: 800, color: "#FFFFFF", lineHeight: 1 }}>$29</span>
-                  <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.55)" }}>one-time</span>
-                </div>
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
-                  <div style={{ display: "flex", alignItems: "baseline" }}>
-                    <span style={{ fontSize: "1.625rem", fontWeight: 700, color: "#FFFFFF", lineHeight: 1 }}>$149</span>
-                    <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.55)", marginLeft: "2px" }}>/yr</span>
-                  </div>
-                  <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.55)" }}>annual</span>
-                </div>
+              <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "56px", marginBottom: "22px", flexWrap: "wrap" }}>
+                <span style={{ fontSize: "2.125rem", fontWeight: 800, color: "#FFFFFF", lineHeight: 1 }}>$29</span>
+                <span style={{ fontSize: "1.625rem", fontWeight: 700, color: "#FFFFFF", lineHeight: 1 }}>$149</span>
               </div>
 
               {/* Divider — separates info/selection from action */}
@@ -1013,7 +1005,7 @@ export default function CompetitiveDossierTool({
                       transition: "background 0.15s ease, border-color 0.15s ease",
                     }}
                   />
-                  <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.70)" }}>
+                  <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.5)" }}>
                     I agree to the{" "}
                     <a
                       href="#"

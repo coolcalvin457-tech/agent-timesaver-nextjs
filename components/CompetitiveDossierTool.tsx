@@ -178,7 +178,7 @@ const labelStyle: React.CSSProperties = {
 
 const helperStyle: React.CSSProperties = {
   fontSize: "0.8rem",
-  color: "rgba(255,255,255,0.40)",
+  color: "rgba(255,255,255,0.55)",
   marginTop: "5px",
 };
 
@@ -926,7 +926,7 @@ export default function CompetitiveDossierTool({
                           fontSize: "0.75rem",
                           fontWeight: 500,
                           letterSpacing: "0.01em",
-                          color: isActive ? "#FFFFFF" : "rgba(255,255,255,0.55)",
+                          color: isActive ? "#FFFFFF" : "rgba(255,255,255,0.40)",
                           background: "transparent",
                           border: "none",
                           cursor: "pointer",
@@ -941,14 +941,14 @@ export default function CompetitiveDossierTool({
               </div>
 
               {/* Prices pair — serif display font, lighter weight for premium feel */}
-              <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "28px", marginBottom: "40px", flexWrap: "wrap" }}>
+              <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "20px", marginBottom: "40px", flexWrap: "wrap" }}>
                 <span
                   style={{
                     fontFamily: "var(--font-display)",
                     fontSize: "2rem",
                     fontWeight: 400,
                     letterSpacing: "-0.01em",
-                    color: selectedMode === "onetime" ? "#FFFFFF" : "rgba(255,255,255,0.55)",
+                    color: selectedMode === "onetime" ? "#FFFFFF" : "rgba(255,255,255,0.40)",
                     lineHeight: 1,
                     transition: "color 0.2s ease",
                   }}
@@ -961,7 +961,7 @@ export default function CompetitiveDossierTool({
                     fontSize: "2rem",
                     fontWeight: 400,
                     letterSpacing: "-0.01em",
-                    color: selectedMode === "annual" ? "#FFFFFF" : "rgba(255,255,255,0.55)",
+                    color: selectedMode === "annual" ? "#FFFFFF" : "rgba(255,255,255,0.40)",
                     lineHeight: 1,
                     transition: "color 0.2s ease",
                   }}

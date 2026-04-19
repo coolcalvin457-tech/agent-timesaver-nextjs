@@ -638,6 +638,12 @@ export async function POST(req: NextRequest) {
         try {
           const mapResult = await firecrawl.map(companyUrl, { limit: 500 } as Record<string, unknown>);
           if (!mapResult.links || mapResult.links.length === 0) {
+            // S199: log the empty-map path distinctly so bot-protected target sites
+            // (Akamai, Cloudflare challenge pages) can be distinguished from SDK
+            // exceptions in Vercel logs. Does not change user-facing message.
+            console.warn(
+              `[competitive-dossier] Firecrawl map returned empty links. url=${companyUrl} user=${userEmail}. Likely bot-protected target site or sitemap-unreachable.`
+            );
             send("error", { type: "site_unreachable", message: "We could not reach that website. Check the URL and try again." });
             controller.close();
             return;
@@ -646,7 +652,13 @@ export async function POST(req: NextRequest) {
           mapLinks = mapResult.links.map((l: { url: string } | string) =>
             typeof l === "string" ? l : l.url
           ).filter(Boolean);
-        } catch {
+        } catch (err) {
+          // S199: log the SDK-throw path with the underlying error so auth/quota/
+          // timeout issues surface in Vercel logs instead of being silently swallowed.
+          console.error(
+            `[competitive-dossier] Firecrawl map threw. url=${companyUrl} user=${userEmail}.`,
+            err
+          );
           send("error", { type: "site_unreachable", message: "We could not reach that website. Check the URL and try again." });
           controller.close();
           return;

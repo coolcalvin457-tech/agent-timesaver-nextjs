@@ -1315,13 +1315,18 @@ export default function CompetitiveDossierTool({
       )}
 
       {/* ── Error: site unreachable ───────────────────────────────────────────── */}
+      {/* S199: trailing reassurance line added. Annual subscribers' failed runs
+           are never written to `competitive_dossier_runs` (the Firecrawl failure
+           path returns before logPaidToolRun fires), so allocation is intact.
+           One-time buyers can retry another URL; the refund fallback is covered
+           in ToS §4 "Failed generations". Unified copy works for both modes. */}
       {screen === "error-site" && (
         <div className="screen" style={{ textAlign: "center" }}>
           <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(1.25rem, 2.5vw, 1.5rem)", color: "#fff", margin: "0 0 12px" }}>
             We couldn&apos;t reach that website.
           </h2>
           <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.55)", margin: "0 0 24px", lineHeight: 1.6 }}>
-            The URL may be incorrect, or the site may be temporarily unavailable. Double-check the address and try again.
+            The URL may be incorrect, or the site may be temporarily unavailable. Double-check the address and try again. This attempt doesn&apos;t count against your allowance.
           </p>
           <button onClick={() => setScreen("s1")} className="btn btn-dark-cta" style={{ marginBottom: "12px", width: "100%" }}>
             Try Again

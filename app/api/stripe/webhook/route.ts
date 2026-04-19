@@ -1,7 +1,8 @@
 // ─── Stripe webhook handler ─────────────────────────────────────────────────
 //
 // Keeps the cached Stripe subscription period on `users` in sync with the
-// source of truth (Stripe). Two events are handled:
+// source of truth (Stripe) and fires the §6 welcome email on first purchase.
+// Three events are handled:
 //
 //   invoice.payment_succeeded
 //     Fires on the initial annual checkout completion AND every subsequent
@@ -9,8 +10,17 @@
 //       users.stripe_subscription_id
 //       users.stripe_current_period_start
 //       users.stripe_current_period_end
-//     One-time payments also fire this event but have no invoice.subscription,
-//     so they are ignored.
+//     On the FIRST invoice of a subscription (billing_reason
+//     "subscription_create") the §6 welcome email also fires. Renewals
+//     do NOT re-send. One-time payments also fire this event but have no
+//     invoice.subscription, so they are ignored here and handled by
+//     checkout.session.completed instead.
+//
+//   checkout.session.completed
+//     Fires once per successful Stripe Checkout. Used for the one-time
+//     branch of the §6 welcome email (Workflow $49, Company $29). The
+//     subscription branch is handled by invoice.payment_succeeded above
+//     so we don't double-send.
 //
 //   customer.subscription.deleted
 //     Fires when a subscription is cancelled. Clears the three columns so
@@ -24,12 +34,18 @@
 // will break signature checks. Next.js App Router gives us the raw body via
 // req.text(), which is safe.
 //
-// Spec: cap-enforcement-spec.md "Stripe webhook handler (S194)".
+// Spec: cap-enforcement-spec.md "Stripe webhook handler (S194)",
+//       cap-enforcement-copy.md §6 (welcome email, S195-Copy).
 
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { stripe } from "@/lib/stripe";
 import { pool } from "@/lib/db";
+import {
+  sendWelcomeEmail,
+  priceIdToWelcomeTool,
+  type WelcomeTool,
+} from "@/lib/emails/welcome";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -76,6 +92,13 @@ export async function POST(req: NextRequest) {
     switch (event.type) {
       case "invoice.payment_succeeded": {
         await handleInvoicePaymentSucceeded(event.data.object as Stripe.Invoice);
+        break;
+      }
+
+      case "checkout.session.completed": {
+        await handleCheckoutSessionCompleted(
+          event.data.object as Stripe.Checkout.Session
+        );
         break;
       }
 
@@ -193,6 +216,114 @@ async function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice): Promise<v
   console.log(
     `[stripe/webhook] Updated subscription period for ${customerEmail} (sub ${subscription.id})`
   );
+
+  // §6 welcome email — FIRST invoice of a subscription only. Renewals fire
+  // this same event (billing_reason "subscription_cycle") and must NOT
+  // re-send. billing_reason "subscription_create" is the idiomatic flag
+  // Stripe sets on the initial invoice.
+  const billingReason = (invoice as unknown as { billing_reason?: string })
+    .billing_reason;
+  if (billingReason === "subscription_create") {
+    const firstSubItem = subscription.items?.data?.[0];
+    const priceId =
+      typeof firstSubItem?.price === "string"
+        ? firstSubItem.price
+        : firstSubItem?.price?.id;
+    const tool = priceId ? priceIdToWelcomeTool(priceId) : null;
+    if (!tool) {
+      console.warn(
+        `[stripe/webhook] invoice.payment_succeeded first-invoice: no welcome tool resolved for price ${priceId ?? "(none)"} — skipping welcome`
+      );
+    } else {
+      await sendAndLogWelcome(tool, customerEmail, `sub ${subscription.id}`);
+    }
+  }
+}
+
+// ─── checkout.session.completed ─────────────────────────────────────────────
+//
+// One-time purchase branch of the §6 welcome email. Subscriptions complete
+// via invoice.payment_succeeded above; we explicitly skip mode "subscription"
+// here to avoid double-sending.
+
+async function handleCheckoutSessionCompleted(
+  session: Stripe.Checkout.Session
+): Promise<void> {
+  // Only fire for one-time checkouts. Subscription mode is handled upstream
+  // by invoice.payment_succeeded + billing_reason "subscription_create".
+  if (session.mode !== "payment") return;
+
+  // Guard against unpaid / async_payment_pending sessions.
+  if (session.payment_status !== "paid") return;
+
+  const customerEmail =
+    session.customer_email?.toLowerCase() ??
+    session.customer_details?.email?.toLowerCase() ??
+    null;
+  if (!customerEmail) {
+    console.warn(
+      `[stripe/webhook] checkout.session.completed (${session.id}): no customer email resolved`
+    );
+    return;
+  }
+
+  // Resolve the tool from the purchased price. Need to retrieve the
+  // line items — the session object itself doesn't include them by default.
+  let priceId: string | undefined;
+  try {
+    const lineItems = await stripe.checkout.sessions.listLineItems(
+      session.id,
+      { limit: 1 }
+    );
+    const firstItem = lineItems.data[0];
+    priceId =
+      typeof firstItem?.price === "string"
+        ? firstItem.price
+        : firstItem?.price?.id;
+  } catch (err) {
+    console.error(
+      `[stripe/webhook] checkout.session.completed (${session.id}): listLineItems failed:`,
+      err
+    );
+    return;
+  }
+
+  const tool = priceId ? priceIdToWelcomeTool(priceId) : null;
+  if (!tool) {
+    // Not all one-time checkouts are welcome-email-eligible (AGENT: Prompts
+    // $4.99 and HR Package are deliberately excluded). Log at debug level.
+    console.log(
+      `[stripe/webhook] checkout.session.completed (${session.id}): price ${priceId ?? "(none)"} has no welcome tool mapping — skipping`
+    );
+    return;
+  }
+
+  await sendAndLogWelcome(tool, customerEmail, `session ${session.id}`);
+}
+
+// ─── Welcome email helper ───────────────────────────────────────────────────
+//
+// Thin wrapper that keeps the two trigger paths symmetric in logging and
+// error handling. A failed welcome email should never cause Stripe to
+// retry the whole event (the period-column update already succeeded and
+// is the higher-priority side effect).
+
+async function sendAndLogWelcome(
+  tool: WelcomeTool,
+  customerEmail: string,
+  context: string
+): Promise<void> {
+  const result = await sendWelcomeEmail(tool, customerEmail);
+  if (result.ok) {
+    console.log(
+      `[stripe/webhook] §6 welcome sent: ${customerEmail} (${tool}, ${context})`
+    );
+  } else {
+    console.error(
+      `[stripe/webhook] §6 welcome FAILED: ${customerEmail} (${tool}, ${context}):`,
+      result.error ?? "unknown"
+    );
+  }
 }
 
 // ─── customer.subscription.deleted ──────────────────────────────────────────

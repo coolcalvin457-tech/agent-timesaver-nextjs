@@ -4826,9 +4826,7 @@ input, textarea {
 .pricing-card-featured {
   position: relative;
   overflow: hidden;
-  background:
-    radial-gradient(ellipse 140% 120% at 50% 100%, rgba(30, 122, 184, 0.08) 0%, rgba(30, 122, 184, 0) 70%),
-    #FFFFFF;
+  background: #FFFFFF;
 }
 
 
@@ -4958,9 +4956,9 @@ input, textarea {
 }
 
 .pricing-cta-outline:hover {
-  background: #161618;
+  background: #2A2A2D;
   color: #FFFFFF;
-  border-color: #161618;
+  border-color: #2A2A2D;
 }
 
 .pricing-cta-ghost {

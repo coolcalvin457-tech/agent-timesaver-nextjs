@@ -161,7 +161,7 @@ export default function ServicesPage() {
               className="hero-subheadline"
               style={{
                 margin: "0 auto",
-                color: "rgba(255,255,255,0.72)",
+                color: "rgba(255,255,255,0.85)",
                 fontSize: "clamp(1.125rem, 2vw, 1.375rem)",
                 fontWeight: 400,
               }}

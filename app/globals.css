@@ -4952,7 +4952,7 @@ input, textarea {
 .pricing-cta-outline {
   background: transparent;
   color: #161618;
-  border: 1px solid #161618;
+  border: 1px solid rgba(0, 0, 0, 0.35);
 }
 
 .pricing-cta-outline:hover {

@@ -4812,7 +4812,7 @@ input, textarea {
   border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: var(--radius-card);
   padding: 32px 38px 52px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   transition: border-color 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
   position: relative;
 }
@@ -4820,7 +4820,7 @@ input, textarea {
 .pricing-card:hover {
   border-color: rgba(0, 0, 0, 0.06);
   transform: none;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 .pricing-card-featured {
@@ -4952,14 +4952,15 @@ input, textarea {
 }
 
 .pricing-cta-outline {
-  background: #161618;
-  color: #FFFFFF;
+  background: transparent;
+  color: #161618;
   border: 1px solid #161618;
 }
 
 .pricing-cta-outline:hover {
-  background: #2A2A2D;
-  border-color: #2A2A2D;
+  background: #161618;
+  color: #FFFFFF;
+  border-color: #161618;
 }
 
 .pricing-cta-ghost {
@@ -4979,7 +4980,7 @@ input, textarea {
   background: #FFFFFF;
   border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: var(--radius-card);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 .pricing-custom-content {

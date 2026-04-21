@@ -74,25 +74,23 @@ const tools = [
 export default function AgentsPage() {
   return (
     <>
-      <Nav dark />
+      <Nav />
       <main
         style={{
           minHeight: "100vh",
           paddingTop: "100px",
-          paddingBottom: "80px",
-          background: "linear-gradient(180deg, #14151A 0%, #0A0A0C 100%)",
-          color: "#fff",
+          paddingBottom: "120px",
         }}
       >
         {/* Page header */}
         <div className="container">
-          <div style={{ paddingTop: "80px", marginBottom: "40px", textAlign: "center" }}>
-            <h1 className="heading-1" style={{ marginBottom: "14px", fontFamily: "var(--font-sans)", fontWeight: 600, letterSpacing: "-0.02em", fontSize: "clamp(2.5rem, 5vw, 4rem)", lineHeight: 1.05, color: "#fff" }}>
+          <div style={{ paddingTop: "80px", marginBottom: "56px", textAlign: "center" }}>
+            <h1 className="heading-1" style={{ marginBottom: "14px", fontFamily: "var(--font-sans)", fontWeight: 600, letterSpacing: "-0.02em", fontSize: "clamp(2.5rem, 5vw, 4rem)", lineHeight: 1.05 }}>
               Agents
             </h1>
             <p
               className="hero-subheadline"
-              style={{ margin: "0 auto", color: "rgba(255,255,255,0.85)", fontSize: "clamp(1.125rem, 2vw, 1.375rem)", fontWeight: 400 }}
+              style={{ margin: "0 auto", fontSize: "clamp(1.125rem, 2vw, 1.375rem)", fontWeight: 400 }}
             >
               A library of AI agents tailored to your work.
             </p>
@@ -104,7 +102,7 @@ export default function AgentsPage() {
           <ToolsList tools={tools} />
 
           {/* More tools placeholder */}
-          <p style={{ textAlign: "center", margin: "72px auto 56px", fontSize: "0.875rem", color: "rgba(255,255,255,0.4)" }}>
+          <p style={{ textAlign: "center", margin: "72px auto 56px", fontSize: "0.875rem", color: "rgba(0, 0, 0, 0.4)" }}>
             More agents in progress...
           </p>
         </div>

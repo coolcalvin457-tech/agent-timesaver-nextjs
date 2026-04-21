@@ -130,14 +130,12 @@ function TierCard({ tier }: { tier: Tier }) {
 export default function ServicesPage() {
   return (
     <>
-      <Nav dark />
+      <Nav />
       <main
         style={{
           minHeight: "100vh",
           paddingTop: "100px",
           paddingBottom: "120px",
-          background: "linear-gradient(180deg, #14151A 0%, #0A0A0C 100%)",
-          color: "#fff",
         }}
       >
         {/* Page header */}
@@ -152,7 +150,6 @@ export default function ServicesPage() {
                 letterSpacing: "-0.02em",
                 fontSize: "clamp(2.5rem, 5vw, 4rem)",
                 lineHeight: 1.05,
-                color: "#fff",
               }}
             >
               Services
@@ -161,7 +158,6 @@ export default function ServicesPage() {
               className="hero-subheadline"
               style={{
                 margin: "0 auto",
-                color: "rgba(255,255,255,0.85)",
                 fontSize: "clamp(1.125rem, 2vw, 1.375rem)",
                 fontWeight: 400,
               }}

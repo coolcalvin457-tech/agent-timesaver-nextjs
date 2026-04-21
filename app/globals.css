@@ -4808,27 +4808,27 @@ input, textarea {
 .pricing-card {
   display: flex;
   flex-direction: column;
-  background: linear-gradient(180deg, #141416 0%, #181A1F 100%);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: var(--radius-card);
   padding: 32px 38px 52px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
   transition: border-color 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
   position: relative;
 }
 
 .pricing-card:hover {
-  border-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(0, 0, 0, 0.06);
   transform: none;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 .pricing-card-featured {
   position: relative;
   overflow: hidden;
   background:
-    radial-gradient(ellipse 140% 120% at 50% 100%, rgba(30, 122, 184, 0.18) 0%, rgba(30, 122, 184, 0) 70%),
-    #141416;
+    radial-gradient(ellipse 140% 120% at 50% 100%, rgba(30, 122, 184, 0.08) 0%, rgba(30, 122, 184, 0) 70%),
+    #FFFFFF;
 }
 
 
@@ -4842,15 +4842,15 @@ input, textarea {
   text-transform: uppercase;
   padding: 4px 10px;
   border-radius: var(--radius-tag);
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.6);
+  background: rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.55);
 }
 
 .pricing-tier-name {
   font-family: var(--font-display);
   font-size: 2.25rem;
   font-weight: 400;
-  color: #FFFFFF;
+  color: #161618;
   margin: 28px 0 16px;
   line-height: 1.15;
   letter-spacing: -0.01em;
@@ -4858,7 +4858,7 @@ input, textarea {
 
 .pricing-tier-tagline {
   font-size: 0.9375rem;
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(0, 0, 0, 0.68);
   line-height: 1.5;
   margin-bottom: 24px;
 }
@@ -4868,28 +4868,28 @@ input, textarea {
   align-items: baseline;
   gap: 6px;
   margin-bottom: 22px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
   padding: 22px 0 0;
 }
 
 .pricing-price {
   font-size: 1.25rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(0, 0, 0, 0.88);
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
 
 .pricing-price-unit {
   font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(0, 0, 0, 0.6);
   margin-left: 4px;
   font-variant-numeric: tabular-nums;
 }
 
 .pricing-price-note {
   font-size: 0.8125rem;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(0, 0, 0, 0.45);
   margin-bottom: 24px;
   min-height: 1.2em;
 }
@@ -4901,7 +4901,7 @@ input, textarea {
   display: flex;
   flex-direction: column;
   gap: 18px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .pricing-features li {
@@ -4909,7 +4909,7 @@ input, textarea {
   align-items: flex-start;
   gap: 10px;
   font-size: 0.8125rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(0, 0, 0, 0.78);
   line-height: 1.5;
 }
 
@@ -4952,20 +4952,20 @@ input, textarea {
 }
 
 .pricing-cta-outline {
-  background: rgba(255, 255, 255, 0.1);
+  background: #161618;
   color: #FFFFFF;
-  border: 1px solid transparent;
+  border: 1px solid #161618;
 }
 
 .pricing-cta-outline:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: transparent;
+  background: #2A2A2D;
+  border-color: #2A2A2D;
 }
 
 .pricing-cta-ghost {
   background: transparent;
-  color: rgba(255, 255, 255, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(0, 0, 0, 0.15);
   pointer-events: none;
 }
 
@@ -4976,10 +4976,10 @@ input, textarea {
   justify-content: space-between;
   gap: 32px;
   padding: 28px 38px;
-  background: linear-gradient(180deg, #181A1F 0%, #141416 100%);
-  border: 1px solid rgba(0, 0, 0, 0.3);
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: var(--radius-card);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 .pricing-custom-content {
@@ -4993,7 +4993,7 @@ input, textarea {
   font-family: var(--font-display);
   font-size: 1.375rem;
   font-weight: 400;
-  color: #FFFFFF;
+  color: #161618;
   letter-spacing: -0.01em;
   flex-shrink: 0;
 }
@@ -5008,7 +5008,7 @@ input, textarea {
 
 .pricing-custom-description {
   font-size: 0.9375rem;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(0, 0, 0, 0.6);
   line-height: 1.5;
   margin: 0;
 }

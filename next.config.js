@@ -17,6 +17,7 @@ const nextConfig = {
       { source: "/onboarding-kit-builder", destination: "/onboarding", permanent: true },
       { source: "/pip-builder", destination: "/pip", permanent: true },
       { source: "/competitive-dossier", destination: "/company", permanent: true },
+      { source: "/pricing", destination: "/services", permanent: true },
     ];
   },
 };

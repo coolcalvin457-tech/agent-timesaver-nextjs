@@ -28,7 +28,7 @@ export default function Footer() {
             <ul className="footer-col-links">
               <li><a href="/blog">Blog</a></li>
               <li><a href="/about">About</a></li>
-              <li><a href="/pricing">Pricing</a></li>
+              <li><a href="/services">Services</a></li>
             </ul>
           </div>
 

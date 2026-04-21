@@ -53,7 +53,7 @@ export default function NavClient({ initialName, dark }: NavClientProps) {
           </a>
           <ul className="nav-links">
             <li><a href="/agents">Agents</a></li>
-            <li><a href="/pricing">Pricing</a></li>
+            <li><a href="/services">Services</a></li>
             <li><a href="/blog">Blog</a></li>
             <li><a href="/about">About</a></li>
           </ul>

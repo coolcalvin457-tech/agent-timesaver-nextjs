@@ -3,14 +3,14 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Pricing · Prompt AI Agents",
+  title: "Services · Prompt AI Agents",
   description:
     "Personal AI Coaching with Christian Murphy. Live 1-on-1 sessions to get fluent at prompting, build your first AI agent, and stand up your full AI system.",
   openGraph: {
-    title: "Pricing · Prompt AI Agents",
+    title: "Services · Prompt AI Agents",
     description:
       "Personal AI Coaching with Christian Murphy. Live 1-on-1 sessions to get fluent at prompting, build your first AI agent, and stand up your full AI system.",
-    url: "https://promptaiagents.com/pricing",
+    url: "https://promptaiagents.com/services",
     siteName: "Prompt AI Agents",
     type: "website",
   },
@@ -127,7 +127,7 @@ function TierCard({ tier }: { tier: Tier }) {
   );
 }
 
-export default function PricingPage() {
+export default function ServicesPage() {
   return (
     <>
       <Nav dark />
@@ -155,7 +155,7 @@ export default function PricingPage() {
                 color: "#fff",
               }}
             >
-              Pricing
+              Services
             </h1>
             <p
               className="hero-subheadline"
